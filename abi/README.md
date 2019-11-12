@@ -2,7 +2,7 @@
 
 [Procedure Call Standard use by the
 Application Binary Interface (ABI) for the Arm 64-bit
-architecture (AArch64)](abi/aapcs64.rst)
+architecture (AArch64)](aapcs64/aapcs64.rst)
 
 [Vector Function Application Binary Interface Specification for
-AArch64](abi/vfabia64.rst)
+AArch64](vfabia64/vfabia64.rst)
