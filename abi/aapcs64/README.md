@@ -27,3 +27,10 @@ You” (rather than “any patent licenses granted to You”).  This change
 is intended to help maintain a healthy ecosystem by providing
 additional protection to the community against patent litigation
 claims.
+
+## Defects report
+
+Please report defects in the [Procedure Call Standard use by the
+Application Binary Interface (ABI) for the Arm 64-bit architecture
+(AArch64)](aapcs64.rst) to the `issue tracker page on GitHub
+<https://github.com/ARM-software/software-standards/issues>`_.
