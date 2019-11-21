@@ -3,8 +3,8 @@
 ## Defects report
 
 Please report defects in the specifications in this folder to the
-`issue tracker page on GitHub
-<https://github.com/ARM-software/software-standards/issues>`_.
+[issue tracker page on
+GitHub](https://github.com/ARM-software/software-standards/issues).
 
 ## Available documents
 

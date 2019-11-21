@@ -32,5 +32,5 @@ claims.
 
 Please report defects in the [Procedure Call Standard use by the
 Application Binary Interface (ABI) for the Arm 64-bit architecture
-(AArch64)](aapcs64.rst) to the `issue tracker page on GitHub
-<https://github.com/ARM-software/software-standards/issues>`_.
+(AArch64)](aapcs64.rst) to the [issue tracker page on
+GitHub](https://github.com/ARM-software/software-standards/issues).
