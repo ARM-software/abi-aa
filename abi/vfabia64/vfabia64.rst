@@ -3,19 +3,23 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-*****
-|arm| 
-*****
+Vector Function Application Binary Interface Specification for AArch64
+**********************************************************************
 
-.. |arm| raw:: html
+.. class:: issued
 
-   <div align="center">
-      <img src="Arm_logo_blue_150MN.png" /><br/>
-      Vector Function Application Binary Interface Specification for AArch64
-   </div>
-   <br />
+Date of Issue: 31\ :sup:`st` October 2019
 
-.. contents:: :depth: 2
+.. class:: logo
+
+.. image:: ../Arm_logo_blue_150MN.png
+
+.. section-numbering::
+
+.. raw:: pdf
+
+   PageBreak oneColumn
+
 
 Preamble
 ========
@@ -162,6 +166,96 @@ Please report defects in this specification to the `issue tracker page
 on GitHub
 <https://github.com/ARM-software/software-standards/issues>`_.
 
+.. raw:: pdf
+
+   PageBreak
+
+License
+-------
+
+This work is licensed under the Creative Commons
+Attribution-ShareAlike 4.0 International License. To view a copy of
+this license, visit http://creativecommons.org/licenses/by-sa/4.0/ or
+send a letter to Creative Commons, PO Box 1866, Mountain View, CA
+94042, USA.
+
+Grant of Patent License. Subject to the terms and conditions of this
+license (both the Public License and this Patent License), each
+Licensor hereby grants to You a perpetual, worldwide, non-exclusive,
+no-charge, royalty-free, irrevocable (except as stated in this
+section) patent license to make, have made, use, offer to sell, sell,
+import, and otherwise transfer the Licensed Material, where such
+license applies only to those patent claims licensable by such
+Licensor that are necessarily infringed by their contribution(s) alone
+or by combination of their contribution(s) with the Licensed Material
+to which such contribution(s) was submitted. If You institute patent
+litigation against any entity (including a cross-claim or counterclaim
+in a lawsuit) alleging that the Licensed Material or a contribution
+incorporated within the Licensed Material constitutes direct or
+contributory patent infringement, then any licenses granted to You
+under this license for that Licensed Material shall terminate as of
+the date such litigation is filed.
+
+About the license
+-----------------
+
+As identified more fully in the License_ section, this project
+is licensed under CC-BY-SA-4.0 along with an additional patent
+license.  The language in the additional patent license is largely
+identical to that in Apache-2.0 (specifically, Section 3 of Apache-2.0
+as reflected at https://www.apache.org/licenses/LICENSE-2.0) with two
+exceptions.
+
+First, several changes were made related to the defined terms so as to
+reflect the fact that such defined terms need to align with the
+terminology in CC-BY-SA-4.0 rather than Apache-2.0 (e.g., changing
+“Work” to “Licensed Material”).
+
+Second, the defensive termination clause was changed such that the
+scope of defensive termination applies to “any licenses granted to
+You” (rather than “any patent licenses granted to You”).  This change
+is intended to help maintain a healthy ecosystem by providing
+additional protection to the community against patent litigation
+claims.
+
+Contributions
+-------------
+
+Contributions to this project are licensed under an inbound=outbound
+model such that any such contributions are licensed by the contributor
+under the same terms as those in the LICENSE file.
+
+Trademark notice
+----------------
+
+The text of and illustrations in this document are licensed by Arm
+under a Creative Commons Attribution–Share Alike 4.0 International
+license ("CC-BY-SA-4.0”), with an additional clause on patents.
+The Arm trademarks featured here are registered trademarks or
+trademarks of Arm Limited (or its subsidiaries) in the US and/or
+elsewhere. All rights reserved. Please visit
+https://www.arm.com/company/policies/trademarks for more information
+about Arm’s trademarks.
+
+Copyright
+---------
+
+Copyright (c) 2018-2019, Arm Limited and its affiliates.  All rights reserved.
+
+.. raw:: pdf
+
+   PageBreak
+
+.. contents::
+   :depth: 3
+
+.. raw:: pdf
+
+   PageBreak
+
+About this document
+===================
+
 Change control
 --------------
 
@@ -303,77 +397,9 @@ Change history
    |           |               |                                                  |
    +-----------+---------------+--------------------------------------------------+
 
-License
--------
+.. raw:: pdf
 
-This work is licensed under the Creative Commons
-Attribution-ShareAlike 4.0 International License. To view a copy of
-this license, visit http://creativecommons.org/licenses/by-sa/4.0/ or
-send a letter to Creative Commons, PO Box 1866, Mountain View, CA
-94042, USA.
-
-Grant of Patent License. Subject to the terms and conditions of this
-license (both the Public License and this Patent License), each
-Licensor hereby grants to You a perpetual, worldwide, non-exclusive,
-no-charge, royalty-free, irrevocable (except as stated in this
-section) patent license to make, have made, use, offer to sell, sell,
-import, and otherwise transfer the Licensed Material, where such
-license applies only to those patent claims licensable by such
-Licensor that are necessarily infringed by their contribution(s) alone
-or by combination of their contribution(s) with the Licensed Material
-to which such contribution(s) was submitted. If You institute patent
-litigation against any entity (including a cross-claim or counterclaim
-in a lawsuit) alleging that the Licensed Material or a contribution
-incorporated within the Licensed Material constitutes direct or
-contributory patent infringement, then any licenses granted to You
-under this license for that Licensed Material shall terminate as of
-the date such litigation is filed.
-
-About the license
------------------
-
-As identified more fully in the License_ section, this project
-is licensed under CC-BY-SA-4.0 along with an additional patent
-license.  The language in the additional patent license is largely
-identical to that in Apache-2.0 (specifically, Section 3 of Apache-2.0
-as reflected at https://www.apache.org/licenses/LICENSE-2.0) with two
-exceptions.
-
-First, several changes were made related to the defined terms so as to
-reflect the fact that such defined terms need to align with the
-terminology in CC-BY-SA-4.0 rather than Apache-2.0 (e.g., changing
-“Work” to “Licensed Material”).
-
-Second, the defensive termination clause was changed such that the
-scope of defensive termination applies to “any licenses granted to
-You” (rather than “any patent licenses granted to You”).  This change
-is intended to help maintain a healthy ecosystem by providing
-additional protection to the community against patent litigation
-claims.
-
-Contributions
--------------
-
-Contributions to this project are licensed under an inbound=outbound
-model such that any such contributions are licensed by the contributor
-under the same terms as those in the LICENSE file.
-
-Trademark notice
-----------------
-
-The text of and illustrations in this document are licensed by Arm
-under a Creative Commons Attribution–Share Alike 4.0 International
-license ("CC-BY-SA-4.0”), with an additional clause on patents.
-The Arm trademarks featured here are registered trademarks or
-trademarks of Arm Limited (or its subsidiaries) in the US and/or
-elsewhere. All rights reserved. Please visit
-https://www.arm.com/company/policies/trademarks for more information
-about Arm’s trademarks.
-
-Copyright
----------
-
-Copyright (c) 2018-2019, Arm Limited and its affiliates.  All rights reserved.
+   PageBreak
 
 Definitions
 ===========
@@ -411,16 +437,18 @@ registers for the AAVPCS are presented in the following table:
 AAVPCS Table
 ^^^^^^^^^^^^
 
-.. table:: Modified PCS for vector functions (AAVPCS)
+.. class:: table-title
 
-   +-------------+--------------------+--------------+--------------+
-   |Extension    |Parameter and Result|Call-clobbered|Call-preserved|
-   |             |registers           |registers     |registers     |
-   +=============+====================+==============+==============+
-   |Advanced SIMD|V0-V7               |V0-V7, V24-V31|V8-V23        |
-   +-------------+--------------------+--------------+--------------+
-   |SVE          |Z0-Z7               |See AAPCS                    |
-   +-------------+--------------------+--------------+--------------+
+Modified PCS for vector functions (AAVPCS)
+
++-------------+--------------------+--------------+--------------+
+|Extension    |Parameter and Result|Call-clobbered|Call-preserved|
+|             |registers           |registers     |registers     |
++=============+====================+==============+==============+
+|Advanced SIMD|V0-V7               |V0-V7, V24-V31|V8-V23        |
++-------------+--------------------+--------------+--------------+
+|SVE          |Z0-Z7               |See AAPCS                    |
++-------------+--------------------+--------------+--------------+
 
 The AAVPCS is implicit when a ``#pragma omp declare simd`` clause is
 attached to a function definition or declaration. For user-defined
@@ -512,45 +540,49 @@ is stored in the ``uint16x4_t`` as though it were lane 0 in a
 
           This is shown in the following table.
 
-.. table:: Big-endian vs Little-endian padded vectors.
+.. class:: table-title
 
-   +---------------+---------------+--------------------------------+-------------------------------+
-   |Padded short   |Short vector   |Little-endian                   |Big-endian                     |
-   |vector type    |type           |                                |                               |
-   +===============+===============+================================+===============================+
-   |``[u]int8x2_t``|``[u]int8x8_t``|``X|X|X|X|X|X|A[1]|A[0]``       |``X|X|X|X|X|X|A[0]|A[1]``      |
-   +---------------+---------------+--------------------------------+-------------------------------+
-   |``[u]int8x4_t``|``[u]int8x8_t``|``X|X|X|X|A[3]|...|A[0]``       |``X|X|X|X|A[0]|...|A[3]``      |
-   +---------------+---------------+--------------------------------+-------------------------------+
-   |``float16x2_t``|``float16x4_t``|``X|X|A[1]|A[0]``               |``X|X|A[0]|A[1]``              |
-   +---------------+---------------+--------------------------------+-------------------------------+
+Big-endian vs Little-endian padded vectors.
+
++---------------+---------------+--------------------------------+-------------------------------+
+|Padded short   |Short vector   |Little-endian                   |Big-endian                     |
+|vector type    |type           |                                |                               |
++===============+===============+================================+===============================+
+|``[u]int8x2_t``|``[u]int8x8_t``|``X|X|X|X|X|X|A[1]|A[0]``       |``X|X|X|X|X|X|A[0]|A[1]``      |
++---------------+---------------+--------------------------------+-------------------------------+
+|``[u]int8x4_t``|``[u]int8x8_t``|``X|X|X|X|A[3]|...|A[0]``       |``X|X|X|X|A[0]|...|A[3]``      |
++---------------+---------------+--------------------------------+-------------------------------+
+|``float16x2_t``|``float16x4_t``|``X|X|A[1]|A[0]``               |``X|X|A[0]|A[1]``              |
++---------------+---------------+--------------------------------+-------------------------------+
 
 The set of padded short vector types, the short vector type they map
 to, and the appropriate store width for each type is given in the
 following table,
 
-.. table:: Padded short vectors
+.. class:: table-title
 
-   +------------------+-----------------------+-------------+
-   |   Padded short   |   Short vector type   | ``LDR/STR`` |
-   |   vector type    |                       |  registers  |
-   +==================+=======================+=============+
-   | ``[u]int8x1_t``  | ``[u]int8x8_t``       | ``Bn``      |
-   +------------------+-----------------------+-------------+
-   | ``[u]int8x2_t``  | ``[u]int8x8_t``       | ``Hn``      |
-   +------------------+-----------------------+-------------+
-   | ``[u]int8x4_t``  | ``[u]int8x8_t``       | ``Sn``      |
-   +------------------+-----------------------+-------------+
-   | ``[u]int16x1_t`` | ``[u]int16x4_t``      | ``Hn``      |
-   +------------------+-----------------------+-------------+
-   | ``[u]int16x2_t`` | ``[u]int16x4_t``      | ``Sn``      |
-   +------------------+-----------------------+-------------+
-   | ``float16x1_t``  | ``float16x4_t``       | ``Hn``      |
-   +------------------+-----------------------+-------------+
-   | ``float16x2_t``  | ``float16x4_t``       | ``Sn``      |
-   +------------------+-----------------------+-------------+
-   | ``float32x1_t``  | ``float32x2_t``       | ``Sn``      |
-   +------------------+-----------------------+-------------+
+Padded short vectors
+
++------------------+-----------------------+-------------+
+|   Padded short   |   Short vector type   | ``LDR/STR`` |
+|   vector type    |                       |  registers  |
++==================+=======================+=============+
+| ``[u]int8x1_t``  | ``[u]int8x8_t``       | ``Bn``      |
++------------------+-----------------------+-------------+
+| ``[u]int8x2_t``  | ``[u]int8x8_t``       | ``Hn``      |
++------------------+-----------------------+-------------+
+| ``[u]int8x4_t``  | ``[u]int8x8_t``       | ``Sn``      |
++------------------+-----------------------+-------------+
+| ``[u]int16x1_t`` | ``[u]int16x4_t``      | ``Hn``      |
++------------------+-----------------------+-------------+
+| ``[u]int16x2_t`` | ``[u]int16x4_t``      | ``Sn``      |
++------------------+-----------------------+-------------+
+| ``float16x1_t``  | ``float16x4_t``       | ``Hn``      |
++------------------+-----------------------+-------------+
+| ``float16x2_t``  | ``float16x4_t``       | ``Sn``      |
++------------------+-----------------------+-------------+
+| ``float32x1_t``  | ``float32x2_t``       | ``Sn``      |
++------------------+-----------------------+-------------+
 
 When using a padded short vector, the contents of the elements of the
 associated short vector that lie outside the padded short vector are
@@ -594,17 +626,19 @@ Where ``<NN>`` is such that ``<N>=<NN> * <M>``.
 
 A subset of the possible vector types are given in the following table.
 
-.. table:: Extended short vector examples
+.. class:: table-title
 
-   +------------------+----------------------------------------------------+
-   |  Notional type   | Parameter/Return type                              |
-   +==================+====================================================+
-   | ``int32x16_t``   | ``struct int32x4x4_t { int32x4_t val[4]; };``      |
-   +------------------+----------------------------------------------------+
-   | ``float64x4_t``  | ``struct float64x2x2_t { float64x2_t val[2]; };``  |
-   +------------------+----------------------------------------------------+
-   | ``int32x16_t``   | ``struct int32x4x4_t { int32x4_t val[4]; };``      |
-   +------------------+----------------------------------------------------+
+Extended short vector examples
+
++------------------+----------------------------------------------------+
+|  Notional type   | Parameter/Return type                              |
++==================+====================================================+
+| ``int32x16_t``   | ``struct int32x4x4_t { int32x4_t val[4]; };``      |
++------------------+----------------------------------------------------+
+| ``float64x4_t``  | ``struct float64x2x2_t { float64x2_t val[2]; };``  |
++------------------+----------------------------------------------------+
+| ``int32x16_t``   | ``struct int32x4x4_t { int32x4_t val[4]; };``      |
++------------------+----------------------------------------------------+
 
 No language bindings are provided for extended short vectors, though
 some of these types are also defined by ``arm_neon.h``.
@@ -633,6 +667,9 @@ content):
    [msb]    ... | X    | A[3] | X    | A[2] | X    | A[1] | X    | A[0] [lsb]  // unpacked 0, 2, 4, ...
    [msb]    ... | X    | X    | X    | A[1] | X    | X    | X    | A[0] [lsb]  // unpacked 0, 4, 8, ...
 
+.. raw:: pdf
+
+   PageBreak
 
 Vector function signature
 =========================
@@ -1142,61 +1179,71 @@ vector of values or addresses, depending on the type of the clause.
 Linear clause for integral parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. table:: Meaning of ``linear`` clause when ``x`` is an *integral
-           parameter*.
+.. class:: table-title
 
-   +---------------------+----------+-------------------------------------------+-------------------+
-   |Clause               |``MAP(x)``|Mangled parameter name when ``s`` is:      |Constraints at lane|
-   |                     |          +---------------------+---------------------+``i`` of the       |
-   |                     |          |Compile time constant|``uniform`` parameter|implicit vector    |
-   +=====================+==========+=====================+=====================+===================+
-   |``linear(x:s)``      |``x``     |``"l" + s``          |``"ls" + pos(s)``    |``x_i = x + i * s``|
-   +---------------------+          |                     |                     |                   |
-   |``linear(val(x):s)`` |          |                     |                     |                   |
-   +---------------------+----------+---------------------+---------------------+-------------------+
-   |``linear(uval(x):s)``|n/a       |n/a                  |n/a                  |n/a                |
-   +---------------------+          |                     |                     |                   |
-   |``linear(ref(x):s)`` |          |                     |                     |                   |
-   +---------------------+----------+---------------------+---------------------+-------------------+
+Meaning of ``linear`` clause when ``x`` is an *integral parameter*.
+
+.. class:: linear-clause
+
++---------------------+----------+-------------------------------------------+-------------------+
+|Clause               |``MAP(x)``|Mangled parameter name when ``s`` is:      |Constraints at lane|
+|                     |          +---------------------+---------------------+``i`` of the       |
+|                     |          |Compile time constant|``uniform`` parameter|implicit vector    |
++=====================+==========+=====================+=====================+===================+
+|``linear(x:s)``      |``x``     |``"l" + s``          |``"ls" + pos(s)``    |``x_i = x + i * s``|
++---------------------+          |                     |                     |                   |
+|``linear(val(x):s)`` |          |                     |                     |                   |
++---------------------+----------+---------------------+---------------------+-------------------+
+|``linear(uval(x):s)``|n/a       |n/a                  |n/a                  |n/a                |
++---------------------+          |                     |                     |                   |
+|``linear(ref(x):s)`` |          |                     |                     |                   |
++---------------------+----------+---------------------+---------------------+-------------------+
 
 Linear clause for pointer parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. table:: Meaning of ``linear`` clause when ``x`` is a *pointer*.
+.. class:: table-title
 
-   +---------------------+----------+-----------------------------------------------+-------------------------------+
-   |Clause               |``MAP(x)``|Mangled parameter name when ``s`` is:          |Constraints at lane ``i`` of   |
-   |                     |          +-------------------------+---------------------+the implicit vector            |
-   |                     |          |Compile time constant    |``uniform`` parameter|                               |
-   +=====================+==========+=========================+=====================+===============================+
-   |``linear(x:s)``      |``x``     |``"l" + s * sizeof(*x)`` |``"ls" + pos(s)``    |``x_i = x + i * s``            |
-   +---------------------+          |                         |                     |                               |
-   |``linear(val(x):s)`` |          |                         |                     |                               |
-   +---------------------+----------+-------------------------+---------------------+-------------------------------+
-   |``linear(uval(x):s)``|n/a       |n/a                      |n/a                  |n/a                            |
-   +---------------------+          |                         |                     |                               |
-   |``linear(ref(x):s)`` |          |                         |                     |                               |
-   +---------------------+----------+-------------------------+---------------------+-------------------------------+
+Meaning of ``linear`` clause when ``x`` is a *pointer*.
+
+.. class:: linear-clause
+
++---------------------+----------+-----------------------------------------------+-------------------------------+
+|Clause               |``MAP(x)``|Mangled parameter name when ``s`` is:          |Constraints at lane ``i`` of   |
+|                     |          +-------------------------+---------------------+the implicit vector            |
+|                     |          |Compile time constant    |``uniform`` parameter|                               |
++=====================+==========+=========================+=====================+===============================+
+|``linear(x:s)``      |``x``     |``"l" + s * sizeof(*x)`` |``"ls" + pos(s)``    |``x_i = x + i * s``            |
++---------------------+          |                         |                     |                               |
+|``linear(val(x):s)`` |          |                         |                     |                               |
++---------------------+----------+-------------------------+---------------------+-------------------------------+
+|``linear(uval(x):s)``|n/a       |n/a                      |n/a                  |n/a                            |
++---------------------+          |                         |                     |                               |
+|``linear(ref(x):s)`` |          |                         |                     |                               |
++---------------------+----------+-------------------------+---------------------+-------------------------------+
 
 Linear clause for integral reference parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. table:: Meaning of ``linear`` clause when ``x`` is an *integral
-           reference* (C++ and Fortran dummy parameters only).
+.. class:: table-title
 
-   +---------------------+--------------------------------+---------------------------------------------+-------------------------------------+
-   |Clause               |``MAP(x)``                      |Mangled parameter name when ``s`` is:        |Constraints at lane ``i`` of the     |
-   |                     |                                +-----------------------+---------------------+implicit vector                      |
-   |                     |                                |Compile time constant  |``uniform`` parameter|                                     |
-   +=====================+================================+=======================+=====================+=====================================+
-   |``linear(x:s)``      |``[&x_0, &x_1, ..., &x_i, ...]``|``"L" + s``            |``"Ls" + pos(s)``    |``x_i = x + s * i``                  |
-   +---------------------+                                |                       |                     |                                     |
-   |``linear(val(x):s)`` |                                |                       |                     |                                     |
-   +---------------------+--------------------------------+-----------------------+---------------------+-------------------------------------+
-   |``linear(uval(x):s)``|``x``                           |``"U" + s``            |``"Us" + pos(s)``    |``x_i = x + s * i`` and ``&x_i = &x``|
-   +---------------------+--------------------------------+-----------------------+---------------------+-------------------------------------+
-   |``linear(ref(x):s)`` |``x``                           |``"R" + s * sizeof(x)``|``"Rs" + pos(s)``    |``&x_i = &x + s * i``                |
-   +---------------------+--------------------------------+-----------------------+---------------------+-------------------------------------+
+Meaning of ``linear`` clause when ``x`` is an *integral reference* (C++ and Fortran dummy parameters only).
+
+.. class:: linear-clause
+
++---------------------+--------------------------------+---------------------------------------------+-------------------------------------+
+|Clause               |``MAP(x)``                      |Mangled parameter name when ``s`` is:        |Constraints at lane ``i`` of the     |
+|                     |                                +-----------------------+---------------------+implicit vector                      |
+|                     |                                |Compile time constant  |``uniform`` parameter|                                     |
++=====================+================================+=======================+=====================+=====================================+
+|``linear(x:s)``      |``[&x_0, &x_1, ..., &x_i, ...]``|``"L" + s``            |``"Ls" + pos(s)``    |``x_i = x + s * i``                  |
++---------------------+                                |                       |                     |                                     |
+|``linear(val(x):s)`` |                                |                       |                     |                                     |
++---------------------+--------------------------------+-----------------------+---------------------+-------------------------------------+
+|``linear(uval(x):s)``|``x``                           |``"U" + s``            |``"Us" + pos(s)``    |``x_i = x + s * i`` and ``&x_i = &x``|
++---------------------+--------------------------------+-----------------------+---------------------+-------------------------------------+
+|``linear(ref(x):s)`` |``x``                           |``"R" + s * sizeof(x)``|``"Rs" + pos(s)``    |``&x_i = &x + s * i``                |
++---------------------+--------------------------------+-----------------------+---------------------+-------------------------------------+
 
 
 .. code:: c
@@ -1206,7 +1253,7 @@ Linear clause for integral reference parameters
    // The same rules apply to dummy arguments passed by value in
    // Fortran. Note that the function signatures for the ``val`` modifier
    // are the same as when no modifier is present.
-   
+
    // Advanced SIMD
    #pragma omp declare simd linear(i)
    float bar(int32_t i);
@@ -1268,6 +1315,10 @@ Linear clause for integral reference parameters
    // SVE - VLA version
    svint32_t _ZGVsMxU4_g_uval(int32_t *, svbool_t);
 
+.. raw:: pdf
+
+   PageBreak
+
 User defined vector functions
 =============================
 
@@ -1287,19 +1338,21 @@ Function ABI.
 AArch64 Variant Traits
 ----------------------
 
-.. table:: AArch64 traits for OpenMP contexts.
+.. class:: table-title
 
-    +------------------+-----------------------+-------------------------+
-    |Trait set         |Trait value            |Notes                    |
-    +==================+=======================+=========================+
-    |``device``        |``isa("simd")``        |Advanced SIMD call.      |
-    +------------------+-----------------------+-------------------------+
-    |``device``        |``isa("sve")``         |SVE call.                |
-    +------------------+-----------------------+-------------------------+
-    |``device``        |``arch("march-list")`` |Used to match            |
-    |                  |                       |``-march=march-list``    |
-    |                  |                       |from the compiler.       |
-    +------------------+-----------------------+-------------------------+
+AArch64 traits for OpenMP contexts.
+
++------------------+-----------------------+-------------------------+
+|Trait set         |Trait value            |Notes                    |
++==================+=======================+=========================+
+|``device``        |``isa("simd")``        |Advanced SIMD call.      |
++------------------+-----------------------+-------------------------+
+|``device``        |``isa("sve")``         |SVE call.                |
++------------------+-----------------------+-------------------------+
+|``device``        |``arch("march-list")`` |Used to match            |
+|                  |                       |``-march=march-list``    |
+|                  |                       |from the compiler.       |
++------------------+-----------------------+-------------------------+
 
 The scalar function ``f`` that is decorated with a ``declare
 variant`` directive with a ``simd`` trait in the ``construct`` set is
@@ -1401,6 +1454,10 @@ Examples
 
    svuint8_t G(float64x2_t vx);
 
+.. raw:: pdf
+
+   PageBreak
+
 Masking
 =======
 
@@ -1414,26 +1471,23 @@ behavior.
 Notice that for SVE, masking is present regardless of whether
 ``inbranch`` or ``notinbranch`` is used. [#mask-sve]_
 
-.. [#mask-sve] The reason for using predication by default in SVE is
-   to avoid a scalar tail loop when auto-vectorizing loops.  The
-   reason for using predication even for ``notinbranch`` is to avoid
-   the performance degradation that would occur when porting code
-   that uses functions not guarded by conditional branches that could
-   have been marked as ``notinbranch``.
+.. class:: table-title
 
-.. table:: Masked signature generation for ``[not]inbranch`` clause.
+Masked signature generation for ``[not]inbranch`` clause.
 
-    +-----------------------------------------+----------------+---------------+
-    |                                         |Advanced SIMD   |SVE            |
-    |                                         +-------+--------+------+--------+
-    |                                         |Masked |Unmasked|Masked|Unmasked|
-    +=========================================+=======+========+======+========+
-    |``#pragma omp declare simd``             |Yes    |Yes     |Yes   |No      |
-    +-----------------------------------------+-------+--------+------+--------+
-    |``#pragma omp declare simd inbranch``    |Yes    |No      |Yes   |No      |
-    +-----------------------------------------+-------+--------+------+--------+
-    |``#pragma omp declare simd notinbranch`` |No     |Yes     |Yes   |No      |
-    +-----------------------------------------+-------+--------+------+--------+
+.. class:: masked
+
++-----------------------------------------+----------------+---------------+
+|                                         |Advanced SIMD   |SVE            |
+|                                         +-------+--------+------+--------+
+|                                         |Masked |Unmasked|Masked|Unmasked|
++=========================================+=======+========+======+========+
+|``#pragma omp declare simd``             |Yes    |Yes     |Yes   |No      |
++-----------------------------------------+-------+--------+------+--------+
+|``#pragma omp declare simd inbranch``    |Yes    |No      |Yes   |No      |
++-----------------------------------------+-------+--------+------+--------+
+|``#pragma omp declare simd notinbranch`` |No     |Yes     |Yes   |No      |
++-----------------------------------------+-------+--------+------+--------+
 
 Advanced SIMD masking
 ---------------------
@@ -1592,6 +1646,10 @@ active.
                  svbool_t vmask);
    // vmask active lane value:  00000001
    // vy active lane value:     00010001
+
+.. raw:: pdf
+
+   PageBreak
 
 Additional examples
 ===================
@@ -1773,3 +1831,17 @@ specific case, the rules give the following:
 
    // VLA SVE (VLS would have the same aligment tokens)
    svint32_t _ZGVsMxl4a4l8a8la1l16a16_foo(int32_t *x, double *y, uint8_t *z, D_ty * S, svbool_t)
+
+.. raw:: pdf
+
+   PageBreak
+
+Footnotes
+=========
+
+.. [#mask-sve] The reason for using predication by default in SVE is
+   to avoid a scalar tail loop when auto-vectorizing loops.  The
+   reason for using predication even for ``notinbranch`` is to avoid
+   the performance degradation that would occur when porting code
+   that uses functions not guarded by conditional branches that could
+   have been marked as ``notinbranch``.

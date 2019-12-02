@@ -3,21 +3,22 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-*****
-|arm|
-*****
+Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
+******************************************************************
 
-.. |arm| raw:: html
-
-   <div align="center">
-      <img src="Arm_logo_blue_150MN.png" /><br/>
-      Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
-   </div>
-   <br />
+.. class:: issued
 
 Date of Issue: 31\ :sup:`st` October 2019
 
-================================================================================
+.. class:: logo
+
+.. image:: ../Arm_logo_blue_150MN.png
+
+.. section-numbering::
+
+.. raw:: pdf
+
+   PageBreak oneColumn
 
 Preamble
 ========
@@ -43,6 +44,9 @@ Please report defects in this specification to the `issue tracker page
 on GitHub
 <https://github.com/ARM-software/software-standards/issues>`_.
 
+.. raw:: pdf
+
+   PageBreak
 
 Licence
 -------
@@ -116,11 +120,16 @@ Copyright
 
 Copyright (c) 2018-2019, Arm Limited and its affiliates.  All rights reserved.
 
-Contents
---------
+.. raw:: pdf
+
+   PageBreak
 
 .. contents::
    :depth: 3
+
+.. raw:: pdf
+
+   PageBreak
 
 About this document
 ===================
@@ -201,6 +210,8 @@ References
 
 This document refers to, or is referred to by, the following documents.
 
+.. class:: refs
+
 +-----------------------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 | Ref                                                                                     | URL or other reference                             | Title                                                    |
 +=========================================================================================+====================================================+==========================================================+
@@ -216,6 +227,7 @@ Terms and Abbreviations
 -----------------------
 
 The ABI for the Arm 64-bit Architecture uses the following terms and abbreviations.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A32
    The instruction set named Arm in the Armv7 architecture; A32 uses 32-bit
@@ -277,64 +289,67 @@ T32
    16-bit and 32-bit instructions.
 
 ILP32
-      SysV-like data model where int, long int and pointer are 32-bit
+   SysV-like data model where int, long int and pointer are 32-bit
 
 LP64
-      SysV-like data model where int is 32-bit, but long int and pointer are 64-bit.
+   SysV-like data model where int is 32-bit, but long int and pointer are 64-bit.
 
 LLP64
-      Windows-like data model where int and long int are 32-bit, but long long int and pointer are 64-bit.
+   Windows-like data model where int and long int are 32-bit, but long long int and pointer are 64-bit.
 
 This document uses the following terms and abbreviations.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Term                                  | Meaning                                                                                                   |
-+=======================================+===========================================================================================================+
-| Routine, subroutine                   | A fragment of program to which control can be transferred that, on completing its task, returns control   |
-|                                       | to its caller at an instruction following the call. Routine is used for clarity where there are nested    |
-|                                       | calls: a routine is the caller and a subroutine is the callee.                                            |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Procedure                             | A routine that returns no result value.                                                                   |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Function                              | A routine that returns a result value.                                                                    |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Activation stack, call-frame stack    | The stack of routine activation records (call frames).                                                    |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Activation record, call frame         | The memory used by a routine for saving registers and holding local variables (usually allocated on a     |
-|                                       | stack, once per activation of the routine).                                                               |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| PIC, PID                              | Position-independent code, position-independent data.                                                     |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Argument, Parameter                   | The terms argument and parameter are used interchangeably. They may denote a formal parameter of a        |
-|                                       | routine given the value of the actual parameter when the routine is called, or an actual parameter,       |
-|                                       | according to context.                                                                                     |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Externally visible [interface]        | [An interface] between separately compiled or separately assembled routines.                              |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Variadic routine                      | A routine is variadic if the number of arguments it takes, and their type, is determined by the caller    |
-|                                       | instead of the callee.                                                                                    |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Global register                       | A register whose value is neither saved nor destroyed by a subroutine. The value may be updated, but only |
-|                                       | in a manner defined by the execution environment.                                                         |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Program state                         | The state of the program’s memory, including values in machine registers.                                 |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Scratch register, temporary register, | A register used to hold an intermediate value during a calculation (usually, such values are not named in |
-| Caller-saved register                 | the program source and have a limited lifetime). If a function needs to preserve the value held in such   |
-|                                       | a register over a call to another function, then the calling function must save and restore the value.    |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Callee-saved register                 | A register whose value must be preserved over a function call. If the function being called (the callee)  |
-|                                       | needs to use the register, then it is responsible for saving and restoring the old value.                 |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| SysV                                  | Unix System V. A variant of the Unix Operating System. Although this specification refers to SysV, many   |
-|                                       | other operating systems, such as Linux or BSD use similar conventions.                                    |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
-| Platform                              | A program execution environment such as that defined by an operating system or run- time environment. A   |
-|                                       | platform defines the specific variant of the ABI and may impose additional constraints. Linux is a        |
-|                                       | platform in this sense.                                                                                   |
-+---------------------------------------+-----------------------------------------------------------------------------------------------------------+
+Routine, subroutine
+   A fragment of program to which control can be transferred that, on completing its task, returns control to its caller at an instruction following the call. Routine is used for clarity where there are nested calls: a routine is the caller and a subroutine is the callee.
+
+Procedure
+   A routine that returns no result value.
+
+Function
+   A routine that returns a result value.
+
+Activation stack, call-frame stack
+   The stack of routine activation records (call frames).
+
+Activation record, call frame
+   The memory used by a routine for saving registers and holding local variables (usually allocated on a stack, once per activation of the routine).
+
+PIC, PID
+   Position-independent code, position-independent data.
+
+Argument, Parameter
+   The terms argument and parameter are used interchangeably. They may denote a formal parameter of a routine given the value of the actual parameter when the routine is called, or an actual parameter, according to context.
+
+Externally visible [interface]
+   [An interface] between separately compiled or separately assembled routines.
+
+Variadic routine
+   A routine is variadic if the number of arguments it takes, and their type, is determined by the caller instead of the callee.
+
+Global register
+   A register whose value is neither saved nor destroyed by a subroutine. The value may be updated, but only in a manner defined by the execution environment.
+
+Program state
+   The state of the program’s memory, including values in machine registers.
+
+Scratch register, temporary register, caller-saved register
+   A register used to hold an intermediate value during a calculation (usually, such values are not named in the program source and have a limited lifetime). If a function needs to preserve the value held in such a register over a call to another function, then the calling function must save and restore the value.
+
+Callee-saved register
+   A register whose value must be preserved over a function call. If the function being called (the callee) needs to use the register, then it is responsible for saving and restoring the old value.
+
+SysV
+   Unix System V. A variant of the Unix Operating System. Although this specification refers to SysV, many other operating systems, such as Linux or BSD use similar conventions.
+
+Platform
+   A program execution environment such as that defined by an operating system or run- time environment. A platform defines the specific variant of the ABI and may impose additional constraints. Linux is a platform in this sense.
 
 More specific terminology is defined when it is first used.
+
+.. raw:: pdf
+
+   PageBreak
 
 Scope
 =====
@@ -375,6 +390,9 @@ This standard is presented in four sections that, after an introduction, specify
 
 This specification does not standardize the representation of publicly visible C++-language entities that are not also C language entities (these are described in `CPPABI64`_) and it places no requirements on the representation of language entities that are not visible across public interfaces.
 
+.. raw:: pdf
+
+   PageBreak
 
 Introduction
 ============
@@ -407,6 +425,9 @@ Conformance to the AAPCS64 requires that [#aapcs64-f2]_:
 
 - The data elements [#aapcs64-f3]_ of each publicly visible interface conform to the data layout rules.
 
+.. raw:: pdf
+
+   PageBreak
 
 Data Types and Alignment
 ========================
@@ -416,51 +437,53 @@ Fundamental Data Types
 
 Table 1, Byte size and byte alignment of fundamental data types shows the fundamental data types (Machine Types) of the machine.
 
-.. table:: Table 1, Byte size and byte alignment of fundamental data types
+.. class:: table-title
 
-    +------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
-    | Type Class             | Machine Type                    | Byte size  | Natural Alignment (bytes) | Note                                          |
-    +========================+=================================+============+===========================+===============================================+
-    | Integral               | Unsigned byte                   | 1          | 1                         | Character                                     |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | Signed byte                     | 1          | 1                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-    |                        | Unsigned half-word              | 2          | 2                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | Signed half-word                | 2          | 2                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-    |                        | Unsigned word                   | 4          | 4                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | Signed word                     | 4          | 4                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-    |                        | Unsigned double- word           | 8          | 8                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | Signed double-word              | 8          | 8                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-    |                        | Unsigned quad-word              | 16         | 16                        |                                               |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | Signed quad-word                | 16         | 16                        |                                               |
-    +------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
-    | Floating Point         | Half precision                  | 2          | 2                         | See `Half-precision Floating Point`_.         |
-    |                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-    |                        | Single precision                | 4          | 4                         | IEEE 754-2008                                 |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | Double precision                | 8          | 8                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | Quad precision                  | 16         | 16                        |                                               |
-    +------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
-    | Short vector           | 64-bit vector                   | 8          | 8                         | See `Short Vectors`_                          |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | 128-bit vector                  | 16         | 16                        |                                               |
-    +------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
-    | Pointer                | 32-bit data pointer **(Beta)**  | 4          | 4                         | See `Pointers`_                               |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | 32-bit code pointer **(Beta)**  | 4          | 4                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | 64-bit data pointer             | 8          | 8                         |                                               |
-    |                        +---------------------------------+------------+---------------------------+                                               |
-    |                        | 64-bit code pointer             | 8          | 8                         |                                               |
-    +------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
+Table 1, Byte size and byte alignment of fundamental data types
+
++------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
+| Type Class             | Machine Type                    | Byte size  | Natural Alignment (bytes) | Note                                          |
++========================+=================================+============+===========================+===============================================+
+| Integral               | Unsigned byte                   | 1          | 1                         | Character                                     |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | Signed byte                     | 1          | 1                         |                                               |
+|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Unsigned half-word              | 2          | 2                         |                                               |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | Signed half-word                | 2          | 2                         |                                               |
+|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Unsigned word                   | 4          | 4                         |                                               |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | Signed word                     | 4          | 4                         |                                               |
+|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Unsigned double- word           | 8          | 8                         |                                               |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | Signed double-word              | 8          | 8                         |                                               |
+|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Unsigned quad-word              | 16         | 16                        |                                               |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | Signed quad-word                | 16         | 16                        |                                               |
++------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
+| Floating Point         | Half precision                  | 2          | 2                         | See `Half-precision Floating Point`_.         |
+|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Single precision                | 4          | 4                         | IEEE 754-2008                                 |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | Double precision                | 8          | 8                         |                                               |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | Quad precision                  | 16         | 16                        |                                               |
++------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
+| Short vector           | 64-bit vector                   | 8          | 8                         | See `Short Vectors`_                          |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | 128-bit vector                  | 16         | 16                        |                                               |
++------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
+| Pointer                | 32-bit data pointer **(Beta)**  | 4          | 4                         | See `Pointers`_                               |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | 32-bit code pointer **(Beta)**  | 4          | 4                         |                                               |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | 64-bit data pointer             | 8          | 8                         |                                               |
+|                        +---------------------------------+------------+---------------------------+                                               |
+|                        | 64-bit code pointer             | 8          | 8                         |                                               |
++------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
 
 
 Half-precision Floating Point
@@ -584,6 +607,10 @@ Homogeneous Short-Vector Aggregates (HVA)
 
 An Homogeneous Short-Vector Aggregate (HVA) is an Homogeneous Aggregate with a Fundamental Data Type that is a Short-Vector type and at most four uniquely addressable members.
 
+.. raw:: pdf
+
+   PageBreak
+
 The Base Procedure Call Standard
 ================================
 
@@ -599,31 +626,35 @@ General-purpose Registers
 
 There are thirty-one, 64-bit, general-purpose (integer) registers visible to the A64 instruction set; these are labeled r0-r30. In a 64-bit context these registers are normally referred to using the names x0-x30; in a 32-bit context the registers are specified by using w0-w30. Additionally, a stack-pointer register, SP, can be used with a restricted number of instructions. Register names may appear in assembly language in either upper case or lower case. In this specification upper case is used when the register has a fixed role in this procedure call standard. Table 2, General purpose registers and AAPCS64 usage summarizes the uses of the general-purpose registers in this standard. In addition to the general-purpose registers there is one status register (NZCV) that may be set and  read by conforming code.
 
-.. table:: Table 2, General purpose registers and AAPCS64 usage
+.. class:: table-title
 
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | Register  | Special  | Role in the procedure call standard                                                                                                                 |
-    +===========+==========+=====================================================================================================================================================+
-    | SP        |          | The Stack Pointer.                                                                                                                                  |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r30       | LR       | The Link Register.                                                                                                                                  |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r29       | FP       | The Frame Pointer                                                                                                                                   |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r19…r28   |          | Callee-saved registers                                                                                                                              |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r18       |          | The Platform Register, if needed; otherwise a temporary register. See notes.                                                                        |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r17       | IP1      | The second intra-procedure-call temporary register (can be used by call veneers and PLT code); at other times may be used as a temporary register.  |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r16       | IP0      | The first intra-procedure-call scratch register (can be used by call veneers and PLT code); at other times may be used as a temporary register.     |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r9…r15    |          | Temporary registers                                                                                                                                 |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r8        |          | Indirect result location register                                                                                                                   |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-    | r0…r7     |          | Parameter/result registers                                                                                                                          |
-    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+Table 2, General purpose registers and AAPCS64 usage
+
+.. class:: table-2
+
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Register  | Special  | Role in the procedure call standard                                                                                                                 |
+   +===========+==========+=====================================================================================================================================================+
+   | SP        |          | The Stack Pointer.                                                                                                                                  |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r30       | LR       | The Link Register.                                                                                                                                  |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r29       | FP       | The Frame Pointer                                                                                                                                   |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r19…r28   |          | Callee-saved registers                                                                                                                              |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r18       |          | The Platform Register, if needed; otherwise a temporary register. See notes.                                                                        |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r17       | IP1      | The second intra-procedure-call temporary register (can be used by call veneers and PLT code); at other times may be used as a temporary register.  |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r16       | IP0      | The first intra-procedure-call scratch register (can be used by call veneers and PLT code); at other times may be used as a temporary register.     |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r9…r15    |          | Temporary registers                                                                                                                                 |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r8        |          | Indirect result location register                                                                                                                   |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r0…r7     |          | Parameter/result registers                                                                                                                          |
+   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 The first eight registers, r0-r7, are used to pass argument values into a subroutine and to return result values from a function. They may also be used to hold intermediate values within a routine (but, in general, only between subroutine calls).
@@ -789,129 +820,136 @@ The mapping from a source language type onto a machine type is specific for each
 
 For a caller, sufficient stack space to hold stacked argument values is assumed to have been allocated prior to marshaling: in practice the amount of stack space required cannot be known until after the argument marshaling has been completed. A callee is permitted to modify any stack space used for receiving parameter values from the caller.
 
+.. class:: stage
 
-+-----------------------------------------------------------------------------------------------------------------+
-| Stage A - Initialization                                                                                        |
-+======================+==========================================================================================+
-|                      | The Next General-purpose Register Number (NGRN) is set to zero.                          |
-|                      |                                                                                          |
-| A.1                  |                                                                                          |
-+----------------------+------------------------------------------------------------------------------------------+
-|                      | The Next SIMD and Floating-point Register Number (NSRN) is set to zero.                  |
-|                      |                                                                                          |
-| A.2                  |                                                                                          |
-+----------------------+------------------------------------------------------------------------------------------+
-|                      | The next stacked argument address (NSAA) is set to the current stack-pointer value (SP). |
-|                      |                                                                                          |
-| A.3                  |                                                                                          |
-+----------------------+------------------------------------------------------------------------------------------+
+  +-----------------------------------------------------------------------------------------------------------------+
+  | Stage A - Initialization                                                                                        |
+  +======================+==========================================================================================+
+  |                      | The Next General-purpose Register Number (NGRN) is set to zero.                          |
+  |                      |                                                                                          |
+  | A.1                  |                                                                                          |
+  +----------------------+------------------------------------------------------------------------------------------+
+  |                      | The Next SIMD and Floating-point Register Number (NSRN) is set to zero.                  |
+  |                      |                                                                                          |
+  | A.2                  |                                                                                          |
+  +----------------------+------------------------------------------------------------------------------------------+
+  |                      | The next stacked argument address (NSAA) is set to the current stack-pointer value (SP). |
+  |                      |                                                                                          |
+  | A.3                  |                                                                                          |
+  +----------------------+------------------------------------------------------------------------------------------+
 
-+---------------------------------------------------------------------------------------------------------------+
-| Stage B – Pre-padding and extension of arguments                                                              |
-+======================+========================================================================================+
-|                      | If the argument type is a Composite Type whose size cannot be statically determined by |
-|                      | both the caller and the callee, the argument is copied to memory and the argument is   |
-| B.1                  | replaced by a pointer to the copy. (There are no such types in C/C++ but they exist in |
-|                      | other languages or in language extensions).                                            |
-+----------------------+----------------------------------------------------------------------------------------+
-|                      | If the argument type is an HFA or an HVA, then the argument is used unmodified.        |
-|                      |                                                                                        |
-| B.2                  |                                                                                        |
-+----------------------+----------------------------------------------------------------------------------------+
-|                      | If the argument type is a Composite Type that is larger than 16 bytes, then the        |
-|                      | argument is copied to memory allocated by the caller and the argument is replaced by a |
-| B.3                  | pointer to the copy.                                                                   |
-+----------------------+----------------------------------------------------------------------------------------+
-|                      | If the argument type is a Composite Type then the size of the argument is rounded up   |
-|                      | to the nearest multiple of 8 bytes.                                                    |
-| B.4                  |                                                                                        |
-+----------------------+----------------------------------------------------------------------------------------+
-|                      | If the argument is an alignment adjusted type its value is passed as a copy of the     |
-|                      | actual value. The copy will have an alignment defined as follows.                      |
-| B.5                  |                                                                                        |
-|                      | - For a Fundamental Data Type, the alignment is the natural alignment of that type,    |
-|                      |   after any promotions.                                                                |
-|                      |                                                                                        |
-|                      | - For a Composite Type, the alignment of the copy will have 8-byte alignment if its    |
-|                      |   natural alignment is <= 8 and 16-byte alignment if its natural alignment is >= 16.   |
-|                      |                                                                                        |
-|                      | The alignment of the copy is used for applying marshaling rules.                       |
-+----------------------+----------------------------------------------------------------------------------------+
 
-+-----------------------+----------------------------------------------------------------------------------------+
-| Stage C – Assignment of arguments to registers and stack                                                       |
-+=======================+========================================================================================+
-|                       | If the argument is a Half-, Single-, Double- or Quad- precision Floating-point or      |
-|                       | Short Vector Type and the NSRN is less than 8, then the argument is allocated to the   |
-| C.1                   | least significant bits of register v[NSRN]. The NSRN is incremented by one. The        |
-|                       | argument has now been allocated.                                                       |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is an HFA or an HVA and there are sufficient unallocated SIMD and      |
-|                       | Floating-point registers (NSRN + number of members <= 8), then the argument is         |
-| C.2                   | allocated to SIMD and Floating-point Registers (with one register per member of the    |
-|                       | HFA or HVA). The NSRN is incremented by the number of registers used. The argument has |
-|                       | now been allocated.                                                                    |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is an HFA or an HVA then the NSRN is set to 8 and the size of the      |
-|                       | argument is rounded up to the nearest multiple of 8 bytes.                             |
-| C.3                   |                                                                                        |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is an HFA, an HVA, a Quad-precision Floating-point or Short Vector     |
-|                       | Type then the NSAA is rounded up to the larger of 8 or the Natural Alignment of the    |
-| C.4                   | argument’s type.                                                                       |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is a Half- or Single- precision Floating Point type, then the size of  |
-|                       | the argument is set to 8 bytes. The effect is as if the argument had been copied to    |
-| C.5                   | the least significant bits of a 64-bit register and the remaining bits filled with     |
-|                       | unspecified values.                                                                    |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is an HFA, an HVA, a Half-, Single-, Double- or Quad- precision        |
-|                       | Floating-point or Short Vector Type, then the argument is copied to memory at the      |
-| C.6                   | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
-|                       | now been allocated.                                                                    |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is an Integral or Pointer Type, the size of the argument is less than  |
-|                       | or equal to 8 bytes and the NGRN is less than 8, the argument is copied to the least   |
-| C.7                   | significant bits in x[NGRN]. The NGRN is incremented by one. The argument has now been |
-|                       | allocated.                                                                             |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument has an alignment of 16 then the NGRN is rounded up to the next even    |
-|                       | number.                                                                                |
-| C.8                   |                                                                                        |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is an Integral Type, the size of the argument is equal to 16 and the   |
-|                       | NGRN is less than 7, the argument is copied to x[NGRN] and x[NGRN+1]. x[NGRN] shall    |
-| C.9                   | contain the lower addressed double-word of the memory representation of the argument.  |
-|                       | The NGRN is incremented by two. The argument has now been allocated.                   |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is a Composite Type and the size in double-words of the argument is    |
-|                       | not more than 8 minus NGRN, then the argument is copied into consecutive general-      |
-| C.10                  | purpose registers, starting at x[NGRN]. The argument is passed as though it had been   |
-|                       | loaded into the registers from a double-word- aligned address with an appropriate      |
-|                       | sequence of LDR instructions loading consecutive registers from memory (the contents   |
-|                       | of any unused parts of the registers are unspecified by this standard). The NGRN is    |
-|                       | incremented by the number of registers used. The argument has now been allocated.      |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | The NGRN is set to 8.                                                                  |
-|                       |                                                                                        |
-| C.11                  |                                                                                        |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | The NSAA is rounded up to the larger of 8 or the Natural Alignment of the argument’s   |
-|                       | type.                                                                                  |
-| C.12                  |                                                                                        |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the argument is a composite type then the argument is copied to memory at the       |
-|                       | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
-| C.13                  | now been allocated.                                                                    |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | If the size of the argument is less than 8 bytes then the size of the argument is set  |
-|                       | to 8 bytes. The effect is as if the argument was copied to the least significant bits  |
-| C.14                  | of a 64-bit register and the remaining bits filled with unspecified values.            |
-+-----------------------+----------------------------------------------------------------------------------------+
-|                       | The argument is copied to memory at the adjusted NSAA.  The NSAA is incremented by the |
-|                       | size of the argument. The argument has now been allocated.                             |
-| C.15                  |                                                                                        |
-+-----------------------+----------------------------------------------------------------------------------------+
+.. class:: stage
+
+  +---------------------------------------------------------------------------------------------------------------+
+  | Stage B – Pre-padding and extension of arguments                                                              |
+  +======================+========================================================================================+
+  |                      | If the argument type is a Composite Type whose size cannot be statically determined by |
+  |                      | both the caller and the callee, the argument is copied to memory and the argument is   |
+  | B.1                  | replaced by a pointer to the copy. (There are no such types in C/C++ but they exist in |
+  |                      | other languages or in language extensions).                                            |
+  +----------------------+----------------------------------------------------------------------------------------+
+  |                      | If the argument type is an HFA or an HVA, then the argument is used unmodified.        |
+  |                      |                                                                                        |
+  | B.2                  |                                                                                        |
+  +----------------------+----------------------------------------------------------------------------------------+
+  |                      | If the argument type is a Composite Type that is larger than 16 bytes, then the        |
+  |                      | argument is copied to memory allocated by the caller and the argument is replaced by a |
+  | B.3                  | pointer to the copy.                                                                   |
+  +----------------------+----------------------------------------------------------------------------------------+
+  |                      | If the argument type is a Composite Type then the size of the argument is rounded up   |
+  |                      | to the nearest multiple of 8 bytes.                                                    |
+  | B.4                  |                                                                                        |
+  +----------------------+----------------------------------------------------------------------------------------+
+  |                      | If the argument is an alignment adjusted type its value is passed as a copy of the     |
+  |                      | actual value. The copy will have an alignment defined as follows.                      |
+  | B.5                  |                                                                                        |
+  |                      | - For a Fundamental Data Type, the alignment is the natural alignment of that type,    |
+  |                      |   after any promotions.                                                                |
+  |                      |                                                                                        |
+  |                      | - For a Composite Type, the alignment of the copy will have 8-byte alignment if its    |
+  |                      |   natural alignment is <= 8 and 16-byte alignment if its natural alignment is >= 16.   |
+  |                      |                                                                                        |
+  |                      | The alignment of the copy is used for applying marshaling rules.                       |
+  +----------------------+----------------------------------------------------------------------------------------+
+
+
+.. class:: stage
+
+  +-----------------------+----------------------------------------------------------------------------------------+
+  | Stage C – Assignment of arguments to registers and stack                                                       |
+  +=======================+========================================================================================+
+  |                       | If the argument is a Half-, Single-, Double- or Quad- precision Floating-point or      |
+  |                       | Short Vector Type and the NSRN is less than 8, then the argument is allocated to the   |
+  | C.1                   | least significant bits of register v[NSRN]. The NSRN is incremented by one. The        |
+  |                       | argument has now been allocated.                                                       |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is an HFA or an HVA and there are sufficient unallocated SIMD and      |
+  |                       | Floating-point registers (NSRN + number of members <= 8), then the argument is         |
+  | C.2                   | allocated to SIMD and Floating-point Registers (with one register per member of the    |
+  |                       | HFA or HVA). The NSRN is incremented by the number of registers used. The argument has |
+  |                       | now been allocated.                                                                    |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is an HFA or an HVA then the NSRN is set to 8 and the size of the      |
+  |                       | argument is rounded up to the nearest multiple of 8 bytes.                             |
+  | C.3                   |                                                                                        |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is an HFA, an HVA, a Quad-precision Floating-point or Short Vector     |
+  |                       | Type then the NSAA is rounded up to the larger of 8 or the Natural Alignment of the    |
+  | C.4                   | argument’s type.                                                                       |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is a Half- or Single- precision Floating Point type, then the size of  |
+  |                       | the argument is set to 8 bytes. The effect is as if the argument had been copied to    |
+  | C.5                   | the least significant bits of a 64-bit register and the remaining bits filled with     |
+  |                       | unspecified values.                                                                    |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is an HFA, an HVA, a Half-, Single-, Double- or Quad- precision        |
+  |                       | Floating-point or Short Vector Type, then the argument is copied to memory at the      |
+  | C.6                   | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
+  |                       | now been allocated.                                                                    |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is an Integral or Pointer Type, the size of the argument is less than  |
+  |                       | or equal to 8 bytes and the NGRN is less than 8, the argument is copied to the least   |
+  | C.7                   | significant bits in x[NGRN]. The NGRN is incremented by one. The argument has now been |
+  |                       | allocated.                                                                             |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument has an alignment of 16 then the NGRN is rounded up to the next even    |
+  |                       | number.                                                                                |
+  | C.8                   |                                                                                        |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is an Integral Type, the size of the argument is equal to 16 and the   |
+  |                       | NGRN is less than 7, the argument is copied to x[NGRN] and x[NGRN+1]. x[NGRN] shall    |
+  | C.9                   | contain the lower addressed double-word of the memory representation of the argument.  |
+  |                       | The NGRN is incremented by two. The argument has now been allocated.                   |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is a Composite Type and the size in double-words of the argument is    |
+  |                       | not more than 8 minus NGRN, then the argument is copied into consecutive general-      |
+  | C.10                  | purpose registers, starting at x[NGRN]. The argument is passed as though it had been   |
+  |                       | loaded into the registers from a double-word- aligned address with an appropriate      |
+  |                       | sequence of LDR instructions loading consecutive registers from memory (the contents   |
+  |                       | of any unused parts of the registers are unspecified by this standard). The NGRN is    |
+  |                       | incremented by the number of registers used. The argument has now been allocated.      |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | The NGRN is set to 8.                                                                  |
+  |                       |                                                                                        |
+  | C.11                  |                                                                                        |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | The NSAA is rounded up to the larger of 8 or the Natural Alignment of the argument’s   |
+  |                       | type.                                                                                  |
+  | C.12                  |                                                                                        |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is a composite type then the argument is copied to memory at the       |
+  |                       | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
+  | C.13                  | now been allocated.                                                                    |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the size of the argument is less than 8 bytes then the size of the argument is set  |
+  |                       | to 8 bytes. The effect is as if the argument was copied to the least significant bits  |
+  | C.14                  | of a 64-bit register and the remaining bits filled with unspecified values.            |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | The argument is copied to memory at the adjusted NSAA.  The NSAA is incremented by the |
+  |                       | size of the argument. The argument has now been allocated.                             |
+  | C.15                  |                                                                                        |
+  +-----------------------+----------------------------------------------------------------------------------------+
 
 It should be noted that the above algorithm makes provision for languages other than C and C++ in that it provides for passing arrays by value and for passing arguments of dynamic size. The rules are defined in a way that allows the caller to be always able to statically determine the amount of stack space that must be allocated for arguments that are not passed in registers, even if the routine is variadic.
 
@@ -955,6 +993,10 @@ Interworking between the 32-bit AAPCS and the AAPCS64 is not supported within a 
 
 Interworking between data model variants of AAPCS64 (although technically possible) is not defined within a single process.
 
+.. raw:: pdf
+
+   PageBreak
+
 The Standard Variants
 =====================
 
@@ -973,6 +1015,10 @@ Size\_t, ptrdiff\_t
 
 See `Arm C AND C++ Language Mappings`_.
 
+.. raw:: pdf
+
+   PageBreak
+
 Arm C AND C++ Language Mappings
 ===============================
 
@@ -986,79 +1032,82 @@ Arithmetic Types
 
 The mapping of C arithmetic types to Fundamental Data Types is shown in Table 3, Mapping of C & C++ built-in data types.
 
-.. table:: Table 3, Mapping of C & C++ built-in data types
+.. class:: table-title
 
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | C/C++ Type                   | Machine Type                            | Notes                                                                  |
-    +==============================+=========================================+========================================================================+
-    | ``char``                     | unsigned byte                           |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``unsigned char``            | unsigned byte                           |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``signed char``              | signed byte                             |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``[signed] short``           | signed halfword                         |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``unsigned short``           | unsigned halfword                       |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``[signed] int``             | signed word                             |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``unsigned int``             | unsigned word                           |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``[signed] long``            | signed word or signed double- word      | See `Types Varying by Data Model`_                                     |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``unsigned long``            | unsigned word or unsigned double-word   | See `Types Varying by Data Model`_                                     |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``[signed] long long``       | signed double-word                      | C99 Only                                                               |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``unsigned long long``       | unsigned double-word                    | C99 Only                                                               |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``__int128``                 | signed quad-word                        | Arm extension (used for LDXP/STXP)                                     |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``__uint128``                | unsigned quad-word                      | Arm extension (used for LDXP/STXP)                                     |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``fp16``                     | half precision (IEEE754-2008 format or  | Arm extension. See `Types Varying by Data Model`_                      |
-    |                              | Alternative Format)                     |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``float``                    | single precision (IEEE 754)             |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``double``                   | double precision (IEEE 754)             |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``long double``              | quad precision (IEEE 754- 2008)         |                                                                        |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``float _Imaginary``         | single precision (IEEE 754)             | C99 Only                                                               |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``double _Imaginary``        | double precision (IEEE 754)             | C99 Only                                                               |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``long double _Imaginary``   | quad precision (IEEE 754- 2008)         | C99 Only                                                               |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``float _Complex``           | 2 single precision (IEEE 754)           | C99 Only. Layout is                                                    |
-    |                              |                                         |                                                                        |
-    |                              |                                         | .. code-block:: c                                                      |
-    |                              |                                         |                                                                        |
-    |                              |                                         |    struct {float re;                                                   |
-    |                              |                                         |            float im;};                                                 |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``double _Complex``          | 2 double precision (IEEE 754)           | C99 Only. Layout is                                                    |
-    |                              |                                         |                                                                        |
-    |                              |                                         | .. code-block:: c                                                      |
-    |                              |                                         |                                                                        |
-    |                              |                                         |    struct {double re;                                                  |
-    |                              |                                         |            double im;};                                                |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``long double _Complex``     | 2 quad precision (IEEE 754-2008)        | C99 Only. Layout is                                                    |
-    |                              |                                         |                                                                        |
-    |                              |                                         | .. code-block:: c                                                      |
-    |                              |                                         |                                                                        |
-    |                              |                                         |    struct {long double re;                                             |
-    |                              |                                         |            long double im;};                                           |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``_Bool/bool``               | unsigned byte                           | C99/C++ Only. False has value 0 and True has value 1.                  |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-    | ``wchar_t``                  | unsigned halfword or unsigned word      | built-in in C++, typedef in C, type is platform specific;              |
-    |                              |                                         | See `Types Varying by Data Model`_                                     |
-    +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+Table 3, Mapping of C & C++ built-in data types
 
+.. class:: table-3
+
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| C/C++ Type                   | Machine Type                            | Notes                                                                  |
++==============================+=========================================+========================================================================+
+| ``char``                     | unsigned byte                           |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``unsigned char``            | unsigned byte                           |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``signed char``              | signed byte                             |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``[signed] short``           | signed halfword                         |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``unsigned short``           | unsigned halfword                       |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``[signed] int``             | signed word                             |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``unsigned int``             | unsigned word                           |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``[signed] long``            | signed word or signed double- word      | See `Types Varying by Data Model`_                                     |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``unsigned long``            | unsigned word or unsigned double-word   | See `Types Varying by Data Model`_                                     |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``[signed] long long``       | signed double-word                      | C99 Only                                                               |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``unsigned long long``       | unsigned double-word                    | C99 Only                                                               |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``__int128``                 | signed quad-word                        | Arm extension (used for LDXP/STXP)                                     |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``__uint128``                | unsigned quad-word                      | Arm extension (used for LDXP/STXP)                                     |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``fp16``                     | half precision (IEEE754-2008 format or  | Arm extension. See `Types Varying by Data Model`_                      |
+|                              | Alternative Format)                     |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``float``                    | single precision (IEEE 754)             |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``double``                   | double precision (IEEE 754)             |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``long double``              | quad precision (IEEE 754- 2008)         |                                                                        |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``float _Imaginary``         | single precision (IEEE 754)             | C99 Only                                                               |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``double _Imaginary``        | double precision (IEEE 754)             | C99 Only                                                               |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``long double _Imaginary``   | quad precision (IEEE 754- 2008)         | C99 Only                                                               |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``float _Complex``           | 2 single precision (IEEE 754)           | C99 Only. Layout is                                                    |
+|                              |                                         |                                                                        |
+|                              |                                         | .. code-block:: c                                                      |
+|                              |                                         |                                                                        |
+|                              |                                         |    struct {float re;                                                   |
+|                              |                                         |            float im;};                                                 |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``double _Complex``          | 2 double precision (IEEE 754)           | C99 Only. Layout is                                                    |
+|                              |                                         |                                                                        |
+|                              |                                         | .. code-block:: c                                                      |
+|                              |                                         |                                                                        |
+|                              |                                         |    struct {double re;                                                  |
+|                              |                                         |            double im;};                                                |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``long double _Complex``     | 2 quad precision (IEEE 754-2008)        | C99 Only. Layout is                                                    |
+|                              |                                         |                                                                        |
+|                              |                                         | .. code-block:: c                                                      |
+|                              |                                         |                                                                        |
+|                              |                                         |    struct {long double re;                                             |
+|                              |                                         |            long double im;};                                           |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``_Bool/bool``               | unsigned byte                           | C99/C++ Only. False has value 0 and True has value 1.                  |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+| ``wchar_t``                  | unsigned halfword or unsigned word      | built-in in C++, typedef in C, type is platform specific;              |
+|                              |                                         | See `Types Varying by Data Model`_                                     |
++------------------------------+-----------------------------------------+------------------------------------------------------------------------+
 
 A platform ABI may specify a different combination of primitive variants but we discourage this.
 
@@ -1070,27 +1119,31 @@ The C/C++ arithmetic and pointer types whose machine type depends on the data mo
 
 A C++ reference type is implemented as a data pointer to the type.
 
-.. table:: Table 4, C/C++ type variants by data model
+.. class:: table-title
 
-    +---------------------+--------------------------------------------------------------------------------------------------+------------------------------+
-    | C/C++ Type          | Machine Type                                                                                     | Notes                        |
-    +---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
-    |                     | ILP32 **(Beta)**                    | LP64                                | LLP64                |                              |
-    +=====================+=====================================+=====================================+======================+==============================+
-    | ``[signed] long``   | signed word                         | signed double-word                  | signed word          |                              |
-    +---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
-    | ``unsigned long``   | unsigned word                       | unsigned double-word                | unsigned word        |                              |
-    +---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
-    | ``__fp16``          | IEEE754-2008 half-precision format  | IEEE754-2008 half-precision format  | Alternative Format   | TBC: LLP64 Alternate format? |
-    +---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
-    | ``wchar_t``         | unsigned word                       | unsigned word                       | unsigned halfword    |                              |
-    +---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
-    | ``T *``             | 32-bit data pointer                 | 64-bit data pointer                 | 64-bit data pointer  | Any data type     ``T``      |
-    +---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
-    | ``T (*F)()``        | 32-bit code pointer                 | 64-bit code pointer                 | 64-bit code pointer  | Any function type     ``F``  |
-    +---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
-    | ``T&``              | 32-bit data pointer                 | 64-bit data pointer                 | 64-bit data pointer  | C++ reference                |
-    +---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
+Table 4, C/C++ type variants by data model
+
+.. class:: table-4
+
++---------------------+--------------------------------------------------------------------------------------------------+------------------------------+
+| C/C++ Type          | Machine Type                                                                                     | Notes                        |
++---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
+|                     | ILP32 **(Beta)**                    | LP64                                | LLP64                |                              |
++=====================+=====================================+=====================================+======================+==============================+
+| ``[signed] long``   | signed word                         | signed double-word                  | signed word          |                              |
++---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
+| ``unsigned long``   | unsigned word                       | unsigned double-word                | unsigned word        |                              |
++---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
+| ``__fp16``          | IEEE754-2008 half-precision format  | IEEE754-2008 half-precision format  | Alternative Format   | TBC: LLP64 Alternate format? |
++---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
+| ``wchar_t``         | unsigned word                       | unsigned word                       | unsigned halfword    |                              |
++---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
+| ``T *``             | 32-bit data pointer                 | 64-bit data pointer                 | 64-bit data pointer  | Any data type     ``T``      |
++---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
+| ``T (*F)()``        | 32-bit code pointer                 | 64-bit code pointer                 | 64-bit code pointer  | Any function type     ``F``  |
++---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
+| ``T&``              | 32-bit data pointer                 | 64-bit data pointer                 | 64-bit data pointer  | C++ reference                |
++---------------------+-------------------------------------+-------------------------------------+----------------------+------------------------------+
 
 Enumerated Types
 ^^^^^^^^^^^^^^^^
@@ -1107,37 +1160,41 @@ Additional Types
 
 Both C and C++ require that a system provide additional type definitions that are defined in terms of the base types as shown in Table 5, Additional data types. Normally these types are defined by inclusion of the appropriate header file. However, in C++ the underlying type of size\_t can be exposed without the use of any header files simply by using ::operator new().
 
-.. table:: Table 5, Additional data types
+.. class:: table-title
 
-    +-----------------+------------------+----------------+---------------------+
-    | Typedef         | ILP32 **(Beta)** | LP64           | LLP64               |
-    +=================+==================+================+=====================+
-    | ``size_t``      | unsigned long    | unsigned long  | unsigned long long  |
-    +-----------------+------------------+----------------+---------------------+
-    | ``ptrdiff_t``   | signed long      | signed long    | signed long long    |
-    +-----------------+------------------+----------------+---------------------+
+Table 5, Additional data types
+
++-----------------+------------------+----------------+---------------------+
+| Typedef         | ILP32 **(Beta)** | LP64           | LLP64               |
++=================+==================+================+=====================+
+| ``size_t``      | unsigned long    | unsigned long  | unsigned long long  |
++-----------------+------------------+----------------+---------------------+
+| ``ptrdiff_t``   | signed long      | signed long    | signed long long    |
++-----------------+------------------+----------------+---------------------+
 
 Definition of va\_list
 ^^^^^^^^^^^^^^^^^^^^^^
 
 The definition of va\_list has implications for the internal implementation in the compiler. An AAPCS64 conforming object must use the definitions shown in Table 6, Definition of va\_list.
 
-.. table:: Table 6, Definition of va\_list
+.. class:: table-title
 
-    +-------------------+------------------------+------------------------------------------------------------+
-    | Typedef           | Base type              | Notes                                                      |
-    +===================+========================+============================================================+
-    | .. code-block:: c | .. code-block:: c      |                                                            |
-    |                   |                        |                                                            |
-    |    va_list        |    struct __va_list {  | A ``va_list`` may address any object in a parameter list.  |
-    |                   |      void *__stack;    | In C++, ``__va_list`` is in namespace std.                 |
-    |                   |       void *__gr_top;  | See `APPENDIX Variable argument Lists`_.                   |
-    |                   |       void *__vr_top;  | Variable Argument Lists.                                   |
-    |                   |       int   __gr_offs; |                                                            |
-    |                   |       int   __vr_offs; |                                                            |
-    |                   |     }                  |                                                            |
-    |                   |                        |                                                            |
-    +-------------------+------------------------+------------------------------------------------------------+
+Table 6, Definition of va\_list
+
++-------------------+------------------------+------------------------------------------------------------+
+| Typedef           | Base type              | Notes                                                      |
++===================+========================+============================================================+
+| .. code-block:: c | .. code-block:: c      |                                                            |
+|                   |                        |                                                            |
+|    va_list        |    struct __va_list {  | A ``va_list`` may address any object in a parameter list.  |
+|                   |      void *__stack;    | In C++, ``__va_list`` is in namespace std.                 |
+|                   |       void *__gr_top;  | See `APPENDIX Variable argument Lists`_.                   |
+|                   |       void *__vr_top;  | Variable Argument Lists.                                   |
+|                   |       int   __gr_offs; |                                                            |
+|                   |       int   __vr_offs; |                                                            |
+|                   |     }                  |                                                            |
+|                   |                        |                                                            |
++-------------------+------------------------+------------------------------------------------------------+
 
 Volatile Data Types
 ^^^^^^^^^^^^^^^^^^^
@@ -1319,6 +1376,10 @@ The argument list for a subroutine call is formed by taking the user arguments i
 
 The argument list is then processed according to the standard rules for procedure calls (see `Parameter Passing`_) or the appropriate variant.
 
+.. raw:: pdf
+
+   PageBreak
+
 APPENDIX Support for Advanced SIMD Extensions
 =============================================
 
@@ -1328,59 +1389,61 @@ Following the conventions used for adding types to C99 a number of additional ty
 
 The header file ``arm_neon.h`` also defines a number of intrinsic functions that can be used with the types defined below. The list of intrinsic functions and their specification is beyond the scope of this document.
 
-.. table:: Table 7: Short vector extended types
+.. class:: table-title
 
-    +-----------------+-------------------+-------------------------+-----------+
-    | Internal type   | arm\_neon.h type  | Base Type               | Elements  |
-    +=================+===================+=========================+===========+
-    | __Int8x8\_t     | int8x8\_t         | signed byte             | 8         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Int16x4\_t    | int16x4\_t        | signed half-word        | 4         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Int32x2\_t    | int32x2\_t        | signed word             | 2         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Uint8x8\_t    | uint8x8\_t        | unsigned byte           | 8         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Uint16x4\_t   | uint16x4\_t       | unsigned half-word      | 4         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Uint32x2\_t   | uint32x2\_t       | unsigned word           | 2         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Float16x4\_t  | float16x4\_t      | half-precision float    | 4         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Float32x2\_t  | float32x2\_t      | single-precision float  | 2         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Poly8x8\_t    | poly8x8\_t        | unsigned byte           | 8         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Poly16x4\_t   | poly16x4\_t       | unsigned half-word      | 4         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Int8x16\_t    | int8x16\_t        | signed byte             | 16        |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Int16x8\_t    | int16x8\_t        | signed half-word        | 8         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Int32x4\_t    | int32x4\_t        | signed word             | 4         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Int64x2\_t    | int64x2\_t        | signed double-word      | 2         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Uint8x16\_t   | uint8x16\_t       | unsigned byte           | 16        |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Uint16x8\_t   | uint16x8\_t       | unsigned half-word      | 8         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Uint32x4\_t   | uint32x4\_t       | unsigned word           | 4         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Uint64x2\_t   | uint64x2\_t       | unsigned double-word    | 2         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Float16x8\_t  | float16x8\_t      | half-precision float    | 8         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Float32x4\_t  | float32x4\_t      | single-precision float  | 4         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Float64x2\_t  | float64x2\_t      | double-precision float  | 2         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Poly8x16\_t   | poly8x16\_t       | unsigned byte           | 16        |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Poly16x8\_t   | poly16x8\_t       | unsigned half-word      | 8         |
-    +-----------------+-------------------+-------------------------+-----------+
-    | __Poly64x2\_t   | poly64x2\_t       | unsigned double-word    | 2         |
-    +-----------------+-------------------+-------------------------+-----------+
+Table 7: Short vector extended types
+
++-----------------+-------------------+-------------------------+-----------+
+| Internal type   | arm\_neon.h type  | Base Type               | Elements  |
++=================+===================+=========================+===========+
+| __Int8x8\_t     | int8x8\_t         | signed byte             | 8         |
++-----------------+-------------------+-------------------------+-----------+
+| __Int16x4\_t    | int16x4\_t        | signed half-word        | 4         |
++-----------------+-------------------+-------------------------+-----------+
+| __Int32x2\_t    | int32x2\_t        | signed word             | 2         |
++-----------------+-------------------+-------------------------+-----------+
+| __Uint8x8\_t    | uint8x8\_t        | unsigned byte           | 8         |
++-----------------+-------------------+-------------------------+-----------+
+| __Uint16x4\_t   | uint16x4\_t       | unsigned half-word      | 4         |
++-----------------+-------------------+-------------------------+-----------+
+| __Uint32x2\_t   | uint32x2\_t       | unsigned word           | 2         |
++-----------------+-------------------+-------------------------+-----------+
+| __Float16x4\_t  | float16x4\_t      | half-precision float    | 4         |
++-----------------+-------------------+-------------------------+-----------+
+| __Float32x2\_t  | float32x2\_t      | single-precision float  | 2         |
++-----------------+-------------------+-------------------------+-----------+
+| __Poly8x8\_t    | poly8x8\_t        | unsigned byte           | 8         |
++-----------------+-------------------+-------------------------+-----------+
+| __Poly16x4\_t   | poly16x4\_t       | unsigned half-word      | 4         |
++-----------------+-------------------+-------------------------+-----------+
+| __Int8x16\_t    | int8x16\_t        | signed byte             | 16        |
++-----------------+-------------------+-------------------------+-----------+
+| __Int16x8\_t    | int16x8\_t        | signed half-word        | 8         |
++-----------------+-------------------+-------------------------+-----------+
+| __Int32x4\_t    | int32x4\_t        | signed word             | 4         |
++-----------------+-------------------+-------------------------+-----------+
+| __Int64x2\_t    | int64x2\_t        | signed double-word      | 2         |
++-----------------+-------------------+-------------------------+-----------+
+| __Uint8x16\_t   | uint8x16\_t       | unsigned byte           | 16        |
++-----------------+-------------------+-------------------------+-----------+
+| __Uint16x8\_t   | uint16x8\_t       | unsigned half-word      | 8         |
++-----------------+-------------------+-------------------------+-----------+
+| __Uint32x4\_t   | uint32x4\_t       | unsigned word           | 4         |
++-----------------+-------------------+-------------------------+-----------+
+| __Uint64x2\_t   | uint64x2\_t       | unsigned double-word    | 2         |
++-----------------+-------------------+-------------------------+-----------+
+| __Float16x8\_t  | float16x8\_t      | half-precision float    | 8         |
++-----------------+-------------------+-------------------------+-----------+
+| __Float32x4\_t  | float32x4\_t      | single-precision float  | 4         |
++-----------------+-------------------+-------------------------+-----------+
+| __Float64x2\_t  | float64x2\_t      | double-precision float  | 2         |
++-----------------+-------------------+-------------------------+-----------+
+| __Poly8x16\_t   | poly8x16\_t       | unsigned byte           | 16        |
++-----------------+-------------------+-------------------------+-----------+
+| __Poly16x8\_t   | poly16x8\_t       | unsigned half-word      | 8         |
++-----------------+-------------------+-------------------------+-----------+
+| __Poly64x2\_t   | poly64x2\_t       | unsigned double-word    | 2         |
++-----------------+-------------------+-------------------------+-----------+
 
 C++ Mangling
 ------------
@@ -1399,9 +1462,14 @@ is mangled as
 
 A platform ABI may instead choose to treat the types as normal structure types, without a ``u`` prefix. For example, a platform ABI may choose to mangle the function above as:
 
-    :c:`_Z1f10__Int8x8_t`
+.. code:: c
+    _Z1f10__Int8x8_t
 
 instead.
+
+.. raw:: pdf
+
+   PageBreak
 
 APPENDIX Variable argument Lists
 ================================
@@ -1554,7 +1622,12 @@ It is expected that the implementation of the ``va_arg`` macro will be specializ
             str x2, [x0, #__stack]      // save next stack slot pointer
     done:
 
-.. rubric:: Footnotes
+.. raw:: pdf
+
+   PageBreak
+
+Footnotes
+=========
 
 .. [#aapcs64-f1]
    This base standard requires that AArch64 floating-point resources be used by floating-point operations and floating-point parameter passing. However, it is acknowledged that operating system code often prefers not to perturb the floating-point state of the machine and to implement its own limited use of floating-point in integer-only code: such code is permitted, but not conforming.

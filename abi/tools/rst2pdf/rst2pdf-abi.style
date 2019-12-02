@@ -1,0 +1,132 @@
+"pageSetup" : {
+  "firstTemplate": "coverPage"
+}
+
+linkColor: #0366d6
+
+styles:
+    normal:
+        fontName: stdFont
+        textColor: #383745
+        fontSize: 9
+        alignment: TA_LEFT
+
+    heading:
+        fontName: stdBold
+        fontSize: 10
+        spaceBefore: 20
+        textColor: #0091bd
+
+    heading1:
+        parent: heading
+        fontSize: 24
+
+    code:
+        backColor: white
+
+    admonition:
+        backColor: white
+
+    table-title:
+        parent : heading
+        fontSize: 9
+        fontName: stdBold
+        backColor : white
+        alignment : TA_LEFT
+
+    table-heading:
+        parent : heading
+        fontSize: 9
+        fontName: stdBold
+        backColor : white
+        alignment : TA_LEFT
+
+    table:
+        commands: []
+            [VALIGN, [ 0, 0 ], [ -1, -1 ], TOP ]
+            [LINEBELOW, [0, 0], [-1, 0], 0.5, black]
+            [BOTTOMPADDING, [0, 1], [-1, -1], 5]
+            [TOPPADDING, [0, 1], [-1, -1], 5]
+            [ALIGN, [ 0, 0 ], [ -1, -1 ], LEFT ]
+            [INNERGRID, [ 0, 0 ], [ -1, -1 ], 0.25, black ]
+            [BOX, [ 0, 0 ], [ -1, -1 ], 0.25, black ]
+
+    headertable:
+        parent: table
+        textColor: #383745
+        commands: []
+        colWidths: [ 20%, 80% ]
+
+    bullet-list:
+        parent: bodytext
+        commands: []
+            [VALIGN, [ 0, 0 ], [ -1, -1 ], TOP ]
+            [RIGHTPADDING, [ 0, 0 ], [ 1, -1 ], 0 ]
+        colWidths: ["20", null]
+        spaceAfter: 10
+
+    item-list:
+        parent: bullet-list
+
+    note-heading:
+        parent: heading4
+
+    note:
+        parent: admonition
+        spaceBefore: 12
+        spaceAfter: 6
+        borderPadding: [5, 5, 5, 5]
+        borderWidth: 0.5
+
+    warning-heading:
+        parent: note-heading
+
+    warning:
+        parent: note
+
+    title:
+      parent: heading
+      fontName: stdBold
+      fontSize: 200%
+      alignment: TA_RIGHT
+      keepWithNext: false
+      spaceAfter: 10
+
+    issued:
+        parent: right
+        spaceBefore: 20
+
+    logo:
+        parent: right
+        spaceBefore: 100
+
+    # aapcs styles
+    refs:
+        parent : table
+        colWidths: [ 12%, 44%, 44% ]
+
+    table-2:
+        parent : table
+        colWidths: [ 15%, 15%, 70% ]
+
+    stage:
+        parent : table
+        colWidths: [ 10%, 90% ]
+
+    table-3:
+        parent : table
+        colWidths: [ 28%, 36%, 36% ]
+
+    table-4:
+        parent : table
+        colWidths: [ 20%, 20%, 20%, 20%, 20% ]
+
+
+    # vfabia64 styles
+    linear-clause:
+        parent : table
+        colWidths: [ 23%, 17%, 26%, 18%, 24% ]
+
+    masked:
+        parent : table
+        colWidths: [ 48%, 13%, 13%, 13%, 13% ]
