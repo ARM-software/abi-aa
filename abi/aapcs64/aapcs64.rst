@@ -1384,7 +1384,7 @@ The header file ``arm_neon.h`` also defines a number of intrinsic functions that
 C++ Mangling
 ------------
 
-For C++ mangling purposes the user-friendly names are treated as though the equivalent internal name was specified. Thus the function
+For C++ mangling purposes the user-friendly names are treated as though the equivalent internal name was specified. Unless the platform ABI specifies otherwise, the types are treated as *vendor extended types*, prefixed by ``u``. For example:
 
 .. code:: c
 
@@ -1396,6 +1396,11 @@ is mangled as
 
     _Z1fu10__Int8x8_t
 
+A platform ABI may instead choose to treat the types as normal structure types, without a ``u`` prefix. For example, a platform ABI may choose to mangle the function above as:
+
+    :c:`_Z1f10__Int8x8_t`
+
+instead.
 
 APPENDIX Variable argument Lists
 ================================
