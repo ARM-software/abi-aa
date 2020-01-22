@@ -735,8 +735,9 @@ The stack must also conform to the following constraint at a public interface:
 The Frame Pointer
 ^^^^^^^^^^^^^^^^^
 
-Conforming code shall construct a linked list of stack-frames. Each frame shall link to the frame of its caller by means of a frame record of two 64-bit values on the stack (independent of the data model). The frame record for the innermost frame (belonging to the most recent routine invocation) shall be pointed to by the Frame Pointer register (FP). The lowest addressed double-word shall point to the previous frame record and the highest addressed double-word shall contain the value passed in LR on entry to the current function. The end of the frame record chain is indicated by the address zero in the address for the previous frame. The location of the
-frame record within a stack frame is not specified. Note: There will always be a short period during construction or destruction of each frame record during which the frame pointer will point to the caller’s record.
+Conforming code shall construct a linked list of stack-frames. Each frame shall link to the frame of its caller by means of a frame record of two 64-bit values on the stack (independent of the data model). The frame record for the innermost frame (belonging to the most recent routine invocation) shall be pointed to by the Frame Pointer register (FP). The lowest addressed double-word shall point to the previous frame record and the highest addressed double-word shall contain the value passed in LR on entry to the current function. If code uses the pointer signing extension to sign return addresses, the value in LR must be signed before storing it in the frame record. The end of the frame record chain is indicated by the address zero in the address for the previous frame. The location of the frame record within a stack frame is not specified.
+
+.. note:: There will always be a short period during construction or destruction of each frame record during which the frame pointer will point to the caller’s record.
 
 A platform shall mandate the minimum level of conformance with respect to the maintenance of frame records. The options are, in decreasing level of functionality:
 
@@ -746,7 +747,7 @@ A platform shall mandate the minimum level of conformance with respect to the ma
 
 - It may permit the frame pointer register to be used as a general-purpose callee-saved register, but provide a platform-specific mechanism for external agents to reliably detect this condition
 
-- It may elect not to maintain a frame chain and to use the frame pointer register as a general-purpose callee- saved register.
+- It may elect not to maintain a frame chain and to use the frame pointer register as a general-purpose callee-saved register.
 
 Subroutine Calls
 ----------------
