@@ -1492,9 +1492,9 @@ Masked signature generation for ``[not]inbranch`` clause.
 Inactive lanes
 --------------
 
-The values of the inactive lanes of the input parameters and the
-return value of a masked vector function are undefined.
-
+In a masked vector function, the contents of the inactive lanes of the
+input parameters and the inactive lanes of the return value are
+undefined.
 
 Advanced SIMD masking
 ---------------------
