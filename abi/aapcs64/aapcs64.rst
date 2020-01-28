@@ -1469,12 +1469,13 @@ is mangled as
 
 .. code:: c
 
-    _Z1fu10__Int8x8_t
+   _Z1fu10__Int8x8_t
 
 A platform ABI may instead choose to treat the types as normal structure types, without a ``u`` prefix. For example, a platform ABI may choose to mangle the function above as:
 
 .. code:: c
-    _Z1f10__Int8x8_t
+
+   _Z1f10__Int8x8_t
 
 instead.
 
