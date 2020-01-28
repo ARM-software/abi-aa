@@ -1493,7 +1493,7 @@ Inactive lanes
 --------------
 
 The values of the inactive lanes of the input parameters and the
-return value of a masked vector function is undefined.
+return value of a masked vector function are undefined.
 
 
 Advanced SIMD masking
