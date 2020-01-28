@@ -1490,10 +1490,11 @@ Masked signature generation for ``[not]inbranch`` clause.
 |``#pragma omp declare simd notinbranch`` |No     |Yes     |Yes   |No      |
 +-----------------------------------------+-------+--------+------+--------+
 
-Return value and masking
-------------------------
+Inactive lanes
+--------------
 
-The inactive lanes of return values of masked functions is ``undef``.
+The values of the inactive lanes of the input parameters and the
+return value of a masked vector function is undefined.
 
 
 Advanced SIMD masking
