@@ -1,14 +1,18 @@
 ..
-   Copyright (c) 2018-2019, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2018-2020, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
 Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
 ******************************************************************
 
+.. class:: version
+
+2019Q4
+
 .. class:: issued
 
-Date of Issue: 31\ :sup:`st` October 2019
+Date of Issue: 30\ :sup:`th` January 2020
 
 .. class:: logo
 
@@ -118,7 +122,7 @@ about Arm’s trademarks.
 Copyright
 ---------
 
-Copyright (c) 2018-2019, Arm Limited and its affiliates.  All rights reserved.
+Copyright (c) 2018-2020, Arm Limited and its affiliates.  All rights reserved.
 
 .. raw:: pdf
 
@@ -169,41 +173,49 @@ All other content in this document is at the **Release** quality level.
 Change History
 ^^^^^^^^^^^^^^
 
-+------------+--------------------+----------------------------------------+
-| Issue      | Date               | Change                                 |
-+============+====================+========================================+
-| 00Bet3     | 25th November 2011 | Beta release                           |
-+------------+--------------------+----------------------------------------+
-| 1.0        | 22nd May 2013      | First public release                   |
-+------------+--------------------+----------------------------------------+
-| 1.1-beta   | 6th November 2013  | ILP32 Beta                             |
-+------------+--------------------+----------------------------------------+
-| 2018Q4     | 31st December 2018 | Added rules for over-aligned types     |
-+------------+--------------------+----------------------------------------+
-|2019Q4-alpha| 31st October 2019  |Github preview release with an open     |
-|            |                    |source license.                         |
-|            |                    |                                        |
-|            |                    |Several formatting changes have been    |
-|            |                    |applied to the sources to fix the       |
-|            |                    |rendered page produced by github.       |
-|            |                    |                                        |
-|            |                    |No functional changes intended from the |
-|            |                    |previous release.                       |
-|            |                    |                                        |
-|            |                    |Major changes are:                      |
-|            |                    |                                        |
-|            |                    |1. New Licence_, with relative          |
-|            |                    |   explanation in `About the license`_. |
-|            |                    |                                        |
-|            |                    |2. New sections on Contributions_,      |
-|            |                    |   `Trademark notice`_, and Copyright_. |
-|            |                    |                                        |
-|            |                    |Minor change: the section `Bit-fields   |
-|            |                    |subdivision`_ has been renamed to make  |
-|            |                    |the associated implicit link target     |
-|            |                    |unique and avoid clashing with the one  |
-|            |                    |of `Bit-fields`_.                       |
-+------------+--------------------+----------------------------------------+
+.. class:: aapcs64-change-history
+
++------------+--------------------+------------------------------------------------------------------+
+| Issue      | Date               | Change                                                           |
++============+====================+==================================================================+
+| 00Bet3     | 25th November 2011 | Beta release                                                     |
++------------+--------------------+------------------------------------------------------------------+
+| 1.0        | 22nd May 2013      | First public release                                             |
++------------+--------------------+------------------------------------------------------------------+
+| 1.1-beta   | 6th November 2013  | ILP32 Beta                                                       |
++------------+--------------------+------------------------------------------------------------------+
+| 2018Q4     | 31st December 2018 | Added rules for over-aligned types                               |
++------------+--------------------+------------------------------------------------------------------+
+| 2019Q4     | 30th January 2020  | Github release with an open source license.                      |
+|            |                    |                                                                  |
+|            |                    | Major changes:                                                   |
+|            |                    |                                                                  |
+|            |                    | 1. New Licence_, with relative explanation in                    |
+|            |                    |    `About the license`_.                                         |
+|            |                    |                                                                  |
+|            |                    | 2. New sections on Contributions_, `Trademark notice`_, and      |
+|            |                    |    Copyright_.                                                   |
+|            |                    |                                                                  |
+|            |                    | 3. Specify that the frame chain should use the signed return     |
+|            |                    |    address (`The Frame Pointer`_)                                |
+|            |                    |                                                                  |
+|            |                    | 4. Add description of half-precision Brain floating-point format |
+|            |                    |    (`Half-precision Floating Point`_, `Half-precision Format     |
+|            |                    |    Compatibility`_, `Arithmetic Types`_, `Types Varying by Data  |
+|            |                    |    Model`_, `APPENDIX Support for Advanced SIMD Extensions`_)    |
+|            |                    |                                                                  |
+|            |                    | 5. Update C++ mangling to reflect existing practice              |
+|            |                    |    (`C++ Mangling`_).                                            |
+|            |                    |                                                                  |
+|            |                    | Minor changes:                                                   |
+|            |                    |                                                                  |
+|            |                    | 1. The section `Bit-fields subdivision`_ has been renamed to make|
+|            |                    |    the associated implicit link target unique and avoid clashing |
+|            |                    |    with the one of `Bit-fields`_.                                |
+|            |                    |                                                                  |
+|            |                    | 2. Several formatting changes have been applied to the sources to|
+|            |                    |    fix the rendered page produced by github.                     |
++------------+--------------------+------------------------------------------------------------------+
 
 References
 ----------
