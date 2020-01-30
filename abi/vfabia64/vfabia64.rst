@@ -1,14 +1,18 @@
 ..
-   Copyright (c) 2018-2019, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2018-2020, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
 Vector Function Application Binary Interface Specification for AArch64
 **********************************************************************
 
+.. class:: version
+
+2019Q4
+
 .. class:: issued
 
-Date of Issue: 31\ :sup:`st` October 2019
+Date of Issue: 30\ :sup:`th` January 2020
 
 .. class:: logo
 
@@ -240,7 +244,7 @@ about Arm’s trademarks.
 Copyright
 ---------
 
-Copyright (c) 2018-2019, Arm Limited and its affiliates.  All rights reserved.
+Copyright (c) 2018-2020, Arm Limited and its affiliates.  All rights reserved.
 
 .. raw:: pdf
 
@@ -352,10 +356,10 @@ Change history
    |           |               |   parameters from ``decimal`` to ``integrals``,  |
    |           |               |   and improve the description of the rules.      |
    +-----------+---------------+--------------------------------------------------+
-   |2019Q4alpha|31st October   |Github preview release with an open source        |
-   |           |2019           |license.                                          |
+   |2019Q4     |30th January   |Github preview release with an open source        |
+   |           |2020           |license.                                          |
    |           |               |                                                  |
-   |           |               |Major changes are:                                |
+   |           |               |Major changes:                                    |
    |           |               |                                                  |
    |           |               |1. New License_, with relative explanation in     |
    |           |               |   `About the license`_.                          |
@@ -363,15 +367,12 @@ Change history
    |           |               |2. New sections on Contributions_, `Trademark     |
    |           |               |   notice`_, and Copyright_.                      |
    |           |               |                                                  |
-   |           |               |Minor chanegs are:                                |
+   |           |               |Minor changes:                                    |
    |           |               |                                                  |
    |           |               |1. The explanation of `RGB Example`_ has gained   |
    |           |               |   item 5, that refers to the rule that renders   |
    |           |               |   the return value as the first input parameter. |
    |           |               |                                                  |
-   |           |               |                                                  |
-   |           |               |No functional changes intended from the previous  |
-   |           |               |release.                                          |
    |           |               |                                                  |
    |           |               |Several changes have been applied to the sources  |
    |           |               |to fix the rendered page produced by github.      |

@@ -92,6 +92,13 @@ styles:
       keepWithNext: false
       spaceAfter: 10
 
+    version:
+      parent: heading
+      fontName: stdBold
+      fontSize: 150%
+      alignment: TA_RIGHT
+      spaceBefore: 20
+
     issued:
         parent: right
         spaceBefore: 20
@@ -121,6 +128,9 @@ styles:
         parent : table
         colWidths: [ 20%, 20%, 20%, 20%, 20% ]
 
+    aapcs64-change-history:
+        parent : table
+        colWidths: [ 10%, 22%, 7%, 60% ]
 
     # vfabia64 styles
     linear-clause:
