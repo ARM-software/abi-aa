@@ -130,7 +130,7 @@ styles:
 
     aapcs64-change-history:
         parent : table
-        colWidths: [ 10%, 22%, 7%, 60% ]
+        colWidths: [ 10%, 22%, 68% ]
 
     # vfabia64 styles
     linear-clause:
