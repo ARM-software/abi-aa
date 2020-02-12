@@ -36,4 +36,4 @@ claims.
 Please report defects in the [Vector Function Application Binary
 Interface Specification for AArch64](vfabia64.rst) to the [issue
 tracker page on
-GitHub](https://github.com/ARM-software/software-standards/issues).
+GitHub](https://github.com/ARM-software/abi-aa/issues).

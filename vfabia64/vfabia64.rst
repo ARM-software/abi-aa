@@ -162,13 +162,13 @@ VLS
 Latest release and defects report
 ---------------------------------
 
-Please check the `Software Standards for the Arm® Architecture
-<https://github.com/ARM-software/software-standards>`_ for the latest
+Please check `Application Binary Interface for the Arm® Architecture
+<https://github.com/ARM-software/abi-aa>`_ for the latest
 release of this document.
 
 Please report defects in this specification to the `issue tracker page
 on GitHub
-<https://github.com/ARM-software/software-standards/issues>`_.
+<https://github.com/ARM-software/abi-aa/issues>`_.
 
 .. raw:: pdf
 
