@@ -8,7 +8,7 @@
 
 Please report defects in the specifications in this folder to the
 [issue tracker page on
-GitHub](https://github.com/ARM-software/software-standards/issues).
+GitHub](https://github.com/ARM-software/abi-aa/issues).
 
 ## Available documents
 

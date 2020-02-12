@@ -40,13 +40,13 @@ Procedure call, function call, calling conventions, data layout
 Latest release and defects report
 ---------------------------------
 
-Please check the `Software Standards for the Arm® Architecture
-<https://github.com/ARM-software/software-standards>`_ for the latest
+Please check `Application Binary Interface for the Arm® Architecture
+<https://github.com/ARM-software/abi-aa>`_ for the latest
 release of this document.
 
 Please report defects in this specification to the `issue tracker page
 on GitHub
-<https://github.com/ARM-software/software-standards/issues>`_.
+<https://github.com/ARM-software/abi-aa/issues>`_.
 
 .. raw:: pdf
 
@@ -224,15 +224,15 @@ This document refers to, or is referred to by, the following documents.
 
 .. class:: refs
 
-+-----------------------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
-| Ref                                                                                     | URL or other reference                             | Title                                                    |
-+=========================================================================================+====================================================+==========================================================+
-| `AAPCS <https://github.com/ARM-software/software-standards/tree/master/abi/aapcs64>`_   | Source for this document                           | Procedure Call Standard for the Arm 64-bit Architecture  |
-+-----------------------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
-| `CPPABI64 <https://developer.arm.com/docs/ihi0059/latest>`_                             | IHI 0059                                           | C++ ABI for the Arm 64-bit Architecture                  |
-+-----------------------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
-| GC++ABI                                                                                 | https://itanium-cxx-abi.github.io/cxx-abi/abi.html | Generic C++ ABI                                          |
-+-----------------------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
++-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
+| Ref                                                                     | URL or other reference                             | Title                                                    |
++=========================================================================+====================================================+==========================================================+
+| `AAPCS <https://github.com/ARM-software/abi-aa/tree/master/aapcs64>`_   | Source for this document                           | Procedure Call Standard for the Arm 64-bit Architecture  |
++-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
+| `CPPABI64 <https://developer.arm.com/docs/ihi0059/latest>`_             | IHI 0059                                           | C++ ABI for the Arm 64-bit Architecture                  |
++-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
+| GC++ABI                                                                 | https://itanium-cxx-abi.github.io/cxx-abi/abi.html | Generic C++ ABI                                          |
++-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 
 
 Terms and Abbreviations
