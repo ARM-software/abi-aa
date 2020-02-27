@@ -1,5 +1,5 @@
 ..
-   Copyright (c) 2018-2020, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2011-2020, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
