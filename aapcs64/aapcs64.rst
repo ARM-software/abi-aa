@@ -205,7 +205,7 @@ Change History
 |            |                    |    Model`_, `APPENDIX Support for Advanced SIMD Extensions`_)    |
 |            |                    |                                                                  |
 |            |                    | 5. Update C++ mangling to reflect existing practice              |
-|            |                    |    (`C++ Mangling`_).                                            |
+|            |                    |    (`APPENDIX C++ Mangling`_).                                   |
 |            |                    |                                                                  |
 |            |                    | Minor changes:                                                   |
 |            |                    |                                                                  |
@@ -296,9 +296,16 @@ SIMD and floating point
    the floating point instruction set, the SIMD instruction set and the
    register set shared by them.
 
+SVE
+   The Arm architecture's Scalable Vector Extension.
+
 T32
    The instruction set named Thumb in the Armv7 architecture; T32 uses
    16-bit and 32-bit instructions.
+
+VG
+   The number of 64-bit “vector granules” in an SVE vector; in other words,
+   the number of bits in an SVE vector register divided by 64.
 
 ILP32
    SysV-like data model where int, long int and pointer are 32-bit
@@ -453,49 +460,59 @@ Table 1, Byte size and byte alignment of fundamental data types shows the fundam
 
 Table 1, Byte size and byte alignment of fundamental data types
 
-+------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
-| Type Class             | Machine Type                    | Byte size  | Natural Alignment (bytes) | Note                                          |
-+========================+=================================+============+===========================+===============================================+
-| Integral               | Unsigned byte                   | 1          | 1                         | Character                                     |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | Signed byte                     | 1          | 1                         |                                               |
-|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-|                        | Unsigned half-word              | 2          | 2                         |                                               |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | Signed half-word                | 2          | 2                         |                                               |
-|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-|                        | Unsigned word                   | 4          | 4                         |                                               |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | Signed word                     | 4          | 4                         |                                               |
-|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-|                        | Unsigned double- word           | 8          | 8                         |                                               |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | Signed double-word              | 8          | 8                         |                                               |
-|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-|                        | Unsigned quad-word              | 16         | 16                        |                                               |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | Signed quad-word                | 16         | 16                        |                                               |
-+------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
-| Floating Point         | Half precision                  | 2          | 2                         | See `Half-precision Floating Point`_.         |
-|                        +---------------------------------+------------+---------------------------+-----------------------------------------------+
-|                        | Single precision                | 4          | 4                         | IEEE 754-2008                                 |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | Double precision                | 8          | 8                         |                                               |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | Quad precision                  | 16         | 16                        |                                               |
-+------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
-| Short vector           | 64-bit vector                   | 8          | 8                         | See `Short Vectors`_                          |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | 128-bit vector                  | 16         | 16                        |                                               |
-+------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
-| Pointer                | 32-bit data pointer **(Beta)**  | 4          | 4                         | See `Pointers`_                               |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | 32-bit code pointer **(Beta)**  | 4          | 4                         |                                               |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | 64-bit data pointer             | 8          | 8                         |                                               |
-|                        +---------------------------------+------------+---------------------------+                                               |
-|                        | 64-bit code pointer             | 8          | 8                         |                                               |
-+------------------------+---------------------------------+------------+---------------------------+-----------------------------------------------+
++------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
+| Type Class             | Machine Type                          | Byte size  | Natural Alignment (bytes) | Note                                          |
++========================+=======================================+============+===========================+===============================================+
+| Integral               | Unsigned byte                         | 1          | 1                         | Character                                     |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | Signed byte                           | 1          | 1                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Unsigned half-word                    | 2          | 2                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | Signed half-word                      | 2          | 2                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Unsigned word                         | 4          | 4                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | Signed word                           | 4          | 4                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Unsigned double- word                 | 8          | 8                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | Signed double-word                    | 8          | 8                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Unsigned quad-word                    | 16         | 16                        |                                               |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | Signed quad-word                      | 16         | 16                        |                                               |
++------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
+| Floating Point         | Half precision                        | 2          | 2                         | See `Half-precision Floating Point`_.         |
+|                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
+|                        | Single precision                      | 4          | 4                         | IEEE 754-2008                                 |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | Double precision                      | 8          | 8                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | Quad precision                        | 16         | 16                        |                                               |
++------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
+| Short vector           | 64-bit vector                         | 8          | 8                         | See `Short Vectors`_                          |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | 128-bit vector                        | 16         | 16                        |                                               |
++------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
+| Scalable Vector        | VG×64-bit vector of 8-bit elements    | VG×8       | 16                        | See `Scalable Vectors`_                       |
+|                        +---------------------------------------+            |                           |                                               |
+|                        | VG×64-bit vector of 16-bit elements   |            |                           |                                               |
+|                        +---------------------------------------+            |                           |                                               |
+|                        | VG×64-bit vector of 32-bit elements   |            |                           |                                               |
+|                        +---------------------------------------+            |                           |                                               |
+|                        | VG×64-bit vector of 64-bit elements   |            |                           |                                               |
++------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
+| Scalable Predicate     | VG×8-bit predicate                    | VG         | 2                         | See `Scalable Predicates`_                    |
++------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
+| Pointer                | 32-bit data pointer **(Beta)**        | 4          | 4                         | See `Pointers`_                               |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | 32-bit code pointer **(Beta)**        | 4          | 4                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | 64-bit data pointer                   | 8          | 8                         |                                               |
+|                        +---------------------------------------+------------+---------------------------+                                               |
+|                        | 64-bit code pointer                   | 8          | 8                         |                                               |
++------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
 
 
 Half-precision Floating Point
@@ -521,6 +538,38 @@ Elements in a short vector are numbered such that the lowest numbered element (e
 
 A language binding may define extended types that map directly onto short vectors. Short vectors are not otherwise created spontaneously (for example because a user has declared an aggregate consisting of eight consecutive byte-sized objects).
 
+Scalable Vectors
+----------------
+
+Like a short vector (see `Short Vectors`_), a scalable vector is a
+machine type that is composed of repeated instances of one fundamental
+integral or floating-point type. The number of bytes in the vector is
+always VG×8, where VG is a runtime value determined by the execution
+environment. VG is an even integer greater than or equal to 2; the ABI
+does not define an upper bound. VG is the same for all scalable vector
+types and scalable predicate types.
+
+Each element of a scalable vector has a zero-based index. When stored
+in memory, the elements are placed in index order, so that element *N*
+comes before element *N*\ +1. The layout of each individual element
+is the same as if it were scalar. When stored in a scalable vector
+register, the least significant bit of element 0 occupies bit 0
+of the corresponding short vector register. Note that the layout of the
+vector in a scalable vector register does not depend on whether the
+system is big- or little-endian.
+
+Scalable Predicates
+-------------------
+
+A scalable predicate is a machine type that is composed of individual bits.
+The number of bits in the predicate is always VG×8, where VG is the same
+value as for scalable vector types (see `Scalable Vectors`_). The number
+of bits in a scalable predicate is therefore equal to the number of bytes
+in a scalable vector.
+
+Each bit of a scalable predicate has a zero-based index. When stored in
+memory, index 0 is placed in the least significant bit of the first byte,
+index 1 is stored in the next significant bit, and so on.
 
 Pointers
 --------
@@ -623,6 +672,46 @@ Homogeneous Short-Vector Aggregates (HVA)
 
 An Homogeneous Short-Vector Aggregate (HVA) is an Homogeneous Aggregate with a Fundamental Data Type that is a Short-Vector type and at most four uniquely addressable members.
 
+Pure Scalable Types (PSTs)
+--------------------------
+
+A type is a Pure Scalable Type if (recursively) it is:
+
+* a Scalable Vector Type;
+
+* a Scalable Predicate Type;
+
+* an array that contains a constant (nonzero) number of elements and whose
+  Base Type is a Pure Scalable Type; or
+
+* an aggregate in which every member is a Pure Scalable Type.
+
+As with Homogeneous Aggregates, these rules apply after data layout is
+completed and without regard to access control or other source language
+restrictions. However, there are several notable differences from
+Homogeneous Aggregates:
+
+* A Pure Scalable Type may contain a mixture of different Fundamental
+  Data Types. For example, an aggregate that contains a scalable vector
+  of 8-bit elements, a scalable predicate, and a scalable vector of
+  16-bit elements is a Pure Scalable Type.
+
+* Alignment and padding do not play a role when determining whether
+  something is a Pure Scalable Type. (In fact, a Pure Scalable Type
+  that contains both predicate types and vector types will often contain
+  padding.)
+
+* Pure Scalable Types are never unions and never contain unions.
+
+.. note:: Composite Types have at least one member and the type of each
+          member is either a Fundamental Data Type or another Composite Type.
+          Since all Fundamental Data Types have nonzero size, it follows
+          that all members of a Composite Type have nonzero size.
+
+          Any language-level members that have zero size must therefore
+          disappear in the language-to-ABI mapping and do not affect
+          whether the containing type is a Pure Scalable Type.
+
 .. raw:: pdf
 
    PageBreak
@@ -635,7 +724,7 @@ The base standard defines a machine-level calling standard for the A64 instructi
 Machine Registers
 -----------------
 
-The Arm 64-bit architecture defines two mandatory register banks: a general-purpose register bank which can be used for scalar integer processing and pointer arithmetic; and a SIMD and Floating-Point register bank.
+The Arm 64-bit architecture defines two mandatory register banks: a general-purpose register bank which can be used for scalar integer processing and pointer arithmetic; and a SIMD and Floating-Point register bank. In addition, the architecture defines an optional set of scalable vector registers that overlap the SIMD and Floating-Point register bank, accompanied by a set of scalable predicate registers.
 
 General-purpose Registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -715,6 +804,40 @@ The FPCR is used to control the behavior of the floating-point unit. It is a glo
 - The exception-control bits (8-12), rounding mode bits (22-23) and flush-to-zero bits (24) may be modified by calls to specific support functions that affect the global state of the application.
 
 - All other bits are reserved and must not be modified. It is not defined whether the bits read as zero or one, or whether they are preserved across a public interface.
+
+Scalable Vector Registers
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Arm 64-bit architecture also defines an optional set of thirty-two
+scalable vector registers, z0-z31. Each register extends the
+corresponding SIMD and Floating-Point register so that it can hold the
+contents of a single Scalable Vector Type (see `Scalable Vectors`_).
+That is, scalable vector register z0 is an extension of SIMD and
+Floating-Point register v0.
+
+z0-z7 are used to pass scalable vector arguments to a subroutine, and to
+return scalable vector results from a function. If a subroutine takes
+at least one argument in scalable vector registers or scalable predicate
+registers, or if it is a function that returns results in such registers,
+it must ensure that the entire contents of z8-z23 are preserved across
+the call. In other cases it need only preserve the low 64 bits of z8-z15,
+as described in `SIMD and Floating-Point Registers`_.
+
+Scalable Predicate Registers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Arm 64-bit architecture defines an optional set of sixteen scalable
+predicate registers p0-p15. These registers are available if and only if
+the scalable vector registers are available (see `Scalable Vector Registers`_).
+Each register can store the contents of a Scalable Predicate Type
+(see `Scalable Predicates`_).
+
+p0-p3 are used to pass scalable predicate arguments to a subroutine and
+to return scalable predicate results from a function. If a subroutine takes
+at least one argument in scalable vector registers or scalable predicate
+registers, or if it is a function that returns results in such registers,
+it must ensure that p4-p15 are preserved across the call. In other cases
+it need not preserve any scalable predicate register contents.
 
 Processes, Memory and the Stack
 -------------------------------
@@ -814,7 +937,7 @@ The A64 branch instructions are unable to reach every destination in the address
 Parameter Passing
 -----------------
 
-The base standard provides for passing arguments in general-purpose registers (r0-r7), SIMD/floating-point registers (v0-v7) and on the stack. For subroutines that take a small number of small parameters, only registers are used.
+The base standard provides for passing arguments in general-purpose registers (r0-r7), SIMD/floating-point registers (v0-v7), scalable vector registers (z0-z7, overlaid on v0-v7), scalable predicate registers (p0-p3), and on the stack. For subroutines that take a small number of small parameters, only registers are used.
 
 Variadic Subroutines
 ^^^^^^^^^^^^^^^^^^^^
@@ -849,9 +972,13 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   |                      |                                                                                          |
   | A.2                  |                                                                                          |
   +----------------------+------------------------------------------------------------------------------------------+
-  |                      | The next stacked argument address (NSAA) is set to the current stack-pointer value (SP). |
+  |                      | The Next Scalable Predicate Register Number (NPRN) is set to zero.                       |
   |                      |                                                                                          |
   | A.3                  |                                                                                          |
+  +----------------------+------------------------------------------------------------------------------------------+
+  |                      | The next stacked argument address (NSAA) is set to the current stack-pointer value (SP). |
+  |                      |                                                                                          |
+  | A.4                  |                                                                                          |
   +----------------------+------------------------------------------------------------------------------------------+
 
 
@@ -860,26 +987,30 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   +---------------------------------------------------------------------------------------------------------------+
   | Stage B – Pre-padding and extension of arguments                                                              |
   +======================+========================================================================================+
+  |                      | If the argument type is a Pure Scalable Type, no change is made at this stage.         |
+  |                      |                                                                                        |
+  | B.1                  |                                                                                        |
+  +----------------------+----------------------------------------------------------------------------------------+
   |                      | If the argument type is a Composite Type whose size cannot be statically determined by |
   |                      | both the caller and the callee, the argument is copied to memory and the argument is   |
-  | B.1                  | replaced by a pointer to the copy. (There are no such types in C/C++ but they exist in |
+  | B.2                  | replaced by a pointer to the copy. (There are no such types in C/C++ but they exist in |
   |                      | other languages or in language extensions).                                            |
   +----------------------+----------------------------------------------------------------------------------------+
   |                      | If the argument type is an HFA or an HVA, then the argument is used unmodified.        |
   |                      |                                                                                        |
-  | B.2                  |                                                                                        |
+  | B.3                  |                                                                                        |
   +----------------------+----------------------------------------------------------------------------------------+
   |                      | If the argument type is a Composite Type that is larger than 16 bytes, then the        |
   |                      | argument is copied to memory allocated by the caller and the argument is replaced by a |
-  | B.3                  | pointer to the copy.                                                                   |
+  | B.4                  | pointer to the copy.                                                                   |
   +----------------------+----------------------------------------------------------------------------------------+
   |                      | If the argument type is a Composite Type then the size of the argument is rounded up   |
   |                      | to the nearest multiple of 8 bytes.                                                    |
-  | B.4                  |                                                                                        |
+  | B.5                  |                                                                                        |
   +----------------------+----------------------------------------------------------------------------------------+
   |                      | If the argument is an alignment adjusted type its value is passed as a copy of the     |
   |                      | actual value. The copy will have an alignment defined as follows.                      |
-  | B.5                  |                                                                                        |
+  | B.6                  |                                                                                        |
   |                      | - For a Fundamental Data Type, the alignment is the natural alignment of that type,    |
   |                      |   after any promotions.                                                                |
   |                      |                                                                                        |
@@ -924,23 +1055,35 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   | C.6                   | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
   |                       | now been allocated.                                                                    |
   +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is a Pure Scalable Type that consists of *NV* Scalable Vector Types    |
+  |                       | and *NP* Scalable Predicate Types, if the argument is named, if NSRN+NV ≤ 8, and if    |
+  |                       | NPRN+NP ≤ 4, then the Scalable Vector Types are allocated in order to                  |
+  | C.7                   | z[NSRN]…z[NSRN+NV-1] inclusive and the Scalable Predicate Types are allocated in order |
+  |                       | to p[NPRN]…p[NPRN+NP-1] inclusive. The NSRN is incremented by NV and the NPRN is       |
+  |                       | incremented by NP. The argument has now been allocated.                                |
+  +-----------------------+----------------------------------------------------------------------------------------+
+  |                       | If the argument is a Pure Scalable Type that has not been allocated by the rules       |
+  |                       | above, then the argument is copied to memory allocated by the caller and the argument  |
+  | C.8                   | is replaced by a pointer to the copy (as for B.4 above). The argument is then          |
+  |                       | allocated according to the rules below.                                                |
+  +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is an Integral or Pointer Type, the size of the argument is less than  |
   |                       | or equal to 8 bytes and the NGRN is less than 8, the argument is copied to the least   |
-  | C.7                   | significant bits in x[NGRN]. The NGRN is incremented by one. The argument has now been |
+  | C.9                   | significant bits in x[NGRN]. The NGRN is incremented by one. The argument has now been |
   |                       | allocated.                                                                             |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument has an alignment of 16 then the NGRN is rounded up to the next even    |
   |                       | number.                                                                                |
-  | C.8                   |                                                                                        |
+  | C.10                  |                                                                                        |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is an Integral Type, the size of the argument is equal to 16 and the   |
   |                       | NGRN is less than 7, the argument is copied to x[NGRN] and x[NGRN+1]. x[NGRN] shall    |
-  | C.9                   | contain the lower addressed double-word of the memory representation of the argument.  |
+  | C.11                  | contain the lower addressed double-word of the memory representation of the argument.  |
   |                       | The NGRN is incremented by two. The argument has now been allocated.                   |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is a Composite Type and the size in double-words of the argument is    |
   |                       | not more than 8 minus NGRN, then the argument is copied into consecutive general-      |
-  | C.10                  | purpose registers, starting at x[NGRN]. The argument is passed as though it had been   |
+  | C.12                  | purpose registers, starting at x[NGRN]. The argument is passed as though it had been   |
   |                       | loaded into the registers from a double-word- aligned address with an appropriate      |
   |                       | sequence of LDR instructions loading consecutive registers from memory (the contents   |
   |                       | of any unused parts of the registers are unspecified by this standard). The NGRN is    |
@@ -948,23 +1091,23 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | The NGRN is set to 8.                                                                  |
   |                       |                                                                                        |
-  | C.11                  |                                                                                        |
+  | C.13                  |                                                                                        |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | The NSAA is rounded up to the larger of 8 or the Natural Alignment of the argument’s   |
   |                       | type.                                                                                  |
-  | C.12                  |                                                                                        |
+  | C.14                  |                                                                                        |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is a composite type then the argument is copied to memory at the       |
   |                       | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
-  | C.13                  | now been allocated.                                                                    |
+  | C.15                  | now been allocated.                                                                    |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the size of the argument is less than 8 bytes then the size of the argument is set  |
   |                       | to 8 bytes. The effect is as if the argument was copied to the least significant bits  |
-  | C.14                  | of a 64-bit register and the remaining bits filled with unspecified values.            |
+  | C.16                  | of a 64-bit register and the remaining bits filled with unspecified values.            |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | The argument is copied to memory at the adjusted NSAA.  The NSAA is incremented by the |
   |                       | size of the argument. The argument has now been allocated.                             |
-  | C.15                  |                                                                                        |
+  | C.17                  |                                                                                        |
   +-----------------------+----------------------------------------------------------------------------------------+
 
 It should be noted that the above algorithm makes provision for languages other than C and C++ in that it provides for passing arrays by value and for passing arguments of dynamic size. The rules are defined in a way that allows the caller to be always able to statically determine the amount of stack space that must be allocated for arguments that are not passed in registers, even if the routine is variadic.
@@ -1393,6 +1536,8 @@ The argument list for a subroutine call is formed by taking the user arguments i
 
 - For unprototyped (i.e. pre-ANSI or K&R C) and variadic functions, in addition to the normal conversions and promotions, arguments of type ``__fp16`` are converted to type ``double``.
 
+- The rules for passing Pure Scalable Types depend on whether the arguments are named. It is an error to pass such types to an unprototyped function.
+
 The argument list is then processed according to the standard rules for procedure calls (see `Parameter Passing`_) or the appropriate variant.
 
 .. raw:: pdf
@@ -1468,10 +1613,74 @@ Table 7: Short vector extended types
 | __Bfloat16x8\_t | bfloat16x8\_t     | half-precison Brain float| 8         |
 +-----------------+-------------------+--------------------------+-----------+
 
-C++ Mangling
-------------
+APPENDIX Support for Scalable Vectors
+=====================================
 
-For C++ mangling purposes the user-friendly names are treated as though the equivalent internal name was specified. Unless the platform ABI specifies otherwise, the types are treated as *vendor extended types*, prefixed by ``u``. For example:
+As an optional extension, the AArch64 architecture supports a number of
+scalable-vector operations. To facilitate accessing these operations
+from C and C++, a number of extended types need to be added to the
+language.
+
+Following the conventions used for adding types to C99, and the
+conventions established in `APPENDIX Support for Advanced SIMD Extensions`_,
+a number of additional types (internal types) are defined
+unconditionally. To facilitate use in applications a header file
+``arm_sve.h`` is defined that maps these internal types onto more
+user-friendly names. These types are listed in Table 8: Scalable
+Vector Types and Scalable Predicate Types. ``__SVBool_t`` is a Scalable
+Predicate Type; the rest are Scalable Vector Types.
+
+For each Scalable Vector Type ``svBASE_t``, ``arm_sve.h`` also defines
+tuples of 2, 3 and 4 Scalable Vector Types called ``svBASEx2_t``,
+``svBASEx3_t`` and ``svBASEx4_t`` respectively. The exact definition
+of these types depends on the implementation, but each ``svBASExN_t``
+must be a Pure Scalable Type that contains *N* members of the same
+Scalable Vector Type as ``svBASE_t``.
+
+The header file ``arm_sve.h`` also defines a number of intrinsic functions
+that can be used with these vector and predicate types. The list of
+intrinsic functions and their specification is beyond the scope of this
+document.
+
+.. class:: table-title
+
+Table 8: Scalable Vector Types and Scalable Predicate Types
+
++---------------------+-----------------------+-------------------------------------------+----------------+
+| Internal type       | ``arm_sve.h`` type    | Base type                                 | Elements       |
++=====================+=======================+===========================================+================+
+| ``__SVInt8_t``      | ``svint8_t``          | signed byte                               | VG×8           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVUint8_t``     | ``svuint8_t``         | unsigned byte                             | VG×8           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVInt16_t``     | ``svint16_t``         | signed half-word                          | VG×4           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVUint16_t``    | ``svuint16_t``        | unsigned half-word                        | VG×4           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVFloat16_t``   | ``svfloat16_t``       | half-precision float                      | VG×4           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVBfloat16_t``  | ``svbfloat16_t``      | half-precision brain float                | VG×4           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVInt32_t``     | ``svint32_t``         | signed word                               | VG×2           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVUint32_t``    | ``svuint32_t``        | unsigned word                             | VG×2           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVFloat32_t``   | ``svfloat32_t``       | single-precision float                    | VG×2           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVInt64_t``     | ``svint64_t``         | signed double-word                        | VG             |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVUint64_t``    | ``svuint64_t``        | unsigned double-word                      | VG             |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVFloat64_t``   | ``svfloat64_t``       | double-precision float                    | VG             |
++---------------------+-----------------------+-------------------------------------------+----------------+
+| ``__SVBool_t``      | ``svbool_t``          | single bit (fully packed into VG bytes)   | VG×8           |
++---------------------+-----------------------+-------------------------------------------+----------------+
+
+
+APPENDIX C++ Mangling
+=====================
+
+For C++ mangling purposes the user-friendly names defined in `APPENDIX Support for Advanced SIMD Extensions`_ and `APPENDIX Support for Scalable Vectors`_ are treated as though the equivalent internal name was specified. Unless the platform ABI specifies otherwise, the types are treated as *vendor extended types*, prefixed by ``u``. For example:
 
 .. code:: c
 
@@ -1490,6 +1699,9 @@ A platform ABI may instead choose to treat the types as normal structure types, 
    _Z1f10__Int8x8_t
 
 instead.
+
+The SVE tuple types are mangled using their ``arm_sve.h`` names
+(``svBASExN_t``).
 
 .. raw:: pdf
 
@@ -1619,6 +1831,10 @@ The algorithm to implement the generic ``va_arg(ap,type)`` macro is then most ea
 ..
 
     *Review note: The above pseudo code does not currently handle composite types that are passed by value, and where a copy is made and reference created to the copy. This will be corrected in a future revision of this standard.*
+
+If ``type`` is a Pure Scalable Type, the pseudo-code above should be used to
+obtain a ``type*``, which should then be dereferenced to get the
+required value.
 
 It is expected that the implementation of the ``va_arg`` macro will be specialized by the compiler for the type, size and alignment of the type. By way of example the following sample code illustrates one possible expansion of ``va_arg(ap,int)`` for the LP64 data model, where register ``x0`` holds a pointer to ``va_list ap``, and the argument is returned in register ``w1``. Further optimizations are possible.
 
