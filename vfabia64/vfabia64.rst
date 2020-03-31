@@ -451,13 +451,14 @@ Modified PCS for vector functions (AAVPCS)
 |SVE          |Z0-Z7               |See AAPCS                    |
 +-------------+--------------------+--------------+--------------+
 
-The AAVPCS is implicit when a ``#pragma omp declare simd`` clause is
-attached to a function definition or declaration. For user-defined
-Advanced SIMD or SVE vector functions, the same behavior can be obtained by
-adding the ``aarch64_vector_pcs`` function attribute to the function
-definition or declaration as in the following examples. Note that to
-ensure the compiler produces ABI consistent code, the attribute must be
-specified in every declaration and definition of the function.
+The AAVPCS is implicit when a ``#pragma omp declare simd`` clause is attached
+to a function definition or declaration. For user-defined Advanced SIMD vector
+functions, the same behavior can be obtained by adding the
+``aarch64_vector_pcs`` function attribute to the function definition or
+declaration as in the following examples. For SVE vector functions this is not
+required as AAPCS and AAVPCS are equivalent. Note that to ensure the compiler
+produces ABI consistent code, the attribute must be specified in every
+declaration and definition of the function.
 
 .. code-block:: c
 
