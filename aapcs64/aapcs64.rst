@@ -285,6 +285,9 @@ Q-o-I
    by systems conforming to it.  Q-o-I is often used to describe the
    tool-chain-specific means by which a standard requirement is met.
 
+MTE
+   The Arm architecture's Memory Tagging Extension.
+
 SIMD
    Single Instruction Multiple Data – A term denoting or qualifying:
    (a) processing several data items in parallel under the control of one
@@ -890,6 +893,8 @@ At all times the following basic constraints must hold:
 - Stack-limit < SP <= stack-base. The stack pointer must lie within the extent of the stack.
 
 - A process may only access (for reading or writing) the closed interval of the entire stack delimited by [SP, stack-base – 1].
+
+- If MTE is enabled, then the tag stored in the stack pointer must match the tag set on the range SP - Stack-limit (i.e. the unallocated portion of the stack).
 
 Additionally, at any point at which memory is accessed via SP, the hardware requires that
 
