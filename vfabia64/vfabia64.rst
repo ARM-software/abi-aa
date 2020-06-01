@@ -670,7 +670,7 @@ content):
    [msb]    ... | X    | X    | X    | A[1] | X    | X    | X    | A[0] [lsb]  // unpacked 0, 4, 8, ...
 
 Complex types
-^^^^^^^^^^^^^
+-------------
 
 In this specification, the term `complex type` will be used to
 refer to  the following language-dependent types:
