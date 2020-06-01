@@ -676,11 +676,11 @@ In this specification, the term `complex type` will be used to
 refer to  the following language-dependent types:
 
 1. For C/C++, any of the complex types as defined in the C99 and C11
-  standards. For more information, see `C complex numbers
-  <https://en.cppreference.com/w/c/numeric/complex>`_.
+   standards. For more information, see `C complex numbers
+   <https://en.cppreference.com/w/c/numeric/complex>`_.
 2. For C++, any of the complex types as defined in the header file
-  `<complex>`. For more information, see `C++ complex numbers
-  <https://en.cppreference.com/w/cpp/numeric/complex>`_.
+   `<complex>`. For more information, see `C++ complex numbers
+   <https://en.cppreference.com/w/cpp/numeric/complex>`_.
 3. For Fortran, any of the types defined using the `COMPLEX`
    statement.
 
