@@ -1481,7 +1481,7 @@ To access a field, ``F``, of width ``W`` and container width ``C`` at the bit-ad
 
 - Big-endian, set ``R = (R << (Q – C +(BA MOD C))) >> (Q – W)``.
 
-See `Volatile bit-fields--preserving number and width of container accesses`_ for volatile bit-fields.
+See `Volatile bit-fields -- preserving number and width of container accesses`_ for volatile bit-fields.
 
 
 Over-sized bit-fields
@@ -1515,22 +1515,27 @@ When a non-bit-field member follows a bit-field it is placed at the lowest accep
     When laying out fundamental data types it is possible to consider them all to be bit-fields with a width equal to the container size. The rules in `Bit-fields no larger than their container`_ can then be applied to determine the precise address within a structure.
 
 
-Volatile bit-fields--preserving number and width of container accesses
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Volatile bit-fields -- preserving number and width of container accesses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When a volatile bit-field is read, its container must be read exactly once using the access width appropriate to the type of the container.
+When a volatile bit-field is read, and its container does not overlap with any non-bit-field member or any zero length bit-field member, its container must be read exactly once using the access width appropriate to the type of the container.
 
-When a volatile bit-field is written, its container must be read exactly once and written exactly once using the access width appropriate to the type of the container. The two accesses are not atomic.
+When a volatile bit-field is written, and its container does not overlap with any non-bit-field member or any zero length bit-field member, its container must be read exactly once and written exactly once using the access width appropriate to the type of the container. The two accesses are not atomic.
+
+.. note::
+  This ABI does not place any restrictions on the access widths of bit-fields where the container overlaps with a non-bit-field member or where the container overlaps with any zero length bit-field placed between two other bit-fields. This is because the C/C++ memory model defines these as being separate memory locations, which can be accessed by two threads simultaneously. For this reason, compilers must be permitted to use a narrower memory access width (including splitting the access into multiple instructions) to avoid writing to a different memory location. For example, in :c:`struct S { int a:24; char b; };` a write to :sym:`a` must not also write to the location occupied by :sym:`b`, this requires at least two memory accesses in all current Arm architectures. In the same way, in :c:`struct S { int a:24; int:0; int b:8; };`, writes to :sym:`a` or :sym:`b` must not overwrite each other.
 
 Multiple accesses to the same volatile bit-field, or to additional volatile bit-fields within the same container may not be merged. For example, an increment of a volatile bit-field must always be implemented as two reads and a write.
 
 .. note::
+   Note the volatile access rules apply even when the width and alignment of the bit-field imply that the access could be achieved more efficiently using a narrower type. For a write operation the read must always occur even if the entire contents of the container will be replaced.
 
-    Note the volatile access rules apply even when the width and alignment of the bit-field imply that the access could be achieved more efficiently using a narrower type. For a write operation the read must always occur even if the entire contents of the container will be replaced.
+If the containers of two volatile bit-fields overlap then access to one bit-field will cause an access to the other. For example, in :c:`struct S {volatile int a:8; volatile char b:2};` an access to :sym:`a` will also cause an access to :sym:`b`, but not vice-versa.
 
-If the containers of two volatile bit-fields overlap then access to one bit-field will cause an access to the other. For example, in ``struct S {volatile int a:8; volatile char b:2};`` an access to ``a`` will also cause an access to ``b``, but not vice-versa.
+If the container of a non-volatile bit-field overlaps a volatile bit-field then it is undefined whether access to the non-volatile field will cause the volatile field to be accessed.
 
-If the container of a non-volatile bit-field overlaps a volatile bit-field then it is undefined whether access to the non- volatile field will cause the volatile field to be accessed.
+
+.. _aapcs64-section7-2:
 
 Argument Passing Conventions
 ----------------------------
