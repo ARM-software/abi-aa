@@ -1524,19 +1524,17 @@ When a volatile bit-field is written, and its container does not overlap with an
 
 .. note::
 
-  This ABI does not place any restrictions on the access widths of bit-fields where the container overlaps with a non-bit-field member or where the container overlaps with any zero length bit-field placed between two other bit-fields. This is because the C/C++ memory model defines these as being separate memory locations, which can be accessed by two threads simultaneously. For this reason, compilers must be permitted to use a narrower memory access width (including splitting the access into multiple instructions) to avoid writing to a different memory location. For example, in ``struct S { int a:24; char b; };`` a write to ``a`` must not also write to the location occupied by ``b``, this requires at least two memory accesses in all current Arm architectures. In the same way, in ``struct S { int a:24; int:0; int b:8; };``, writes to ``a`` or ``b`` must not overwrite each other.
+    This ABI does not place any restrictions on the access widths of bit-fields where the container overlaps with a non-bit-field member or where the container overlaps with any zero length bit-field placed between two other bit-fields. This is because the C/C++ memory model defines these as being separate memory locations, which can be accessed by two threads simultaneously. For this reason, compilers must be permitted to use a narrower memory access width (including splitting the access into multiple instructions) to avoid writing to a different memory location. For example, in ``struct S { int a:24; char b; };`` a write to ``a`` must not also write to the location occupied by ``b``, this requires at least two memory accesses in all current Arm architectures. In the same way, in ``struct S { int a:24; int:0; int b:8; };``, writes to ``a`` or ``b`` must not overwrite each other.
 
 Multiple accesses to the same volatile bit-field, or to additional volatile bit-fields within the same container may not be merged. For example, an increment of a volatile bit-field must always be implemented as two reads and a write.
 
 .. note::
 
-   Note the volatile access rules apply even when the width and alignment of the bit-field imply that the access could be achieved more efficiently using a narrower type. For a write operation the read must always occur even if the entire contents of the container will be replaced.
+    Note the volatile access rules apply even when the width and alignment of the bit-field imply that the access could be achieved more efficiently using a narrower type. For a write operation the read must always occur even if the entire contents of the container will be replaced.
 
 If the containers of two volatile bit-fields overlap then access to one bit-field will cause an access to the other. For example, in ``struct S {volatile int a:8; volatile char b:2};`` an access to ``a`` will also cause an access to ``b``, but not vice-versa.
 
 If the container of a non-volatile bit-field overlaps a volatile bit-field then it is undefined whether access to the non-volatile field will cause the volatile field to be accessed.
-
-
 
 Argument Passing Conventions
 ----------------------------
