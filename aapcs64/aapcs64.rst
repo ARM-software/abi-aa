@@ -8,11 +8,11 @@ Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
 
 .. class:: version
 
-2019Q4
+2020Q2
 
 .. class:: issued
 
-Date of Issue: 30\ :sup:`th` January 2020
+Date of Issue: 1\ :sup:`st` July 2020
 
 .. class:: logo
 
@@ -216,11 +216,15 @@ Change History
 |            |                    | 2. Several formatting changes have been applied to the sources to|
 |            |                    |    fix the rendered page produced by github.                     |
 +------------+--------------------+------------------------------------------------------------------+
+| 2020Q2     | 1st July 2020      | Add requirements for stack space with MTE tags.                  |
+|            |                    | Extend the AAPCS64 to support SVE types and registers.           |
+|            |                    | Conform aapcs64 volatile bit-fields rules to C/C++.              |
++------------+--------------------+------------------------------------------------------------------+
 
 References
-----------
+^^^^^^^^^^
 
-This document refers to, or is referred to by, the following documents.
+This document refers to, or is referred to by, the following documents:
 
 .. class:: refs
 
@@ -238,8 +242,8 @@ This document refers to, or is referred to by, the following documents.
 Terms and Abbreviations
 -----------------------
 
-The ABI for the Arm 64-bit Architecture uses the following terms and abbreviations.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This document uses the following abbreviations.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A32
    The instruction set named Arm in the Armv7 architecture; A32 uses 32-bit
@@ -319,8 +323,8 @@ LP64
 LLP64
    Windows-like data model where int and long int are 32-bit, but long long int and pointer are 64-bit.
 
-This document uses the following terms and abbreviations.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This document uses the following terms.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Routine, subroutine
    A fragment of program to which control can be transferred that, on completing its task, returns control to its caller at an instruction following the call. Routine is used for clarity where there are nested calls: a routine is the caller and a subroutine is the callee.

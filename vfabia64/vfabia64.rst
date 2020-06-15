@@ -8,11 +8,11 @@ Vector Function Application Binary Interface Specification for AArch64
 
 .. class:: version
 
-2019Q4
+2020Q2
 
 .. class:: issued
 
-Date of Issue: 30\ :sup:`th` January 2020
+Date of Issue: 1\ :sup:`st` July 2020
 
 .. class:: logo
 
@@ -396,6 +396,11 @@ Change history
    |           |               |   integral reference parameters`_, `AArch64      |
    |           |               |   Variant Traits`_.                              |
    |           |               |                                                  |
+   +-----------+---------------+--------------------------------------------------+
+   |2020Q2     |1st July 2020  | Clarify whether `aarch64_vector_pcs` is needed   |
+   |           |               | for SVE.                                         |
+   |           |               |                                                  |
+   |           |               | Clarify the definition of complex type.          |
    +-----------+---------------+--------------------------------------------------+
 
 .. raw:: pdf
