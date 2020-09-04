@@ -220,6 +220,8 @@ Change History
 |            |                    | Extend the AAPCS64 to support SVE types and registers.           |
 |            |                    | Conform aapcs64 volatile bit-fields rules to C/C++.              |
 +------------+--------------------+------------------------------------------------------------------+
+| 2020Q3     | 1st October 2020   |                                                                  |
++------------+--------------------+------------------------------------------------------------------+
 
 References
 ^^^^^^^^^^
@@ -808,7 +810,9 @@ The FPSR is a status register that holds the cumulative exception bits of the fl
 
 The FPCR is used to control the behavior of the floating-point unit. It is a global register with the following properties.
 
-- The exception-control bits (8-12), rounding mode bits (22-23) and flush-to-zero bits (24) may be modified by calls to specific support functions that affect the global state of the application.
+- The exception-control bits (8-12), rounding mode bits (22-23), flush-to-zero bits (24), and the AH and FIZ bits (0-1) may be modified by calls to specific support functions that affect the global state of the application.
+
+- The NEP bit (bit 2) must be zero on entry to and return from a public interface.
 
 - All other bits are reserved and must not be modified. It is not defined whether the bits read as zero or one, or whether they are preserved across a public interface.
 
