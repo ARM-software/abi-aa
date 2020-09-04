@@ -61,6 +61,9 @@ styles:
         commands: []
         colWidths: [ 20%, 80% ]
 
+    clear-table:
+        commands: []
+
     bullet-list:
         parent: bodytext
         commands: []
@@ -112,23 +115,23 @@ styles:
         spaceBefore: 100
 
     # aapcs styles
-    refs:
+    aapcs64-refs:
         parent : table
         colWidths: [ 12%, 44%, 44% ]
 
-    table-2:
+    aapcs64-table-2:
         parent : table
         colWidths: [ 15%, 15%, 70% ]
 
-    stage:
+    aapcs64-stage:
         parent : table
         colWidths: [ 10%, 90% ]
 
-    table-3:
+    aapcs64-table-3:
         parent : table
         colWidths: [ 28%, 36%, 36% ]
 
-    table-4:
+    aapcs64-table-4:
         parent : table
         colWidths: [ 20%, 20%, 20%, 20%, 20% ]
 
@@ -161,3 +164,16 @@ styles:
     masked:
         parent : table
         colWidths: [ 48%, 13%, 13%, 13%, 13% ]
+
+    # addenda32 styles
+    addenda32-change-history:
+        parent : table
+        colWidths: [ 10%, 10%, 22%, 58% ]
+
+    addenda32-table-1:
+        parent : table
+        colWidths: [ 31%, 8%, 12%, 10%, 39% ]
+
+    addenda32-table-2:
+        parent : table
+        colWidths: [ 16%, 10%, 20%, 54% ]
