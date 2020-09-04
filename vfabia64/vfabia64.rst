@@ -6,24 +6,7 @@
 Vector Function Application Binary Interface Specification for AArch64
 **********************************************************************
 
-.. class:: version
-
-2020Q2
-
-.. class:: issued
-
-Date of Issue: 1\ :sup:`st` July 2020
-
-.. class:: logo
-
-.. image:: ../Arm_logo_blue_150MN.png
-
-.. section-numbering::
-
-.. raw:: pdf
-
-   PageBreak oneColumn
-
+.. include:: ../common/cover-common.rst
 
 Preamble
 ========
@@ -62,6 +45,157 @@ vector functions with a compiler.
 
 Keywords
 --------
+
+vector functions, procedure call standard, SVE, SIMD
+
+.. include:: ../common/preamble-common.rst
+
+.. raw:: pdf
+
+   PageBreak
+
+.. contents::
+   :depth: 3
+
+.. raw:: pdf
+
+   PageBreak
+
+About this document
+===================
+
+Change control
+--------------
+
+Current status and anticipated changes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. include:: ../common/about-common.rst
+
+Unless otherwise indicated, all content in this document is at the
+**Release** quality level.
+
+
+Change history
+^^^^^^^^^^^^^^
+
+.. table::
+
+   +-----------+---------------+--------------------------------------------------+
+   |Issue      |     Date      |                      Change                      |
+   +===========+===============+==================================================+
+   |2Q2018     |26th June 2018 |First public release.                             |
+   +-----------+---------------+--------------------------------------------------+
+   |2019Q1     |29th March 2019|Fix broken link in License                        |
+   |           |               |section. Fix parameter                            |
+   |           |               |numbering for linear steps in                     |
+   |           |               |`Vector function name mangling`_. Clarify the     |
+   |           |               |behavior for structures like ``struct { int8_t R, |
+   |           |               |G, B; };`` in                                     |
+   |           |               |`Parameter and return value mapping`_,            |
+   |           |               |and relative `RGB Example`_.                      |
+   +-----------+---------------+--------------------------------------------------+
+   |2019Q1.1   |30th April 2019|Minor clarification on the definition of          |
+   |           |               |`SVE unpacked vector`_. Refer to                  |
+   |           |               |the original AAPCS and list the registers that are|
+   |           |               |call-preserved and call-clobbered in the base     |
+   |           |               |convention (`Vector Procedure Call Standard`_,    |
+   |           |               |no functional                                     |
+   |           |               |change). Add chapter on                           |
+   |           |               |`User defined vector functions`_ via OpenMP 5.0.  |
+   +-----------+---------------+--------------------------------------------------+
+   |2019Q2     |30th June 2019 |Fix the use of ``declare variant`` in             |
+   |           |               |`User defined vector functions`_ via OpenMP 5.0.  |
+   |           |               |                                                  |
+   |           |               |Add section on `Dynamic linking for AAVPCS`_ with |
+   |           |               |new requirement for ELF platforms that support    |
+   |           |               |dynamic linking.                                  |
+   |           |               |                                                  |
+   |           |               |Fix mangled name for function ``bar`` in          |
+   |           |               |`Example on Complex Masking`_.                    |
+   |           |               |                                                  |
+   |           |               |Non functional changes:                           |
+   |           |               |                                                  |
+   |           |               |1. Split the table on integral value and pointers |
+   |           |               |   in the                                         |
+   |           |               |   `Linear parameters examples`_ into two         |
+   |           |               |   separate tables,                               |
+   |           |               |   `Linear clause for integral parameters`_ and   |
+   |           |               |   `Linear clause for pointer parameters`_.       |
+   |           |               |                                                  |
+   |           |               |2. Extend the information of                      |
+   |           |               |   `Linear clause for integral parameters`_,      |
+   |           |               |   `Linear clause for pointer parameters`_ and    |
+   |           |               |   `Linear clause for integral reference          |
+   |           |               |   parameters` in the section                     |
+   |           |               |   on the `Linear parameters examples`_, to       |
+   |           |               |   include the mapping to the token of the mangled|
+   |           |               |   name and specify the cases in which the size of|
+   |           |               |   the underlying data type must be used as       |
+   |           |               |   multiplier for the ``step``.                   |
+   |           |               |                                                  |
+   |           |               |3. In the section on the `Vector function name    |
+   |           |               |   mangling`_, change the                         |
+   |           |               |   type of numbers used in the token of the linear|
+   |           |               |   parameters from ``decimal`` to ``integrals``,  |
+   |           |               |   and improve the description of the rules.      |
+   +-----------+---------------+--------------------------------------------------+
+   |2019Q4     |30th January   |Github preview release with an open source        |
+   |           |2020           |license.                                          |
+   |           |               |                                                  |
+   |           |               |Major changes:                                    |
+   |           |               |                                                  |
+   |           |               |1. New License, with relative explanation in      |
+   |           |               |   `About the license`_.                          |
+   |           |               |                                                  |
+   |           |               |2. New sections on Contributions_, `Trademark     |
+   |           |               |   notice`_, and Copyright_.                      |
+   |           |               |                                                  |
+   |           |               |Minor changes:                                    |
+   |           |               |                                                  |
+   |           |               |1. The explanation of `RGB Example`_ has gained   |
+   |           |               |   item 5, that refers to the rule that renders   |
+   |           |               |   the return value as the first input parameter. |
+   |           |               |                                                  |
+   |           |               |                                                  |
+   |           |               |Several changes have been applied to the sources  |
+   |           |               |to fix the rendered page produced by github.      |
+   |           |               |                                                  |
+   |           |               |In particular:                                    |
+   |           |               |                                                  |
+   |           |               |1. The following sections have been renamed to    |
+   |           |               |   make the implicit link associated to them      |
+   |           |               |   unique: `Vector Length (Advanced SIMD)`_,      |
+   |           |               |   `Parameter Mapping (Advanced SIMD)`_,          |
+   |           |               |   `Vector Length (SVE)`_,                        |
+   |           |               |   `Parameter Mapping (SVE)`_                     |
+   |           |               |                                                  |
+   |           |               |2. The following sections have been added to be   |
+   |           |               |   able to cross-reference tables and code        |
+   |           |               |   examples that cannot be referenced using       |
+   |           |               |   standard rST markup: `AAVPCS Table`_, `Name    |
+   |           |               |   mangling function`_, `Linear clause for        |
+   |           |               |   integral parameters`_, `Linear clause for      |
+   |           |               |   pointer parameters`_, `Linear clause for       |
+   |           |               |   integral reference parameters`_, `AArch64      |
+   |           |               |   Variant Traits`_.                              |
+   |           |               |                                                  |
+   +-----------+---------------+--------------------------------------------------+
+   |2020Q2     |1st July 2020  | Clarify whether `aarch64_vector_pcs` is needed   |
+   |           |               | for SVE.                                         |
+   |           |               |                                                  |
+   |           |               | Clarify the definition of complex type.          |
+   +-----------+---------------+--------------------------------------------------+
+
+.. raw:: pdf
+
+   PageBreak
+
+Terms and Abbreviations
+-----------------------
+
+This document uses the following abbreviations.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 SVE
   Scalable Vector Extension
@@ -158,250 +292,6 @@ VLS
 
 ``WDS(f)``
   Widest Data Size of ``f``
-
-Latest release and defects report
----------------------------------
-
-Please check `Application Binary Interface for the Arm® Architecture
-<https://github.com/ARM-software/abi-aa>`_ for the latest
-release of this document.
-
-Please report defects in this specification to the `issue tracker page
-on GitHub
-<https://github.com/ARM-software/abi-aa/issues>`_.
-
-.. raw:: pdf
-
-   PageBreak
-
-License
--------
-
-This work is licensed under the Creative Commons
-Attribution-ShareAlike 4.0 International License. To view a copy of
-this license, visit http://creativecommons.org/licenses/by-sa/4.0/ or
-send a letter to Creative Commons, PO Box 1866, Mountain View, CA
-94042, USA.
-
-Grant of Patent License. Subject to the terms and conditions of this
-license (both the Public License and this Patent License), each
-Licensor hereby grants to You a perpetual, worldwide, non-exclusive,
-no-charge, royalty-free, irrevocable (except as stated in this
-section) patent license to make, have made, use, offer to sell, sell,
-import, and otherwise transfer the Licensed Material, where such
-license applies only to those patent claims licensable by such
-Licensor that are necessarily infringed by their contribution(s) alone
-or by combination of their contribution(s) with the Licensed Material
-to which such contribution(s) was submitted. If You institute patent
-litigation against any entity (including a cross-claim or counterclaim
-in a lawsuit) alleging that the Licensed Material or a contribution
-incorporated within the Licensed Material constitutes direct or
-contributory patent infringement, then any licenses granted to You
-under this license for that Licensed Material shall terminate as of
-the date such litigation is filed.
-
-About the license
------------------
-
-As identified more fully in the License_ section, this project
-is licensed under CC-BY-SA-4.0 along with an additional patent
-license.  The language in the additional patent license is largely
-identical to that in Apache-2.0 (specifically, Section 3 of Apache-2.0
-as reflected at https://www.apache.org/licenses/LICENSE-2.0) with two
-exceptions.
-
-First, several changes were made related to the defined terms so as to
-reflect the fact that such defined terms need to align with the
-terminology in CC-BY-SA-4.0 rather than Apache-2.0 (e.g., changing
-“Work” to “Licensed Material”).
-
-Second, the defensive termination clause was changed such that the
-scope of defensive termination applies to “any licenses granted to
-You” (rather than “any patent licenses granted to You”).  This change
-is intended to help maintain a healthy ecosystem by providing
-additional protection to the community against patent litigation
-claims.
-
-Contributions
--------------
-
-Contributions to this project are licensed under an inbound=outbound
-model such that any such contributions are licensed by the contributor
-under the same terms as those in the LICENSE file.
-
-Trademark notice
-----------------
-
-The text of and illustrations in this document are licensed by Arm
-under a Creative Commons Attribution–Share Alike 4.0 International
-license ("CC-BY-SA-4.0”), with an additional clause on patents.
-The Arm trademarks featured here are registered trademarks or
-trademarks of Arm Limited (or its subsidiaries) in the US and/or
-elsewhere. All rights reserved. Please visit
-https://www.arm.com/company/policies/trademarks for more information
-about Arm’s trademarks.
-
-Copyright
----------
-
-Copyright (c) 2018-2020, Arm Limited and its affiliates.  All rights reserved.
-
-.. raw:: pdf
-
-   PageBreak
-
-.. contents::
-   :depth: 3
-
-.. raw:: pdf
-
-   PageBreak
-
-About this document
-===================
-
-Change control
---------------
-
-Current status and anticipated changes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The following support level definitions are used by the Arm ABI specifications:
-
-**Release**
-   Arm considers this specification to have enough implementations, which have
-   received sufficient testing, to verify that it is correct. The details of these
-   criteria are dependent on the scale and complexity of the change over previous
-   versions: small, simple changes might only require one implementation, but more
-   complex changes require multiple independent implementations, which have been
-   rigorously tested for cross-compatibility. Arm anticipates that future changes
-   to this specification will be limited to typographical corrections,
-   clarifications and compatible extensions.
-
-**Beta**
-   Arm considers this specification to be complete, but existing
-   implementations do not meet the requirements for confidence in its release
-   quality. Arm may need to make incompatible changes if issues emerge from its
-   implementation.
-
-**Alpha**
-   The content of this specification is a draft, and Arm considers the
-   likelihood of future incompatible changes to be significant.
-
-Unless otherwise indicated, all content in this document is at the
-**Release** quality level.
-
-
-Change history
-^^^^^^^^^^^^^^
-
-.. table::
-
-   +-----------+---------------+--------------------------------------------------+
-   |Issue      |     Date      |                      Change                      |
-   +===========+===============+==================================================+
-   |2Q2018     |26th June 2018 |First public release.                             |
-   +-----------+---------------+--------------------------------------------------+
-   |2019Q1     |29th March 2019|Fix broken link in License_                       |
-   |           |               |section. Fix parameter                            |
-   |           |               |numbering for linear steps in                     |
-   |           |               |`Vector function name mangling`_. Clarify the     |
-   |           |               |behavior for structures like ``struct { int8_t R, |
-   |           |               |G, B; };`` in                                     |
-   |           |               |`Parameter and return value mapping`_,            |
-   |           |               |and relative `RGB Example`_.                      |
-   +-----------+---------------+--------------------------------------------------+
-   |2019Q1.1   |30th April 2019|Minor clarification on the definition of          |
-   |           |               |`SVE unpacked vector`_. Refer to                  |
-   |           |               |the original AAPCS and list the registers that are|
-   |           |               |call-preserved and call-clobbered in the base     |
-   |           |               |convention (`Vector Procedure Call Standard`_,    |
-   |           |               |no functional                                     |
-   |           |               |change). Add chapter on                           |
-   |           |               |`User defined vector functions`_ via OpenMP 5.0.  |
-   +-----------+---------------+--------------------------------------------------+
-   |2019Q2     |30th June 2019 |Fix the use of ``declare variant`` in             |
-   |           |               |`User defined vector functions`_ via OpenMP 5.0.  |
-   |           |               |                                                  |
-   |           |               |Add section on `Dynamic linking for AAVPCS`_ with |
-   |           |               |new requirement for ELF platforms that support    |
-   |           |               |dynamic linking.                                  |
-   |           |               |                                                  |
-   |           |               |Fix mangled name for function ``bar`` in          |
-   |           |               |`Example on Complex Masking`_.                    |
-   |           |               |                                                  |
-   |           |               |Non functional changes:                           |
-   |           |               |                                                  |
-   |           |               |1. Split the table on integral value and pointers |
-   |           |               |   in the                                         |
-   |           |               |   `Linear parameters examples`_ into two         |
-   |           |               |   separate tables,                               |
-   |           |               |   `Linear clause for integral parameters`_ and   |
-   |           |               |   `Linear clause for pointer parameters`_.       |
-   |           |               |                                                  |
-   |           |               |2. Extend the information of                      |
-   |           |               |   `Linear clause for integral parameters`_,      |
-   |           |               |   `Linear clause for pointer parameters`_ and    |
-   |           |               |   `Linear clause for integral reference          |
-   |           |               |   parameters` in the section                     |
-   |           |               |   on the `Linear parameters examples`_, to       |
-   |           |               |   include the mapping to the token of the mangled|
-   |           |               |   name and specify the cases in which the size of|
-   |           |               |   the underlying data type must be used as       |
-   |           |               |   multiplier for the ``step``.                   |
-   |           |               |                                                  |
-   |           |               |3. In the section on the `Vector function name    |
-   |           |               |   mangling`_, change the                         |
-   |           |               |   type of numbers used in the token of the linear|
-   |           |               |   parameters from ``decimal`` to ``integrals``,  |
-   |           |               |   and improve the description of the rules.      |
-   +-----------+---------------+--------------------------------------------------+
-   |2019Q4     |30th January   |Github preview release with an open source        |
-   |           |2020           |license.                                          |
-   |           |               |                                                  |
-   |           |               |Major changes:                                    |
-   |           |               |                                                  |
-   |           |               |1. New License_, with relative explanation in     |
-   |           |               |   `About the license`_.                          |
-   |           |               |                                                  |
-   |           |               |2. New sections on Contributions_, `Trademark     |
-   |           |               |   notice`_, and Copyright_.                      |
-   |           |               |                                                  |
-   |           |               |Minor changes:                                    |
-   |           |               |                                                  |
-   |           |               |1. The explanation of `RGB Example`_ has gained   |
-   |           |               |   item 5, that refers to the rule that renders   |
-   |           |               |   the return value as the first input parameter. |
-   |           |               |                                                  |
-   |           |               |                                                  |
-   |           |               |Several changes have been applied to the sources  |
-   |           |               |to fix the rendered page produced by github.      |
-   |           |               |                                                  |
-   |           |               |In particular:                                    |
-   |           |               |                                                  |
-   |           |               |1. The following sections have been renamed to    |
-   |           |               |   make the implicit link associated to them      |
-   |           |               |   unique: `Vector Length (Advanced SIMD)`_,      |
-   |           |               |   `Parameter Mapping (Advanced SIMD)`_,          |
-   |           |               |   `Vector Length (SVE)`_,                        |
-   |           |               |   `Parameter Mapping (SVE)`_                     |
-   |           |               |                                                  |
-   |           |               |2. The following sections have been added to be   |
-   |           |               |   able to cross-reference tables and code        |
-   |           |               |   examples that cannot be referenced using       |
-   |           |               |   standard rST markup: `AAVPCS Table`_, `Name    |
-   |           |               |   mangling function`_, `Linear clause for        |
-   |           |               |   integral parameters`_, `Linear clause for      |
-   |           |               |   pointer parameters`_, `Linear clause for       |
-   |           |               |   integral reference parameters`_, `AArch64      |
-   |           |               |   Variant Traits`_.                              |
-   |           |               |                                                  |
-   +-----------+---------------+--------------------------------------------------+
-   |2020Q2     |1st July 2020  | Clarify whether `aarch64_vector_pcs` is needed   |
-   |           |               | for SVE.                                         |
-   |           |               |                                                  |
-   |           |               | Clarify the definition of complex type.          |
-   +-----------+---------------+--------------------------------------------------+
 
 .. raw:: pdf
 
