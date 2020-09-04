@@ -226,7 +226,7 @@ References
 
 This document refers to, or is referred to by, the following documents:
 
-.. class:: refs
+.. class:: aapcs64-refs
 
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 | Ref                                                                     | URL or other reference                             | Title                                                    |
@@ -242,8 +242,8 @@ This document refers to, or is referred to by, the following documents:
 Terms and Abbreviations
 -----------------------
 
-This document uses the following abbreviations.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This document uses the following abbreviations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A32
    The instruction set named Arm in the Armv7 architecture; A32 uses 32-bit
@@ -742,7 +742,7 @@ There are thirty-one, 64-bit, general-purpose (integer) registers visible to the
 
 Table 2, General purpose registers and AAPCS64 usage
 
-.. class:: table-2
+.. class:: aapcs64-table-2
 
    +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
    | Register  | Special  | Role in the procedure call standard                                                                                                                 |
@@ -1030,7 +1030,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   +----------------------+----------------------------------------------------------------------------------------+
 
 
-.. class:: stage
+.. class:: aapcs64-stage
 
   +-----------------------+----------------------------------------------------------------------------------------+
   | Stage C – Assignment of arguments to registers and stack                                                       |
@@ -1204,7 +1204,7 @@ The mapping of C arithmetic types to Fundamental Data Types is shown in Table 3,
 
 Table 3, Mapping of C & C++ built-in data types
 
-.. class:: table-3
+.. class:: aapcs64-table-3
 
 +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
 | C/C++ Type                   | Machine Type                            | Notes                                                                  |
@@ -1294,7 +1294,7 @@ A C++ reference type is implemented as a data pointer to the type.
 
 Table 4, C/C++ type variants by data model
 
-.. class:: table-4
+.. class:: aapcs64-table-4
 
 +---------------------+----------------------------------------------------------------------------------------------------+------------------------------+
 | C/C++ Type          | Machine Type                                                                                       | Notes                        |
