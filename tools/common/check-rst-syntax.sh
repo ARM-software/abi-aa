@@ -5,6 +5,7 @@ ABI_ROOT=${CURR_DIR}/../..
 
 # 32-bit
 rstcheck --ignore-language=c,cpp ${ABI_ROOT}/addenda32/addenda32.rst
+rstcheck --ignore-language=c,cpp ${ABI_ROOT}/clibabi32/clibabi32.rst
 rstcheck --ignore-language=c,cpp ${ABI_ROOT}/ehabi32/ehabi32.rst
 
 # 64-bit
