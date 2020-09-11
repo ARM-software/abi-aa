@@ -132,6 +132,23 @@ styles:
         parent : table
         colWidths: [ 10%, 22%, 68% ]
 
+    # ehabi32 styles
+    ehabi32-refs
+        parent : table
+        colWidths: [ 12%, 40%, 48% ]
+    
+    ehabi32-unwind-behaviour
+        parent : table
+        colWidths: [ 20%, 20%, 10%, 50% ]
+
+    ehabi32-unwind-vrs-pop-behaviour
+        parent : table
+        colWidths: [ 20%, 20%, 60% ]
+
+    ehabi32-frame-unwinding
+        parent : table
+        colWidths: [ 30%, 70% ]
+
     # vfabia64 styles
     linear-clause:
         parent : table
