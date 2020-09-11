@@ -16,6 +16,9 @@ mkdir -p ${OUTPUT_DIR}
 rst2pdf ${ABI_ROOT}/addenda32/addenda32.rst -s ${CURR_DIR}/rst2pdf-abi.style \
         --repeat-table-rows --footer="###Page###" -o ${OUTPUT_DIR}/addenda32.pdf
 
+rst2pdf ${ABI_ROOT}/clibabi32/clibabi32.rst -s ${CURR_DIR}/rst2pdf-abi.style \
+        --repeat-table-rows --footer="###Page###" -o ${OUTPUT_DIR}/clibabi32.pdf
+
 rst2pdf ${ABI_ROOT}/ehabi32/ehabi32.rst -s ${CURR_DIR}/rst2pdf-abi.style \
         --repeat-table-rows --footer="###Page###" -o ${OUTPUT_DIR}/ehabi32.pdf
 
