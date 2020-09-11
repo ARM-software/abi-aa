@@ -177,3 +177,48 @@ styles:
     addenda32-table-2:
         parent : table
         colWidths: [ 16%, 10%, 20%, 54% ]
+
+    # clibabi32 styles
+    clibabi32-change-history:
+        parent : table
+        colWidths: [ 10%, 23%, 67% ]
+
+    clibabi32-c-library-headers:
+        parent : table
+        colWidths: [ 12%, 10%, 78% ]
+
+    clibabi32-errno-defs:
+        parent : table
+        colWidths: [ 25%, 25%, 50% ]
+
+    clibabi32-lc-macros:
+        parent : table
+        colWidths: [ 20%, 80% ]
+
+    clibabi32-math-defs:
+        parent : table
+        colWidths: [ 14%, 23%, 44%, 19% ]
+
+    clibabi32-easy-stdio-defs:
+        parent : table
+        colWidths: [ 20%, 29%, 41% ]
+
+    clibabi32-difficult-stdio-defs:
+        parent : table
+        colWidths: [ 19%, 24%, 57% ]
+
+    clibabi32-stdlib-defs:
+        parent : table
+        colWidths: [ 18%, 45%, 37% ]
+
+    clibabi32-time-defs:
+        parent : table
+        colWidths: [ 22%, 78% ]
+
+    clibabi32-wchar-defs:
+        parent : table
+        colWidths: [ 12%, 48%, 40% ]
+
+    clibabi32-summary:
+        parent : table
+        colWidths: [ 12%, 13%, 75% ]
