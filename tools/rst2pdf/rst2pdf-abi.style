@@ -114,7 +114,64 @@ styles:
         parent: right
         spaceBefore: 100
 
-    # aapcs styles
+    # aaelf64 styles
+    aaelf64-change:
+        parent : table
+        colWidths: [ 13%, 25%, 57% ]
+
+    aaelf64-st-other-flags:
+        parent : table
+        colWidths: [ 30%, 10%, 60% ]
+
+    aaelf64-data-relocations:
+        parent : table
+        colWidths: [ 15%, 15%, 20%, 15%, 35% ]
+
+    aaelf64-group-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 34%, 13%, 35% ]
+
+    aaelf64-pc-relative-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 36%, 13%, 33% ]
+
+    aaelf64-control-flow-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 24%, 13%, 45% ]
+
+    aaelf64-pc-relative-inline-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 36%, 13%, 33% ]
+
+    aaelf64-got-relative-inline-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 36%, 16%, 30% ]
+
+    aaelf64-got-relative-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 34%, 22%, 26% ]
+
+    aaelf64-dynamic-tls-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 24%, 28%, 30% ]
+
+    aaelf64-initial-exec-tls-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 28%, 27%, 27% ]
+
+    aaelf64-local-exec-tls-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 45%, 15%, 22% ]
+
+    aaelf64-tls-descriptor-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 22%, 28%, 32% ]
+
+    aaelf64-dynamic-relocations:
+        parent : table
+        colWidths: [ 9%, 9%, 27%, 23%, 32% ]
+
+    # aapcs64 styles
     aapcs64-refs:
         parent : table
         colWidths: [ 12%, 44%, 44% ]

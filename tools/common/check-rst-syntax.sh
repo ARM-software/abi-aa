@@ -9,6 +9,7 @@ rstcheck --ignore-language=c,cpp ${ABI_ROOT}/clibabi32/clibabi32.rst
 rstcheck --ignore-language=c,cpp ${ABI_ROOT}/ehabi32/ehabi32.rst
 
 # 64-bit
+rstcheck --ignore-language=c,cpp ${ABI_ROOT}/aaelf64/aaelf64.rst
 rstcheck --ignore-language=c,cpp ${ABI_ROOT}/aapcs64/aapcs64.rst
 rstcheck --ignore-language=c,cpp ${ABI_ROOT}/pauthabielf64/pauthabielf64.rst
 rstcheck --ignore-language=c,cpp ${ABI_ROOT}/vfabia64/vfabia64.rst
