@@ -15,3 +15,5 @@ rst2pdf ${ABI_ROOT}/aapcs64/aapcs64.rst -s ${CURR_DIR}/rst2pdf-abi.style \
         --repeat-table-rows --default-dpi=110 --footer="###Page###" -o ${OUTPUT_DIR}/aapcs64.pdf
 rst2pdf ${ABI_ROOT}/vfabia64/vfabia64.rst -s ${CURR_DIR}/rst2pdf-abi.style \
         --repeat-table-rows --footer="###Page###" -o ${OUTPUT_DIR}/vfabia64.pdf
+rst2pdf ${ABI_ROOT}/pauthabielf64/pauthabielf64.rst -s ${CURR_DIR}/rst2pdf-abi.style \
+        --repeat-table-rows --footer="###Page###" -o ${OUTPUT_DIR}/pauthabielf64.pdf
