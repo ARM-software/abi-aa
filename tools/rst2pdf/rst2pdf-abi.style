@@ -78,6 +78,9 @@ styles:
     note-heading:
         parent: heading4
 
+    code-heading:
+        parent : table-title
+
     note:
         parent: admonition
         spaceBefore: 12
