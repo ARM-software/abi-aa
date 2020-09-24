@@ -17,10 +17,13 @@ declare -a docs=(
     "aadwarf32" "aaelf32" "addenda32" "clibabi32" "cppabi32" "ehabi32" "rtabi32"
 
     # 64-bit
-    "aadwarf64" "aaelf64" "aapcs64" "vfabia64" "aaelf64-morello"
+    "aadwarf64" "aaelf64" "aapcs64" "vfabia64"
 
     # pauth extension
     "pauthabielf64"
+
+    # morello
+    "aadwarf64-morello" "aaelf64-morello"
 )
 
 for doc in "${docs[@]}"; do
@@ -30,4 +33,3 @@ for doc in "${docs[@]}"; do
                        --default-dpi=110                \
                        -o ${OUTPUT_DIR}/${doc}.pdf )
 done
-
