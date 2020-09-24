@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
+set -e
 
 CURR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ABI_ROOT=${CURR_DIR}/../..
 
-# 32-bit
-rstcheck --ignore-language=c,cpp ${ABI_ROOT}/addenda32/addenda32.rst
-rstcheck --ignore-language=c,cpp ${ABI_ROOT}/clibabi32/clibabi32.rst
-rstcheck --ignore-language=c,cpp ${ABI_ROOT}/ehabi32/ehabi32.rst
+declare -a docs=(
+    # 32-bit
+    "addenda32" "clibabi32" "ehabi32"
 
-# 64-bit
-rstcheck --ignore-language=c,cpp ${ABI_ROOT}/aaelf64/aaelf64.rst
-rstcheck --ignore-language=c,cpp ${ABI_ROOT}/aapcs64/aapcs64.rst
-rstcheck --ignore-language=c,cpp ${ABI_ROOT}/pauthabielf64/pauthabielf64.rst
-rstcheck --ignore-language=c,cpp ${ABI_ROOT}/vfabia64/vfabia64.rst
+    # 64-bit
+    "aaelf64" "aapcs64" "vfabia64"
 
+    # pauth extension
+    "pauthabielf64"
+)
+
+for doc in "${docs[@]}"; do
+    ( set -x; rstcheck --ignore-language=c,cpp --report=warning ${ABI_ROOT}/${doc}/${doc}.rst )
+done
