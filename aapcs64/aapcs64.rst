@@ -3,12 +3,22 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
+.. |release| replace:: 2020Q3
+.. |date-of-issue| replace:: 1\ :sup:`st` October 2020
+.. |copyright-date| replace:: 2011-2020
+.. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
+                      affiliates. All rights reserved.
+
+.. _AAPCS64: https://github.com/ARM-software/abi-aa/releases
+.. _AAELF64: https://github.com/ARM-software/abi-aa/releases
+.. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
+
 Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
 ******************************************************************
 
 .. class:: version
 
-2020Q2
+|release|
 
 .. class:: issued
 
@@ -122,7 +132,8 @@ about Arm’s trademarks.
 Copyright
 ---------
 
-Copyright (c) 2018-2020, Arm Limited and its affiliates.  All rights reserved.
+Copyright (c) |copyright-date|, Arm Limited and its affiliates.  All rights
+reserved.
 
 .. raw:: pdf
 
@@ -220,7 +231,7 @@ Change History
 |            |                    | Extend the AAPCS64 to support SVE types and registers.           |
 |            |                    | Conform aapcs64 volatile bit-fields rules to C/C++.              |
 +------------+--------------------+------------------------------------------------------------------+
-| 2020Q3     | 1st October 2020   |                                                                  |
+| 2020Q3     | 1st October 2020   | Specify ABI handling for 8.7-A's new FPCR bits.                  |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -233,9 +244,9 @@ This document refers to, or is referred to by, the following documents:
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 | Ref                                                                     | URL or other reference                             | Title                                                    |
 +=========================================================================+====================================================+==========================================================+
-| `AAPCS <https://github.com/ARM-software/abi-aa/tree/master/aapcs64>`_   | Source for this document                           | Procedure Call Standard for the Arm 64-bit Architecture  |
+| AAPCS64_                                                                | Source for this document                           | Procedure Call Standard for the Arm 64-bit Architecture  |
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
-| `CPPABI64 <https://developer.arm.com/docs/ihi0059/latest>`_             | IHI 0059                                           | C++ ABI for the Arm 64-bit Architecture                  |
+| CPPABI64_                                                               | IHI 0059                                           | C++ ABI for the Arm 64-bit Architecture                  |
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 | GC++ABI                                                                 | https://itanium-cxx-abi.github.io/cxx-abi/abi.html | Generic C++ ABI                                          |
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
@@ -271,10 +282,9 @@ ABI
       execute in a specific execution environment. For example, the
       *Linux ABI for the Arm Architecture*.
 
-   2. A particular aspect of the specifications to which independently
-      produced relocatable files must conform in order to be
-      statically linkable and executable.  For example, the `CPPABI64`_, `ELF for
-      the Arm Architecture <https://developer.arm.com/docs/ihi0056/latest>`_, ...
+   2. A particular aspect of the specifications to which independently produced
+      relocatable files must conform in order to be statically linkable and
+      executable.  For example, the CPPABI64_, AAELF64_, ...
 
 Arm-based
    ... based on the Arm architecture ...

@@ -3,16 +3,24 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
+.. |release| replace:: 2020Q3
+.. |date-of-issue| replace:: 1\ :sup:`st` October 2020
+.. |copyright-date| replace:: 2011-2020
+.. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
+                      affiliates. All rights reserved.
+
+.. _AAELF64: https://github.com/ARM-software/abi-aa/releases
+
 Vector Function Application Binary Interface Specification for AArch64
 **********************************************************************
 
 .. class:: version
 
-2020Q2
+|release|
 
 .. class:: issued
 
-Date of Issue: 1\ :sup:`st` July 2020
+Date of Issue: |date-of-issue|
 
 .. class:: logo
 
@@ -244,7 +252,8 @@ about Arm’s trademarks.
 Copyright
 ---------
 
-Copyright (c) 2018-2020, Arm Limited and its affiliates.  All rights reserved.
+Copyright (c) |copyright-date|, Arm Limited and its affiliates.  All rights
+reserved.
 
 .. raw:: pdf
 
@@ -486,8 +495,7 @@ flag set in their ``st_other`` field if the following conditions hold:
    dynamic symbol table.
 2. The symbol is associated with a function following the AAVPCS convention.
 
-For more information on ``STO_AARCH64_VARIANT_PCS``, see
-`AAELF64 <https://developer.arm.com/docs/ihi0056/latest>`_.
+For more information on ``STO_AARCH64_VARIANT_PCS``, see AAELF64_.
 
 .. note::
 

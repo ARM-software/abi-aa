@@ -3,16 +3,36 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
+.. |release| replace:: 0.1
+.. |date-of-issue| replace:: 1\ :sup:`st` October 2020
+.. |copyright-date| replace:: 2020
+
+.. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
+.. _AAELF64: https://github.com/ARM-software/abi-aa/releases
+.. _ARM64E: https://github.com/apple/llvm-project/blob/a63a81bd9911f87a0b5dcd5bdd7ccdda7124af87/clang/docs/PointerAuthentication.rst
+.. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
+.. _LSB: https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html
+.. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
+
+.. footer::
+
+   ###Page###
+
+   |
+
+   Copyright © |copyright-date|, Arm Limited and its affiliates. All rights
+   reserved.
+
 PAuth ABI Extension to ELF for the Arm® 64-bit Architecture (AArch64)
 *********************************************************************
 
 .. class:: version
 
-0.1
+|release|
 
 .. class:: issued
 
-Date of Issue: 21\ :sup:`st` September 2020
+Date of Issue: |date-of-issue|
 
 .. class:: logo
 
@@ -125,7 +145,7 @@ about Arm’s trademarks.
 Copyright
 ---------
 
-Copyright (c) 2020, Arm Limited and its affiliates.  All rights reserved.
+Copyright (c) |copyright-date|, Arm Limited and its affiliates.  All rights reserved.
 
 .. raw:: pdf
 
@@ -192,17 +212,17 @@ This document refers to, or is referred to by, the following documents.
 +--------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------+-----------------------------------------------------------------------------------+
 | Ref                                                                                                                                  | URL or other reference                                      | Title                                                                    |
 +======================================================================================================================================+=============================================================+==========================================================================+
-| `ARMARM <https://developer.arm.com/documentation/ddi0487/latest/>`_                                                                  | DDI 0487                                                    | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile |
+| ARMARM_                                                                                                                              | DDI 0487                                                    | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile |
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
-| `AAELF64 <https://developer.arm.com/documentation/ihi0056/latest>`_                                                                  | IHI 0056                                                    | ELF for the Arm 64-bit Architecture                                      |
+| AAELF64_                                                                                                                             | IHI 0056                                                    | ELF for the Arm 64-bit Architecture                                      |
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
-| `ARM64E <https://github.com/apple/llvm-project/blob/a63a81bd9911f87a0b5dcd5bdd7ccdda7124af87/clang/docs/PointerAuthentication.rst>`_ |                                                             | Pointer Authentication                                                   |
+|                                                               ARM64E_                                                                |                                                             | Pointer Authentication                                                   |
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
-| `CPPABI64 <https://developer.arm.com/docs/ihi0059/latest>`_                                                                          | IHI 0059                                                    | C++ ABI for the Arm 64-bit Architecture                                  |
+| CPPABI64_                                                                                                                            | IHI 0059                                                    | C++ ABI for the Arm 64-bit Architecture                                  |
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
-| `LSB <https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html>`_                                                         |                                                             | Linux Standards Base                                                     |
+| LSB_                                                                                                                                 |                                                             | Linux Standards Base                                                     |
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
-| `TLSDESC <http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf>`_                                                             | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf | TLS Descriptors for Arm. Original proposal document                      |
+| TLSDESC_                                                                                                                             | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf | TLS Descriptors for Arm. Original proposal document                      |
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
 
 }
@@ -236,10 +256,9 @@ ABI
       execute in a specific execution environment. For example, the
       *Linux ABI for the Arm Architecture*.
 
-   2. A particular aspect of the specifications to which independently
-      produced relocatable files must conform in order to be
-      statically linkable and executable.  For example, the `CPPABI64`_, `ELF for
-      the Arm Architecture <https://developer.arm.com/docs/ihi0056/latest>`_, ...
+   2. A particular aspect of the specifications to which independently produced
+      relocatable files must conform in order to be statically linkable and
+      executable.  For example, the CPPABI64_, AAELF64_, ...
 
 Arm-based
    ... based on the Arm architecture ...
