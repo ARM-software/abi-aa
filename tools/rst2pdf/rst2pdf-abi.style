@@ -114,6 +114,10 @@ styles:
         parent: right
         spaceBefore: 100
 
+    refs:
+        parent : table
+        colWidths: [ 12%, 44%, 44% ]
+
     # aaelf64 styles
     aaelf64-change:
         parent : table
@@ -172,7 +176,7 @@ styles:
         colWidths: [ 9%, 9%, 27%, 23%, 32% ]
 
     # aapcs64 styles
-    aapcs64-refs:
+    refs:
         parent : table
         colWidths: [ 12%, 44%, 44% ]
 
@@ -279,3 +283,16 @@ styles:
     clibabi32-summary:
         parent : table
         colWidths: [ 12%, 13%, 75% ]
+
+    # pauthabielf64 styles
+    pauthabielf64-got-signing:
+        parent : table
+        colWidths: [ 13%, 35%, 20%, 17%, 15% ]
+
+    pauthabielf64-data-relocations:
+        parent : table
+        colWidths: [ 15%, 30%, 15%, 40% ]
+
+    pauthabielf64-signing-schema:
+        parent : table
+        colWidths: [ 15%, 25%, 35%, 25% ]
