@@ -209,7 +209,7 @@ This document refers to, or is referred to by, the following documents.
 
 .. class:: refs
 
-+--------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------+-----------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
 | Ref                                                                                                                                  | URL or other reference                                      | Title                                                                    |
 +======================================================================================================================================+=============================================================+==========================================================================+
 | ARMARM_                                                                                                                              | DDI 0487                                                    | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile |
@@ -224,8 +224,6 @@ This document refers to, or is referred to by, the following documents.
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
 | TLSDESC_                                                                                                                             | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf | TLS Descriptors for Arm. Original proposal document                      |
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
-
-}
 
 Terms and Abbreviations
 -----------------------
@@ -435,36 +433,34 @@ signing schema determined by the relocatable object file.
 The following table shows the options. At a minimum all relocatable
 object files in a link-unit must use the same option.
 
-.. class:: table-title
+.. class:: pauthabielf64-got-signing
 
-Options for GOT signing.
+.. table:: Options for GOT signing.
 
-.. class:: table-5
-
-+--------------------------+----------------------------------------------------+---------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+
-| Option                   | Compiler                                           | Static Linker                                           | Dynamic Linker                                     | Use Case                                           |
-+==========================+====================================================+=========================================================+====================================================+====================================================+
-| Unsigned GOT             | The compiler must sign the GOT entry after         | No change from existing behavior                        | No change from existing behaviour                  | When RELRO is available.                           |
-|                          | retrieving it.                                     |                                                         |                                                    |                                                    |
-+--------------------------+----------------------------------------------------+---------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+
-| Signed GOT with          | The compiler must either use a R_AARCH64_PAUTH     | The static linker must use the implicit signing schema  | The dynamic linker must sign the GOT entry using   | When RELRO is not available. This could be slower  |
-| implicit signing         | variant for each GOT generating relocation to tell | for signed GOT entries. For example address diversity   | the signing schema specified by the linker.        | if GOT entries have to be re-signed.               |
-| schema                   | the linker to generate a signed entry, or we       | based on address of GOT entry.                          |                                                    |                                                    |
-|                          | communicate using a global property so that all    |                                                         |                                                    |                                                    |
-|                          | existing relocations change behaviour to create a  |                                                         |                                                    |                                                    |
-|                          | signed entry. The signing schema is implicit in    |                                                         |                                                    |                                                    |
-|                          | that the linker derives it without additional      |                                                         |                                                    |                                                    |
-|                          | information. As the signing schema can be          |                                                         |                                                    |                                                    |
-|                          | different to that used by the compiler, the        |                                                         |                                                    |                                                    |
-|                          | compiler may need to resign the entry with the     |                                                         |                                                    |                                                    |
-|                          | source schema.                                     |                                                         |                                                    |                                                    |
-+--------------------------+----------------------------------------------------+---------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+
-| Signed GOT with explicit | The compiler must communicate the signing schema   | The static linker must re-encode the signing schema     | The dynamic linker must sign the GOT entry using   | When RELRO is not available. Compiler may not need |
-| signing schema           | to the linker with relocations and symbols         | used by the compiler in dynamic relocations.            | the signing schema specified by the linker.        | to re-sign entry from GOT.                         |
-|                          |                                                    |                                                         |                                                    |                                                    |
-|                          | The assembler would need new operators to describe |                                                         |                                                    |                                                    |
-|                          | this. For example :got@auth("signing schema"):     |                                                         |                                                    |                                                    |
-+--------------------------+----------------------------------------------------+---------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+
+  +--------------------------+----------------------------------------------------+---------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+
+  | Option                   | Compiler                                           | Static Linker                                           | Dynamic Linker                                     | Use Case                                           |
+  +==========================+====================================================+=========================================================+====================================================+====================================================+
+  | Unsigned GOT             | The compiler must sign the GOT entry after         | No change from existing behavior                        | No change from existing behaviour                  | When RELRO is available.                           |
+  |                          | retrieving it.                                     |                                                         |                                                    |                                                    |
+  +--------------------------+----------------------------------------------------+---------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+
+  | Signed GOT with          | The compiler must either use a R_AARCH64_PAUTH     | The static linker must use the implicit signing schema  | The dynamic linker must sign the GOT entry using   | When RELRO is not available. This could be slower  |
+  | implicit signing         | variant for each GOT generating relocation to tell | for signed GOT entries. For example address diversity   | the signing schema specified by the linker.        | if GOT entries have to be re-signed.               |
+  | schema                   | the linker to generate a signed entry, or we       | based on address of GOT entry.                          |                                                    |                                                    |
+  |                          | communicate using a global property so that all    |                                                         |                                                    |                                                    |
+  |                          | existing relocations change behaviour to create a  |                                                         |                                                    |                                                    |
+  |                          | signed entry. The signing schema is implicit in    |                                                         |                                                    |                                                    |
+  |                          | that the linker derives it without additional      |                                                         |                                                    |                                                    |
+  |                          | information. As the signing schema can be          |                                                         |                                                    |                                                    |
+  |                          | different to that used by the compiler, the        |                                                         |                                                    |                                                    |
+  |                          | compiler may need to resign the entry with the     |                                                         |                                                    |                                                    |
+  |                          | source schema.                                     |                                                         |                                                    |                                                    |
+  +--------------------------+----------------------------------------------------+---------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+
+  | Signed GOT with explicit | The compiler must communicate the signing schema   | The static linker must re-encode the signing schema     | The dynamic linker must sign the GOT entry using   | When RELRO is not available. Compiler may not need |
+  | signing schema           | to the linker with relocations and symbols         | used by the compiler in dynamic relocations.            | the signing schema specified by the linker.        | to re-sign entry from GOT.                         |
+  |                          |                                                    |                                                         |                                                    |                                                    |
+  |                          | The assembler would need new operators to describe |                                                         |                                                    |                                                    |
+  |                          | this. For example :got@auth("signing schema"):     |                                                         |                                                    |                                                    |
+  +--------------------------+----------------------------------------------------+---------------------------------------------------------+----------------------------------------------------+----------------------------------------------------+
 
 Questions/Observations
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -624,8 +620,6 @@ sufficient. The exception is when a signed GOT using the explicit
 signing schema is used as there is no contents of the place to write
 the metadata to. Instead the relocation addend will be used instead.
 
-.. class:: table-6
-
 +------+-------------------+-------+----------+---------------+---------------------+
 | 63   | 62                | 61:60 | 59:48    | 47:32         | 31:0                |
 +======+===================+=======+==========+===============+=====================+
@@ -650,7 +644,7 @@ Questions/Issues
 Data relocations
 ----------------
 
-.. class:: table-4
+.. class:: pauthabielf64-data-relocations
 
 +-----------+------------------------+------------+-----------------------------------------------------+
 |ELF 64 Code| Name                   | Operation  | Comment                                             |
@@ -719,7 +713,7 @@ in the contents of the place. The relocation addend is used instead.
 ``ENCD(value, schema)`` is the encoding of the signing schema into the
 GOT slot.
 
-.. class:: table-4
+.. class:: pauthabielf64-signing-schema
 
 +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
 | ELF 64 Code | Name                                   | Operation                                             | Comment                  |
@@ -781,8 +775,6 @@ The dynamic relocations required for the PAuth ABI are built on the existing dyn
 
 SCHEMA(\*P) represents the dynamic linker reading the signing schema from the contents of the place ``P``.
 AUTH(value, schema) represents the dynamic linker signing value with schema.
-
-.. class:: table-3
 
 +--------------------+------------------------------+------------------------------------+
 | Relocation code    | Name                         | Operation                          |
