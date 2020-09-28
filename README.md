@@ -4,7 +4,7 @@
 
 # Application Binary Interface for the Arm®  Architecture
 
-This is the official place for the latest releases of the Application Binary
+This is the official place for the latest documents of the Application Binary
 Interface for the Arm® Architecture, both for source files and officially
 released documents.
 
