@@ -390,7 +390,7 @@ Platform standards (Example Only)
 
 We expect that each operating system that adopts components of this ABI specification will specify additional requirements and constraints that must be met by application code in binary form and the code-generation tools that generate such code.
 
-As an example of the kind of issue that must be addressed `Linux Platform ABI (example only)`_, below, lists some of the issues addressed by the *Linux Standard Base* [LSB_] specifications.
+As an example of the kind of issue that must be addressed, `Linux Platform ABI (example only)`_ lists some of the issues addressed by the *Linux Standard Base* [LSB_] specifications.
 
 
 Linux Platform ABI (example only)
@@ -630,8 +630,7 @@ The top 6 bits are unused in the generic ELF ABI [SCO-ELF_], and while
 there are no values reserved for processor-specific semantics, many other
 architectures have used these bits.
 
-The defined processor-specific ``st_other`` flag values are listed in
-`Processor specific st_other flags`_.
+The defined processor-specific ``st_other`` flag values are listed below:
 
 .. _Processor specific st_other flags:
 

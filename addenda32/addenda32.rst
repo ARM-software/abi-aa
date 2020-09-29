@@ -2078,11 +2078,11 @@ Linux for Arm general dynamic model
 In the *general dynamic model*, the addressing expression is packaged by a
 call to :c:`__tls_get_addr` that takes a single parameter, the address of
 GOT\ :subscript:`S`\ . The code sequence and required relocations are shown in
-`Table 3`_, below.
+`Table 3`_.
 
 A space-optimized version of the general dynamic model that calls
 :c:`___tls_get_addr` (triple-underscore) is shown in
-`Table 4`_, below. The parameter passed to :c:`___tls_get_addr`
+`Table 4`_. The parameter passed to :c:`___tls_get_addr`
 is the offset of GOT\ :subscript:`S`\  from lr.
 
 The Linux for Arm TLS model has two local dynamic variants. These are used
@@ -2091,7 +2091,7 @@ can still be used in a dynamically loaded DSO. (A variable is local if its
 symbol S has ``STB_LOCAL`` binding or non-\ ``STV_DEFAULT`` visibility). In these
 variants the offset of variable in the component’s TLS segment in known at
 link time and only the component index must be loaded from the GOT. Specimen
-code sequences and relocations are given in `Table 5`_, below.
+code sequences and relocations are given in `Table 5`_.
 This model is advantageous whenever a function accesses more than one
 variable (the address of the TLS block can be a common sub-expression).
 
@@ -2177,7 +2177,7 @@ variable (the address of the TLS block can be a common sub-expression).
 
 *R_ARM_TLS_LDM32* sets the first element of the GOT pair to the
 symbol’s dynamic TLS vector index, as does *R_ARM_TLS_GD32*, but sets
-the second element to 0 (as shown in `Table 5`_, above).
+the second element to 0 (as shown in `Table 5`_).
 
 TLS-related relocations for Linux for Arm are described further in
 [AAELF32_].
@@ -2195,10 +2195,10 @@ relative to tp, without indexing the dynamic thread vector.
 Below, $tp denotes a general purpose register containing the result of
 reading tp.
 
-`Table 6`_, below, shows the general model. It works for DSOs
+`Table 6`_ shows the general model. It works for DSOs
 and the root application, in Arm and Thumb state.
 
-`Table 7`_, below, shows an optimized model for DSOs If the
+`Table 7`_ shows an optimized model for DSOs If the
 compiler uses a GOT pointer (denoted by $gp) and small PIC (12-bit
 PC-relative) addressing. This model works only in Arm state.
 
@@ -2250,6 +2250,10 @@ from the GOT. The 12-bit model works only in Arm state.
    +-----------------+------------------------------------------------------------------------+
 
 .. _Table 8:
+
+.. raw:: pdf
+
+   PageBreak
 
 .. table:: Table 8, Initial exec model, access to an application’s local thread-local variables
 

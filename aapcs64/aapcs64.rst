@@ -473,7 +473,7 @@ Data Types and Alignment
 Fundamental Data Types
 ----------------------
 
-`Table 1`_, Byte size and byte alignment of fundamental data types shows the fundamental data types (Machine Types) of the machine.
+`Table 1`_, shows the fundamental data types (Machine Types) of the machine.
 
 .. _Table 1:
 
@@ -972,11 +972,11 @@ In this standard a non-variadic subroutine can be considered to be identical to 
 Parameter Passing Rules
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Parameter passing is defined as a two-level conceptual model
+Parameter passing is defined as a two-level conceptual model:
 
-- A mapping from the type of a source language argument onto a machine type
+- A mapping from the type of a source language argument onto a machine type.
 
-- The marshaling of machine types to produce the final parameter list
+- The marshaling of machine types to produce the final parameter list.
 
 The mapping from a source language type onto a machine type is specific for each language and is described separately (the C and C++ language bindings are described in `Arm C AND C++ Language Mappings`_). The result is an ordered list of arguments that are to be passed to the subroutine.
 
@@ -1032,7 +1032,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   | B.5                  |                                                                                        |
   +----------------------+----------------------------------------------------------------------------------------+
   |                      | If the argument is an alignment adjusted type its value is passed as a copy of the     |
-  |                      | actual value. The copy will have an alignment defined as follows.                      |
+  |                      | actual value. The copy will have an alignment defined as follows:                      |
   | B.6                  |                                                                                        |
   |                      | - For a Fundamental Data Type, the alignment is the natural alignment of that type,    |
   |                      |   after any promotions.                                                                |
@@ -1135,7 +1135,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
 
 It should be noted that the above algorithm makes provision for languages other than C and C++ in that it provides for passing arrays by value and for passing arguments of dynamic size. The rules are defined in a way that allows the caller to be always able to statically determine the amount of stack space that must be allocated for arguments that are not passed in registers, even if the routine is variadic.
 
-Several further observations can also be made:
+Several observations can be made:
 
 - The address of the first stacked argument is defined to be the initial value of SP. Therefore, the total amount of stack space needed by the caller for argument passing cannot be determined until all the arguments in the list have been processed.
 
@@ -1212,7 +1212,7 @@ Data Types
 Arithmetic Types
 ^^^^^^^^^^^^^^^^
 
-The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3`_, Mapping of C & C++ built-in data types.
+The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3`_:
 
 .. _Table 3:
 
@@ -1360,7 +1360,7 @@ Both C and C++ require that a system provide additional type definitions that ar
 Definition of va\_list
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The definition of va\_list has implications for the internal implementation in the compiler. An AAPCS64 conforming object must use the definitions shown in `Table 6`_, Definition of va\_list.
+The definition of va\_list has implications for the internal implementation in the compiler. An AAPCS64 conforming object must use the definitions shown in `Table 6`_:
 
 .. _Table 6:
 
