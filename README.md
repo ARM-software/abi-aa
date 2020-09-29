@@ -11,8 +11,8 @@ released documents.
 
 ## Transitioning the ABI specs
 
-Currently we are in a transistion period while we convert all the ABI
-specifications to this new format, with a CC-BY-SA-4.0 license. One by one, once
+Currently we are in a transition period while we convert all the ABI
+specifications to this new open-source format. One by one, once
 the individual documents have been converted, they will appear here, and they
 will be included in future releases here on Github.
 
