@@ -548,7 +548,9 @@ specification. Prefixes must not contain underscore ('\_') or dollar
 ('$'). Prefixes beginning with *Anon* and *anon* are reserved to
 unregistered use.
 
-The table of registered vendor prefixes is given below.
+.. raw:: pdf
+
+   PageBreak
 
 .. include:: vendor-table.txt
 

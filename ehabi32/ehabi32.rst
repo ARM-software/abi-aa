@@ -1027,7 +1027,7 @@ unwinding phase 2, it is guaranteed that the first landing pad entered
 is entered in the machine state prevailing at the point of the
 apparently throwing call within that function, aside from any registers
 used to pass arguments to the landing pad. If the landing pad is a
-cleanup, hence returns control to the unwinder on exit, it is possible
+cleanup (so it returns control to the unwinder on exit) it is possible
 that further pads may be entered for the same function. The entry state
 for such pads is the exit state from the previous pad, again possibly
 modified by any arguments passed to the pad.
@@ -1035,7 +1035,7 @@ modified by any arguments passed to the pad.
 In particular when a pad is entered, the stack pointer has the value it
 had immediately before the call to the apparently throwing function
 (assuming stack-moves-once). It follows that no unwinding function stack
-frame can persist over a landing pad invocation. Therefore all data
+frame can persist over a landing pad invocation. Therefore, all data
 needed to track the exception propagation state must be held in the
 thrown object itself, or be reachable from it, or be in thread-safe
 global store.
@@ -1209,7 +1209,7 @@ unwinder to indicate what the personality routine being asked to do:
 
 -  \_US\_UNWIND\_FRAME\_RESUME Used in phase 2. See `Phase 2 unwinding`_.
 
-In order to support future or private extensions, it is recommended that
+To support future or private extensions, it is recommended that
 the personality routine exits with a failure code if it is passed an
 unexpected value for its \_Unwind\_State argument.
 
