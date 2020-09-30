@@ -646,15 +646,16 @@ Data relocations
 
 .. class:: pauthabielf64-data-relocations
 
-+-----------+------------------------+------------+-----------------------------------------------------+
-|ELF 64 Code| Name                   | Operation  | Comment                                             |
-|           |                        |            |                                                     |
-|           |                        |            |                                                     |
-+-----------+------------------------+------------+-----------------------------------------------------+
-| 0xE100    |R\_AARCH64\_PAUTH\_INIT | PAUTH(S+A) | Signing schema encoded in the contents of the place |
-+-----------+------------------------+------------+-----------------------------------------------------+
++-----------+-------------------------+------------+-----------------------------------------------------+
+|ELF 64 Code| Name                    | Operation  | Comment                                             |
+|           |                         |            |                                                     |
+|           |                         |            |                                                     |
++-----------+-------------------------+------------+-----------------------------------------------------+
+| 0xE100    |R\_AARCH64\_AUTH\_ABS64  | PAUTH(S+A) | Signing schema encoded in the contents of the place |
++-----------+-------------------------+------------+-----------------------------------------------------+
 
-This is the equivalent of the arm64e ARM64_RELOC_AUTHENTICATED relocation.
+This is the equivalent of the arm64e ARM64_RELOC_AUTHENTICATED
+relocation. It can also be used as a dynamic relocation.
 
 
 GOT generating relocations
@@ -779,6 +780,8 @@ AUTH(value, schema) represents the dynamic linker signing value with schema.
 +--------------------+------------------------------+------------------------------------+
 | Relocation code    | Name                         | Operation                          |
 +====================+==============================+====================================+
+| 0xE100             | R\_AARCH64\_AUTH\_ABS64      | AUTH(S + A, SCHEMA(\*P))           |
++--------------------+------------------------------+------------------------------------+
 | 0xE200             | R\_AARCH64\_AUTH\_GLOB\_DAT  | AUTH((S + A), SCHEMA(\*P))         |
 +--------------------+------------------------------+------------------------------------+
 | 0xE201             | R\_AARCH64\_AUTH\_JUMP\_SLOT | AUTH((S + A), SCHEMA(\*P))         |
@@ -789,9 +792,6 @@ AUTH(value, schema) represents the dynamic linker signing value with schema.
 +--------------------+------------------------------+------------------------------------+
 | 0xE204             | R\_AARCH64\_AUTH\_IRELATIVE  | AUTH(Indirect(S + A), SCHEMA(\*P)) |
 +--------------------+------------------------------+------------------------------------+
-| 0xE205             | R\_AARCH64\_AUTH\_ABS64      | AUTH(S + A, SCHEMA(\*P))           |
-+--------------------+------------------------------+------------------------------------+
-
 
 Questions/Issues
 
