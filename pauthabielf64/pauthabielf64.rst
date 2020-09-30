@@ -224,6 +224,8 @@ This document refers to, or is referred to by, the following documents.
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
 | TLSDESC_                                                                                                                             | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf | TLS Descriptors for Arm. Original proposal document                      |
 +--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
+| `GABI_SHT_RELR <https://groups.google.com/d/msg/generic-abi/bX460iggiKg/YT2RrjpMAwAJ>`_                                              | ELF GABI Google Groups                                      | Proposal for a new section type SHT_RELR                                 |
++--------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
 
 Terms and Abbreviations
 -----------------------
@@ -521,6 +523,18 @@ mandate a single choice, although per link-unit choices are
 possible. It is not possible to mix mechanisms within the same
 link-unit as there is at most one GOT entry per symbol.
 
+Section Types
+=============
+
+The PAuth ABI adds an additional Processor specific section type
++-----------------------+------------+---------------------------------------------------------+
+| Name                  | Value      | Comment                                                 |
++=======================+============+=========================================================+
+| SHT_AARCH64_AUTH_RELR | 0x70000004 | Section type for compressed signed relative relocations |
++-----------------------+------------+---------------------------------------------------------+
+
+The value is in the AArch64 Processor specfic range. The value is subject to change if there is a clash with AAELF64.
+
 Static Relocations
 ==================
 
@@ -795,6 +809,52 @@ AUTH(value, schema) represents the dynamic linker signing value with schema.
 | 0xE204             | R\_AARCH64\_AUTH\_IRELATIVE  | AUTH(Indirect(S + A), SCHEMA(\*P)) |
 +--------------------+------------------------------+------------------------------------+
 
+Dynamic Section
+===============
+
+The PAuth ABI adds the following processor-specific dynamic array tags.
+
++-------------------------+------------+-------+------------+---------------+
+| Name                    | Value      | d_un  | Executable | Shared Object |
++=========================+============+=======+============+===============+
+| DT_AARCH64_AUTH_RELRSZ  | 0x70000005 | d_val | optional   | optional      |
++-------------------------+------------+-------+------------+---------------+
+| DT_AARCH64_AUTH_RELR    | 0x70000006 | d_ptr | optional   | optional      |
++-------------------------+------------+-------+------------+---------------+
+| DT_AARCH64_AUTH_RELRENT | 0x70000007 | d_val | optional   | optional      |
++-------------------------+------------+-------+------------+---------------+
+
+Description:
+
+* ``DT_AARCH64_AUTH_RELRSZ`` This element holds the total size in
+  bytes, of the DT_AARCH64_AUTH_RELR relocation table.
+
+* ``DT_AARCH64_AUTH_RELR`` The address of an ``SHT_AARCH64_AUTH_RELR``
+  relocation table. This element requires the
+  ``DT_AARCH64_AUTH_RELRSZ`` and ``DT_AARCH64_AUTH_RELRENT`` elements
+  also be present. During dynamic linking, a ``DT_AARCH64_AUTH_RELR``
+  element is processed before any ``DT_REL`` or ``DT_RELA`` elements
+  in the same object file.
+
+* ``DT_AARCH64_AUTH_RELRENT`` This element holds the size in bytes of
+  a DT_AARCH64_RELR relocation entry.
+
+
+Reocation Compression
+=====================
+
+The SHT_RELR section type as defined in `GABI_SHT_RELR`_, when present in
+an AArch64 ELF file encodes ``R_AARCH64_RELATIVE`` relocations in a
+more compact form. To encode ``R_AARCH64_AUTH_RELATIVE`` using the
+same encoding a new ELF section type ``SHT_AARCH64_AUTH_RELR`` is
+added, alongside the dynamic tags ``DT_AARCH64_AUTH_RELR``,
+``DT_AARCH64_AUTH_RELRENT``, and ``DT_AARCH64_AUTH_RELRSZ``.
+
+The format of the ``SHT_AARCH64_AUTH_RELR`` section is identical to
+``SHT_RELR``, the only difference is that all relocations are of type
+``R_AARCH64_AUTH_RELATIVE``. A link-unit may contain both ``SHT_RELR``
+and ``SHT_AARCH64_AUTH_RELR`` sections.
+
 Questions/Issues
 
 * If the GOT is unsigned then we would expect to see only
@@ -805,12 +865,6 @@ Questions/Issues
   * In a position independent executable it is possible for
     ``R_AARCH64_AUTH_IRELATIVE`` to be implemented with
     ``R_AARCH64_AUTH_RELATIVE`` although this needs some work in LLD.
-
-* The contents of the place was chosen for the metadata to permit
-  relocation compression mechanisms like ``SHT_RELR`` to write the
-  addend into the bottom 32-bits of the contents of the place.
-
-  * Do we need ``SHT_AUTH_RELR`` or can we reuse the existing ``SHT_RELR``?
 
 * The new relocation directives wouldn't be needed if the
   implementations of the existing relocations like
