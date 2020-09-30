@@ -863,12 +863,6 @@ Questions/Issues
     ``R_AARCH64_AUTH_IRELATIVE`` to be implemented with
     ``R_AARCH64_AUTH_RELATIVE`` although this needs some work in LLD.
 
-* The new relocation directives wouldn't be needed if the
-  implementations of the existing relocations like
-  ``R_AARCH64_RELATIVE`` looked at the auth bit (63) in the contents
-  of the place to see if the relocation required signing or
-  not. Feedback is requested from dynamic loader authors.
-
 Static Linking
 ==============
 
