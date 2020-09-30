@@ -639,11 +639,11 @@ sufficient. The exception is when a signed GOT using the explicit
 signing schema is used as there is no contents of the place to write
 the metadata to. Instead the relocation addend will be used instead.
 
-+------+-------------------+-------+----------+---------------+---------------------+
-| 63   | 62                | 61:60 | 59:48    | 47:32         | 31:0                |
-+======+===================+=======+==========+===============+=====================+
-| auth | address diversity | key   | reserved | discriminator | reserved for addend |
-+------+-------------------+-------+----------+---------------+---------------------+
++------+-------------------+----------+----------+----------+---------------+---------------------+
+| 63   | 62                | 61       | 60:59    | 58:48    |  47:32        | 31:0                |
++======+===================+==========+==========+==========+===============+=====================+
+| auth | address diversity | reserved | key      | reserved | discriminator | reserved for addend |
++------+-------------------+----------+----------+----------+---------------+---------------------+
 
 Questions/Issues
 
@@ -653,12 +653,9 @@ Questions/Issues
 
   * addend size, although 32-bits the addend field in ELF is signed so
     this would give a maximum program size of 2 Gb, which is half the
-    size the small code-model permits
-
-* Is there a better layout of the bits, should we leave room for
-  expansion of the key? In particular we do not have support in the
-  ABI for using the generic signing key outside
-  ptrauth_sign_generic_data.
+    size the small code-model permits. It could be interpreted as
+    unsigned for the purposes of SHT_AARCH64_RELR as there can't be negative
+    addresses.
 
 Data relocations
 ----------------
