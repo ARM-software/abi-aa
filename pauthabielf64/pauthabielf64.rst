@@ -397,17 +397,19 @@ General Principles
 General Restrictions
 --------------------
 
-- PAUTHELF64 requires position independent code, such as the GCC/Clang
-  ``-fpic`` and ``-fpie`` options.
+- PAUTHELF64 does not support the R_AARCH64_COPY relocation for signed
+  pointers. Non-position independent code that imports signed pointers
+  from shared libraries must use an alternative code-sequence that
+  does not require the static linker to use COPY relocations. A simple
+  way to avoid COPY relocations is to access imported signed pointers
+  via the GOT.
 
 - PAUTHELF64 only supports the descriptor based TLS (TLSDESC).
 
-The Rationale behind the requirement for position independent code is
-that address diversity can be brute-forced without some form of
-address space randomization, which requires position independent
-code. Using position independent code also avoids some corner cases
-such COPY relocations and the need to use the address of a PLT entry
-for function pointer comparisons. The descriptor based TLS has been
+The Rationale behind the requirement to avoid copy relocations is that
+the static linker creates the storage that the copy is placed; which
+adds more complication in the form of communicating a signing schema
+than avoiding the copy relocation. The descriptor based TLS has been
 chosen as the most common implementation choice for AArch64.
 
 Platform Decisions
