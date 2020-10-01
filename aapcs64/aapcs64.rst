@@ -22,7 +22,7 @@ Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
 
 .. class:: issued
 
-Date of Issue: 1\ :sup:`st` July 2020
+Date of Issue: |date-of-issue|
 
 .. class:: logo
 
