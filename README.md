@@ -59,8 +59,8 @@ Vector Function ABI for the Arm 64-bit Architecture                | [vfabia64](
 specification                                                                                                                 | latest on Github                                   | last on developer site
 ---                                                                                                                           | ---                                                | ---
 Procedure Call Standard for the Arm 64-bit Architecture with SVE support                                                      | content merged with [aapcs64](aapcs64/aapcs64.rst) | [2019Q2](https://developer.arm.com/documentation/101129/latest)
-DWARF for the Arm 64-bit Architecture with SVE support                                                                        | -                                                  | [SVEdwf 00bet1](https://developer.arm.com/documentation/100985/latest)
-Vector Function ABI for the Arm 64-bit Architecture (identical to document in *ABI for the Arm 64-bit Architecture* section) |  [vfabia64](vfabia64/vfabia64.rst)                 | [2019Q2](https://developer.arm.com/documentation/101129/latest)
+DWARF for the Arm 64-bit Architecture with SVE support                                                                        | content merged with [aadwarf64]                                                  | [SVEdwf 00bet1](https://developer.arm.com/documentation/100985/latest)
+Vector Function ABI for the Arm 64-bit Architecture (identical to document in *ABI for the Arm 64-bit Architecture* section)  |  [vfabia64](vfabia64/vfabia64.rst)                 | [2019Q2](https://developer.arm.com/documentation/101129/latest)
 
 ### PAuth ABI Extension
 
