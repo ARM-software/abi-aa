@@ -346,14 +346,14 @@ Scope
 =====
 
 This document is a set of extensions to ELF for the Arm 64-bit
-architecture (AAELF64) describing how PAuth ABI information is encoded
+architecture (AAELF64_) describing how PAuth ABI information is encoded
 in the ELF file. As an alpha document all details in this document are
 subject to change.
 
 Platform Standards
 ==================
 
-As is the case with the AAELF64, we expect that each operating system
+As is the case with the AAELF64_, we expect that each operating system
 that adopts components of this ABI specification will specify
 additional requirements and constraints that must be met by
 application code in binary form and the code-generation tools that
@@ -540,7 +540,7 @@ into a single instruction braa x17, x16
 Recording a signed PLT GOT in the ELF file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-AAELF64 defines a dynamic tag ``DT_AARCH64_PAC_PLT`` that a static
+AAELF64_ defines a dynamic tag ``DT_AARCH64_PAC_PLT`` that a static
 linker must produce if the PLT sequences expect the PLT GOT entries
 to be signed by the dynamic linker using the PLT GOT signing schema
 described above.
@@ -555,7 +555,8 @@ The PAuth ABI adds an additional Processor specific section type
 | SHT_AARCH64_AUTH_RELR | 0x70000004 | Section type for compressed signed relative relocations |
 +-----------------------+------------+---------------------------------------------------------+
 
-The value is in the AArch64 Processor specfic range. The value is subject to change if there is a clash with AAELF64.
+The value is in the AArch64 Processor specfic range. The value is
+subject to change if there is a clash with AAELF64_.
 
 Static Relocations
 ==================
@@ -936,12 +937,12 @@ will result in incompatible ELF files.
 Prior Art
 ---------
 
-* AAELF64 defines the .note.gnu.property
+* AAELF64_ defines the .note.gnu.property
   ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` with a feature bit
   ``GNU_PROPERTY_AARCH64_FEATURE_1_PAC`` which indicates that all
   executable sections have Return Address Signing enabled.
 
-* AAELF64 defines a dynamic tag ``DT_AARCH64_PAC_PLT`` that a static
+* AAELF64_ defines a dynamic tag ``DT_AARCH64_PAC_PLT`` that a static
   linker must produce if the PLT sequences expect the .plt.got entries
   to be signed by the dynamic linker.
 
