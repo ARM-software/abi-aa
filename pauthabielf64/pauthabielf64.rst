@@ -589,83 +589,21 @@ by the run-time environment. There are a number of possible encoding
 schemas, each with its own trade-off. We are seeking feedback from
 platform owners about the most convenient form.
 
-Options for encoding the signing schema
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Encoding the signing schema
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To create a signed pointer the run-time system needs to know the
-signing schema to use for the pointer. The object producer and static
-linker will need to communicate this via metadata; including at least:
+In the descriptions below the ``place`` is the operation ``P`` in
+AAELF64_ relocation descriptions. It is derived from the r_offset
+field of the relocation.
 
-* The Key, one of ``IA``, ``IB``, ``DA``, ``DB``. The ``GA`` key for
-  signing of generic data is not exposed in this ABI..
+The top 32-bits of the contents of the place is used to encode the
+signing schema for both static and dynamic relocations. This permits
+platforms using relocation compression or SHT_REL dynamic relocations
+to encode relocation addends in the bottom 32-bits. Given that the
+maximum size of link-units using the small code-model is 4 gigabytes
+this should be sufficient.
 
-* The constant discriminator value.
-
-* Whether to combine address diversity with the discriminator.
-
-In ELF we have the following places where we can encode this
-information via a combination of.
-
-* The relocation code.
-
-  * The relocation code could be used to communicate key and address
-    diversity. There are not enough spare codes to describe a
-    discriminator.
-
-* The relocation addend.
-
-  * AArch64 uses the ``RELA`` format which gives a 64-bit addend
-    field. At a cost of limiting the size of the program, a number of
-    bits of the addend could be reserved for communicating metadata.
-
-* Writing data into the contents of the place being relocated.
-
-  * The place is the operation ``P`` in relocation descriptions. It is
-    derived from the r_offset field of the relocation.
-
-  * When using ``RELA`` relocations, the contents of the place are
-    ignored. The metadata could be written into the contents of the
-    place and combined with the relocation.
-
-* Implicit rules such as altering the behavior of existing relocations.
-
-  * If there is an implicit signing schema for the GOT and every GOT
-    entry is signed with that schema we may not need any
-    per-relocation encoding of the schema.
-
-Some observations:
-
-* Using the relocation code to encode key and address diversity would
-  require 8 relocations to save 3-bits of metadata. If the ``GI`` key
-  was supported by the ABI, 16 relocations would be needed to save
-  4-bits of metadata.
-
-* Although ABI compliant ELF relocatable objects use ``RELA``
-  relocations, the type used in the link-unit is platform ABI. There
-  are at least two documented relocation compression mechanisms
-  (Android and ``SHT_RELR``) and at least one platform that can
-  support REL dynamic relocations.
-
-  * In ``SHT_RELR`` the addend is written to the contents of the place
-    like ``SHT_REL`` relocations.
-
-* If the GOT is signed and the explicit signing schema is used then
-  the contents of the place of the relocation cannot be used to store
-  the metadata as the linker creates the GOT entry.
-
-* When not dynamic linking a static linker may choose to encode the
-  pointer signing information in a custom encoding understood by the
-  start-up code used.
-
-The initial ABI proposition is, with one exception, to use the top
-32-bits of the contents of the place to encode the signing schema for
-both static and dynamic relocations. This permits platforms using
-relocation compression or SHT_REL dynamic relocations to encode
-relocation addends in the bottom 32-bits. Given that the maximum size
-of link-units using the small code-model is 4 gigabytes this should be
-sufficient. The exception is when a signed GOT using the explicit
-signing schema is used as there is no contents of the place to write
-the metadata to. Instead the relocation addend will be used instead.
+.. class:: pauthabiencoding
 
 +------+-------------------+----------+----------+----------+---------------+---------------------+
 | 63   | 62                | 61       | 60:59    | 58:48    |  47:32        | 31:0                |
@@ -673,20 +611,60 @@ the metadata to. Instead the relocation addend will be used instead.
 | auth | address diversity | reserved | key      | reserved | discriminator | reserved for addend |
 +------+-------------------+----------+----------+----------+---------------+---------------------+
 
-Questions/Issues
+* ``auth`` is a single bit to denote that the value represents metadata
 
-* There are 12 reserved bits that can be used to increase either:
+  * Review Question: Do we need this? It should only be present when
+    there is an AUTH variant dynamic relocation.
 
-  * discriminator size
+* ``address diversity`` is a single bit that when set, denotes that
+  the pointer has address diversity. The place (relocation target
+  address) will be blended with the discriminator value.
 
-  * addend size, although 32-bits the addend field in ELF is signed so
-    this would give a maximum program size of 2 Gb, which is half the
-    size the small code-model permits. It could be interpreted as
-    unsigned for the purposes of SHT_AARCH64_RELR as there can't be negative
-    addresses.
+* ``key`` determines the key to be used. Armv8.3-A specifies 5 keys, 4
+  of which can be used by PAUTHELF64. The generic key ``APGA`` is not
+  repesented at the ELF ABI level.
 
-Data relocations
-----------------
+  .. class:: pauthkeyencoding
+
++------------+--------+
+| key name   | field  |
++------------+--------+
+| ``APIA``   |  0b01  |
++------------+--------+
+| ``APIB``   |  0b02  |
++------------+--------+
+| ``APDA``   |  0b03  |
++------------+--------+
+| ``APDB``   |  0b04  |
++------------+--------+
+
+* ``discriminator`` is a 16-bit unsigned integer that after an
+  optional blending (address diversity) forms the ``modifier`` for the
+  sign and authenticate instructions.
+
+* ``reserved for addend`` is used in SHT_AUTH_RELR or SHT_REL
+  relocation implementations where the relocation addend is written to
+  the contents of the place.
+
+For a relocation that involves signing a pointer. If the target symbol
+for a relocation is an undefined weak reference the result of the
+relocation is 0 (nullptr) regardless of the signing schema.
+
+The computation to form the ``modifier`` is the same as
+ARM64E_. ``Place`` is the relocation target address.
+
+* If ``address diversity`` is set and the ``discriminator`` is 0 then
+  ``modifier`` = ``Place``
+
+* If ``address diversity`` is set and the ``discriminator`` is non 0
+  then ``modifier[63:48]`` = ``discriminator`` and ``modifier[47:0]``
+  = ``Place``
+
+* If ``address diversity`` is not set then ``modifier`` =
+  ``discriminator`` zero-extended to 64-bits.
+
+Static Data relocations
+-----------------------
 
 .. class:: pauthabielf64-data-relocations
 
@@ -1064,3 +1042,75 @@ The disadvantages of this mechanism:
 
 * Encoding the signing schema in the addend field limits the size of
   the addend field which may cause incompatibilities in some programs.
+
+Appendix thoughts on encoding a signing schema
+==============================================
+
+This section describes some of the trade-offs behind choosing a
+signing schema. It is not part of the ABI.
+
+To create a signed pointer the run-time system needs to know the
+signing schema to use for the pointer. The object producer and static
+linker will need to communicate this via metadata; including at least:
+
+* The Key, one of ``IA``, ``IB``, ``DA``, ``DB``. The ``GA`` key for
+  signing of generic data is not exposed in this ABI..
+
+* The constant discriminator value.
+
+* Whether to combine address diversity with the discriminator.
+
+In ELF we have the following places where we can encode this
+information via a combination of.
+
+* The relocation code.
+
+  * The relocation code could be used to communicate key and address
+    diversity. There are not enough spare codes to describe a
+    discriminator.
+
+* The relocation addend.
+
+  * AArch64 uses the ``RELA`` format which gives a 64-bit addend
+    field. At a cost of limiting the size of the program, a number of
+    bits of the addend could be reserved for communicating metadata.
+
+* Writing data into the contents of the place being relocated.
+
+  * The place is the operation ``P`` in relocation descriptions. It is
+    derived from the r_offset field of the relocation.
+
+  * When using ``RELA`` relocations, the contents of the place are
+    ignored. The metadata could be written into the contents of the
+    place and combined with the relocation.
+
+* Implicit/Default rules such as altering the behavior of existing
+  relocations.
+
+  * If there is an implicit signing schema for the GOT and every GOT
+    entry is signed with that schema we may not need any
+    per-relocation encoding of the schema.
+
+Some observations:
+
+* Using the relocation code to encode key and address diversity would
+  require 8 relocations to save 3-bits of metadata. If the ``GI`` key
+  was supported by the ABI, 16 relocations would be needed to save
+  4-bits of metadata.
+
+* Although ABI compliant ELF relocatable objects use ``RELA``
+  relocations, the type used in the link-unit is platform ABI. There
+  are at least two documented relocation compression mechanisms
+  (Android and ``SHT_RELR``) and at least one platform that can
+  support REL dynamic relocations.
+
+  * In ``SHT_RELR`` the addend is written to the contents of the place
+    like ``SHT_REL`` relocations.
+
+* If the GOT is signed and the explicit signing schema is used then
+  the contents of the place of the relocation cannot be used to store
+  the metadata as the linker creates the GOT entry.
+
+* When not dynamic linking a static linker may choose to encode the
+  pointer signing information in a custom encoding understood by the
+  start-up code used.
