@@ -5,7 +5,7 @@
 
 .. |release| replace:: 2020Q3
 .. |date-of-issue| replace:: 1\ :sup:`st` October 2020
-.. |copyright-date| replace:: 2011-2020
+.. |copyright-date| replace:: 2018-2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 

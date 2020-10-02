@@ -299,7 +299,7 @@ Change history
 |       |2020Q3 | 1\ :sup:`st` October 2020           | - document released on Github                                               |
 |       |       |                                     | - new Licence_: CC-BY-SA-4.0                                                |
 |       |       |                                     | - new sections on Contributions_, `Trademark notice`_, and Copyright_       |
-|       |       |                                     | - specify ABI handling for 8.7-A's new FPCR bits                            |
+|       |       |                                     | - `Table 1`_: added a missing table entry for Tag_DSP_extension             |
 +-------+-------+-------------------------------------+-----------------------------------------------------------------------------+
 
 References
