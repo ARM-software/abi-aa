@@ -639,7 +639,12 @@ this should be sufficient.
 
 * ``reserved for addend`` is used in SHT_AUTH_RELR or SHT_REL
   relocation implementations where the relocation addend is written to
-  the contents of the place.
+  the contents of the place. It must be set to 0 if not used for an
+  addend.
+
+* ``reserved`` are bits reserved for future expansion. These bits must
+  be set to 0 by a producer. A consumer must not assume that reserved
+  bits are set to 0.
 
 For a relocation that involves signing a pointer. If the target symbol
 for a relocation is an undefined weak reference the result of the
