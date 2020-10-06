@@ -605,16 +605,11 @@ this should be sufficient.
 
 .. class:: pauthabiencoding
 
-+------+-------------------+----------+----------+----------+---------------+---------------------+
-| 63   | 62                | 61       | 60:59    | 58:48    |  47:32        | 31:0                |
-+======+===================+==========+==========+==========+===============+=====================+
-| auth | address diversity | reserved | key      | reserved | discriminator | reserved for addend |
-+------+-------------------+----------+----------+----------+---------------+---------------------+
-
-* ``auth`` is a single bit to denote that the value represents metadata
-
-  * Review Question: Do we need this? It should only be present when
-    there is an AUTH variant dynamic relocation.
++-------------------+----------+----------+----------+---------------+---------------------+
+| 63                | 62       | 61:60    | 59:48    |  47:32        | 31:0                |
++===================+==========+==========+==========+===============+=====================+
+| address diversity | reserved | key      | reserved | discriminator | reserved for addend |
++-------------------+----------+----------+----------+---------------+---------------------+
 
 * ``address diversity`` is a single bit that when set, denotes that
   the pointer has address diversity. The place (relocation target
