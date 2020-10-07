@@ -3,7 +3,7 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 0.1
+.. |release| replace:: 0.2
 .. |date-of-issue| replace:: 1\ :sup:`st` October 2020
 .. |copyright-date| replace:: 2020
 
@@ -200,7 +200,12 @@ This document is at **Alpha** release quality.
 +============+=====================+==================================================================+
 | 0.1        | 21st September 2020 | Alpha draft release                                              |
 +------------+---------------------+------------------------------------------------------------------+
-
+| 0.2        | 7th  October 2020   | Restructure after initial review comments: move GOT relocations  |
+|            |                     | with custom signing schema to appendix along with commentary.    |
+|            |                     | Specify AUTH variant dynamic relocations and tighten up          |
+|            |                     | descriptions of existing encoding and relocations. Add           |
+|            |                     | description of SHT_AUTH_RELR.                                    |
++------------+---------------------+------------------------------------------------------------------+
 
 References
 ----------
