@@ -206,6 +206,10 @@ This document is at **Alpha** release quality.
   |            |                     | descriptions of existing encoding and relocations. Add           |
   |            |                     | description of SHT_AUTH_RELR.                                    |
   +------------+---------------------+------------------------------------------------------------------+
+  | 0.3        | 14th October 2020   | Delete the appendix giving an encoding for GOT generating        |
+  |            |                     | relocations using the relocation addend to carry the signing     |
+  |            |                     | signing schema.                                                  |
+  +------------+---------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -937,122 +941,6 @@ number for the ABI.
 This ABI does not determine the format of the vendor/platform
 identifier. Arm reserves the value 0 for bare-metal no assoiciated
 platform. This represents the empty string.
-
-Appendix alternative signing schema for the GOT
-===============================================
-
-One option for the signing the GOT is have the compiler encode the
-signing schema in a GOT generating relocation. This permits each
-individual GOT entry to use its own signing schema, or no signing
-schema at all; at the cost of implementation complexity and a limit to
-the size of the program.
-
-The PAuth ABI does not propose that this be implemented.
-
-As the linker generates the pointer in the GOT the contents of the
-place of the GOT generating relocation is an instruction so the
-signing schema cannot be encoded in the contents of the place. The
-relocation addend is used instead.
-
-``ADDEND(A)`` extracts the addend field from the bottom 32-bits of the
-64 bit RELA addend field (signextend64, A & 0xffffffff)
-
-``SCHEMA(A)`` extracts the signing schema from the top 32-bits of the
-64 bit RELA addend field A >> 32;
-
-``ENCD(value, schema)`` is the encoding of the signing schema into the
-GOT slot.
-
-.. table:: Alternative GOT generating relocations
-
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | ELF 64 Code | Name                                   | Operation                                             | Comment                  |
-  +=============+========================================+=======================================================+==========================+
-  | 0x8110      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0     | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))) - GOT         | Set a MOV[NZ] immediate  |
-  |             |                                        |                                                       | field to bits [15:0] of  |
-  |             |                                        |                                                       | X (see notes below)      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8111      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0\_NC | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))) - GOT         | Set a MOV[NZ] immediate  |
-  |             |                                        |                                                       | field to bits [15:0] of  |
-  |             |                                        |                                                       | X (see notes below)      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8112      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1     | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))) - GOT         | Set a MOV[NZ] immediate  |
-  |             |                                        |                                                       | field to bits [31:16] of |
-  |             |                                        |                                                       | X (see notes below)      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8113      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1\_NC | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))) - GOT         | Set a MOV[NZ] immediate  |
-  |             |                                        |                                                       | field to bits [31:16] of |
-  |             |                                        |                                                       | X (see notes below)      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8114      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2     | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))) - GOT         | Set a MOV[NZ] immediate  |
-  |             |                                        |                                                       | field to bits [47:32] of |
-  |             |                                        |                                                       | X (see notes below)      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8115      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2\_NC | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))) - GOT         | Set a MOV[NZ] immediate  |
-  |             |                                        |                                                       | field to bits [47:32] of |
-  |             |                                        |                                                       | X (see notes below)      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8116      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G3     | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))) - GOT         | Set a MOV[NZ] immediate  |
-  |             |                                        |                                                       | field to bits [63:48] of |
-  |             |                                        |                                                       | X (see notes below)      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8117      | R\_AARCH64\_AUTH\_GOT\_LD\_PREL19      | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))) - P           | Set a load-literal im-   |
-  |             |                                        |                                                       | mediate field to bits    |
-  |             |                                        |                                                       | [20:2] of X; check       |
-  |             |                                        |                                                       | –2\ :sup:`20` <= X <     |
-  |             |                                        |                                                       | 2\ :sup:`20`             |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8118      | R\_AARCH64\_AUTH\_LD64\_GOTOFF\_LO15   | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))))- GOT         | Set the immediate        |
-  |             |                                        |                                                       | value of an ADRP         |
-  |             |                                        |                                                       | to bits [32:12] of X;    |
-  |             |                                        |                                                       | check that –2\ :sup:`32` |
-  |             |                                        |                                                       | <= X < 2\ :sup:`32`      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x8119      | R\_AARCH64\_AUTH\_ADR\_GOT\_PAGE       | Page(G(ENCD(GDAT(S+ ADDEND(A))), SCHEMA(A)))- Page(P) | Set the immediate        |
-  |             |                                        |                                                       | value of an ADRP         |
-  |             |                                        |                                                       | to bits [32:12] of X;    |
-  |             |                                        |                                                       | check that –2\ :sup:`32` |
-  |             |                                        |                                                       | <= X < 2\ :sup:`32`      |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x811A      | R\_AARCH64\_AUTH\_GOT\_LO12_NC         | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A)))               | Set the LD/ST immediate  |
-  |             |                                        |                                                       | field to bits [11:3] of  |
-  |             |                                        |                                                       | X. No overflow check;    |
-  |             |                                        |                                                       | check that X&7 = 0       |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x811B      | R\_AARCH64\_AUTH\_LD64\_GOTPAGE\_LO15  | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A))))- Page(GOT)   | Set the LD/ST immediate  |
-  |             |                                        |                                                       | field to bits [14:3] of  |
-  |             |                                        |                                                       | X; check that 0 <= X  <  |
-  |             |                                        |                                                       | 2\ :sup:`15`             |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-  | 0x811C      | R\AARCH64\_AUTH\_GOT\_ADD_LO12_NC      | G(ENCD(GDAT(S + ADDEND(A)), SCHEMA(A)))               | Set an ADD immediate     |
-  |             |                                        |                                                       | value to bits [11:0] of  |
-  |             |                                        |                                                       | X. No overflow check.    |
-  +-------------+----------------------------------------+-------------------------------------------------------+--------------------------+
-
-The advantages of this mechanism:
-
-* Compiler/assembler communicates the signing schema it has used.
-
-* Only the GOT entries that need to be signed are signed.
-
-* Potential for different translation units to use a different GOT
-  signing schema.
-
-The disadvantages of this mechanism:
-
-* Complexity in the tools to encode the relocation.
-
-* Many static linkers make the assumption of one GOT entry per
-  symbol. If multiple signing schemas for the same pointer were
-  supported then considerable complexity could be added to static
-  linkers.
-
-* If multiple signing schemas for the same pointer are not supported
-  then a static linker must check for relocatable objects for
-  compatibility.
-
-* Encoding the signing schema in the addend field limits the size of
-  the addend field which may cause incompatibilities in some programs.
 
 Appendix thoughts on encoding a signing schema
 ==============================================
