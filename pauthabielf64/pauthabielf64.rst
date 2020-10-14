@@ -209,6 +209,7 @@ This document is at **Alpha** release quality.
   | 0.3        | 14th October 2020   | Delete the appendix giving an encoding for GOT generating        |
   |            |                     | relocations using the relocation addend to carry the signing     |
   |            |                     | signing schema.                                                  |
+  |            |                     | Move the remaining GOT signing text to an optional appendix      |
   +------------+---------------------+------------------------------------------------------------------+
 
 References
@@ -434,68 +435,30 @@ example if the platform does not support lazy binding and both the GOT
 and PLT GOT are RELRO then there is no need to implement support for
 AUTH variant dynamic relocations.
 
-GOT Signing
------------
-
-This section does not include the subset of the GOT used by the PLT,
-this subset is referred to as the PLT GOT and is described in its own
-section. The signing schema for the PLT GOT can be different to the
-signing schema used for the rest of the GOT.
+RELRO GOT
+---------
 
 The GOT is a linker generated table of pointers, where each entry is
 created as a result of a GOT-creating relocation present in a
-relocatable object. Many GOT entries will have a dynamic relocation
-that the dynamic linker will resolve at program load time. Once the
-GOT has been relocated it can be re-mapped as read-only (RELRO). If
-the GOT is RELRO then it does not need to be signed, but if the
-platform or link-unit (-z norelro) does not support RELRO for the GOT
-will be writeable for the lifetime of the program. There is scope for
-some or all of the pointers in the GOT to be signed.
+relocatable object. The GOT is normally split into two subsets, the
+GOT and the PLT GOT. With the PLT GOT made up of code pointers that
+are only accessed by linker generated PLT sequences. As the PLT GOT is
+not accessed directly by code in relocatable objects will be covered
+in a separate section of the document.
 
-If a pointer in the GOT is signed then the dynamic linker must sign the
-pointer at load time, and the code that loads the pointer from the GOT
-must authenticate it using the same signing schema.
+The pointers in the GOT may include pointers to code so there is a
+question of whether these pointers should be signed and if so, how
+should they be signed?
 
-The ABI recommends that if RELRO is available the GOT is not
-signed. The standard GOT-generating from AAELF64_ can be used for all
-pointers in the GOT.
+The value of many of the pointers in the GOT is not known at static
+link time, these GOT entries will have a dynamic relocation that a
+dynamic linker will resolve at program load time. Once the GOT has
+been relocated it can be re-mapped as read-only (RELRO). If the GOT is
+RELRO then the GOT does not need to be signed.
 
-PAUTHELF64 describes a default signing schema for GOT entries and
-AUTH variant GOT-generating relocations that can be used to create
-signed pointers in the GOT.
-
-Default signing schema
-^^^^^^^^^^^^^^^^^^^^^^
-
-Signed GOT entries use the ``IA`` key for symbols of type ``STT_FUNC``
-and the ``DA`` key for all other symbol types, with the address of the
-GOT entry as the modifier. The static linker must encode the signing
-schema into the GOT slot. AUTH variant dynamic relocations must be
-used for signed GOT entries.
-
-Example Code to access a signed GOT entry
-
-.. code-block:: asm
-
-  adrp x8, :got_auth: symbol
-  add x8, x8, :got_auth_lo12: symbol
-  ldr x0, [x8]
-  // Authenticate to get unsigned pointer
-  autia x0, x8
-
-In the example the :got_auth: and :got_auth_lo12: operators result in
-AUTH variant GOT generating relocations being used.
-
-Compatibility
-^^^^^^^^^^^^^
-
-If there are AUTH and non-AUTH variant GOT generating relocations to
-the same symbol two GOT entries are required, one signed and one
-unsigned. While not a hard limitation many static linkers only support
-a single GOT entry per symbol. An implementation may choose to fault
-an AUTH and a non-AUTH GOT generating relocation to the same symbol,
-this would require all the GOT-generating relocations to a symbol to
-be signed or unsigned.
+As a majority of platforms support RELRO and assuming a RELRO GOT
+simplifies the ABI this document will assume an unsigned GOT. An
+optional appendix describes how a GOT can be signed.
 
 PLT GOT signing
 ---------------
@@ -547,17 +510,12 @@ into a single instruction braa x17, x16
 Recording a signed PLT GOT in the ELF file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The static linker communicates a signed PLT GOT entry with an AUTH
-variant ``R_AARCH64_AUTH_JUMP_SLOT`` dynamic relocation with the
-signing schema encoded in the contents of the place.
-
-The dynamic tag ``DT_AARCH64_PAC_PLT`` must also be set if the signing
-schema is the same as the existing ABI. We chose to use
-``R_AARCH64_AUTH_JUMP_SLOT`` as well as ``DT_AARCH64_PAC_PLT`` so we
-can choose to vary the PLT GOT signing schema in future releases,
-which we can do by altering the signing schema encoded in the contents
-of the place of the relocation and dropping the ``DT_AARCH64_PAC_PLT``
-tag.
+The dynamic tag ``DT_AARCH64_PAC_PLT`` must be set if the signing
+schema is the same as the existing ABI. When this dynamic tag is
+present a dynamic loader must sign the result of a
+``R_AARCH64_JUMP_SLOT`` using the signing schema above. We do not
+define an additional ``R_AARCH64_AUTH_JUMP_SLOT`` as the static linker
+will only generate one type of PLT entry in a link-unit.
 
 Section Types
 =============
@@ -594,9 +552,8 @@ Encoding of authenticated pointer
 ---------------------------------
 
 This ABI requires the creation of signed pointers at program start up
-by the run-time environment. There are a number of possible encoding
-schemas, each with its own trade-off. We are seeking feedback from
-platform owners about the most convenient form.
+by the run-time environment. The signing schema to be used by the
+run-time environment is encoded in the place to be relocated.
 
 Encoding the signing schema
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -688,82 +645,6 @@ Static Data relocations
 This is the equivalent of the arm64e ARM64_RELOC_AUTHENTICATED
 relocation. It can also be used as a dynamic relocation.
 
-AUTH variant GOT Generating Relocations
----------------------------------------
-
-``ENCD(value)`` is the encoding of the signing schema into the GOT
-slot using the ``IA`` key for symbols of type STT_FUNC and the ``DA``
-key for all other symbol types. The address of the GOT slot ``G`` is
-used as a modifer.
-
-The GOT entries must be relocated by AUTH variant dynamic relocations.
-
-.. table:: PAuth GOT generating relocations
-
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | ELF 64 Code | Name                                   | Operation                        | Comment                  |
-  +=============+========================================+==================================+==========================+
-  | 0x8110      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0     | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [15:0] of  |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8111      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0\_NC | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [15:0] of  |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8112      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1     | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [31:16] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8113      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1\_NC | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [31:16] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8114      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2     | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [47:32] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8115      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2\_NC | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [47:32] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8116      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G3     | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [63:48] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8117      | R\_AARCH64\_AUTH\_GOT\_LD\_PREL19      | G(ENCD(GDAT(S + A))) - P         | Set a load-literal im-   |
-  |             |                                        |                                  | mediate field to bits    |
-  |             |                                        |                                  | [20:2] of X; check       |
-  |             |                                        |                                  | –2\ :sup:`20` <=         |
-  |             |                                        |                                  | X < 2 \ :sup:`20`        |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8118      | R\_AARCH64\_AUTH\_LD64\_GOTOFF\_LO15   | G(ENCD(GDAT(S + A))) - GOT       | Set the immediate        |
-  |             |                                        |                                  | value of an ADRP         |
-  |             |                                        |                                  | to bits [32:12] of X;    |
-  |             |                                        |                                  | check that –2\ :sup:`32` |
-  |             |                                        |                                  | <= X < 2\ :sup:`32`      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8119      | R\_AARCH64\_AUTH\_ADR\_GOT\_PAGE       | G(ENCD(GDAT(S + A))) - Page(P)   | Set the immediate        |
-  |             |                                        |                                  | value of an ADRP         |
-  |             |                                        |                                  | to bits [32:12] of X;    |
-  |             |                                        |                                  | check that –2\ :sup:`32` |
-  |             |                                        |                                  | <= X < 2\ :sup:`32`      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x811A      | R\_AARCH64\_AUTH\_GOT\_LO12_NC         | G(ENCD(GDAT(S + A)))             | Set the LD/ST immediate  |
-  |             |                                        |                                  | field to bits [11:3] of  |
-  |             |                                        |                                  | X. No overflow check;    |
-  |             |                                        |                                  | check that X&7 = 0       |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x811B      | R\_AARCH64\_AUTH\_LD64\_GOTPAGE\_LO15  | G(ENCD(GDAT(S + A))) - Page(GOT) | Set the LD/ST immediate  |
-  |             |                                        |                                  | field to bits [14:3] of  |
-  |             |                                        |                                  | X; check that 0 <= X  <  |
-  |             |                                        |                                  | 2\ :sup:`15`             |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x811C      | R\AARCH64\_AUTH\_GOT\_ADD_LO12_NC      | G(ENCD(GDAT(S + A)))             | Set an ADD immediate     |
-  |             |                                        |                                  | value to bits [11:0] of  |
-  |             |                                        |                                  | X. No overflow check.    |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-
 AUTH variant Dynamic Relocations
 ================================
 
@@ -786,15 +667,7 @@ the dynamic linker signing value with schema.
   +====================+==============================+====================================+
   | 0xE100             | R\_AARCH64\_AUTH\_ABS64      | AUTH(S + A, SCHEMA(\*P))           |
   +--------------------+------------------------------+------------------------------------+
-  | 0xE200             | R\_AARCH64\_AUTH\_GLOB\_DAT  | AUTH((S + A), SCHEMA(\*P))         |
-  +--------------------+------------------------------+------------------------------------+
-  | 0xE201             | R\_AARCH64\_AUTH\_JUMP\_SLOT | AUTH((S + A), SCHEMA(\*P))         |
-  +--------------------+------------------------------+------------------------------------+
-  | 0xE202             | R\_AARCH64\_AUTH\_RELATIVE   | AUTH(DELTA(S) + A, SCHEMA(\*P))    |
-  +--------------------+------------------------------+------------------------------------+
-  | 0xE203             | R\_AARCH64\_AUTH\_TLSDESC    | AUTH(TLSDESC(S + A), SCHEMA(\*P))  |
-  +--------------------+------------------------------+------------------------------------+
-  | 0xE204             | R\_AARCH64\_AUTH\_IRELATIVE  | AUTH(Indirect(S + A), SCHEMA(\*P)) |
+  | 0xE200             | R\_AARCH64\_AUTH\_RELATIVE   | AUTH(DELTA(S) + A, SCHEMA(\*P))    |
   +--------------------+------------------------------+------------------------------------+
 
 Dynamic Section
@@ -941,6 +814,159 @@ number for the ABI.
 This ABI does not determine the format of the vendor/platform
 identifier. Arm reserves the value 0 for bare-metal no assoiciated
 platform. This represents the empty string.
+
+Appendix Signed GOT
+===================
+
+If the program (-z norelo) or platform does not support RELRO the GOT
+will be writeable for the lifetime of the program. There is scope for
+some or all of the pointers in the GOT to protect against an attacker
+modifying the GOT.
+
+If a pointer in the GOT is to be signed then the dynamic linker must
+sign the pointer at load time, and the code that loads the pointer
+from the GOT must authenticate it using the same signing schema.
+
+PAUTHELF64 describes a default signing schema for GOT entries and
+AUTH variant GOT-generating relocations that can be used to create
+signed pointers in the GOT.
+
+Default signing schema
+----------------------
+
+Signed GOT entries use the ``IA`` key for symbols of type ``STT_FUNC``
+and the ``DA`` key for all other symbol types, with the address of the
+GOT entry as the modifier. The static linker must encode the signing
+schema into the GOT slot. AUTH variant dynamic relocations must be
+used for signed GOT entries.
+
+Example Code to access a signed GOT entry
+
+.. code-block:: asm
+
+  adrp x8, :got_auth: symbol
+  add x8, x8, :got_auth_lo12: symbol
+  ldr x0, [x8]
+  // Authenticate to get unsigned pointer
+  autia x0, x8
+
+In the example the :got_auth: and :got_auth_lo12: operators result in
+AUTH variant GOT generating relocations being used.
+
+AUTH variant GOT Generating Relocations
+---------------------------------------
+
+``ENCD(value)`` is the encoding of the signing schema into the GOT
+slot using the ``IA`` key for symbols of type STT_FUNC and the ``DA``
+key for all other symbol types. The address of the GOT slot ``G`` is
+used as a modifer.
+
+The GOT entries must be relocated by AUTH variant dynamic relocations.
+
+.. table:: PAuth GOT generating relocations
+
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | ELF 64 Code | Name                                   | Operation                        | Comment                  |
+  +=============+========================================+==================================+==========================+
+  | 0x8110      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0     | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
+  |             |                                        |                                  | field to bits [15:0] of  |
+  |             |                                        |                                  | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8111      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0\_NC | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
+  |             |                                        |                                  | field to bits [15:0] of  |
+  |             |                                        |                                  | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8112      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1     | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
+  |             |                                        |                                  | field to bits [31:16] of |
+  |             |                                        |                                  | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8113      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1\_NC | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
+  |             |                                        |                                  | field to bits [31:16] of |
+  |             |                                        |                                  | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8114      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2     | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
+  |             |                                        |                                  | field to bits [47:32] of |
+  |             |                                        |                                  | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8115      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2\_NC | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
+  |             |                                        |                                  | field to bits [47:32] of |
+  |             |                                        |                                  | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8116      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G3     | G(ENCD(GDAT(S + A))) - GOT       | Set a MOV[NZ] immediate  |
+  |             |                                        |                                  | field to bits [63:48] of |
+  |             |                                        |                                  | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8117      | R\_AARCH64\_AUTH\_GOT\_LD\_PREL19      | G(ENCD(GDAT(S + A))) - P         | Set a load-literal im-   |
+  |             |                                        |                                  | mediate field to bits    |
+  |             |                                        |                                  | [20:2] of X; check       |
+  |             |                                        |                                  | –2\ :sup:`20` <=         |
+  |             |                                        |                                  | X < 2 \ :sup:`20`        |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8118      | R\_AARCH64\_AUTH\_LD64\_GOTOFF\_LO15   | G(ENCD(GDAT(S + A))) - GOT       | Set the immediate        |
+  |             |                                        |                                  | value of an ADRP         |
+  |             |                                        |                                  | to bits [32:12] of X;    |
+  |             |                                        |                                  | check that –2\ :sup:`32` |
+  |             |                                        |                                  | <= X < 2\ :sup:`32`      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x8119      | R\_AARCH64\_AUTH\_ADR\_GOT\_PAGE       | G(ENCD(GDAT(S + A))) - Page(P)   | Set the immediate        |
+  |             |                                        |                                  | value of an ADRP         |
+  |             |                                        |                                  | to bits [32:12] of X;    |
+  |             |                                        |                                  | check that –2\ :sup:`32` |
+  |             |                                        |                                  | <= X < 2\ :sup:`32`      |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x811A      | R\_AARCH64\_AUTH\_GOT\_LO12_NC         | G(ENCD(GDAT(S + A)))             | Set the LD/ST immediate  |
+  |             |                                        |                                  | field to bits [11:3] of  |
+  |             |                                        |                                  | X. No overflow check;    |
+  |             |                                        |                                  | check that X&7 = 0       |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x811B      | R\_AARCH64\_AUTH\_LD64\_GOTPAGE\_LO15  | G(ENCD(GDAT(S + A))) - Page(GOT) | Set the LD/ST immediate  |
+  |             |                                        |                                  | field to bits [14:3] of  |
+  |             |                                        |                                  | X; check that 0 <= X  <  |
+  |             |                                        |                                  | 2\ :sup:`15`             |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x811C      | R\AARCH64\_AUTH\_GOT\_ADD_LO12_NC      | G(ENCD(GDAT(S + A)))             | Set an ADD immediate     |
+  |             |                                        |                                  | value to bits [11:0] of  |
+  |             |                                        |                                  | X. No overflow check.    |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
+           
+Additional AUTH variant Dynamic Relocations for Signed GOT
+==========================================================
+
+The dynamic relocations required for the PAuth ABI are built on the
+existing dynamic relocations, for example ``R_AARCH64_AUTH_RELATIVE``
+is the PAuth ABI equivalent of ``R_AARCH64_RELATIVE``. The underlying
+calculation performed by the dynamic linker is the same, the only
+difference is that the resulting pointer is signed. The dynamic linker
+reads the signing schema from the contents of the place of the dynamic
+relocation.
+
+SCHEMA(\*P) represents the dynamic linker reading the signing schema
+from the contents of the place ``P``.  AUTH(value, schema) represents
+the dynamic linker signing value with schema.
+
+.. table:: Additional AUTH Dynamic relocations
+
+  +--------------------+------------------------------+------------------------------------+
+  | Relocation code    | Name                         | Operation                          |
+  +====================+==============================+====================================+
+  | 0xE201             | R\_AARCH64\_AUTH\_GLOB\_DAT  | AUTH((S + A), SCHEMA(\*P))         |
+  +--------------------+------------------------------+------------------------------------+
+  | 0xE202             | R\_AARCH64\_AUTH\_TLSDESC    | AUTH(TLSDESC(S + A), SCHEMA(\*P))  |
+  +--------------------+------------------------------+------------------------------------+
+  | 0xE203             | R\_AARCH64\_AUTH\_IRELATIVE  | AUTH(Indirect(S + A), SCHEMA(\*P)) |
+  +--------------------+------------------------------+------------------------------------+
+
+Compatibility between relocatable object files
+----------------------------------------------
+
+Relocatable objects in the same link-unit must agree on whether a GOT
+entry is signed. If there are AUTH and non-AUTH variant GOT generating
+relocations to the same symbol two GOT entries are required, one
+signed and one unsigned. While not a hard limitation many static
+linkers only support a single GOT entry per symbol. An implementation
+may choose to fault an AUTH and a non-AUTH GOT generating relocation
+to the same symbol, this would require all the GOT-generating
+relocations to a symbol to be signed or unsigned.
 
 Appendix thoughts on encoding a signing schema
 ==============================================
