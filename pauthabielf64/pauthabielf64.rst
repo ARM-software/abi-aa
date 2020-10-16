@@ -752,19 +752,19 @@ Run-time dynamic linking
 ========================
 
 On many platforms programs can load shared libraries at run-time via
-dlopen and access symbols in that library via ``dlsym`` or
+``dlopen`` and access symbols in that library via ``dlsym`` or
 ``dlvsym``. Some or all of these pointers may be signed. The signing
 schema for these functions is a platform decision that the compiled
-code and implementation of dlsym agree on.
+code and implementation of ``dlsym`` agree on.
 
 The PAuth ABI uses a simple simple implicit signing schema. If the
-symbol found by dlsym has type STT_FUNC the address to be returned is
-signed with the ``IA`` key with a 0 modifier. Otherwise the address is
-not signed.
+symbol found by ``dlsym`` has type ``STT_FUNC`` the address to be
+returned is signed with the ``IA`` key with a 0 modifier. Otherwise
+the address is not signed.
 
 An optional extension that communicates the signing schema for a
 symbol to the dynamic linker can be found in Appendix extension to
-recording signing schema for dlsym.
+recording signing schema for ``dlsym``.
 
 ELF Marking
 ===========
@@ -887,14 +887,14 @@ follows:
   bits are set to 0.
 
 * ``sign`` indicates whether the address of the symbol should be
-  signed when its addres is taken by dlsym.
+  signed when its addres is taken by ``dlsym``.
 
 * ``set`` indicates whether an assembly directive was used to set the
   signing schema. This may be used by the linker to detect cases where
   a directive was required but was not present.
 
 There is no ``address diversity`` field as this has no meaning for
-symbols returned by dlsym.
+symbols returned by ``dlsym``.
 
 For ELF shared libraries and executables that support dynamic linking
 the static linker creates a SHT_AARCH64_AUTH_SYM section with name
