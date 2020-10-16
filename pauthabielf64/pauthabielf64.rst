@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 0.2
-.. |date-of-issue| replace:: 1\ :sup:`st` October 2020
+.. |release| replace:: 0.3
+.. |date-of-issue| replace:: 15\ :sup:`th` October 2020
 .. |copyright-date| replace:: 2020
 
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
@@ -12,6 +12,7 @@
 .. _ARM64E: https://github.com/apple/llvm-project/blob/a63a81bd9911f87a0b5dcd5bdd7ccdda7124af87/clang/docs/PointerAuthentication.rst
 .. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html
+.. _SCO-ELF: http://www.sco.com/developers/gabi/
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
 
 .. footer::
@@ -210,6 +211,7 @@ This document is at **Alpha** release quality.
   |            |                     | relocations using the relocation addend to carry the signing     |
   |            |                     | signing schema.                                                  |
   |            |                     | Move the remaining GOT signing text to an optional appendix      |
+  |            |                     | Provide details for the ELF marking scheme                       |
   +------------+---------------------+------------------------------------------------------------------+
 
 References
@@ -231,6 +233,8 @@ This document refers to, or is referred to by, the following documents.
   | CPPABI64_                                                                               | IHI 0059                                                    | C++ ABI for the Arm 64-bit Architecture                                  |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | LSB_                                                                                    |                                                             | Linux Standards Base                                                     |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
+  | SCO-ELF_                                                                                | http://www.sco.com/developers/gabi/                         | System V Application Binary Interface – DRAFT                            |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | TLSDESC_                                                                                | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf | TLS Descriptors for Arm. Original proposal document                      |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
@@ -749,20 +753,16 @@ On many platforms programs can load shared libraries at run-time via
 dlopen and access symbols in that library via ``dlsym`` or
 ``dlvsym``. Some or all of these pointers may be signed. The signing
 schema for these functions is a platform decision that the compiled
-code and implementation of dlsym agree on. A simple implicit signing
-schema is for dlsym to sign code pointers but not data pointers. A
-more complex implemenation could add metadata to inform the dynamic
-linker how dlsym should sign the pointer. Finally variants of the
-dlsym, and dlvsym functions could be added with an extra parameter for
-the signing schema.
+code and implementation of dlsym agree on.
 
-TBD A mechanism to support different signing schemas for ``dlsym`` and
-``dlvsym``.
+The PAuth ABI uses a simple simple implicit signing schema. If the
+symbol found by dlsym has type STT_FUNC the address to be returned is
+signed with the ``IA`` key with a 0 modifier. Otherwise the address is
+not signed.
 
-Questions/Issues
-
-* Feedback on whether a signing schema is needed for runtime dynamic linking.
-
+An optional extension that communicates the signing schema for a
+symbol to the dynamic linker can be found in Appendix extension to
+recording signing schema for dlsym.
 
 ELF Marking
 ===========
@@ -777,43 +777,65 @@ schema is expected to evolve over time. Even if the low-level ELF
 extensions remain constant a change to the high-level language mapping
 will result in incompatible ELF files.
 
-Prior Art
----------
+Every relocatable object, executable and shared library that uses the
+PAuth ABI ELF extensions must have a section named
+``.note.AARCH64-PAUTH-ABI-tag`` of type ``SHT_NOTE``. This section is
+structured as a note section as documented in [SCO-ELF_].
 
-* AAELF64_ defines the .note.gnu.property
-  ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` with a feature bit
-  ``GNU_PROPERTY_AARCH64_FEATURE_1_PAC`` which indicates that all
-  executable sections have Return Address Signing enabled.
+The name field (``namesz``/``name``) contains the string "ARM". The
+type field shall be 1. The ``descsz`` field must be at least 16, with
+the first 16 bytes of the description containing 2 64-bit words. With
+the first 64-bit word a platform identifier, and the second 64-bit
+identifier a version number for the ABI. When ``descsz`` is larger
+than 16 the remainder of the contents of desc are defined by the
+(platform id, version number).
 
-* AAELF64_ defines a dynamic tag ``DT_AARCH64_PAC_PLT`` that a static
-  linker must produce if the PLT sequences expect the .plt.got entries
-  to be signed by the dynamic linker.
+This ABI does not determine the format of the platform identifier. Arm
+reserves the platform id 0 for bare-metal no assoiciated
+platform. This also represents the empty string.
 
-The dynamic tag can be reused assuming the PLT GOT is signed using the
-PACRET signing schema. The property and feature cannot be reused as
-the property is defined as: A set of processor features with which an
-ELF object or executable image is compatible, but does not require in
-order to execute correctly
+The (platform id, version number) of (0, 0) is reserved as an invalid
+combination. The program cannot be run when pointer authentication is
+enabled.
 
-Proposal
---------
+The version id in ``.note.AARCH64-PAUTH-ABI-tag`` is not directly
+related to the version number of this document. It is controlled by
+the object-producer based on the signing schema that have been used
+for pointers.
 
-To encode a PAuth ABI version number this ABI follows the structure of
-the .note.ABI-tag from LSB
+Base Compatibility Model
+------------------------
 
-Every relocatable object and executable that uses the PAuth ABI ELF
-extensions must have a section named .note.PAUTH-ABI-tag of type
-SHT_NOTE. This section is structured as a note section as documented
-in the ELF spec. The section must contain at least the following
-entry. The name field (namesz/name) contains the string "ARM". The
-type field shall be 1. The descsz field shall be 16, with the
-description made up of 2 64-bit words. With the first 64-bit word a
-vendor/platform identifier, and the second 64-bit identifier a version
-number for the ABI.
+At a low-level relocatable objects are compatible if they agree on the
+signing schema for the pointers that they access. A per ELF file
+marking scheme is a coarse way of reasoning about the pointers that
+are signed according to the default rules.
 
-This ABI does not determine the format of the vendor/platform
-identifier. Arm reserves the value 0 for bare-metal no assoiciated
-platform. This represents the empty string.
+* The absence of a ``.note.AARCH64-PAUTH-ABI-tag`` section means no
+  information on how pointers are signed is available for this ELF
+  file.
+
+* The presence of a ``.note.AARCH64-PAUTH-ABI-tag`` means that the
+  pointers were signed in a compatible way with the implicit signing
+  rules for tuple (platform id, version number).
+
+* The static linker may fault the combination of relocatable
+  objects that contain ``.note.AARCH64-PAUTH-ABI-tag`` sections with
+  incompatible (platform id, version number) tuples. If an ELF file is
+  produced the output ``.note.AARCH64-PAUTH-ABI-tag`` must have the
+  invalid (platform id, version number) of (0, 0).
+
+* The combination of relocatable objects with
+  ``.note.AARCH64-PAUTH-ABI-tag`` and relocatable objects without a
+  ``.note.AARCH64-PAUTH-ABI-tag`` is not defined by this ABI.
+
+* A dynamic loader that encounters a (platform id, version number)
+  that it does not recognize, or the invalid (0, 0) then it must
+  disable pointer authentication for the process or give an error
+  message.
+
+Platforms may replace the base compatibility model with a platform
+specific model.
 
 Appendix Signed GOT
 ===================
@@ -928,7 +950,7 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   |             |                                        |                                  | value to bits [11:0] of  |
   |             |                                        |                                  | X. No overflow check.    |
   +-------------+----------------------------------------+----------------------------------+--------------------------+
-           
+
 Additional AUTH variant Dynamic Relocations for Signed GOT
 ==========================================================
 
