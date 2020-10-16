@@ -131,6 +131,31 @@ styles:
         parent : table
         colWidths: [ 30%, 10%, 60% ]
 
+    # aadwarf64 styles
+    aadwarf64-change:
+        parent : table
+        colWidths: [ 13%, 25%, 57% ]
+
+    aadwarf64-register-numbers:
+        parent : table
+        colWidths: [ 10%, 30%, 60% ]
+
+    aadwarf64-vendor-cfa-operations:
+        parent : table
+        colWidths: [ 40%, 15%, 15%, 15%, 15% ]
+
+    aadwarf64-vendor-dwarf-expression-operations:
+        parent : table
+        colWidths: [ 80%, 20% ]
+
+    aadwarf64-dwarf-expression-sub-expressions:
+        parent : table
+        colWidths: [ 80%, 20% ]
+
+    aadwarf64-dwarf-pointer-signing-operations:
+        parent : table
+        colWidths: [ 80%, 20% ]
+
     # aaelf64 styles
     aaelf64-change:
         parent : table
