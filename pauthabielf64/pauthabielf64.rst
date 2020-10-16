@@ -211,6 +211,8 @@ This document is at **Alpha** release quality.
   |            |                     | relocations using the relocation addend to carry the signing     |
   |            |                     | signing schema.                                                  |
   |            |                     | Move the remaining GOT signing text to an optional appendix      |
+  |            |                     | Describe the default dlsym signing schema and add .symauth and   |
+  |            |                     | .dynauth as an appendix                                          |
   |            |                     | Provide details for the ELF marking scheme                       |
   +------------+---------------------+------------------------------------------------------------------+
 
@@ -836,6 +838,77 @@ are signed according to the default rules.
 
 Platforms may replace the base compatibility model with a platform
 specific model.
+
+Appendix extension to recording signing schema for dlsym
+========================================================
+
+With additional per-symbol information encoded in the ELF file a
+dynamic linker can look up the signing schema to use for ``dlsym`` or
+``dlvsym`` instead of using the default signing schema.
+
+.symauth and .dynauth sections
+------------------------------
+
+An additional Processor specific section type is added
+
+.. table:: .symauth and .dynauth ELF Section Type
+
+  +-----------------------+------------+---------------------------------------------+
+  | Name                  | Value      | Comment                                     |
+  +=======================+============+=============================================+
+  | SHT_AARCH64_AUTH_SYM  | 0x70000005 | Section type for symbol signing information |
+  +-----------------------+------------+---------------------------------------------+
+
+The pointer authentication information for global symbols is stored in
+a section named .symauth with type SHT_AARCH64_AUTH_SYM, which is
+associated with a symbol table section in a similar way to
+.symtab_shndx. The section is an array of Elf32_Word values. Each
+value corresponds to a non-local symbol table entry in the symbol
+table and appear in the same order as those entries. All local symbols
+in the symbol table precede global symbols so the index in .symauth of
+a global symbol with index ``I`` in the symbol table is ``I`` -
+``Index of first non-local symbol``. Each table entry is specified as
+follows:
+
+.. table:: .symauth and .dynauth entry encoding
+
+  +------+-------+--------------+-------+--------+-----------------+
+  |  31  |  30   | 30-19        | 18-17 |   16   | 15-0            |
+  +======+=======+==============+=======+========+=================+
+  | sign |  set  |   reserved   |  key  |    0   |  discriminator  |
+  +------+-------+--------------+-------+--------+-----------------+
+
+* ``key`` same as in pauthabiencoding.
+
+* ``discriminator`` same as in pauthabiencoding.
+
+* ``reserved`` are bits reserved for future expansion. These bits must
+  be set to 0 by a producer. A consumer must not assume that reserved
+  bits are set to 0.
+
+* ``sign`` indicates whether the address of the symbol should be
+  signed when its addres is taken by dlsym.
+
+* ``set`` indicates whether an assembly directive was used to set the
+  signing schema. This may be used by the linker to detect cases where
+  a directive was required but was not present.
+
+There is no ``address diversity`` field as this has no meaning for
+symbols returned by dlsym.
+
+For ELF shared libraries and executables that support dynamic linking
+the static linker creates a SHT_AARCH64_AUTH_SYM section with name
+.dynauth. This section is associated with the dynamic symbol table. If
+the .dynauth section is present an additional dynamic tag
+DT_AARCH64_AUTH_SYM is added.
+
+.. table:: .dynauth ELF dynamic tag
+
+  +----------------------------+------------+--------+------------+---------------+
+  | Name                       | Value      | d\_un  | Executable | Shared Object |
+  +============================+============+========+============+===============+
+  | DT\_AARCH64\_AUTH\_SYM     | 0x70000008 | d\_ptr | optional   | optional      |
+  +----------------------------+------------+--------+------------+---------------+
 
 Appendix Signed GOT
 ===================
