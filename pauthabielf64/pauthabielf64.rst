@@ -724,17 +724,6 @@ The format of the ``SHT_AARCH64_AUTH_RELR`` section is identical to
 ``R_AARCH64_AUTH_RELATIVE``. A link-unit may contain both ``SHT_RELR``
 and ``SHT_AARCH64_AUTH_RELR`` sections.
 
-Questions/Issues
-
-* If the GOT is unsigned then we would expect to see only
-  ``R_AARCH64_AUTH_IRELATIVE`` and ``R_AARCH64_AUTH_ABS64``. In
-  statically linked executables we would only expect to see
-  ``R_AARCH64_AUTH_RELATIVE``.
-
-  * In a position independent executable it is possible for
-    ``R_AARCH64_AUTH_IRELATIVE`` to be implemented with
-    ``R_AARCH64_AUTH_RELATIVE`` although this needs some work in LLD.
-
 Static Linking
 ==============
 
