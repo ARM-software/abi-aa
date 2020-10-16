@@ -49,7 +49,7 @@ specification                                                      | latest on G
 ---                                                                | ---                                  | ---
 Procedure Call Standard for the Arm 64-bit Architecture            | [aapcs64](aapcs64/aapcs64.rst)       | [2018Q4](https://developer.arm.com/documentation/ihi0055/latest)
 ELF for the Arm 64-bit Architecture                                | [aaelf64](aaelf64/aaelf64.rst)       | [2020Q2](https://developer.arm.com/documentation/ihi0056/latest)
-DWARF for the Arm 64-bit Architecture                              | -                                    | [2020Q2](https://developer.arm.com/documentation/ihi0057/latest)
+DWARF for the Arm 64-bit Architecture                              | [aadwarf64](aadwarf64/aadwarf64.rst) | [2020Q2](https://developer.arm.com/documentation/ihi0057/latest)
 C++ ABI for the Arm 64-bit Architecture                            | -                                    | [2020Q2](https://developer.arm.com/documentation/ihi0059/latest)
 Vector Function ABI for the Arm 64-bit Architecture                | [vfabia64](vfabia64/vfabia64.rst)    | [2019Q2](https://developer.arm.com/documentation/101129/latest)
 
