@@ -32,7 +32,7 @@ specification                                                      | latest on G
 Application Binary Interface for the Arm architecture introduction | -                                    | [2019Q4](https://developer.arm.com/documentation/ihi0036/latest)
 Procedure Call Standard for the Arm Architecture                   | -                                    | [2020Q2](https://developer.arm.com/documentation/ihi0042/latest)
 ELF for the Arm Architecture                                       | -                                    | [2019Q1](https://developer.arm.com/documentation/ihi0044/latest)
-DWARF for the Arm Architecture                                     | -                                    | [2018Q4](https://developer.arm.com/documentation/ihi0040/latest)
+DWARF for the Arm Architecture                                     | [aadwarf32](aadwarf32/aadwarf32.rst) | [2018Q4](https://developer.arm.com/documentation/ihi0040/latest)
 Base Platform ABI for the Arm Architecture                         | -                                    | [2018Q4](https://developer.arm.com/documentation/ihi0037/latest)
 C++ ABI for the Arm Architecture                                   | -                                    | [2019Q4](https://developer.arm.com/documentation/ihi0041/latest)
 Exception Handling ABI for the Arm Architecture                    | [ehabi32](ehabi32/ehabi32.rst)       | [2018Q4](https://developer.arm.com/documentation/ihi0038/latest)
