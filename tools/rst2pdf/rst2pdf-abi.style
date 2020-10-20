@@ -118,6 +118,19 @@ styles:
         parent : table
         colWidths: [ 12%, 44%, 44% ]
 
+    # aadwarf32 styles
+    aadwarf32-change:
+        parent : table
+        colWidths: [ 13%, 25%, 57% ]
+
+    aadwarf32-register-numbers:
+        parent : table
+        colWidths: [ 10%, 30%, 60% ]
+
+    aadwarf32-isa-values:
+        parent : table
+        colWidths: [ 30%, 10%, 60% ]
+
     # aaelf64 styles
     aaelf64-change:
         parent : table
