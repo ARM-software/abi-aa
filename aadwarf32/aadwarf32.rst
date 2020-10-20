@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 20\ :sup:`th` October 202
+.. |date-of-issue| replace:: 20\ :sup:`th` October 2020
 .. |copyright-date| replace:: 2003-2007, 2012, 2018, 2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
