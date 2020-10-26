@@ -278,7 +278,7 @@ Q-o-I
    Quality of Implementation – a quality, behavior, functionality, or
    mechanism not required by this standard, but which might be provided
    by systems conforming to it.  Q-o-I is often used to describe the
-   tool-chain-specific means by which a standard requirement is met.
+   toolchain-specific means by which a standard requirement is met.
 
 SIMD
    Single Instruction Multiple Data – A term denoting or qualifying:
@@ -891,7 +891,7 @@ ELF Marking
 ===========
 
 As an experimental ABI, marking ELF files that use this ABI is
-optional; it is the experimenters responsibility to match compatible
+optional; it is the experimenter's responsibility to match compatible
 relocatable object files and link-units. Once this specification is
 used in production ELF files must be marked to allow toolchains and
 platforms to reason about compatibility. In contrast to much of the
@@ -1065,7 +1065,7 @@ signing schema to use for the pointer. The object producer and static
 linker will need to communicate this via metadata; including at least:
 
 * The Key, one of ``IA``, ``IB``, ``DA``, ``DB``. The ``GA`` key for
-  signing of generic data is not exposed in this ABI..
+  signing of generic data is not exposed in this ABI.
 
 * The constant discriminator value.
 
