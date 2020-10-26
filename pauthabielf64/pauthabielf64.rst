@@ -375,14 +375,14 @@ SysVr4 like operating system such as Linux.
 Introduction
 ============
 
-The Armv8.3-a architecture introduced a pointer authentication feature
+The Armv8.3-A architecture introduced a pointer authentication feature
 that permits a pointer to be cryptographically signed and
 authenticated. A subset of the new instructions were added in the HINT
 space to take advantage of a limited form of pointer authentication
 that maintained backwards compatibility with software written without
-assuming Armv8.3-a capabilities. If use of all of the PAuth
+assuming Armv8.3-A capabilities. If use of all of the PAuth
 instructions is permitted then more pointers can be protected at the
-expense of requiring Armv8.3-a and potential incompatibility with
+expense of requiring Armv8.3-A and potential incompatibility with
 objects not using the PAuth ABI.
 
 Design Goals
