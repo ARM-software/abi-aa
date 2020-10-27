@@ -362,7 +362,8 @@ integers.
    +----------------+--------------------------+----------------------------------------------------+
    | 31             | SP                       | 64-bit stack pointer                               |
    +----------------+--------------------------+----------------------------------------------------+
-   | 32             | Reserved                 | \-                                                 |
+   | 32             | PC                       | 64-bit program counter                             |
+   |                |                          | (`Note 9`_)                                        |
    +----------------+--------------------------+----------------------------------------------------+
    | 33             | ELR_mode                 | The current mode exception link register           |
    +----------------+--------------------------+----------------------------------------------------+
@@ -452,6 +453,13 @@ integers.
       bit[0] is meaningful and is initialized to zero. A value of 0 indicates
       the return address has not been signed. A value of 1 indicates the return
       address has been signed.
+
+   .. _Note 9:
+
+   9. Normally, the program counter is restored from the return address, however
+      having both LR and PC columns is useful for describing asynchronously
+      created stack frames. A DWARF expression may use this register to restore
+      the context in case of a signal context.
 
 .. raw:: pdf
 
