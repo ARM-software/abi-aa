@@ -591,13 +591,13 @@ this should be sufficient.
   +------------+--------+
   | key name   | field  |
   +============+========+
-  | ``APIA``   |  0b01  |
+  | ``APIA``   |  0b00  |
   +------------+--------+
-  | ``APIB``   |  0b02  |
+  | ``APIB``   |  0b01  |
   +------------+--------+
-  | ``APDA``   |  0b03  |
+  | ``APDA``   |  0b02  |
   +------------+--------+
-  | ``APDB``   |  0b04  |
+  | ``APDB``   |  0b03  |
   +------------+--------+
 
 * ``discriminator`` is a 16-bit unsigned integer that after an
