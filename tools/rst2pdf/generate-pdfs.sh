@@ -17,7 +17,7 @@ declare -a docs=(
     "aadwarf32" "addenda32" "clibabi32" "ehabi32"
 
     # 64-bit
-    "aadwarf64" "aaelf64" "aapcs64" "vfabia64"
+    "aadwarf64" "aaelf64" "aapcs64" "vfabia64" "aaelf64-morello"
 
     # pauth extension
     "pauthabielf64"
