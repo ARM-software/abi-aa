@@ -68,6 +68,11 @@ specification                                               | latest on Github  
 ---                                                         | ---                               | ---
 PAuth ABI Extension to ELF for the Arm 64-bit Architecture  | [pauthabielf64](pauthabielf64/pauthabielf64.rst) | -
 
+### Morello Extension
+
+specification                                               | latest on Github                  | last on developer site
+---                                                         | ---                               | ---
+Morello Extension to ELF for the Arm 64-bit Architecture  | [aaelf64-morello](aaelf64-morello/aaelf64-morello.rst) | [2020Q3](https://developer.arm.com/documentation/102072/latest)
 
 ## Releases
 
