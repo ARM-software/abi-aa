@@ -219,6 +219,39 @@ styles:
         parent : table
         colWidths: [ 9%, 9%, 27%, 23%, 32% ]
 
+    # aaelf64-morello styles
+    aaelf64-morello-change:
+        parent : table
+        colWidths: [ 20%, 30%, 10%, 40% ]
+
+    aaelf64-morello-references:
+        parent : table
+        colWidths: [ 25%, 30%, 45% ]
+
+    aaelf64-morello-mapping-symbols:
+        parent : table
+        colWidths: [ 25%, 75% ]
+
+    aaelf64-morello-static-relocations:
+        parent : table
+        colWidths: [ 10%, 36%, 14%, 40% ]
+
+    aaelf64-morello-control-flow-relocations:
+        parent : table
+        colWidths: [ 10%, 25%, 17%, 48% ]
+
+    aaelf64-morello-got-relative-relocations:
+        parent : table
+        colWidths: [ 10%, 35%, 27%, 28% ]
+
+    aaelf64-morello-tls-descriptor-relocations:
+        parent : table
+        colWidths: [ 10%, 35%, 28%, 27% ]
+
+    aaelf64-morello-dynamic-relocations:
+        parent : table
+        colWidths: [ 10%, 25%, 45%, 20% ]
+
     # aapcs64 styles
     refs:
         parent : table
