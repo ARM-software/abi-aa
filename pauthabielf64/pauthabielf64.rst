@@ -199,21 +199,26 @@ This document is at **Alpha** release quality.
   +------------+---------------------+------------------------------------------------------------------+
   | Issue      | Date                | Change                                                           |
   +============+=====================+==================================================================+
-  | 0.1        | 21st September 2020 | Alpha draft release                                              |
+  | 0.1        | 21st September 2020 | Alpha draft release.                                             |
   +------------+---------------------+------------------------------------------------------------------+
-  | 0.2        | 7th  October 2020   | Restructure after initial review comments: move GOT relocations  |
-  |            |                     | with custom signing schema to appendix along with commentary.    |
+  | 0.2        | 7th  October 2020   | Restructure after initial review comments.                       |
+  |            |                     |                                                                  |
+  |            |                     | Move GOT relocations with custom signing schema to appendix      |
+  |            |                     | along with commentary.                                           |
+  |            |                     |                                                                  |
   |            |                     | Specify AUTH variant dynamic relocations and tighten up          |
   |            |                     | descriptions of existing encoding and relocations. Add           |
   |            |                     | description of SHT_AUTH_RELR.                                    |
   +------------+---------------------+------------------------------------------------------------------+
   | 0.3        | 22nd October 2020   | Delete the appendix giving an encoding for GOT generating        |
-  |            |                     | relocations using the relocation addend to carry the signing     |
+  |            |                     | relocations using the relocation addend to carry the             |
   |            |                     | signing schema.                                                  |
+  |            |                     |                                                                  |
   |            |                     | Move the remaining GOT signing text to an optional appendix      |
   |            |                     | Describe the default dlsym signing schema and add .symauth and   |
-  |            |                     | .dynauth as an appendix                                          |
-  |            |                     | Provide details for the ELF marking scheme                       |
+  |            |                     | .dynauth as an appendix.                                         |
+  |            |                     |                                                                  |
+  |            |                     | Provide details for the ELF marking scheme.                      |
   +------------+---------------------+------------------------------------------------------------------+
 
 References
@@ -446,22 +451,23 @@ created as a result of a GOT-creating relocation from a relocatable
 object. The GOT is normally split into two subsets, the GOT and the
 PLT GOT. With the PLT GOT made up of code pointers that are only
 accessed by linker generated PLT sequences. As the PLT GOT is not
-accessed directly by code in relocatable objects will be covered in a
-separate section of the document.
+accessed directly by code in relocatable objects, this will be covered
+in a separate section of the document.
 
 The pointers in the GOT may include pointers to code so there is a
 question of whether these pointers should be signed and if so, how
 should they be signed?
 
 The value of many of the pointers in the GOT is not known at static
-link time, these GOT entries will have a dynamic relocation that a
+link time. These GOT entries will have a dynamic relocation that a
 dynamic linker will resolve at program load time. Once the GOT has
-been relocated it can be re-mapped as read-only (RELRO). If the GOT is
-RELRO then the GOT does not need to be signed.
+been relocated, it can be re-mapped as read-only (RELRO). If the GOT
+is RELRO then the GOT does not need to be signed.
 
 As a majority of platforms support RELRO and assuming a RELRO GOT
 simplifies the ABI, this document will assume an unsigned GOT. An
-optional appendix describes how a GOT can be signed.
+optional appendix `Appendix thoughts on encoding a signing schema`_
+describes how a GOT can be signed.
 
 PLT GOT signing
 ---------------
@@ -470,20 +476,21 @@ The PLT is a table of trampolines used to indirect function calls
 through a function pointer. The PLT GOT is a subset of the GOT that is
 used exclusively by the PLT.
 
-When lazy binding is disabled all relocations are resolved at load
+When lazy binding is disabled, all relocations are resolved at load
 time and the PLT GOT can be made RELRO like the GOT. In this case the
 PLT GOT does not need to be signed.
 
-When lazy binding is enabled the initial contents of the PLT GOT point
-to the first entry in the PLT which is reserved for the lazy
-resolver. When a function is called via its PLT entry control is
-transferred to the lazy resolver which finds the destination address
-and writes it back to the PLT GOT. As the lazy resolver needs to write
-to PLT GOT, it requires the PLT GOT to be writeable throughout the
-lifetime of the program. Writeable pointers in the PLT GOT can be
-signed to protect against an attacker modifying the PLT GOT.
+When lazy binding is enabled the initial contents of each entry in the
+PLT GOT points to the first entry in the PLT. The first entry in the
+PLT reserved for the lazy resolver. When a function is called via its
+PLT entry, control is transferred to the lazy resolver which finds the
+destination address and writes it back to the PLT GOT. As the lazy
+resolver needs to write to PLT GOT, it requires the PLT GOT to be
+writeable throughout the lifetime of the program. Writeable pointers
+in the PLT GOT can be signed to protect against an attacker modifying
+the PLT GOT.
 
-If the PLT GOT is signed the dynamic linker must sign all entries in
+If the PLT GOT is signed, the dynamic linker must sign all entries in
 the table during program loading and the static linker must generate
 PLT trampolines that authenticate pointers loaded from the PLT GOT.
 
@@ -494,7 +501,7 @@ sign the GOT.
 PLT GOT signing schema
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The PAuth ABI reuses the signing schema from the existing ABI, this
+The PAuth ABI reuses the signing schema from the existing ABI. This
 uses the IA key with the address of the PLT GOT entry as the modifier.
 This can be implemented using instructions that are encoded in the
 hint space.
@@ -509,15 +516,15 @@ Example code for the PLT sequence generated by the static linker.
     autia1716
     br   x17
 
-If instructions not encoded in the hint space can be used it is
-possible to combine the autia1716 and br x17 into a single instruction
-braa x17, x16
+If instructions not encoded in the hint space can be used, it is
+possible to combine the ``autia1716`` and ``br x17`` into a single
+instruction ``braa x17, x16``
 
 Recording a signed PLT GOT in the ELF file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The dynamic tag ``DT_AARCH64_PAC_PLT`` must be set if the PLT GOT is
-signed. When this dynamic tag is present a dynamic loader must sign
+signed. When this dynamic tag is present, a dynamic loader must sign
 the result of a ``R_AARCH64_JUMP_SLOT`` using the signing schema
 above. PAUTHELF64 does not define an additional
 ``R_AARCH64_AUTH_JUMP_SLOT`` relocation as the static linker will only
@@ -633,30 +640,30 @@ ARM64E_. ``Place`` is the relocation target address.
 Relocation Operations
 ---------------------
 
-* PAUTH(S+A) is an instruction for the run-time environment to
+* ``PAUTH(S+A)`` is an instruction for the run-time environment to
   create a signed pointer. The static linker writes the encoded
   signing schema into the contents of the place being relocated, and
   emits a dynamic relocation to instruct the run-time to create the
   signed pointer. When static linking, the dynamic relocation may be
   replaced by a toolchain specific mechanism.
 
-* SCHEMA(\*P) represents the dynamic linker reading the signing schema
+* ``SCHEMA(\*P)`` represents the dynamic linker reading the signing schema
   from the contents of the place ``P``.
 
-* SIGN(value, schema) represents the dynamic linker signing value with schema.
+* ``SIGN(value, schema)`` represents the dynamic linker signing value with schema.
 
 Static Data relocations
 -----------------------
 
 .. table:: PAuth Data relocations
 
-  +-------------+--------------------------+------------+-----------------------------------------------------+
-  | ELF 64 Code | Name                     | Operation  | Comment                                             |
-  |             |                          |            |                                                     |
-  |             |                          |            |                                                     |
-  +=============+==========================+============+=====================================================+
-  | 0xE100      | R\_AARCH64\_AUTH\_ABS64  | PAUTH(S+A) | Signing schema encoded in the contents of the place |
-  +-------------+--------------------------+------------+-----------------------------------------------------+
+  +-------------+--------------------------+----------------+-----------------------------------------------------+
+  | ELF 64 Code | Name                     | Operation      | Comment                                             |
+  |             |                          |                |                                                     |
+  |             |                          |                |                                                     |
+  +=============+==========================+================+=====================================================+
+  | 0xE100      | R\_AARCH64\_AUTH\_ABS64  | ``PAUTH(S+A)`` | Signing schema encoded in the contents of the place |
+  +-------------+--------------------------+----------------+-----------------------------------------------------+
 
 In the static context This is the equivalent of the arm64e
 ``ARM64_RELOC_AUTHENTICATED`` relocation. ``R_AARCH64_AUTH_ABS64`` can
@@ -749,7 +756,7 @@ possible.
 Run-time dynamic linking
 ========================
 
-On many platforms programs can load shared libraries at run-time via
+On many platforms, programs can load shared libraries at run-time via
 ``dlopen`` and access symbols in that library via ``dlsym`` or
 ``dlvsym``. Some or all of these pointers may be signed. The signing
 schema for these functions is a platform decision that the compiled
@@ -761,8 +768,8 @@ returned is signed with the ``IA`` key with a 0 modifier. Otherwise
 the address is not signed.
 
 An optional extension that communicates the signing schema for a
-symbol to the dynamic linker can be found in Appendix extension to
-recording signing schema for ``dlsym``.
+symbol to the dynamic linker can be found in `Appendix extension to
+recording signing schema for dlsym`_.
 
 ELF Marking
 ===========
@@ -781,14 +788,14 @@ structured as a note section as documented in SCO-ELF_.
 The name field (``namesz`` / ``name``) contains the string "ARM". The
 type field shall be 1. The ``descsz`` field must be at least 16, with
 the first 16 bytes of the description containing 2 64-bit words. With
-the first 64-bit word a platform identifier, and the second 64-bit
-identifier a version number for the ABI. When ``descsz`` is larger
-than 16 the remainder of the contents of desc are defined by the
-(platform id, version number).
+the first 64-bit word being a platform identifier, and the second
+64-bit word being a version number for the ABI for the platform
+identified for the first word. When ``descsz`` is larger than 16 the
+remainder of the contents of desc are defined by the (platform id,
+version number).
 
 This ABI does not determine the format of the platform identifier. Arm
-reserves the platform id 0 for bare-metal no assoiciated
-platform. This also represents the empty string.
+reserves the platform id 0 for a bare-metal platform.
 
 The (platform id, version number) of (0, 0) is reserved as an invalid
 combination. The program cannot be run when pointer authentication is
@@ -802,7 +809,8 @@ for pointers.
 Base Compatibility Model
 ------------------------
 
-A per ELF file marking scheme permits a coarse way of reasoning about compatibility.
+A per-ELF file marking scheme permits a coarse way of reasoning about
+compatibility.
 
 * The absence of a ``.note.AARCH64-PAUTH-ABI-tag`` section means no
   information on how pointers are signed is available for this ELF
@@ -823,9 +831,9 @@ A per ELF file marking scheme permits a coarse way of reasoning about compatibil
   ``.note.AARCH64-PAUTH-ABI-tag`` is not defined by this ABI.
 
 * A dynamic loader that encounters a (platform id, version number)
-  that it does not recognize, or the invalid (0, 0) then it must
-  disable pointer authentication for the process or give an error
-  message.
+  that it does not recognize, or if the (platform id, version number)
+  is (0,0), it must disable pointer authentication for the process or
+  give an error message.
 
 Platforms may replace the base compatibility model with a platform
 specific model.
@@ -833,16 +841,20 @@ specific model.
 Appendix extension to recording signing schema for dlsym
 ========================================================
 
-With additional per-symbol information encoded in the ELF file a
+With additional per-symbol information encoded in the ELF file, a
 dynamic linker can look up the signing schema to use for ``dlsym`` or
 ``dlvsym`` instead of using the default signing schema.
 
 .symauth and .dynauth sections
 ------------------------------
 
-An additional Processor specific section type is added
+The pointer authentication information for global symbols is stored in
+a section named ``.symauth`` with type ``SHT_AARCH64_AUTH_SYM``, it
+is associated with a symbol table section in a similar way to
+.symtab_shndx. The following table describes the
+``SHT_AARCH64_AUTH_SYM`` symbol type:
 
-.. table:: .symauth and .dynauth ELF Section Type
+.. table:: ``.symauth`` and ``.dynauth`` ELF Section Type
 
   +--------------------------+------------+---------------------------------------------+
   | Name                     | Value      | Comment                                     |
@@ -850,16 +862,13 @@ An additional Processor specific section type is added
   | SHT\_AARCH64\_AUTH\_SYM  | 0x70000005 | Section type for symbol signing information |
   +--------------------------+------------+---------------------------------------------+
 
-The pointer authentication information for global symbols is stored in
-a section named ``.symauth`` with type ``SHT_AARCH64_AUTH_SYM``, which
-is associated with a symbol table section in a similar way to
-.symtab_shndx. The section is an array of ``Elf32_Word`` values. Each
-value corresponds to a non-local symbol table entry in the symbol
-table and appear in the same order as those entries. All local symbols
-in the symbol table precede global symbols so the index in
-``.symauth`` of a global symbol with index ``I`` in the symbol table
-is ``I`` - ``Index of first non-local symbol``. Each table entry is
-specified as follows:
+A section of type ``SHT_AARCH64_AUTH_SYM`` is an array of
+``Elf32_Word`` values. Each value corresponds to a non-local symbol
+table entry in the symbol table and appear in the same order as those
+entries. All local symbols in the symbol table precede global symbols
+so the index in ``.symauth`` of a global symbol with index ``I`` in
+the symbol table is ``I`` - ``Index of first non-local symbol``. Each
+table entry is specified as follows:
 
 .. table:: .symauth and .dynauth entry encoding
 
@@ -1092,7 +1101,7 @@ information via a combination of.
 * Default rules such as altering the behavior of existing
   relocations.
 
-  * If there is a default signing schema for the GOT and every GOT
+  * If there is a default signing schema for the GOT, and every GOT
     entry is signed with that schema we may not need any
     per-relocation encoding of the schema.
 
