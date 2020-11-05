@@ -9,7 +9,7 @@
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
-.. _AAELF32: https://developer.arm.com/documentation/ihi0044/latest
+.. _AAELF32: https://github.com/ARM-software/abi-aa/releases
 .. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
 .. _CPPABI32: https://developer.arm.com/documentation/ihi0041/latest
 .. _EHABI32: https://developer.arm.com/documentation/ihi0038/latest
