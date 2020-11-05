@@ -6,7 +6,7 @@ ABI_ROOT=${CURR_DIR}/../..
 
 declare -a docs=(
     # 32-bit
-    "aadwarf32" "addenda32" "clibabi32" "ehabi32" "rtabi32"
+    "aadwarf32" "aaelf32" "addenda32" "clibabi32" "ehabi32" "rtabi32"
 
     # 64-bit
     "aadwarf64" "aaelf64" "aapcs64" "vfabia64"

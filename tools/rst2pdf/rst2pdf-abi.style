@@ -365,3 +365,68 @@ styles:
     rtabi32-cxa-guard:
         parent : table
         colWidths: [ 42%, 58% ]
+
+    # aaelf32 styles
+    aaelf32-change-history:
+        parent : table
+        colWidths: [ 12%, 25%, 63% ]
+
+    aaelf32-refs:
+        parent : table
+        colWidths: [ 15%, 50%, 35% ]
+
+    aaelf32-elf-flags:
+        parent : table
+        colWidths: [ 33%, 67% ]
+
+    aaelf32-numbered-flags:
+        parent : table
+        colWidths: [ 30%, 15%, 55% ]
+
+    aaelf32-special-sections:
+        parent : table
+        colWidths: [ 25%, 40%, 35% ]
+
+    aaelf32-relocs:
+        parent : table
+        colWidths: [ 8%, 31%, 13%, 15%, 33% ]
+
+    aaelf32-relocs-widecode:
+        parent : table
+        colWidths: [ 10%, 31%, 13%, 15%, 29% ]
+
+    aaelf32-relocs-t16:
+        parent : table
+        colWidths: [ 8%, 31%, 13%, 33%, 15% ]
+
+    aaelf32-relocs-data:
+        parent : table
+        colWidths: [ 8%, 20%, 8%, 30%, 34% ]
+
+    aaelf32-reloc-byinst:
+        parent : table
+        colWidths: [ 25%, 35%, 40% ]
+
+    aaelf32-proxy-relocs:
+        parent : table
+        colWidths: [ 10%, 27%, 63% ]
+
+    aaelf32-dyn-relocs:
+        parent : table
+        colWidths: [ 10%, 25%, 65% ]
+
+    aaelf32-deprecated-relocs:
+        parent : table
+        colWidths: [ 35%, 65% ]
+
+    aaelf32-armv81m-relocs:
+        parent : table
+        colWidths: [ 8%, 20%, 12%, 40%, 20% ]
+
+    aaelf32-armv81m-relocs-byinst:
+        parent : table
+        colWidths: [ 15%, 40%, 45% ]
+
+    aaelf32-arch-compat:
+        parent : table
+        colWidths: [ 37%, 15%, 50% ]
