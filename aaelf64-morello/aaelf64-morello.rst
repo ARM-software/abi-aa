@@ -180,7 +180,7 @@ Current status and anticipated changes
    likelihood of future incompatible changes to be significant.
 
 This document is a draft and all content is at the **Alpha** quality level.
-The relocation codes in `Relocation`_ are especially expected to change.
+The relocation codes in `Relocation`_ in particular are expected to change.
 
 Change history
 ^^^^^^^^^^^^^^
@@ -194,10 +194,7 @@ Change history
   +===============+====================+=========================================+
   | 00alpha       | 1st October 2020   | Alpha release.                          |
   +---------------+--------------------+-----------------------------------------+
-  | 2020Q4        | 5th November 2020  | - document released on Github           |
-  |               |                    | - new Licence_: CC-BY-SA-4.0            |
-  |               |                    | - new sections on Contributions_,       |
-  |               |                    |   `Trademark notice`_, and Copyright_   |
+  | 2020Q4        | 5th November 2020  | Document released on Github.            |
   +---------------+--------------------+-----------------------------------------+
 
 References
@@ -209,17 +206,17 @@ This document refers to, or is referred to by, the following documents.
 
 .. table::
 
-  +------------------+----------------------------+----------------------------------------------------------------------------------+
-  | Ref              | External reference or URL  | Title                                                                            |
-  +==================+============================+==================================================================================+
-  | MORELLO_AAELF64  | This document              | Morello extensions to ELF for the Arm 64-bit Architecture (AArch64).             |
-  +------------------+----------------------------+----------------------------------------------------------------------------------+
-  | AAELF64_         | IHI 0056                   | ELF for the Arm 64-bit Architecture (AArch64).                                   |
-  +------------------+----------------------------+----------------------------------------------------------------------------------+
-  | MORELLO_ARM_     | DDI0606                    | Arm® Architecture Reference Manual Supplement Morello for A-profile Architecture |
-  +------------------+----------------------------+----------------------------------------------------------------------------------+
-  | TLSDESC_         | |tlsdesc-url|              | TLS Descriptors for Arm. Original proposal document                              |
-  +------------------+----------------------------+----------------------------------------------------------------------------------+
+  +------------------+----------------------------+-----------------------------------------------------------------------------------+
+  | Ref              | External reference or URL  | Title                                                                             |
+  +==================+============================+===================================================================================+
+  | MORELLO_AAELF64  | This document              | Morello extensions to ELF for the Arm 64-bit Architecture (AArch64).              |
+  +------------------+----------------------------+-----------------------------------------------------------------------------------+
+  | AAELF64_         | IHI 0056                   | ELF for the Arm 64-bit Architecture (AArch64).                                    |
+  +------------------+----------------------------+-----------------------------------------------------------------------------------+
+  | MORELLO_ARM_     | DDI0606                    | Arm® Architecture Reference Manual Supplement Morello for A-profile Architecture. |
+  +------------------+----------------------------+-----------------------------------------------------------------------------------+
+  | TLSDESC_         | |tlsdesc-url|              | TLS Descriptors for Arm. Original proposal document.                              |
+  +------------------+----------------------------+-----------------------------------------------------------------------------------+
 
 Terms and abbreviations
 -----------------------
@@ -310,7 +307,7 @@ A section of an ELF file can contain a mixture of A64 code, C64 code and data.
 There are inline transitions between code and data at literal pool boundaries.
 
 Linkers, file decoders and other tools need to map binaries correctly. To
-support this, a number of symbols, termed mapping symbols appear in the symbol
+support this, a number of symbols, termed mapping symbols, appear in the symbol
 table to label the start of each sequence of bytes of the appropriate class. All
 mapping symbols have type ``STT_NOTYPE`` and binding ``STB_LOCAL``. The
 ``st_size`` field is unused and must be zero.
@@ -323,9 +320,9 @@ supported:
   class. This form can be used when an object producer creates mapping symbols
   automatically. Its use minimizes string table size.
 
-- A longer form in which the short form is extended with a period and then any
-  sequence of characters that are legal for a symbol. This form can be used when
-  assembler files have to be annotated manually and the assembler does not
+- A longer form in which the short form is extended with a period, followed by
+  any sequence of characters that are legal for a symbol. This form can be used
+  when assembler files have to be annotated manually and the assembler does not
   support multiple definitions of symbols.
 
 Mapping symbols defined in a section (relocatable view) or segment (executable
@@ -334,7 +331,7 @@ the section or segment. Each interval starts at the address defined by the
 mapping symbol, and continues up to, but not including, the address defined by
 the next (in address order) mapping symbol or the end of the section or segment.
 A section that contains instructions must have a mapping symbol defined at the
-beginning of the section. If a section contains only data no mapping symbol is
+beginning of the section. If a section contains only data, no mapping symbol is
 required. A platform ABI should specify whether or not mapping symbols are
 present in the executable view; they will never  be present in a stripped
 executable file.
@@ -348,22 +345,22 @@ executable file.
     +----------------+------------------------------------------------------------------+
     | Name           | Meaning                                                          |
     +================+==================================================================+
-    | ``$x``         | Start of a sequence of A64 instructions                          |
+    | ``$x``         | Start of a sequence of A64 instructions.                         |
     |                |                                                                  |
     | ``$x.<any...>``|                                                                  |
     +----------------+------------------------------------------------------------------+
-    | ``$c``         | Start of a sequence of C64 instructions                          |
+    | ``$c``         | Start of a sequence of C64 instructions.                         |
     |                |                                                                  |
     | ``$c.<any...>``|                                                                  |
     +----------------+------------------------------------------------------------------+
-    | ``$d``         | Start of a sequence of data items (for example, a literal pool)  |
+    | ``$d``         | Start of a sequence of data items (for example, a literal pool). |
     |                |                                                                  |
     | ``$d.<any...>``|                                                                  |
     +----------------+------------------------------------------------------------------+
 
 Symbol Values
 ^^^^^^^^^^^^^
-In addition to the normal rules for symbol values the following rules shall also
+In addition to the normal rules for symbol values, the following rules shall also
 apply to symbols of type ``STT_FUNC`` and ``STT_GNU_IFUNC``:
 
 - If the symbol addresses an A64 instruction, its value is the address of the
@@ -414,8 +411,8 @@ The following nomenclature is used in the descriptions of relocation operations:
   bit-selection operation is applied
 
 - ``Page(expr)`` is the page address of the expression expr, defined as (``expr &
-  ~0xFFF``). (This applies even if the machine page size supported by the platform
-  has a different value.)
+  ~0xFFF``). This applies even if the machine page size supported by the platform
+  has a different value.
 
 - ``GOT`` is the address of the Global Offset Table, the table of code and data
   addresses to be resolved at dynamic link time. The ``GOT`` and each entry in it
@@ -437,13 +434,13 @@ The following nomenclature is used in the descriptions of relocation operations:
 - ``TLSDESC(S+A)`` resolves to a contiguous pair of pointer-sized values, as
   created by GTLSDESC(S+A).
 
-- ``CAP_INIT`` Generate a capability with all required information. When used on
+- ``CAP_INIT`` generates a capability with all required information. When used on
   its own represents the operations needs to be done for handling ``R_MORELLO_CAPINIT``.
 
-- ``CAP_SIZE`` The size of the underlying memory region that the capability can
+- ``CAP_SIZE`` the size of the underlying memory region that the capability can
   reference. This may not directly map to the symbol size.
 
-- ``CAP_PERM`` The permission of the capability. This may not directly map to
+- ``CAP_PERM`` the permission of the capability. This may not directly map to
   the type of the symbol.
 
 - ``[msb:lsb]`` is a bit-mask operation representing the selection of bits in a
@@ -475,14 +472,15 @@ Static Morello relocations
     | ELF64 | Name                              | Operation       | Comment                                                                 |
     | Code  |                                   |                 |                                                                         |
     +=======+===================================+=================+=========================================================================+
-    | 57348 | ``R_MORELLO_LD_PREL_LO17``        | ``S+A -``       | Set a load-literal immediate value to bits [20:4] of X;                 |
-    |       |                                   | ``(P&~0xF)``    | check that -2\ :sup:`20` <= X < 2\ :sup:`20`, check that ``X & 15 = 0`` |
+    | 57348 | ``R_MORELLO_LD_PREL_LO17``        | ``S+A -``       | Set a load-literal immediate value to bits [20:4] of X.                 |
+    |       |                                   | ``(P&~0xF)``    | Check that -2\ :sup:`20` <= X < 2\ :sup:`20`.                           |
+    |       |                                   |                 | Check that ``X & 15 = 0``.                                              |
     +-------+-----------------------------------+-----------------+-------------------------------------------------------------------------+
-    | 57349 | ``R_MORELLO_ADR_PREL_PG_HI20``    | ``Page(S+A)``   | Set an ADRP immediate value to bits [31:12] of the X;                   |
-    |       |                                   | ``- Page(P)``   | check that -2\ :sup:`31` <= X < 2\ :sup:`31`                            |
+    | 57349 | ``R_MORELLO_ADR_PREL_PG_HI20``    | ``Page(S+A)``   | Set an ADRP immediate value to bits [31:12] of the X.                   |
+    |       |                                   | ``- Page(P)``   | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                           |
     +-------+-----------------------------------+-----------------+-------------------------------------------------------------------------+
-    | 57350 | ``R_MORELLO_ADR_PREL_PG_HI20_NC`` | ``Page(S+A)``   | Set an ADRP immediate value to bits [31:12] of the X;                   |
-    |       |                                   | ``- Page(P)``   | No overflow check                                                       |
+    | 57350 | ``R_MORELLO_ADR_PREL_PG_HI20_NC`` | ``Page(S+A)``   | Set an ADRP immediate value to bits [31:12] of the X.                   |
+    |       |                                   | ``- Page(P)``   | No overflow check.                                                      |
     |       |                                   |                 | Although overflow must not be checked, a linker should check that the   |
     |       |                                   |                 | value of X is aligned to a multiple of the datum size.                  |
     +-------+-----------------------------------+-----------------+-------------------------------------------------------------------------+
@@ -496,22 +494,22 @@ Static Morello relocations
     | Code  |                         |                  |                                                 |
     +=======+=========================+==================+=================================================+
     | 57344 | ``R_MORELLO_TSTBR14``   | ``((S+A)|C)-P``  | Set the immediate field of a TBZ/TBNZ           |
-    |       |                         |                  | instruction to bits [15:2] of X;                |
-    |       |                         |                  | check that -2\ :sup:`15` <= X < 2\ :sup:`15`    |
-    |       |                         |                  | See `Call and Jump relocations`_                |
+    |       |                         |                  | instruction to bits [15:2] of X.                |
+    |       |                         |                  | Check that -2\ :sup:`15` <= X < 2\ :sup:`15`.   |
+    |       |                         |                  | See `Call and Jump relocations`_.               |
     +-------+-------------------------+------------------+-------------------------------------------------+
     | 57345 | ``R_MORELLO_CONDBR19``  | ``((S+A)|C)-P``  | Set the immediate field of a conditional branch |
-    |       |                         |                  | instruction to bits [20:2] of X;                |
-    |       |                         |                  | check that -2\ :sup:`27` <= X < 2\ :sup:`27`    |
-    |       |                         |                  | See `Call and Jump relocations`_                |
+    |       |                         |                  | instruction to bits [20:2] of X.                |
+    |       |                         |                  | Check that -2\ :sup:`27` <= X < 2\ :sup:`27`.   |
+    |       |                         |                  | See `Call and Jump relocations`_.               |
     +-------+-------------------------+------------------+-------------------------------------------------+
-    | 57346 | ``R_MORELLO_JUMP26``    | ``((S+A)|C)-P``  | Set a B immediate field to bits [27:2] of X;    |
-    |       |                         |                  | check that -2\ :sup:`27` <= X < 2\ :sup:`27`    |
-    |       |                         |                  | See `Call and Jump relocations`_                |
+    | 57346 | ``R_MORELLO_JUMP26``    | ``((S+A)|C)-P``  | Set a B immediate field to bits [27:2] of X.    |
+    |       |                         |                  | Check that -2\ :sup:`27` <= X < 2\ :sup:`27`.   |
+    |       |                         |                  | See `Call and Jump relocations`_.               |
     +-------+-------------------------+------------------+-------------------------------------------------+
-    | 57347 | ``R_MORELLO_CALL26``    | ``((S+A)|C)-P``  | Set a BL immediate field to bits [27:2] of X;   |
-    |       |                         |                  | check that -2\ :sup:`27` <= X < 2\ :sup:`27`    |
-    |       |                         |                  | See `Call and Jump relocations`_                |
+    | 57347 | ``R_MORELLO_CALL26``    | ``((S+A)|C)-P``  | Set a BL immediate field to bits [27:2] of X.   |
+    |       |                         |                  | Check that -2\ :sup:`27` <= X < 2\ :sup:`27`.   |
+    |       |                         |                  | See `Call and Jump relocations`_.               |
     +-------+-------------------------+------------------+-------------------------------------------------+
 
 Call and Jump relocations
@@ -529,15 +527,15 @@ branch if the relocation is either
 - Or, the target symbol and relocated place are in separate sections input to the linker.
 - Or, the target symbol is undefined (external to the link unit).
 
-In all other cases a linker shall diagnose an error if relocation cannot be
-effected without a veneer. A linker generated veneer may corrupt registers
+In all other cases a linker shall diagnose an error if a relocation cannot be
+effected without a veneer. A linker generated veneer may corrupt register
 ``c16`` and the condition flags, but must preserve all other registers. Linker
 veneers may be needed for a number of reasons, including, but not limited to:
 
 - Interworking: The branch source and target symbol are in different execution states(A64/C64).
 - Range Extension: The branch source and target symbol are in C64 execution state and the target
   is outside the addressable span of the branch instruction (+/- 128MB).
-- Target address will not be known until run time, or the target address might be pre-empted.
+- The target address will not be known until run time, or the target address might be pre-empted.
 
 Long branches with 64-bit range are not supported yet for range extensions or for interworking.
 Interworking between ABIs are not supported yet.
@@ -550,12 +548,12 @@ Interworking between ABIs are not supported yet.
     | ELF64 | Name                            | Operation              | Comment                                                   |
     | Code  |                                 |                        |                                                           |
     +=======+=================================+========================+===========================================================+
-    | 57351 | ``R_MORELLO_ADR_GOT_PAGE``      | ``Page(G(GDAT(S+A)))`` | Set the immediate value of an ADRP to bits [31:12] of X;  |
-    |       |                                 | ``- Page(P)``          | check that -2\ :sup:`31` <= X < 2\ :sup:`31`              |
+    | 57351 | ``R_MORELLO_ADR_GOT_PAGE``      | ``Page(G(GDAT(S+A)))`` | Set the immediate value of an ADRP to bits [31:12] of X.  |
+    |       |                                 | ``- Page(P)``          | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.             |
     +-------+---------------------------------+------------------------+-----------------------------------------------------------+
     | 57352 | ``R_MORELLO_LD128_GOT_LO12_NC`` | ``G(GDAT(S+A))``       | Set the LD/ST immediate field to bits [11:4] of X.        |
-    |       |                                 |                        | No overflow check; check that X&15 = 0                    |
-    |       |                                 |                        | Also see `Static linking with Morello`_                   |
+    |       |                                 |                        | No overflow check. Check that X&15 = 0.                   |
+    |       |                                 |                        | Also see `Static linking with Morello`_.                  |
     +-------+---------------------------------+------------------------+-----------------------------------------------------------+
 
 Relocations for thread-local storage
@@ -578,12 +576,12 @@ Relocations needed to define the traditional TLS models are undefined.
     | ELF64 | Name                             | Operation                  | Comment                                                   |
     | Code  |                                  |                            |                                                           |
     +=======+==================================+============================+===========================================================+
-    | 57600 | ``R_MORELLO_TLSDESC_ADR_PAGE20`` | ``Page(G(GTLSDESC(S+A)))`` | Set the immediate value of an ADRP to bits [31:12] of X;  |
-    |       |                                  |                            | check that -2\ :sup:`31` <= X < 2\ :sup:`31`              |
+    | 57600 | ``R_MORELLO_TLSDESC_ADR_PAGE20`` | ``Page(G(GTLSDESC(S+A)))`` | Set the immediate value of an ADRP to bits [31:12] of X.  |
+    |       |                                  |                            | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.             |
     |       |                                  | ``- Page(P)``              |                                                           |
     +-------+----------------------------------+----------------------------+-----------------------------------------------------------+
     | 57601 | ``R_MORELLO_TLSDESC_LD128_LO12`` | ``G(GTLSDESC(S+A))``       | Set the LD/ST immediate field to bits [11:4] of X.        |
-    |       |                                  |                            | No overflow check; check that X&15 = 0                    |
+    |       |                                  |                            | No overflow check. Check that X&15 = 0.                   |
     +-------+----------------------------------+----------------------------+-----------------------------------------------------------+
     | 57602 | ``R_MORELLO_TLSDESC_CALL``       | None                       | For relaxation only. Must be used to identify a ``BLR``   |
     |       |                                  |                            | instruction which performs an indirect call to the TLS    |
@@ -603,22 +601,22 @@ Dynamic Morello relocations
     | ELF64 | Name                    | Operation                               | Comment                                  |
     | Code  |                         |                                         |                                          |
     +=======+=========================+=========================================+==========================================+
-    | 59392 | ``R_MORELLO_CAPINIT``   | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below                           |
+    | 59392 | ``R_MORELLO_CAPINIT``   | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
     |       |                         |                                         |                                          |
     +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59393 | ``R_MORELLO_GLOB_DAT``  | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below                           |
+    | 59393 | ``R_MORELLO_GLOB_DAT``  | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
     |       |                         |                                         |                                          |
     +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59394 | ``R_MORELLO_JUMP_SLOT`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below                           |
+    | 59394 | ``R_MORELLO_JUMP_SLOT`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
     |       |                         |                                         |                                          |
     +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59395 | ``R_MORELLO_RELATIVE``  | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below                           |
+    | 59395 | ``R_MORELLO_RELATIVE``  | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
     |       |                         |                                         |                                          |
     +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59396 | ``R_MORELLO_IRELATIVE`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below                           |
+    | 59396 | ``R_MORELLO_IRELATIVE`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
     |       |                         |                                         |                                          |
     +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59397 | ``R_MORELLO_TLSDESC``   | ``TLSDESC(S+A)``                        | Identifies a TLS descriptor to be filled |
+    | 59397 | ``R_MORELLO_TLSDESC``   | ``TLSDESC(S+A)``                        | Identifies a TLS descriptor to be filled.|
     |       |                         |                                         |                                          |
     +-------+-------------------------+-----------------------------------------+------------------------------------------+
 
@@ -643,7 +641,7 @@ Dynamic Morello relocations
 
   ``R_MORELLO_RELATIVE`` represents an optimization of ``R_MORELLO_GLOB_DAT``. It can be
   used when the symbol resolves to the current shared object or executable. ``S``
-  must be the ``Null`` symbol (Index 0) the address and permissions must be written
+  must be the ``Null`` symbol (Index 0). The address and permissions must be written
   to the fragment. See `Dynamic linking with Morello`_ for details.
 
   ``R_MORELLO_IRELATIVE`` is used by the linker when transforming ``IFUNC`` s. The
@@ -654,22 +652,22 @@ Static linking with Morello
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A capability has more associated information than a conventional pointer. It has
-extra information, for example base, offset, size and permissions.
+extra information. For example: base, offset, size and permissions.
 
 Capabilities cannot be statically initialised. Global capability initialization
 when static linking is performed by the runtime at program startup. The
 communication between the static linker and runtime is implementation defined.
-This document describes an implementation implemented based on a table of
-capability descriptions created at static link time, where each capability
-generating relocation results in one entry in the table. When static linking,
+This document describes an implementation based on a table of capability
+descriptions created at static link time, where each capability-generating
+relocation results in one entry in the table. When static linking,
 all capability descriptions will be explicitly grouped into a single table of
-capability descriptions where each table entry is a ``struct capdesc`` listed
-below.
+capability descriptions where each table entry is a ``struct capdesc`` (listed
+below).
 
 In the current LLVM based Morello toolchain, the runtime iterates through each
 ``capdesc`` entry creating a capability in the location pointed to by
 cap_location, with the specified base, offset, size and permissions given by the
-entry. To aid in the finding of the capability descriptions table the linker
+entry. To aid in the finding of the capability descriptions table, the linker
 emits two symbols to denote the start and end of the table:
 ``__cap_relocs_start`` and ``__cap_relocs_end`` respectively. The capability
 descriptions table is placed inside the ``__cap_relocs`` section.
@@ -752,17 +750,17 @@ As in `Static linking with Morello`_, the linker creates a 16-byte aligned,
 16-byte sized entry in the ``.got`` for the ``R_MORELLO_LD128_GOT_LO12_NC``
 relocation generated by the assembler. However, a capability descriptions table
 is not generated to initialize the ``.got`` entry. Instead it is expected that
-the dynamic linker generate these itself based on the ``R_MORELLO_GLOB_DAT`` and
+the dynamic linker generate the table itself based on the ``R_MORELLO_GLOB_DAT`` and
 ``R_MORELLO_JUMP_SLOT`` relocations created by the static linker. The dynamic linker
 writes the generated capabilities back into the ``.got`` entry.
 
 APPENDIX
 ========
-The status of this appendix is informative.
+The status of this appendix is ``informative``.
 
 Sample initialization of capabilities at runtime
 ------------------------------------------------
-The following code is a sample runtime initialization code that initializes
+The following code is sample runtime initialization code that initializes
 global capabilities created by an LLVM-based Morello toolchain.
 
 .. code-block:: text
@@ -812,7 +810,7 @@ global capabilities created by an LLVM-based Morello toolchain.
 
 Sample linker generated veneers
 -------------------------------
-For C64 to A64 interworking, the following veneer is used.
+For C64 to A64 interworking, the following veneer is used:
 
 .. code-block:: text
 
@@ -821,7 +819,7 @@ For C64 to A64 interworking, the following veneer is used.
   br c16
 
 For A64 to C64 interworking, and for C64 to C64 Range Extension, the following
-veneer is used. The BX changes the execution state from A64 to C64.
+veneer is used. The BX changes the execution state from A64 to C64:
 
 .. code-block:: text
 
