@@ -436,10 +436,10 @@ The following nomenclature is used in the descriptions of relocation operations:
 - ``CAP_INIT`` generates a capability with all required information. When used on
   its own represents the operations needs to be done for handling ``R_MORELLO_CAPINIT``.
 
-- ``CAP_SIZE`` the size of the underlying memory region that the capability can
+- ``CAP_SIZE`` is the size of the underlying memory region that the capability can
   reference. This may not directly map to the symbol size.
 
-- ``CAP_PERM`` the permission of the capability. This may not directly map to
+- ``CAP_PERM`` is the permission of the capability. This may not directly map to
   the type of the symbol.
 
 - ``[msb:lsb]`` is a bit-mask operation representing the selection of bits in a
