@@ -41,8 +41,7 @@ Preamble
 
 Morello alpha
 -------------
-This document is an alpha proposal for Morello extensions to ELF for
-AArch64. Feedback welcome through your normal channels.
+This document is an alpha proposal for Morello extensions to ELF for AArch64.
 
 Abstract
 --------
@@ -703,14 +702,14 @@ When a Morello-capable assembler sees a ``.capinit`` instruction, it reserves a
 16-byte (128 bits) location (``fragment``) and  generates a
 ``R_MORELLO_CAPINIT`` relocation for the linker to create a capability in the
 ``fragment``. The assembler may use the ``fragment`` with the following format
-to give out size hints for the linker to use before processing the relocation.
+to give out size hints for the linker to use before processing the relocation:
 
 +----------------+--------------+
 |  64-bit: empty | 64-bit: size |
 +----------------+--------------+
 
-This size hint if not superseded by more accurate information will be
-incorporated into the ``capdesc`` ``size`` field.
+This size hint will be incorporated into the ``capdesc`` ``size`` field, if not
+superseded by more accurate information.
 
 In case of position independent code (PIC), the assembler will generate a
 ``R_MORELLO_LD128_GOT_LO12_NC`` relocation, which causes the linker to generate
@@ -726,7 +725,7 @@ Dynamic linking with Morello
 When dynamic linking, capability initialization is done by the dynamic linker as
 a result of processing one of the dynamic relocations listed in
 `Dynamic relocations table`_. For ``R_MORELLO_RELATIVE`` and
-``R_MORELLO_IRELATIVE`` relocations the static linker must write the following
+``R_MORELLO_IRELATIVE`` relocations, the static linker must write the following
 information to the fragment identified by ``r_offset``.
 
 +------------------+-----------------+----------------------+
