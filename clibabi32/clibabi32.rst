@@ -14,7 +14,7 @@
 .. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
 .. _CLIBABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI32: https://developer.arm.com/documentation/ihi0041/latest
-.. _RTABI32: https://developer.arm.com/documentation/ihi0043/latest
+.. _RTABI32: https://github.com/ARM-software/abi-aa/releases
 
 .. role:: c(code)
    :language: c

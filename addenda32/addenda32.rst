@@ -13,7 +13,7 @@
 .. _AAPCS32: https://developer.arm.com/documentation/ihi0042/latest
 .. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
 .. _EHABI32: https://github.com/ARM-software/abi-aa/releases
-.. _RTABI32: https://developer.arm.com/documentation/ihi0043/latest
+.. _RTABI32: https://github.com/ARM-software/abi-aa/releases
 .. _GDWARF: http://dwarfstd.org/Dwarf3Std.php
 .. _GELF: http://www.sco.com/developers/gabi/
 .. _LSB: http://refspecs.linuxfoundation.org/lsb.shtml

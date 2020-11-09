@@ -118,6 +118,12 @@ styles:
         parent : table
         colWidths: [ 12%, 44%, 44% ]
 
+    rubric:
+        fontName: stdBold
+        fontSize: 10
+        textColor: #0091bd
+        alignment: TA_LEFT
+
     # aadwarf32 styles
     aadwarf32-change:
         parent : table
@@ -334,3 +340,28 @@ styles:
     pauthabielf64-signing-schema:
         parent : table
         colWidths: [ 15%, 25%, 35%, 25% ]
+
+    # rtabi32 styles
+    rtabi32-refs:
+        parent : table
+        colWidths: [ 15%, 40%, 45% ]
+
+    rtabi32-float-comparisons:
+        parent : table
+        colWidths: [ 47%, 53% ]
+
+    rtabi32-float-int-conversions:
+        parent : table
+        colWidths: [ 49%, 51% ]
+
+    rtabi32-float-float-conversions:
+        parent : table
+        colWidths: [ 40%, 60% ]
+
+    rtabi32-long-long:
+        parent : table
+        colWidths: [ 53%, 47% ]
+
+    rtabi32-cxa-guard:
+        parent : table
+        colWidths: [ 42%, 58% ]
