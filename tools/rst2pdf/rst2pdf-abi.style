@@ -463,3 +463,12 @@ styles:
     aaelf32-arch-compat:
         parent : table
         colWidths: [ 37%, 15%, 50% ]
+
+    # cppabi32 styles
+    cppabi32-long-code-inclusion:
+        parent : code
+        fontSize: 8
+
+    cppabi32-operator-delete:
+        parent : table
+        colWidths: [ 25%, 9%, 7%, 52%, 7% ]

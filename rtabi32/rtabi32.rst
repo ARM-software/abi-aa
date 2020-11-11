@@ -21,7 +21,7 @@
 .. _ARMv5ARM: https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual
 .. _BSABI32: https://developer.arm.com/documentation/ihi0036/latest
 .. _CLIBABI32: https://github.com/ARM-software/abi-aa/releases
-.. _CPPABI32: https://developer.arm.com/documentation/ihi0041/latest
+.. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
 .. _DBGOVL32: https://developer.arm.com/documentation/ihi0049/latest
 .. _EHABI32: https://github.com/ARM-software/abi-aa/releases
 .. _FDPIC: https://github.com/mickael-guene/fdpic_doc
