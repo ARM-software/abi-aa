@@ -34,7 +34,7 @@ Procedure Call Standard for the Arm Architecture                   | -          
 ELF for the Arm Architecture                                       | [aaelf32](aaelf32/aaelf32.rst)       | [2019Q1](https://developer.arm.com/documentation/ihi0044/latest)
 DWARF for the Arm Architecture                                     | [aadwarf32](aadwarf32/aadwarf32.rst) | [2018Q4](https://developer.arm.com/documentation/ihi0040/latest)
 Base Platform ABI for the Arm Architecture                         | -                                    | [2018Q4](https://developer.arm.com/documentation/ihi0037/latest)
-C++ ABI for the Arm Architecture                                   | -                                    | [2019Q4](https://developer.arm.com/documentation/ihi0041/latest)
+C++ ABI for the Arm Architecture                                   | [cppabi32](cppabi32/cppabi32.rst)    | [2019Q4](https://developer.arm.com/documentation/ihi0041/latest)
 Exception Handling ABI for the Arm Architecture                    | [ehabi32](ehabi32/ehabi32.rst)       | [2018Q4](https://developer.arm.com/documentation/ihi0038/latest)
 Run-time ABI for the Arm Architecture                              | [rtabi32](rtabi32/rtabi32.rst)       | [2018Q4](https://developer.arm.com/documentation/ihi0043/latest)
 C Library for the Arm Architecture                                 | [clibabi32](clibabi32/clibabi32.rst) | [2018Q4](https://developer.arm.com/documentation/ihi0039/latest)

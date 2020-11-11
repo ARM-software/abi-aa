@@ -11,7 +11,7 @@
 
 .. _AAELF32: https://github.com/ARM-software/abi-aa/releases
 .. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
-.. _CPPABI32: https://developer.arm.com/documentation/ihi0041/latest
+.. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
 .. _EHABI32: https://developer.arm.com/documentation/ihi0038/latest
 .. _RTABI32: https://github.com/ARM-software/abi-aa/releases
 .. _ARMv5 Architecture Reference Manual: https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual
