@@ -380,7 +380,7 @@ provided by a different conforming tool chain.
 
 .. rubric:: Inter-operation between relocatable files
 
-.. figure:: rtabi32-inter-operation.png
+.. figure:: rtabi32-inter-operation.svg
 
 In this model of inter-working, the standard headers used to build a
 relocatable file are those associated with the tool chain building it,
