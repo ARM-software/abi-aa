@@ -472,3 +472,16 @@ styles:
     cppabi32-operator-delete:
         parent : table
         colWidths: [ 25%, 9%, 7%, 52%, 7% ]
+
+    # aapcs32 styles
+    aapcs32-refs:
+        parent : table
+        colWidths: [ 10%, 23%, 67% ]
+
+    aapcs32-fundamendal-data-types:
+        parent : table
+        colWidths: [ 15%, 20%, 12%, 12%, 45% ]
+
+    aapcs32-simd-types:
+        parent : table
+        colWidths: [ 16%, 33%, 12%, 15%, 24% ]
