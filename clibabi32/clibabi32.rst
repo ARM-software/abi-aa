@@ -312,7 +312,7 @@ provided by a different conforming tool chain.
 
 .. _clibabi32-fig1:
 
-.. figure:: clibabi32-inter-operation.png
+.. figure:: clibabi32-inter-operation.svg
 
   Inter-operation between relocatable objects
 
