@@ -10,7 +10,7 @@
                       affiliates. All rights reserved.
 
 .. _AAELF32: https://github.com/ARM-software/abi-aa/releases
-.. _AAPCS32: https://developer.arm.com/documentation/ihi0042/latest
+.. _AAPCS32: https://github.com/ARM-software/abi-aa/releases
 .. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
 .. _CLIBABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
