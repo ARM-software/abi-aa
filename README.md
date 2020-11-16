@@ -72,7 +72,9 @@ PAuth ABI Extension to ELF for the Arm 64-bit Architecture  | [pauthabielf64](pa
 
 specification                                               | latest on Github                  | last on developer site
 ---                                                         | ---                               | ---
+Morello Extension to the Procedure Call Standard for the Arm 64-bit Architecture  | - | [2020Q3](https://developer.arm.com/documentation/102205/latest)
 Morello Extension to ELF for the Arm 64-bit Architecture  | [aaelf64-morello](aaelf64-morello/aaelf64-morello.rst) | [2020Q3](https://developer.arm.com/documentation/102072/latest)
+Morello Extension to DWARF for the Arm 64-bit Architecture  | - | [2020Q3](https://developer.arm.com/documentation/102215/latest)
 
 ## Releases
 
