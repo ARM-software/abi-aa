@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 15\ :sup:`th` October 2020
+.. |date-of-issue| replace:: 23\ :sup:`rd` November 2020
 .. |copyright-date| replace:: 2010-2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -210,12 +210,13 @@ Change history
   |        |                             | tagged stack. Describe DWARF           |
   |        |                             | representation of SVE vector types.    |
   +--------+-----------------------------+----------------------------------------+
-  | 2020Q4 | 15\ :sup:`th` October 2020  | - document released on Github          |
+  | 2020Q4 | 23\ :sup:`th` November 2020 | - document released on Github          |
   |        |                             | - new Licence_: CC-BY-SA-4.0           |
   |        |                             | - new sections on Contributions_,      |
   |        |                             |   `Trademark notice`_, and Copyright_  |
   |        |                             | - AArch64 DWARF pointer signing        |
   |        |                             |   operations table columns switched    |
+  |        |                             | - Add Thread ID register numbers.      |
   +--------+-----------------------------+----------------------------------------+
 
 
@@ -369,7 +370,17 @@ integers.
    | 34             | RA_SIGN_STATE (**Beta**) | Return address signed state pseudo-register        |
    |                |                          | (`Note 8`_)                                        |
    +----------------+--------------------------+----------------------------------------------------+
-   | 37-45          | Reserved                 | \-                                                 |
+   | 35             | TPIDRRO_ELO              | EL0 Read-Only Software Thread ID register          |
+   +----------------+--------------------------+----------------------------------------------------+
+   | 36             | TPIDR_ELO                | EL0 Read/Write Software Thread ID register         |
+   +----------------+--------------------------+----------------------------------------------------+
+   | 37             | TPIDR_EL1                | EL1 Software Thread ID register                    |
+   +----------------+--------------------------+----------------------------------------------------+
+   | 38             | TPIDR_EL2                | EL2 Software Thread ID register                    |
+   +----------------+--------------------------+----------------------------------------------------+
+   | 39             | TPIDR_EL3                | EL3 Software Thread ID register                    |
+   +----------------+--------------------------+----------------------------------------------------+
+   | 40-45          | Reserved                 | \-                                                 |
    +----------------+--------------------------+----------------------------------------------------+
    | 46             | VG (**Beta**)            | 64-bit SVE vector granule pseudo-register          |
    |                |                          | (`Note 2`_, `Note 3`_)                             |
