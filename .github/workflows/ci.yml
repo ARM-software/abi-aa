@@ -1,0 +1,24 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: install packages
+      run: pip install -r tools/rst2pdf/requirements.txt
+    - name: check .rst document syntax
+      run: tools/common/check-rst-syntax.sh
+    - name: build PDFs
+      run: tools/rst2pdf/generate-pdfs.sh PDFs
+    - uses: actions/upload-artifact@v2
+      with:
+        name: PDFs
+        path: PDFs
