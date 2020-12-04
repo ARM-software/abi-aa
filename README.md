@@ -20,12 +20,13 @@ ABI documents that haven't been converted yet can be found on [the Arm-hosted
 developer
 site](https://developer.arm.com/architectures/system-architectures/software-standards/abi).
 
+See the *Document locations* section below for links to the individual documents, both here on Github and their last release on developer.arm.com.
 
 ## Releases
 
 The latest ABI releases are being made available only here on Github: https://github.com/ARM-software/abi-aa/releases
 
-For the last specifications released on developer.arm.com, see the links to the individual documents in the *Document location* section below.
+For the last specifications released on developer.arm.com, see the links to the individual documents in the *Document locations* section below.
 
 
 ## Defect reports
