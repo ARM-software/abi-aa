@@ -21,6 +21,24 @@ developer
 site](https://developer.arm.com/architectures/system-architectures/software-standards/abi).
 
 
+## Releases
+
+The latest ABI releases are being made available only here on Github: https://github.com/ARM-software/abi-aa/releases
+
+For the last specifications released on developer.arm.com, see the links to the individual documents in the *Document location* section below.
+
+
+## Defect reports
+
+Please report defects in or enhancements to the specifications in this folder to
+the [issue tracker page on
+GitHub](https://github.com/ARM-software/abi-aa/issues).
+
+For reporting defects or enhancements to documents that currenlty are not yet
+included in this repo and are thus only hosted on developer.arm.com, please send
+an email to arm.eabi@arm.com.
+
+
 ## Document locations
 
 See the below tables for the status of the various ABI specifications. A dash represents that the document isn't available either on Github or on the Arm-hosted developer site.
@@ -68,6 +86,7 @@ specification                                               | latest on Github  
 ---                                                         | ---                               | ---
 PAuth ABI Extension to ELF for the Arm 64-bit Architecture  | [pauthabielf64](pauthabielf64/pauthabielf64.rst) | -
 
+
 ### Morello Extension
 
 specification                                                                     | latest on Github                                             | last on developer site
@@ -76,19 +95,8 @@ Morello Extension to the Procedure Call Standard for the Arm 64-bit Architecture
 Morello Extension to ELF for the Arm 64-bit Architecture                          | [aaelf64-morello](aaelf64-morello/aaelf64-morello.rst)       | [2020Q3](https://developer.arm.com/documentation/102072/latest)
 Morello Extension to DWARF for the Arm 64-bit Architecture                        | [aadwarf64-morello](aadwarf64-morello/aadwarf64-morello.rst) | [2020Q3](https://developer.arm.com/documentation/102215/latest)
 
-## Releases
 
-The latest ABI releases are being made available only here on Github: https://github.com/ARM-software/abi-aa/releases
+### Miscellaneous material
 
-For the last specifications released on developer.arm.com, see the links to the individual documents in the *Document location* section above.
-
-
-## Defects report
-
-Please report defects in or enhancements to the specifications in this folder to
-the [issue tracker page on
-GitHub](https://github.com/ARM-software/abi-aa/issues).
-
-For reporting defects or enhancements to documents that currenlty are not yet
-included in this repo and are thus only hosted on developer.arm.com, please send
-an email to arm.eabi@arm.com.
+specification                       | latest on Github | last on developer site
+Semihosting for AArch32 and AArch64 | -                | [2019Q4](https://developer.arm.com/documentation/100863/latest)
