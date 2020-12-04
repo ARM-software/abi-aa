@@ -1,0 +1,4 @@
+git+git://github.com/rst2pdf/rst2pdf@d9bf8cd737c11cfc572c936173228c1103344fdf
+rstcheck
+matplotlib
+svglib
