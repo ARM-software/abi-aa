@@ -101,6 +101,6 @@ Morello Extension to DWARF for the Arm 64-bit Architecture                      
 
 ### Miscellaneous material
 
-specification                       | latest on Github | last on developer site
----                                 | ---              | ---
-Semihosting for AArch32 and AArch64 | -                | [2019Q4](https://developer.arm.com/documentation/100863/latest)
+specification                       | latest on Github                            | last on developer site
+---                                 | ---                                         | ---
+Semihosting for AArch32 and AArch64 |  [semihosting](semihosting/semihosting.rst) | [2019Q4](https://developer.arm.com/documentation/100863/latest)
