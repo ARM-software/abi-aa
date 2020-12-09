@@ -24,6 +24,9 @@ declare -a docs=(
 
     # morello
     "aadwarf64-morello" "aaelf64-morello" "aapcs64-morello"
+
+    # semihosting
+    "semihosting"
 )
 
 for doc in "${docs[@]}"; do
