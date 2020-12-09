@@ -255,6 +255,27 @@ styles:
         parent : table
         colWidths: [ 10%, 25%, 45%, 20% ]
 
+    # apcs64-morello styles
+    aapcs64-morello-change:
+        parent : table
+        colWidths: [ 13%, 25%, 57% ]
+
+    aapcs64-morello-references:
+        parent : table
+        colWidths: [ 20%, 25%, 55% ]
+
+    aapcs64-morello-gp-registers-usage:
+        parent : table
+        colWidths: [ 12%, 12%, 76% ]
+
+    aapcs64-morello-parameter-passing:
+        parent : table
+        colWidths: [ 10%, 90% ]
+
+    aapcs64-morello-c-cpp-type-variants
+        parent : table
+        colWidths: [ 30%, 25%, 25%, 20% ]
+
     # aapcs64 styles
     refs:
         parent : table
