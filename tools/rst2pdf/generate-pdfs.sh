@@ -23,7 +23,7 @@ declare -a docs=(
     "pauthabielf64"
 
     # morello
-    "aadwarf64-morello" "aaelf64-morello"
+    "aadwarf64-morello" "aaelf64-morello" "aapcs64-morello"
 )
 
 for doc in "${docs[@]}"; do
