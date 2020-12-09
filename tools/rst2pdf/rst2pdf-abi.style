@@ -509,3 +509,8 @@ styles:
     aapcs32-simd-types:
         parent : table
         colWidths: [ 16%, 33%, 12%, 15%, 24% ]
+
+    # semihosting styles
+    semihosting-change-history:
+        parent : table
+        colWidths: [ 12%, 25%, 63% ]
