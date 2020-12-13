@@ -4,7 +4,7 @@
    for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 6\ :sup:`th` November 2020
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2005-2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -375,8 +375,8 @@ Change history
   |       |                     | In `ELF Identification`_, added        |
   |       |                     | EI_OSABI value for ELFOSABI_ARM_FDPIC. |
   +-------+---------------------+----------------------------------------+
-  | 2020Q4| 6th November 2020   | - document released on Github          |
-  |       |                     | - new License_: CC-BY-SA-4.0           |
+  | 2020Q4| 21\ :sup:`st`       | - document released on Github          |
+  |       | December 2020       | - new License_: CC-BY-SA-4.0           |
   |       |                     | - new sections on Contributions_,      |
   |       |                     |   `Trademark notice`_, and Copyright_  |
   +-------+---------------------+----------------------------------------+

@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 9\ :sup:`th` December 2020
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -24,7 +24,7 @@ Date of Issue: |date-of-issue|
 
 .. class:: logo
 
-.. image:: ../Arm_logo_blue_150MN.png
+.. image:: Arm_logo_blue_150MN.png
 
 .. section-numbering::
 
@@ -183,13 +183,13 @@ Change history
 
 .. table::
 
-    +----------+---------------------+----------------------------------------+
-    | Issue    | Date                | Change                                 |
-    +==========+=====================+========================================+
-    | 00alpha  | 1st October 2020    | Alpha release.                         |
-    +----------+---------------------+----------------------------------------+
-    | 2020Q4   | December 2020       | Document released on Github.           |
-    +----------+---------------------+----------------------------------------+
+    +----------+------------------------------+----------------------------------------+
+    | Issue    | Date                         | Change                                 |
+    +==========+==============================+========================================+
+    | 00alpha  | 1st October 2020             | Alpha release.                         |
+    +----------+------------------------------+----------------------------------------+
+    | 2020Q4   | 21\ :sup:`st` December 2020  | Document released on Github.           |
+    +----------+------------------------------+----------------------------------------+
 
 
 References

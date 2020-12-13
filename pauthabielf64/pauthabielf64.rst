@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 0.3
-.. |date-of-issue| replace:: 22\ :sup:`nd` October 2020
+.. |release| replace:: 2020Q4
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2020
 
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
@@ -37,7 +37,7 @@ Date of Issue: |date-of-issue|
 
 .. class:: logo
 
-.. image:: ../Arm_logo_blue_150MN.png
+.. image:: Arm_logo_blue_150MN.png
 
 .. section-numbering::
 
@@ -367,6 +367,10 @@ architecture (AAELF64_) describing how PAuth ABI information is encoded
 in the ELF file. As an alpha document all details in this document are
 subject to change.
 
+.. raw:: pdf
+
+   PageBreak
+
 Platform Standards
 ==================
 
@@ -376,6 +380,10 @@ additional requirements and constraints that must be met by
 application code in binary form and the code-generation tools that
 generate such code. This document will present recommendations for a
 SysVr4 like operating system such as Linux.
+
+.. raw:: pdf
+
+   PageBreak
 
 Introduction
 ============
@@ -430,6 +438,10 @@ the static linker creates the storage that the copy is placed; which
 adds more complication in the form of communicating a signing schema
 than avoiding the copy relocation. The descriptor based TLS has been
 chosen as the most common implementation choice for AArch64.
+
+.. raw:: pdf
+
+   PageBreak
 
 Platform Decisions
 ==================
@@ -530,6 +542,10 @@ above. PAUTHELF64 does not define an additional
 ``R_AARCH64_AUTH_JUMP_SLOT`` relocation as the static linker will only
 generate one type of PLT entry in a link-unit.
 
+.. raw:: pdf
+
+   PageBreak
+
 Section Types
 =============
 
@@ -546,6 +562,10 @@ The PAuth ABI adds an additional Processor specific section type
 The value is in the AArch64 Processor specfic range. The value is
 subject to change if there is a clash with any section types added by
 AAELF64_.
+
+.. raw:: pdf
+
+   PageBreak
 
 Static Relocations
 ==================
@@ -669,6 +689,10 @@ In the static context This is the equivalent of the arm64e
 ``ARM64_RELOC_AUTHENTICATED`` relocation. ``R_AARCH64_AUTH_ABS64`` can
 also be used as a dynamic relocation with the same ELF 64 Code.
 
+.. raw:: pdf
+
+   PageBreak
+
 AUTH variant Dynamic Relocations
 ================================
 
@@ -689,6 +713,10 @@ relocation.
   +--------------------+------------------------------+------------------------------------+
   | 0xE200             | R\_AARCH64\_AUTH\_RELATIVE   | SIGN(DELTA(S) + A, SCHEMA(\*P))    |
   +--------------------+------------------------------+------------------------------------+
+
+.. raw:: pdf
+
+   PageBreak
 
 Dynamic Section
 ===============
@@ -722,6 +750,9 @@ Description:
 * ``DT_AARCH64_AUTH_RELRENT`` This element holds the size in bytes of
   a ``DT_AARCH64_RELR`` relocation entry.
 
+.. raw:: pdf
+
+   PageBreak
 
 Reocation Compression
 =====================
@@ -738,6 +769,10 @@ The format of the ``SHT_AARCH64_AUTH_RELR`` section is identical to
 ``R_AARCH64_AUTH_RELATIVE``. A link-unit may contain both ``SHT_RELR``
 and ``SHT_AARCH64_AUTH_RELR`` sections.
 
+.. raw:: pdf
+
+   PageBreak
+
 Static Linking
 ==============
 
@@ -752,6 +787,10 @@ section as if dynamic linking, with linker defined symbols denoting
 the base and limit of the section. The runtime can resolve the dynamic
 relocations to create the signed pointers. More compact encodings are
 possible.
+
+.. raw:: pdf
+
+   PageBreak
 
 Run-time dynamic linking
 ========================
@@ -770,6 +809,10 @@ the address is not signed.
 An optional extension that communicates the signing schema for a
 symbol to the dynamic linker can be found in `Appendix extension to
 recording signing schema for dlsym`_.
+
+.. raw:: pdf
+
+   PageBreak
 
 ELF Marking
 ===========
@@ -837,6 +880,10 @@ compatibility.
 
 Platforms may replace the base compatibility model with a platform
 specific model.
+
+.. raw:: pdf
+
+   PageBreak
 
 Appendix extension to recording signing schema for dlsym
 ========================================================
@@ -907,6 +954,10 @@ tag DT_AARCH64_AUTH_SYM is added.
   +============================+============+========+============+===============+
   | DT\_AARCH64\_AUTH\_SYM     | 0x70000008 | d\_ptr | optional   | optional      |
   +----------------------------+------------+--------+------------+---------------+
+
+.. raw:: pdf
+
+   PageBreak
 
 Appendix Signed GOT
 ===================
@@ -1022,6 +1073,10 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   |             |                                        |                                  | X. No overflow check.    |
   +-------------+----------------------------------------+----------------------------------+--------------------------+
 
+.. raw:: pdf
+
+   PageBreak
+
 Additional AUTH variant Dynamic Relocations for Signed GOT
 ==========================================================
 
@@ -1056,6 +1111,10 @@ linkers only support a single GOT entry per symbol. An implementation
 may choose to fault an AUTH and a non-AUTH GOT generating relocation
 to the same symbol, this would require all the GOT-generating
 relocations to a symbol to be signed or unsigned.
+
+.. raw:: pdf
+
+   PageBreak
 
 Appendix thoughts on encoding a signing schema
 ==============================================
