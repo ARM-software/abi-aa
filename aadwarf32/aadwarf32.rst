@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` November 2020
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2003-2007, 2012, 2018, 2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -195,30 +195,30 @@ Change history
   +========+=====================================+========================================+
   | 1.0    | 30\ :superscript:`th` October 2003  | First public release.                  |
   +--------+-------------------------------------+----------------------------------------+
-  | 2.0    | 24\ :superscript:`th` March 2005    | Second public release.                 |
+  | 2.0    | 24\ :sup:`th` March 2005            | Second public release.                 |
   +--------+-------------------------------------+----------------------------------------+
-  | 2.01   | 6\ :superscript:`th` October 2006   | Added register numbers for VFP-v3      |
+  | 2.01   | 6\ :sup:`th` October 2006           | Added register numbers for VFP-v3      |
   |        |                                     | d0-d31 (`DWARF register names`_).      |
   +--------+-------------------------------------+----------------------------------------+
-  | 2.02   | 5\ :superscript:`th` May 2006       | Minor corrections now that DWARF 3.0   |
+  | 2.02   | 5\ :sup:`th` May 2006               | Minor corrections now that DWARF 3.0   |
   |        |                                     | is a standard; incompatible changes to |
   |        |                                     | the values of DW_AT_endianity          |
   |        |                                     | (`Describing other endian data`_) as a |
   |        |                                     | result.                                |
   +--------+-------------------------------------+----------------------------------------+
-  | A      | 25\ :superscript:`th` October 2007  | Document renumbered (formerly          |
+  | A      | 25\ :sup:`th` October 2007          | Document renumbered (formerly          |
   |        |                                     | GENC-003533 v2.02).                    |
   +--------+-------------------------------------+----------------------------------------+
-  | B      | 30\ :superscript:`th` November 2012 | `Common information entries`_: Clarify |
+  | B      | 30\ :sup:`th` November 2012         | `Common information entries`_: Clarify |
   | r2.09  |                                     | CIE descriptions of registers that are |
   |        |                                     | unused by intention of the user, for   |
   |        |                                     | example as a consequence of the chosen |
   |        |                                     | procedure call standard.               |
   +--------+-------------------------------------+----------------------------------------+
-  | 2018Q4 | 21\ :superscript:`st` December 2018 | Minor typographical fixes, updated     |
+  | 2018Q4 | 21\ :sup:`st` December 2018         | Minor typographical fixes, updated     |
   |        |                                     | links.                                 |
   +--------+-------------------------------------+----------------------------------------+
-  | 2020Q4 | 23\ :superscript:`th` November 2020 | - document released on Github          |
+  | 2020Q4 | 21\ :sup:`st` December 2020         | - document released on Github          |
   |        |                                     | - new Licence_: CC-BY-SA-4.0           |
   |        |                                     | - new sections on Contributions_,      |
   |        |                                     |   `Trademark notice`_, and Copyright_  |

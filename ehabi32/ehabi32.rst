@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2020Q3
-.. |date-of-issue| replace:: 1\ :sup:`st` October 2020
+.. |release| replace:: 2020Q4
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2002-2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -12,7 +12,7 @@
 .. _AAELF32: https://github.com/ARM-software/abi-aa/releases
 .. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
 .. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
-.. _EHABI32: https://developer.arm.com/documentation/ihi0038/latest
+.. _EHABI32: https://developer.arm.com/documentatiovn/ihi0038/latest
 .. _RTABI32: https://github.com/ARM-software/abi-aa/releases
 .. _ARMv5 Architecture Reference Manual: https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual
 .. _ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition:

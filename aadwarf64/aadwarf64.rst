@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` November 2020
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2010-2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -210,7 +210,7 @@ Change history
   |        |                             | tagged stack. Describe DWARF           |
   |        |                             | representation of SVE vector types.    |
   +--------+-----------------------------+----------------------------------------+
-  | 2020Q4 | 23\ :sup:`th` November 2020 | - document released on Github          |
+  | 2020Q4 | 21\ :sup:`st` December 2020 | - document released on Github          |
   |        |                             | - new Licence_: CC-BY-SA-4.0           |
   |        |                             | - new sections on Contributions_,      |
   |        |                             |   `Trademark notice`_, and Copyright_  |

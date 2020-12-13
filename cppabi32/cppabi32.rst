@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 11\ :sup:`th` November 2020
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2003-2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -12,14 +12,14 @@
 .. |gcppabi-link| replace:: http://itanium-cxx-abi.github.io/cxx-abi/abi.html
 .. |gelf-link| replace:: http://www.sco.com/developers/gabi/
 
-.. _AAPCS32: https://developer.arm.com/documentation/ihi0042/latest
+.. _AAPCS32: https://github.com/ARM-software/abi-aa/releases
 .. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
 .. _CLIBABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
 .. _EHABI32: https://github.com/ARM-software/abi-aa/releases
 .. _GCPPABI: http://itanium-cxx-abi.github.io/cxx-abi/abi.html
 .. _GELF: http://www.sco.com/developers/gabi/
-.. _RTABI32: https://developer.arm.com/documentation/ihi0043/latest
+.. _RTABI32: https://github.com/ARM-software/abi-aa/releases
 
 ..
    References to individual subsections of GCPPABI
@@ -55,7 +55,7 @@ Date of Issue: |date-of-issue|
 
 .. class:: logo
 
-.. image:: ../Arm_logo_blue_150MN.png
+.. image:: Arm_logo_blue_150MN.png
 
 .. section-numbering::
 
@@ -269,7 +269,7 @@ Change history
   |             |                               | format: `Summary of differences from and additions to the generic |
   |             |                               | C++ ABI`_.                                                        |
   +-------------+-------------------------------+-------------------------------------------------------------------+
-  | 2020Q4      | 11th\ :sup:`th` November 2020 | - document released on Github                                     |
+  | 2020Q4      | 21\ :sup:`st` December 2020   | - document released on Github                                     |
   |             |                               | - new Licence_: CC-BY-SA-4.0                                      |
   |             |                               | - new sections on Contributions_,                                 |
   |             |                               |   `Trademark notice`_, and Copyright_                             |

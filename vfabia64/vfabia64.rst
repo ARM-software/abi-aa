@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2020Q3
-.. |date-of-issue| replace:: 1\ :sup:`st` October 2020
+.. |release| replace:: 2020Q4
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2018-2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -24,7 +24,7 @@ Date of Issue: |date-of-issue|
 
 .. class:: logo
 
-.. image:: ../Arm_logo_blue_150MN.png
+.. image:: Arm_logo_blue_150MN.png
 
 .. section-numbering::
 

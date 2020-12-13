@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 10\ :sup:`th` December 2020
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2016, 2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -200,8 +200,8 @@ Change history
   |         |                  | example, change `_` to `-` in                        |
   |         |                  | `:semihosting-features`.                             |
   +---------+------------------+------------------------------------------------------+
-  |  2020Q4 | 10 December 202  | - document released on Github                        |
-  |         |                  | - new Licence_: CC-BY-SA-4.0                         |
+  |  2020Q4 | 21\ :sup:`st`    | - document released on Github                        |
+  |         | December 2020    | - new Licence_: CC-BY-SA-4.0                         |
   |         |                  | - new sections on Contributions_,                    |
   |         |                  |   `Trademark notice`_, and Copyright_                |
   +---------+------------------+------------------------------------------------------+

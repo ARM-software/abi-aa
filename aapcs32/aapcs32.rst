@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 12\ :sup:`th` November 2020
+.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
 .. |copyright-date| replace:: 2003-2020
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -36,7 +36,7 @@ Date of Issue: |date-of-issue|
 
 .. class:: logo
 
-.. image:: ../Arm_logo_blue_150MN.png
+.. image:: Arm_logo_blue_150MN.png
 
 .. section-numbering::
 
@@ -289,7 +289,7 @@ Change History
   |       |                                     | section `Volatile bit-fields – preserving number and width of     |
   |       |                                     | container accesses`_.                                             |
   +-------+-------------------------------------+-------------------------------------------------------------------+
-  | 2020Q4| 12\ :sup:`th` November 2020         | - document released on Github                                     |
+  | 2020Q4| 21\ :sup:`st` December 2020         | - document released on Github                                     |
   |       |                                     | - new Licence_: CC-BY-SA-4.0                                      |
   |       |                                     | - new sections on Contributions_,                                 |
   |       |                                     |   `Trademark notice`_, and Copyright_                             |
