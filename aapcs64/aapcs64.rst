@@ -987,6 +987,8 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   +-----------------------------------------------------------------------------------------------------------------+
   | Stage A - Initialization                                                                                        |
   +======================+==========================================================================================+
+  | This stage is performed exactly once, before processing of the arguments commences.                             |
+  +-----------------------------------------------------------------------------------------------------------------+
   |                      | The Next General-purpose Register Number (NGRN) is set to zero.                          |
   |                      |                                                                                          |
   | A.1                  |                                                                                          |
@@ -1009,7 +1011,10 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
 
   +---------------------------------------------------------------------------------------------------------------+
   | Stage B – Pre-padding and extension of arguments                                                              |
-  +======================+========================================================================================+
+  +===============================================================================================================+
+  | For each argument in the list the first matching rule from the following list is applied. If no rule matches  |
+  | the argument is used unmodified.                                                                              |
+  +----------------------+----------------------------------------------------------------------------------------+
   |                      | If the argument type is a Pure Scalable Type, no change is made at this stage.         |
   |                      |                                                                                        |
   | B.1                  |                                                                                        |
@@ -1049,6 +1054,10 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   +-----------------------+----------------------------------------------------------------------------------------+
   | Stage C – Assignment of arguments to registers and stack                                                       |
   +=======================+========================================================================================+
+  | For each argument in the list the following rules are applied in turn until the argument has been allocated.   |
+  | When an argument is assigned to a register any unused bits in the register have unspecified value. When an     |
+  | argument is assigned to a stack slot any unused padding bytes have unspecified value.                          |
+  +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is a Half-, Single-, Double- or Quad- precision Floating-point or      |
   |                       | Short Vector Type and the NSRN is less than 8, then the argument is allocated to the   |
   | C.1                   | least significant bits of register v[NSRN]. The NSRN is incremented by one. The        |
