@@ -358,6 +358,49 @@ the following section we document the code sequences for memory
 addressing; and in effect document the various memory models produced
 for the architecture.
 
+Absolute Addressing
+-------------------
+
+Absolute addressing means that the virtual addresses of instructions
+and statically allocated data are known at static link time. To
+execute properly the object must be loaded at the virtual address
+specified by the static linker. Critically this means that the static
+linker can embed these fixed, absolute addresses into the read-only,
+shareable code, rather than requiring run-time relocation via a Global
+Offset Table (GOT). Absolute addressing does not mean that PC-relative
+addressing cannot be used, if that is the most efficient way to
+generate an absolute address within the limits supported by the model.
+
+Absolute addressing is suitable for most bare-metal code, including
+the Linux kernel, as well as for normal GNU/Linux executables which –
+while dynamically linked – are loaded at a fixed address.
+
+Position independent addressing
+-------------------------------
+
+In position independent code (PIC) the virtual addresses of
+instructions and static data are not known until dynamic link
+time.
+
+The PIC model depends on an offset, known at static link time between
+a read-only dynamic relocation free executable segment and a
+read-write segment containing dynamic relocations. Code in the
+executable segment accesses data in the read-write segment via
+PC-relative addressing modes. PIC is typically used when building
+dynamic shared objects, where references to external variables must
+use indirect references via a static linker created global offset
+table (GOT).
+
+A GOT generating relocation is used to inform the static
+linker to create the GOT entry. The address of symbol definitions that
+cannot be pre-empted at dynamic link time can have their address
+taken so no GOT generating relocation is required.
+
+PIC can also be used to build position independent executables. A
+variant of PIC called PIE (position independent executable) can be
+used to build an executable. PIE assumes that global symbols cannot be
+pre-empted, which means that an indirection via the GOT is not needed.
+
 Assembler language addressing mode conventions
 ----------------------------------------------
 
@@ -454,7 +497,7 @@ syntax is of the form ``#:<operator>:<symbol name>``
 
    The symbol``__GLOBAL_OFFSET_TABLE__`` refers to the start of the
    global offset table (GOT) in the ELF module. The assembler
-   instruction ``adrp xn, __GLOBAL_OFFSET_TABLE__`` finds the address of the 4Kib page
+   instruction ``adrp xn, __GLOBAL_OFFSET_TABLE__`` finds the address of the 4KiB page
    containing the start of the GOT.
 
    ``#:gotpage_lo15:src`` is a 15-bit offset into the page containing
@@ -555,7 +598,7 @@ constraints which make it desirable to use different code models for
 different sizes of executable or dynamic shared object, to improve
 performance and reduce static code size. The relevant constraints are:
 
-* The literal load and ADR instructions generate a PC-relative address
+* The LDR (literal) and ADR instructions generate a PC-relative address
   with a range of +/- 1MiB.
 
 * The ADRP instruction generates a PC-relative, page aligned address
@@ -564,31 +607,36 @@ performance and reduce static code size. The relevant constraints are:
 * The LDR and STR instructions accept a 12-bit unsigned immediate
   offset, scaled by the access size.
 
-* The LDR and STR instructions accept 64-bit or 32-bit (signed or
-  unsigned) register offset.
+* The B and BL instructiond have a range of +/-128MiB. This is
+  typically used for function / procedure calls.
 
-* The BL instruction has a range of +/-128MiB. This is typically used
-  for function / procedure calls.
+* Static linkers may insert a veneer (a sequence of instructions) to
+  implement a relocated B or BL to a destination further away than the
+  +/-128MiB range. The size of executable sections must be limited to
+  127 MiB to leave space for veneers to be inserted after the section.
 
 The following code models are defined
 
 .. table::
 
-  +-------+----------------------+------------+
-  | Code  |    Segment Size      | GOT Limits |
-  | Model |                      |            |
-  +=======+======================+============+
-  | tiny  | text+got+data < 1MiB | 1MiB       |
-  +-------+----------------------+------------+
-  | small | text+got+data < 4GiB | 4GiB       |
-  +-------+----------------------+------------+
-  | large | no assumptions       | 4GiB       |
-  +-------+----------------------+------------+
+  +-------+---------+----------------------+-------------------+
+  | Code  | PIC     | Max Segment Size     | Max GOT size      |
+  | Model | support |                      |                   |
+  +=======+=========+======================+===================+
+  | tiny  | yes     | text+got+data < 1MiB | 1MiB              |
+  +-------+---------+----------------------+-------------------+
+  | small | yes     | text+got+data < 4GiB | 32KiB base+offset |
+  |       |         |                      | 4GiB  direct      |
+  +-------+---------+----------------------+-------------------+
+  | large | no      | no assumptions for   | see notes         |
+  |       |         | static linking       |                   |
+  |       |         |                      |                   |
+  +-------+---------+----------------------+-------------------+
 
 .. note::
 
-  The segment size column describes the total span of the statically
-  allocated text and data, for example (``__end`` -
+  The max segment size column describes the total span of the
+  statically allocated text and data, for example (``__end`` -
   ``__text_start``). It says nothing about the base address of the
   program or shared object, which may be located anywhere within the
   AArch64 virtual address space.
@@ -601,47 +649,57 @@ The following code models are defined
   and stack can make use of the full virtual address space, dependent
   on operating system addressing limits.
 
-  While designing these memory models it was estimated that only 2.6%
-  of load modules (executables and dynamic shared objects) have a
-  total static text+got+data size greater than 1MiB; the rest would
-  all fit into the tiny model. However to avoid Makefile changes, it
-  is recommended that the small model should be the default, with an
+  While designing the memory models it was estimated that only 2.6% of
+  load modules (executables and dynamic shared objects) have a total
+  static text+got+data size greater than 1MiB; the rest would all fit
+  into the tiny model. However to avoid Makefile changes, it is
+  recommended that the small model should be the default, with an
   explicit option to select the tiny model.
 
   Executables and shared objects may be linked dynamically with other
-  shared objects which use a different code model. However to maintain
-  the properties of the code-model static libraries must be compiled
-  using a model at least as large as the code with which they will be
-  linked.
+  shared objects which use a different code model.
+
+  Linking of relocatable objects of different code models is possible
+  as is linking of PIC/PIE and non-PIC relocatable objects. The result
+  of the combination is always the most limited model. For example the
+  combination of a tiny code model PIC object and small code model
+  non-PIC object is a tiny non-PIC executable.
 
   The convention for command-line option to select code model is
   ``-mcmodel=<model>`` where code model is one of small, medium or
   large.
 
-Running Example
-^^^^^^^^^^^^^^^
 
-The following C program will be used to illustrate the differences
-between the code-models.
+Code Model Examples
+-------------------
+
+The following section shows the same C program compiled with different
+code-models. The code-models are illustrative of code produced by the
+GCC and Clang compilers. They may not show optimal code-generation as
+there may be alternative code-sequences that satisfy the limitations
+of the code-models.
+
+Example C program:
 
 .. code-block:: c
 
   /* global */
-  extern char src[65536];
-  extern char dst[65536];
-  extern char *ptr;
+  extern int src[65536];
+  extern int dst[65536];
+  extern int *ptr;
 
   void foo (void)
   {
+
     dst[0] = src[0];
     ptr = &dst[0];
     *ptr = src[0];
   }
 
   /* local, small */
-  static char lsrc;
-  static char ldst;
-  static char *lptr;
+  static int lsrc;
+  static int ldst;
+  static int *lptr;
 
   void bar (void)
   {
@@ -651,8 +709,8 @@ between the code-models.
   }
 
   /* local, big */
-  static char lbsrc[65536];
-  static char lbdst[65536];
+  static int lbsrc[65536];
+  static int lbdst[65536];
 
   void baz (void)
   {
@@ -661,30 +719,11 @@ between the code-models.
     *lptr = lbsrc[0];
   }
 
-  /* external weak reference */
   extern __attribute__((weak)) int weakref;
-  int *getweakaddr()
+  int* getweakaddr()
   {
     return &weakref;
   }
-
-
-Absolute Addressing
--------------------
-
-Absolute addressing means that the virtual addresses of instructions
-and statically allocated data are known at static link time. To
-execute properly the object must be loaded at the virtual address
-specified by the static linker. Critically this means that the static
-linker can embed these fixed, absolute addresses into the read-only,
-shareable code, rather than requiring run-time relocation via a Global
-Offset Table (GOT). Absolute addressing does not mean that PC-relative
-addressing cannot be used, if that is the most efficient way to
-generate an absolute address within the limits supported by the model.
-
-Absolute addressing is suitable for most bare-metal code, including
-the Linux kernel, as well as for normal GNU/Linux executables which –
-while dynamically linked – are loaded at a fixed address.
 
 Tiny Code Model
 ^^^^^^^^^^^^^^^
@@ -700,26 +739,26 @@ data.
 .. code-block:: asm
 
   foo:
-    adr     x1, src       // R_AARCH64_ADR_PREL_LO21 src
-    ldrb    w1, [x1]
     adr     x0, dst       // R_AARCH64_ADR_PREL_LO21 dst
-    strb    w1, [x0]
+    adr     x1, src       // R_AARCH64_ADR_PREL_LO21 src
+    ldr     w1, [x1]
+    str     w1, [x0]
     adr     x1, ptr       // R_AARCH64_ADR_PREL_LO21 ptr
     str     x0, [x1]
     ret
 
   bar:
     adr     x0, .LANCHOR0 // R_AARCH64_ADR_PREL_LO21 .LANCHOR0
-    ldrb    w1, [x0, 1]
-    strb    w1, [x0]
+    ldr     w1, [x0, 4]
+    str     w1, [x0]
     str     x0, [x0, 8]
     ret
 
   baz:
     adr     x0, lbdst     // R_AARCH64_ADR_PREL_LO21 lbdst
     adr     x1, lbsrc     // R_AARCH64_ADR_PREL_LO21 lbsrc
-    ldrb    w1, [x1]
-    strb    w1, [x0]
+    ldr     w1, [x1]
+    str     w1, [x0]
     adr     x1, .LANCHOR0 // R_AARCH64_ADR_PREL_LO21 .LANCHOR0
     str     x0, [x1, 8]
     ret
@@ -734,16 +773,17 @@ data.
   .bss
   .LANCHOR0
   ldst:
-        .zero   1
-        .zero   7
+    .zero   4
+  lsrc:
+    .zero   4
+  lptr:
+    .zero   8
   lbdst:
-        .zero   65536
-
+    .zero   262144
+  lbsrc:
+    .zero   262144
 
 .. note::
-
-   There is no obvious advantage of ``adr/ldr`` over the
-   ``adrp/ldr[#:lo12]`` used by the small code-model.
 
    Benefits over the small model are the ability to use the
    PC-relative loads of 32 and 64-bit data and a single ADR
@@ -754,6 +794,60 @@ data.
    program is linked to run at a virtual address higher than 1MiB,
    then it will not be possible to generate 0 as the address of an
    undefined weak symbol using the ADR instruction.
+
+Tiny Code model PIC
+^^^^^^^^^^^^^^^^^^^
+
+Values can be loaded directly from the GOT with a single ``ldr``
+instruction.
+
+Code generation for extern weak references is the same as non-weak
+external references as both cases are indirected via the GOT.
+
+.. code-block:: asm
+
+  foo:
+    ldr     x0, :got:dst     // R_AARCH64_GOT_LD_PREL19 dst
+    ldr     x1, :got:src     // R_AARCH64_GOT_LD_PREL19 src
+    ldr     w1, [x1]
+    str     w1, [x0]
+    ldr     x1, :got:ptr     // R_AARCH64_GOT_LD_PREL19 ptr
+    str     x0, [x1]
+    ret
+
+  bar:
+    adr     x0, .LANCHOR0    // R_AARCH64_ADR_PREL_LO21 .LANCHOR0
+    ldr     w1, [x0, 4]
+    str     w1, [x0]
+    str     x0, [x0, 8]
+    ret
+
+  baz:
+    adr     x0, lbdst        // R_AARCH64_ADR_PREL_LO21 lbdst
+    adr     x1, lbsrc        // R_AARCH64_ADR_PREL_LO21 lbsrc
+    ldr     w1, [x1]
+    str     w1, [x0]
+    adr     x1, .LANCHOR0    // R_AARCH64_GOT_LD_PREL19 .LANCHOR0
+    str     x0, [x1, 8]
+    ret
+
+  getweakaddr:
+    ldr     x0, :got:weakref // R_AARCH64_GOT_LD_PREL19 weakref
+    ret
+
+  .bss
+  .LANCHOR0:
+  ldst:
+    .zero   4
+  lsrc:
+    .zero   4
+  lptr:
+    .zero   8
+  lbdst:
+    .zero   262144
+  lbsrc:
+    .zero   262144
+
 
 Small Code Model
 ^^^^^^^^^^^^^^^^
@@ -767,8 +861,8 @@ addressing to access data which is all within +/- 4GiB of the code.
     adrp    x0, dst                      // R_AARCH64_ADR_PREL_PG_HI21   dst
     add     x1, x0, :lo12:dst            // R_AARCH64_LDST64_ABS_LO12_NC dst
     adrp    x2, src                      // R_AARCH64_ADR_PREL_PG_HI21   src
-    ldrb    w2, [x2, #:lo12:src]         // R_AARCH64_LDST64_ABS_LO12_NC src
-    strb    w2, [x0, #:lo12:dst]         // R_AARCH64_LDST64_ABS_LO12_NC src
+    ldr     w2, [x2, #:lo12:src]         // R_AARCH64_LDST64_ABS_LO12_NC src
+    str     w2, [x0, #:lo12:dst]         // R_AARCH64_LDST64_ABS_LO12_NC src
     adrp    x0, ptr                      // R_AARCH64_ADR_PREL_PG_HI21   ptr
     str     x1, [x0, #:lo12:ptr]         // R_AARCH64_LDST64_ABS_LO12_NC ptr
     ret
@@ -776,8 +870,8 @@ addressing to access data which is all within +/- 4GiB of the code.
   bar:
     adrp    x1, .LANCHOR0                // R_AARCH64_ADR_PREL_PG_HI21   .LANCHOR0
     add     x0, x1, :lo12:.LANCHOR0      // R_AARCH64_LDST64_ABS_LO12_NC .LANCHOR0
-    ldrb    w2, [x0, 1]
-    strb    w2, [x1, #:lo12:.LANCHOR0]   // R_AARCH64_LDST64_ABS_LO12_NC .LANCHOR0
+    ldr     w2, [x0, 4]
+    str     w2, [x1, #:lo12:.LANCHOR0]   // R_AARCH64_LDST64_ABS_LO12_NC .LANCHOR0
     str     x0, [x0, 8]
     ret
 
@@ -785,8 +879,8 @@ addressing to access data which is all within +/- 4GiB of the code.
     adrp    x0, lbdst                    // R_AARCH64_ADR_PREL_PG_HI21   lbdst
     add     x1, x0, :lo12:lbdst          // R_AARCH64_LDST64_ABS_LO12_NC lbdst
     adrp    x2, lbsrc                    // R_AARCH64_ADR_PREL_PG_HI21   lbsrc
-    ldrb    w2, [x2, #:lo12:lbsrc]       // R_AARCH64_LDST64_ABS_LO12_NC lbsrc
-    strb    w2, [x0, #:lo12:lbdst]       // R_AARCH64_LDST64_ABS_LO12_NC lbdst
+    ldr     w2, [x2, #:lo12:lbsrc]       // R_AARCH64_LDST64_ABS_LO12_NC lbsrc
+    str     w2, [x0, #:lo12:lbdst]       // R_AARCH64_LDST64_ABS_LO12_NC lbdst
     adrp    x0, .LANCHOR0+8              // R_AARCH64_ADR_PREL_PG_HI21   .LANCHOR0 + 8
     str     x1, [x0, #:lo12:.LANCHOR0+8] // R_AARCH64_LDST64_ABS_LO12_NC .LANCHOR0 + 8
     ret
@@ -802,10 +896,97 @@ addressing to access data which is all within +/- 4GiB of the code.
   .bss
   .LANCHOR0
   ldst:
-    .zero   1
-    .zero   7
+    .zero   4
+  lsrc:
+    .zero   4
+  lptr:
+    .zero   8
   lbdst:
-    .zero   65536
+    .zero   262144
+  lbsrc:
+    .zero   262144
+
+Small Code model PIC
+^^^^^^^^^^^^^^^^^^^^
+
+The base address of the GOT, rounded down to a 4KiB page boundary is
+loaded into a register. GOT entries can be loaded as offsets from the
+GOT using an ``ldr`` instruction. The GOT size is limited by the 2\
+:sup:`15` range of the ldr.
+
+The address of a variable is a combination of ``adrp`` and ``add``
+
+.. code-block:: asm
+
+  foo:
+    adrp    x0, _GLOBAL_OFFSET_TABLE_    // R_AARCH64_ADR_PREL_PG_HI21  _GLOBAL_OFFSET_TABLE_
+    ldr     x1, [x0, #:gotpage_lo15:dst] // R_AARCH64_LD64_GOTPAGE_LO15 dst
+    ldr     x2, [x0, #:gotpage_lo15:src] // R_AARCH64_LD64_GOTPAGE_LO15 src
+    ldr     w2, [x2]
+    str     w2, [x1]
+    ldr     x0, [x0, #:gotpage_lo15:ptr] // R_AARCH64_LD64_GOTPAGE_LO15 ptr
+    str     x1, [x0]
+    ret
+
+  bar:
+    adrp    x1, .LANCHOR0                // R_AARCH64_ADR_PREL_PG_HI21  .LANCHOR0
+    add     x0, x1, :lo12:.LANCHOR0      // R_AARCH64_ADD_ABS_LO12_NC   .LANCHOR0
+    ldr     w2, [x0, 4]
+    strb    w2, [x1, #:lo12:.LANCHOR0]   // R_AARCH64_LDST8_ABS_LO12_NC .LANCHOR0
+    str     x0, [x0, 8]
+    ret
+
+  baz:
+    adrp    x0, lbdst                    // R_AARCH64_ADR_PREL_PG_HI21  lbdst
+    add     x1, x0, :lo12:lbdst          // R_AARCH64_ADD_ABS_LO12_NC   lbdst
+    adrp    x2, lbsrc
+    ldr     w2, [x2, #:lo12:lbsrc]       // R_AARCH64_ADD_ABS_LO12_NC   lbsrc
+    str     w2, [x0, #:lo12:lbdst]       // R_AARCH64_ADD_ABS_LO12_NC   lbdst
+    adrp    x0, .LANCHOR0+8              // R_AARCH64_ADR_PREL_PG_HI21  .LANCHOR0
+    str     x1, [x0, #:lo12:.LANCHOR0+8] // R_AARCH64_ADD_ABS_LO12_NC   .LANCHOR0
+    ret
+
+  getweakaddr:
+    adrp    x0, _GLOBAL_OFFSET_TABLE_
+    ldr     x0, [x0, #:gotpage_lo15:weakref]
+    ret
+
+  .bss
+  .LANCHOR0:
+  ldst:
+    .zero   4
+  lsrc:
+    .zero   4
+  lptr:
+    .zero   8
+  lbdst:
+    .zero   262144
+  lbsrc:
+    .zero   262144
+
+Alternate small code model PIC GOT access
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Instead of loading the page base of the GOT into a register and
+loading a GOT entry as an offset from the page base, an ``adrp`` and
+``ldr`` pair can be used to directly load an entry. Each unique GOT
+entry requires a pair of instructions to access, but the size of the
+GOT is now limited by the range of the ``adrp`` used to access the
+GOT.
+
+.. code-block:: asm
+
+  foo:
+    adrp    x8, :got:src              // R_AARCH64_ADR_GOT_PAGE	    src
+    ldr     x8, [x8, :got_lo12:src]   // R_AARCH64_LD64_GOT_LO12_NC src
+    adrp    x9, :got:ptr              // R_AARCH64_ADR_GOT_PAGE	    ptr
+    adrp    x10, :got:dst             // R_AARCH64_ADR_GOT_PAGE	    dst
+    ldr     w8, [x8]
+    ldr     x9, [x9, :got_lo12:ptr]   // R_AARCH64_LD64_GOT_LO12_NC ptr
+    ldr     x10, [x10, :got_lo12:dst] // R_AARCH64_LD64_GOT_LO12_NC dst
+    str     x10, [x9]
+    str     w8, [x10]
+    ret
 
 Large Code Model
 ^^^^^^^^^^^^^^^^
@@ -818,6 +999,11 @@ causes sections to be mapped sparsely within the virtual address
 space, or where a high-level code references absolute symbols defined
 in a linker script.
 
+Note that even if all code is compiled with the large code model,
+limitations on the size of the program may still exist due to code
+generated at link time or included from libraries. For example linker
+generated PLT sequences and veneers may use the small code model.
+
 .. code-block:: asm
 
   foo:
@@ -825,8 +1011,8 @@ in a linker script.
     ldr     x0, [x0, #:lo12:.LC0] // R_AARCH64_LDST64_ABS_LO12_NC .LC0
     adrp    x1, .LC1              // R_AARCH64_ADR_PREL_PG_HI21   .LC1
     ldr     x1, [x1, #:lo12:.LC1] // R_AARCH64_LDST64_ABS_LO12_NC .LC1
-    ldrb    w1, [x1]
-    strb    w1, [x0]
+    ldr     w1, [x1]
+    str     w1, [x0]
     adrp    x1, .LC2              // R_AARCH64_ADR_PREL_PG_HI21   .LC2
     ldr     x1, [x1, #:lo12:.LC2] // R_AARCH64_LDST64_ABS_LO12_NC .LC2
     str     x0, [x1]
@@ -842,8 +1028,8 @@ in a linker script.
   bar:
     adrp    x0, .LC3              // R_AARCH64_ADR_PREL_PG_HI21 .LC3
     ldr     x0, [x0, #:lo12:.LC3] // R_AARCH64_LDST64_ABS_LO12_NC .LC3
-    ldrb    w1, [x0, 1]
-    strb    w1, [x0]
+    ldr     w1, [x0, 4]
+    str     w1, [x0]
     str     x0, [x0, 8]
     ret
     .align  3
@@ -880,166 +1066,92 @@ in a linker script.
   .bss
   .LANCHOR0
   ldst:
-    .zero   1
-    .zero   7
+    .zero   4
+  lsrc:
+    .zero   4
+  lptr:
+    .zero   8
   lbdst:
-    .zero   65536
+    .zero   262144
+  lbsrc:
+    .zero   262144
 
+Alternate large code model using mov instructions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Position independent addressing
--------------------------------
-
-In position independent code (PIC) the virtual addresses of
-instructions and static data are not known until dynamic link
-time. PIC must use PC-relative addresses in all cases. PIC is
-typically used when building dynamic shared objects, where references
-to external variables must use indirect references via a global offset
-table (GOT).
-
-As PIC can be used in shared libraries the compiler must assume that
-all defaut visibility symbol definitions may be pre-empted at dynamic
-link time. All definitions are accessed as if they are external.
-
-In an executable definitions cannot be pre-empted at dynamic link
-time. A variant of PIC for executables called PIE (position
-independent executable) can be used for more efficient
-code-generation.
-
-Tiny Code model
-^^^^^^^^^^^^^^^
-
-Values can be loaded directly from the GOT with a single ``ldr``
-instruction. A GOT generating relocation is used to inform the static
-linker to create the GOT entry. The address of symbol definitions that
-cannot be pre-empted at dynamic link time can have their address
-taken with ``adr``, not GOT generating relocation is required.
-
-Code generation for extern weak references is the same as non-weak
-external references as both cases are indirected via the GOT.
+Instead of loading an address from a literal pool, a 64-bit address
+can be constructed from a series of movz and movk instructions. This
+approach does not interleave code and data and avoids a load
+instruction.
 
 .. code-block:: asm
 
   foo:
-    ldr     x0, :got:dst     // R_AARCH64_GOT_LD_PREL19 dst
-    ldr     x1, :got:src     // R_AARCH64_GOT_LD_PREL19 src
-    ldrb    w1, [x1]
-    strb    w1, [x0]
-    ldr     x1, :got:ptr     // R_AARCH64_GOT_LD_PREL19 ptr
-    str     x0, [x1]
-    ret
-
-  bar:
-    adr     x0, .LANCHOR0    // R_AARCH64_ADR_PREL_LO21 .LANCHOR0
-    ldrb    w1, [x0, 1]
-    strb    w1, [x0]
-    str     x0, [x0, 8]
-    ret
-
-  baz:
-    adr     x0, lbdst        // R_AARCH64_ADR_PREL_LO21 lbdst
-    adr     x1, lbsrc        // R_AARCH64_ADR_PREL_LO21 lbsrc
-    ldrb    w1, [x1]
-    strb    w1, [x0]
-    adr     x1, .LANCHOR0    // R_AARCH64_GOT_LD_PREL19 .LANCHOR0
-    str     x0, [x1, 8]
-    ret
-
-  getweakaddr:
-    ldr     x0, :got:weakref // R_AARCH64_GOT_LD_PREL19 weakref
-    ret
-
-  .bss
-  .LANCHOR0
-  ldst:
-    .zero   1
-    .zero   7
-  lbdst:
-    .zero   65536
-
-
-Small Code model
-^^^^^^^^^^^^^^^^
-
-The base address of the GOT, rounded down to a 4Kib page boundary is
-loaded into a register. GOT entries can be loaded as offsets from the
-GOT using an ``ldr`` instruction. The GOT size is limited by the 2\
-:sup:`15` range of the ldr.
-
-The address of a variable is a combination of ``adrp`` and ``add``
-
-.. code-block:: asm
-
-  foo:
-    adrp    x0, _GLOBAL_OFFSET_TABLE_    // R_AARCH64_ADR_PREL_PG_HI21  _GLOBAL_OFFSET_TABLE_
-    ldr     x1, [x0, #:gotpage_lo15:dst] // R_AARCH64_LD64_GOTPAGE_LO15 dst
-    ldr     x2, [x0, #:gotpage_lo15:src] // R_AARCH64_LD64_GOTPAGE_LO15 src
-    ldrb    w2, [x2]
-    strb    w2, [x1]
-    ldr     x0, [x0, #:gotpage_lo15:ptr] // R_AARCH64_LD64_GOTPAGE_LO15 ptr
-    str     x1, [x0]
-    ret
-
-  bar:
-    adrp    x1, .LANCHOR0                // R_AARCH64_ADR_PREL_PG_HI21  .LANCHOR0
-    add     x0, x1, :lo12:.LANCHOR0      // R_AARCH64_ADD_ABS_LO12_NC   .LANCHOR0
-    ldrb    w2, [x0, 1]
-    strb    w2, [x1, #:lo12:.LANCHOR0]   // R_AARCH64_LDST8_ABS_LO12_NC .LANCHOR0
-    str     x0, [x0, 8]
-    ret
-
-  baz:
-    adrp    x0, lbdst                    // R_AARCH64_ADR_PREL_PG_HI21  lbdst
-    add     x1, x0, :lo12:lbdst          // R_AARCH64_ADD_ABS_LO12_NC   lbdst
-    adrp    x2, lbsrc
-    ldrb    w2, [x2, #:lo12:lbsrc]       // R_AARCH64_ADD_ABS_LO12_NC   lbsrc
-    strb    w2, [x0, #:lo12:lbdst]       // R_AARCH64_ADD_ABS_LO12_NC   lbdst
-    adrp    x0, .LANCHOR0+8              // R_AARCH64_ADR_PREL_PG_HI21  .LANCHOR0
-    str     x1, [x0, #:lo12:.LANCHOR0+8] // R_AARCH64_ADD_ABS_LO12_NC   .LANCHOR0
-    ret
-
-  getweakaddr:
-    adrp    x0, _GLOBAL_OFFSET_TABLE_
-    ldr     x0, [x0, #:gotpage_lo15:weakref]
-    ret
-
-  .bss
-  .LANCHOR0
-  ldst:
-    .zero   1
-    .zero   7
-  lbdst:
-    .zero   65536
-
-
-Alternate small code model GOT access
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Instead of loading the page base of the GOT into a register and
-loading a GOT entry as an offset from the page base, an ``adrp`` and
-``ldr`` pair can be used to directly load an entry. Each unique GOT
-entry requires a pair of instructions to access, but the size of the
-GOT is now limited by the range of the ``adrp`` used to access the
-GOT.
-
-.. code-block:: asm
-
-  foo:
-    adrp    x8, :got:src              // R_AARCH64_ADR_GOT_PAGE	    src
-    ldr     x8, [x8, :got_lo12:src]   // R_AARCH64_LD64_GOT_LO12_NC src
-    adrp    x9, :got:ptr              // R_AARCH64_ADR_GOT_PAGE	    ptr
-    adrp    x10, :got:dst             // R_AARCH64_ADR_GOT_PAGE	    dst
-    ldrb    w8, [x8]
-    ldr     x9, [x9, :got_lo12:ptr]   // R_AARCH64_LD64_GOT_LO12_NC ptr
-    ldr     x10, [x10, :got_lo12:dst] // R_AARCH64_LD64_GOT_LO12_NC dst
+    movz    x8, #:abs_g0_nc:src     // R_AARCH64_MOVW_UABS_G0_NC
+    movk    x8, #:abs_g1_nc:src     // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x8, #:abs_g2_nc:src     // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x8, #:abs_g3:src        // R_AARCH64_MOVW_UABS_G3
+    movz    x9, #:abs_g0_nc:ptr     // R_AARCH64_MOVW_UABS_G0_NC
+    movz    x10, #:abs_g0_nc:dst    // R_AARCH64_MOVW_UABS_G0_NC
+    ldr     w8, [x8]
+    movk    x9, #:abs_g1_nc:ptr     // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x10, #:abs_g1_nc:dst    // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x9, #:abs_g2_nc:ptr     // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x10, #:abs_g2_nc:dst    // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x9, #:abs_g3:ptr        // R_AARCH64_MOVW_UABS_G3
+    movk    x10, #:abs_g3:dst       // R_AARCH64_MOVW_UABS_G3
     str     x10, [x9]
-    strb    w8, [x10]
+    str     w8, [x10]
     ret
 
+  bar:
+    movz    x8, #:abs_g0_nc:lsrc    // R_AARCH64_MOVW_UABS_G0_NC
+    movk    x8, #:abs_g1_nc:lsrc    // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x8, #:abs_g2_nc:lsrc    // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x8, #:abs_g3:lsrc       // R_AARCH64_MOVW_UABS_G3
+    movz    x9, #:abs_g0_nc:lptr    // R_AARCH64_MOVW_UABS_G0_NC
+    movz    x10, #:abs_g0_nc:ldst   // R_AARCH64_MOVW_UABS_G0_NC
+    ldr     w8, [x8]
+    movk    x9, #:abs_g1_nc:lptr    // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x10, #:abs_g1_nc:ldst   // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x9, #:abs_g2_nc:lptr    // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x10, #:abs_g2_nc:ldst   // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x9, #:abs_g3:lptr       // R_AARCH64_MOVW_UABS_G3
+    movk    x10, #:abs_g3:ldst      // R_AARCH64_MOVW_UABS_G3
+    str     x10, [x9]
+    str     w8, [x10]
+    ret
 
-Large Code model
-^^^^^^^^^^^^^^^^
+  baz:
+    movz    x8, #:abs_g0_nc:lbsrc   // R_AARCH64_MOVW_UABS_G0_NC
+    movk    x8, #:abs_g1_nc:lbsrc   // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x8, #:abs_g2_nc:lbsrc   // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x8, #:abs_g3:lbsrc      // R_AARCH64_MOVW_UABS_G3
+    movz    x9, #:abs_g0_nc:lptr    // R_AARCH64_MOVW_UABS_G0_NC
+    movz    x10, #:abs_g0_nc:lbdst  // R_AARCH64_MOVW_UABS_G0_NC
+    ldr     w8, [x8]
+    movk    x9, #:abs_g1_nc:lptr    // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x10, #:abs_g1_nc:lbdst  // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x9, #:abs_g2_nc:lptr    // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x10, #:abs_g2_nc:lbdst  // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x9, #:abs_g3:lptr       // R_AARCH64_MOVW_UABS_G3
+    movk    x10, #:abs_g3:lbdst     // R_AARCH64_MOVW_UABS_G3
+    str     x10, [x9]
+    str     w8, [x10]
+    ret
 
-Arm does not define the large code-model for position independent code.
+  getweakaddr:
+    movz    x0, #:abs_g0_nc:weakref // R_AARCH64_MOVW_UABS_G0_NC
+    movk    x0, #:abs_g1_nc:weakref // R_AARCH64_MOVW_UABS_G1_NC
+    movk    x0, #:abs_g2_nc:weakref // R_AARCH64_MOVW_UABS_G2_NC
+    movk    x0, #:abs_g3:weakref    // R_AARCH64_MOVW_UABS_G3
+    ret
+
+Large Code model PIC
+^^^^^^^^^^^^^^^^^^^^
+
+Arm does not currently define the large code-model for position
+independent code.
 
 Object Files
 ============
