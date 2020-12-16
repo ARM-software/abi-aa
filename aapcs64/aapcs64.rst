@@ -986,9 +986,9 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
 
   +-----------------------------------------------------------------------------------------------------------------+
   | Stage A - Initialization                                                                                        |
-  +======================+==========================================================================================+
+  +=================================================================================================================+
   | This stage is performed exactly once, before processing of the arguments commences.                             |
-  +-----------------------------------------------------------------------------------------------------------------+
+  +----------------------+------------------------------------------------------------------------------------------+
   |                      | The Next General-purpose Register Number (NGRN) is set to zero.                          |
   |                      |                                                                                          |
   | A.1                  |                                                                                          |
@@ -1053,7 +1053,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
 
   +-----------------------+----------------------------------------------------------------------------------------+
   | Stage C – Assignment of arguments to registers and stack                                                       |
-  +=======================+========================================================================================+
+  +================================================================================================================+
   | For each argument in the list the following rules are applied in turn until the argument has been allocated.   |
   | When an argument is assigned to a register any unused bits in the register have unspecified value. When an     |
   | argument is assigned to a stack slot any unused padding bytes have unspecified value.                          |
