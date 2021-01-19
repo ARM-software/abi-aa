@@ -549,7 +549,7 @@ generate one type of PLT entry in a link-unit.
 Section Types
 =============
 
-The PAuth ABI adds an additional Processor specific section type
+The PAuth ABI adds an additional Processor-specific section type
 
 .. table:: ELF Section Types
 
@@ -559,7 +559,7 @@ The PAuth ABI adds an additional Processor specific section type
   | ``SHT_AARCH64_AUTH_RELR`` | ``0x70000004`` | Section type for compressed signed relative relocations |
   +---------------------------+----------------+---------------------------------------------------------+
 
-The value is in the AArch64 Processor specfic range. The value is
+The value is in the AArch64 Processor-specific range. The value is
 subject to change if there is a clash with any section types added by
 AAELF64_.
 
@@ -579,14 +579,14 @@ ABI comes out of Alpha.
 Encoding of authenticated pointer
 ---------------------------------
 
-This ABI requires the creation of signed pointers at program start up
+This ABI requires the creation of signed pointers at program start-up
 by the run-time environment. The signing schema to be used by the
 run-time environment is encoded in the place to be relocated.
 
 Encoding the signing schema
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In the descriptions below the ``place`` is the operation ``P`` in
+In the descriptions below, the ``place`` is the operation ``P`` in
 AAELF64_ relocation descriptions. It is derived from the r_offset
 field of the relocation.
 
@@ -622,9 +622,9 @@ this should be sufficient.
   +------------+--------+
   | ``APIB``   |  0b01  |
   +------------+--------+
-  | ``APDA``   |  0b02  |
+  | ``APDA``   |  0b10  |
   +------------+--------+
-  | ``APDB``   |  0b03  |
+  | ``APDB``   |  0b11  |
   +------------+--------+
 
 * ``discriminator`` is a 16-bit unsigned integer that after an
@@ -640,8 +640,8 @@ this should be sufficient.
   be set to 0 by a producer. A consumer must not assume that reserved
   bits are set to 0.
 
-For a relocation that involves signing a pointer. If the target symbol
-for a relocation is an undefined weak reference the result of the
+For a relocation that involves signing a pointer, if the target symbol
+is an undefined weak reference, the result of the
 relocation is 0 (nullptr) regardless of the signing schema.
 
 The computation to form the ``modifier`` is the same as
@@ -650,7 +650,7 @@ ARM64E_. ``Place`` is the relocation target address.
 * If ``address diversity`` is set and the ``discriminator`` is 0 then
   ``modifier`` = ``Place``
 
-* If ``address diversity`` is set and the ``discriminator`` is non 0
+* If ``address diversity`` is set and the ``discriminator`` is not 0
   then ``modifier[63:48]`` = ``discriminator`` and ``modifier[47:0]``
   = ``Place``
 
@@ -665,7 +665,7 @@ Relocation Operations
   signing schema into the contents of the place being relocated, and
   emits a dynamic relocation to instruct the run-time to create the
   signed pointer. When static linking, the dynamic relocation may be
-  replaced by a toolchain specific mechanism.
+  replaced by a toolchain-specific mechanism.
 
 * ``SCHEMA(\*P)`` represents the dynamic linker reading the signing schema
   from the contents of the place ``P``.
@@ -685,7 +685,7 @@ Static Data relocations
   | 0xE100      | R\_AARCH64\_AUTH\_ABS64  | ``PAUTH(S+A)`` | Signing schema encoded in the contents of the place |
   +-------------+--------------------------+----------------+-----------------------------------------------------+
 
-In the static context This is the equivalent of the arm64e
+In the static context, this is the equivalent of the arm64e
 ``ARM64_RELOC_AUTHENTICATED`` relocation. ``R_AARCH64_AUTH_ABS64`` can
 also be used as a dynamic relocation with the same ELF 64 Code.
 
@@ -754,13 +754,13 @@ Description:
 
    PageBreak
 
-Reocation Compression
-=====================
+Relocation Compression
+======================
 
 The SHT_RELR section type as defined in `GABI_SHT_RELR`_, when present in
-an AArch64 ELF file encodes ``R_AARCH64_RELATIVE`` relocations in a
+an AArch64 ELF file, encodes ``R_AARCH64_RELATIVE`` relocations in a
 more compact form. To encode ``R_AARCH64_AUTH_RELATIVE`` using the
-same encoding a new ELF section type ``SHT_AARCH64_AUTH_RELR`` is
+same encoding, a new ELF section type ``SHT_AARCH64_AUTH_RELR`` is
 added, alongside the dynamic tags ``DT_AARCH64_AUTH_RELR``,
 ``DT_AARCH64_AUTH_RELRENT``, and ``DT_AARCH64_AUTH_RELRSZ``.
 
@@ -777,13 +777,15 @@ Static Linking
 ==============
 
 The static linker cannot create signed pointers, just as it cannot run
-constructors for static variables, but the C-runtime that runs before
-main can. The static linker must communicate the details of how to
+constructors for static variables, but the start-up code that runs
+before the program (in C/C++, before ``main()``) can. The static
+linker must communicate the details of how to
 create the signed pointers by embedding the information in the ELF
-file. The format of the information is platform ABI as it is a
-contract between the static-linker and the C-runtime. One simple
+file. The format of the information must be defined by the platform
+ABI, as it is a
+contract between the static linker and the runtime. One simple
 method of encoding the information is to emit a dynamic relocation
-section as if dynamic linking, with linker defined symbols denoting
+section as if dynamic linking, with linker-defined symbols denoting
 the base and limit of the section. The runtime can resolve the dynamic
 relocations to create the signed pointers. More compact encodings are
 possible.
@@ -801,8 +803,8 @@ On many platforms, programs can load shared libraries at run-time via
 schema for these functions is a platform decision that the compiled
 code and implementation of ``dlsym`` agree on.
 
-The PAuth ABI uses a simple simple default signing schema. If the
-symbol found by ``dlsym`` has type ``STT_FUNC`` the address to be
+The PAuth ABI uses a simple default signing schema. If the
+symbol found by ``dlsym`` has type ``STT_FUNC``, the address to be
 returned is signed with the ``IA`` key with a 0 modifier. Otherwise
 the address is not signed.
 
@@ -829,8 +831,8 @@ PAuth ABI ELF extensions must have a section named
 structured as a note section as documented in SCO-ELF_.
 
 The name field (``namesz`` / ``name``) contains the string "ARM". The
-type field shall be 1. The ``descsz`` field must be at least 16, with
-the first 16 bytes of the description containing 2 64-bit words. With
+type field shall be 1, and the ``descsz`` field must be at least 16.
+The first 16 bytes of the description must contain 2 64-bit words, with
 the first 64-bit word being a platform identifier, and the second
 64-bit word being a version number for the ABI for the platform
 identified for the first word. When ``descsz`` is larger than 16 the
@@ -866,7 +868,7 @@ compatibility.
 * The static linker may fault the combination of relocatable
   objects that contain ``.note.AARCH64-PAUTH-ABI-tag`` sections with
   incompatible (platform id, version number) tuples. If an ELF file is
-  produced the output ``.note.AARCH64-PAUTH-ABI-tag`` must have the
+  produced, the output ``.note.AARCH64-PAUTH-ABI-tag`` must have the
   invalid (platform id, version number) of (0, 0).
 
 * The combination of relocatable objects with
@@ -878,8 +880,8 @@ compatibility.
   is (0,0), it must disable pointer authentication for the process or
   give an error message.
 
-Platforms may replace the base compatibility model with a platform
-specific model.
+Platforms may replace the base compatibility model with a
+platform-specific model.
 
 .. raw:: pdf
 
