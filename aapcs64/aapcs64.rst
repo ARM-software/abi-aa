@@ -1054,7 +1054,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
 
 .. class:: aapcs64-stage
 
-  +-----------------------+----------------------------------------------------------------------------------------+
+  +----------------------------------------------------------------------------------------------------------------+
   | Stage C – Assignment of arguments to registers and stack                                                       |
   +================================================================================================================+
   | For each argument in the list the following rules are applied in turn until the argument has been allocated.   |
@@ -1077,8 +1077,8 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   | C.3                   |                                                                                        |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is an HFA, an HVA, a Quad-precision Floating-point or Short Vector     |
-  |                       | Type then the NSAA is rounded up to the larger of 8 or the Natural Alignment of the    |
-  | C.4                   | argument’s type.                                                                       |
+  |                       | Type then the NSAA is rounded up to the next multiple of 8 if its natural              |
+  | C.4                   | alignment is <= 8 or the next multiple of 16 if its natural alignment is >= 16.        |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is a Half- or Single- precision Floating Point type, then the size of  |
   |                       | the argument is set to 8 bytes. The effect is as if the argument had been copied to    |
