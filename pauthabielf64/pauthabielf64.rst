@@ -10,7 +10,7 @@
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _ARM64E: https://github.com/apple/llvm-project/blob/a63a81bd9911f87a0b5dcd5bdd7ccdda7124af87/clang/docs/PointerAuthentication.rst
-.. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
+.. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html
 .. _SCO-ELF: http://www.sco.com/developers/gabi/
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
