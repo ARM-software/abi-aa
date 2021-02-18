@@ -35,6 +35,7 @@ cat <<EOF
 - $(spec aapcs64 "Procedure Call Standard for the Arm 64-bit Architecture")
 - $(spec aaelf64 "ELF for the Arm 64-bit Architecture")
 - $(spec aadwarf64 "DWARF for the Arm 64-bit Architecture")
+- $(spec cppabi64 "C++ ABI for the Arm 64-bit Architecture")
 - $(spec vfabia64 "Vector Function ABI for the Arm 64-bit Architecture")
 
 #### PAuth ABI Extension

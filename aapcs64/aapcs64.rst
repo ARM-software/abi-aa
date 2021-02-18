@@ -11,7 +11,7 @@
 
 .. _AAPCS64: https://github.com/ARM-software/abi-aa/releases
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
-.. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
+.. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
 
 Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
 ******************************************************************
