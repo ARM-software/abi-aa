@@ -1049,7 +1049,7 @@ Universal stack constraints
 
 At all times the following basic constraints must hold:
 
-*  Stack-limit < SP ≤ stack-base. The stack pointer must lie within the
+*  Stack-limit ≤ SP ≤ stack-base. The stack pointer must lie within the
    extent of the stack.
 
 *  SP mod 4 = 0. The stack must at all times be aligned to a word boundary.
