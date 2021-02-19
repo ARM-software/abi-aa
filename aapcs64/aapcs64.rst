@@ -946,7 +946,7 @@ Universal stack constraints
 
 At all times the following basic constraints must hold:
 
-- Stack-limit < SP ≤ stack-base. The stack pointer must lie within the extent of the stack.
+- Stack-limit ≤ SP ≤ stack-base. The stack pointer must lie within the extent of the stack.
 
 - A process may only access (for reading or writing) the closed interval of the entire stack delimited by [SP, stack-base – 1].
 
