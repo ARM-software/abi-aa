@@ -25,6 +25,7 @@ cat <<EOF
 - $(spec aapcs32 "Procedure Call Standard for the Arm Architecture")
 - $(spec aaelf32 "ELF for the Arm Architecture")
 - $(spec aadwarf32 "DWARF for the Arm Architecture")
+- $(spec bpabi32 "Base Platform ABI for the Arm Architecture")
 - $(spec cppabi32 "C++ ABI for the Arm Architecture")
 - $(spec ehabi32 "Exception Handling ABI for the Arm Architecture")
 - $(spec rtabi32 "Run-time ABI for the Arm Architecture")
