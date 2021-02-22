@@ -1051,7 +1051,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
 
 .. class:: aapcs64-stage
 
-  +-----------------------+----------------------------------------------------------------------------------------+
+  +----------------------------------------------------------------------------------------------------------------+
   | Stage C – Assignment of arguments to registers and stack                                                       |
   +================================================================================================================+
   | For each argument in the list the following rules are applied in turn until the argument has been allocated.   |
