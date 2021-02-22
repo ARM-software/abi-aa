@@ -1582,6 +1582,10 @@ Unallocated relocations
 
 All unallocated relocation types are reserved for use by future revisions of this specification.
 
+PAuthABI relocations
+^^^^^^^^^^^^^^^^^^^^
+
+The PAuthABI relocations are currently defined in the vendor experiment space. Arm reserves codes 580 to 600 for static PAuthABI relocations and 1040 - 1060 for dynamic PAuthABI relocations.
 
 Idempotency
 ^^^^^^^^^^^
