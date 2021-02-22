@@ -519,3 +519,16 @@ styles:
     cppabi64-change-history:
         parent : table
         colWidths: [ 12%, 25%, 63% ]
+
+    # bpabi32 styles
+    bpabi32-change-history:
+        parent : table
+        colWidths: [ 12%, 25%, 63% ]
+
+    bpabi32-refs:
+        parent : table
+        colWidths: [ 15%, 40%, 45% ]
+
+    bpabi32-interseg-table:
+        parent : table
+        colWidths: [ 15%, 50%, 35% ]
