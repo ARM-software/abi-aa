@@ -11,6 +11,7 @@
 
 .. _AAPCS64: https://github.com/ARM-software/abi-aa/releases
 .. _Addenda32: https://github.com/ARM-software/abi-aa/releases
+.. _PAuthABIELF64: https://github.com/ARM-software/abi-aa/releases
 .. _SCO-ELF: http://www.sco.com/developers/gabi/
 .. _LINUX_ABI: https://github.com/hjl-tools/linux-abi/wiki
 .. _LSB: http://www.linuxbase.org/
@@ -247,6 +248,9 @@ changes to the content of the document for that release.
   |               |                    |   section `Thread-local storage         |
   |               |                    |   descriptors`_                         |
   +---------------+--------------------+-----------------------------------------+
+  | 2021Q2        |                    | - Reserved relocation codes for         |
+  |               |                    |   `PAuthABIELF64`_                      |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------
@@ -263,6 +267,8 @@ This document refers to, or is referred to by, the following documents.
   | AAPCS64_                     | IHI 0055                                                    | Procedure Call Standard for the Arm 64-bit Architecture     |
   +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
   | Addenda32_                   | IHI 0045                                                    | Addenda to, and Errata in, the ABI for the Arm Architecture |
+  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
+  | PAuthABIELF64_               | pauthabielf64                                               | PAuth Extension to ELF for the Arm 64-bit Architecture      |
   +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
   | LSB_                         | http://www.linuxbase.org/                                   | Linux Standards Base                                        |
   +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
@@ -1596,6 +1602,10 @@ Unallocated relocations
 
 All unallocated relocation types are reserved for use by future revisions of this specification.
 
+PAuthABI relocations
+^^^^^^^^^^^^^^^^^^^^
+
+The `PAuthABIELF64`_ ELF extension, currently in Alpha state, defines several relocations in the vendor experiment space. Arm reserves codes 580 to 600 for static `PAuthABIELF64`_ relocations and 1040 - 1060 for dynamic `PAuthABIELF64`_ relocations. When the extension moves to Release state the relocations defined in `PAuthABIELF64`_ will be added to this document and all unused codes in the reserved ranges will be released.
 
 Idempotency
 ^^^^^^^^^^^
