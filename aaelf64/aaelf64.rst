@@ -1250,7 +1250,7 @@ In addition to the terms defined in `Relocation types`_, the tables listing the 
 
 - ``GTLSIDX(S,A)`` represents a consecutive pair of pointer-sized entries in the GOT. The entry contains a ``tls_index`` structure describing the thread-local variable located at offset ``A`` from thread-local symbol ``S``. The first pointer-sized entry will be relocated with ``R_<CLS>_TLS_DTPMOD(S)``, the second pointer-sized entry will be relocated with ``R_<CLS>_TLS_DTPREL(S+A)``.
 
-- ``GTPREL(S+A)`` represents a pointer-sized entry in the GOT for the offset from the current thread pointer (TP) of the thread-local variable located at offset ``A`` from the symbol S``. The entry will be relocated with ``R_<CLS>_TLS_TPREL(S+A)``.
+- ``GTPREL(S+A)`` represents a pointer-sized entry in the GOT for the offset from the current thread pointer (TP) of the thread-local variable located at offset ``A`` from the symbol ``S``. The entry will be relocated with ``R_<CLS>_TLS_TPREL(S+A)``.
 
 - ``GTLSDESC(S+A)`` represents a consecutive pair of pointer-sized entries in the GOT which contain a tlsdesc structure describing the thread-local variable located at offset A from thread-local symbol S. The first entry holds a pointer to the variable's TLS descriptor resolver function and the second entry holds a platform-specific offset or pointer. The pair of pointer-sized entries will be relocated with ``R_<CLS>_TLSDESC(S+A)``.
 
