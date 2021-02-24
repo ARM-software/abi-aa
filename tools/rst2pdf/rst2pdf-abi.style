@@ -532,3 +532,8 @@ styles:
     bpabi32-interseg-table:
         parent : table
         colWidths: [ 15%, 50%, 35% ]
+
+    # dbgovl32 styles
+    dbgovl32-section-row-table:
+        parent : table
+        colWidths: [ 13%, 10%, 7%, 70% ]
