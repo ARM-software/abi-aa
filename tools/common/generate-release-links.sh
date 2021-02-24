@@ -33,6 +33,7 @@ cat <<EOF
 - $(spec clibabi32 "C Library for the Arm Architecture")
 - $(spec dbgovl32 "Support for Debugging Overlaid Programs")
 - $(spec addenda32 "Addenda to, and Errata in, the ABI for the ARM Architecture")
+- $(spec advnote132 "ABI Advisory Note - SP 8-byte alignment")
 
 #### ABI for the Arm 64-bit Architecture
 - $(spec aapcs64 "Procedure Call Standard for the Arm 64-bit Architecture")
