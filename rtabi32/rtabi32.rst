@@ -22,7 +22,7 @@
 .. _BSABI32: https://developer.arm.com/documentation/ihi0036/latest
 .. _CLIBABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
-.. _DBGOVL32: https://developer.arm.com/documentation/ihi0049/latest
+.. _DBGOVL32: https://github.com/ARM-software/abi-aa/releases
 .. _EHABI32: https://github.com/ARM-software/abi-aa/releases
 .. _FDPIC: https://github.com/mickael-guene/fdpic_doc
 .. _GCPPABI: http://itanium-cxx-abi.github.io/cxx-abi/abi.html

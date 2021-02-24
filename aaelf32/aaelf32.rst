@@ -18,7 +18,7 @@
 .. _ARMARM: https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition
 .. _ARMv5ARM: https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual
 .. _BSABI32: https://developer.arm.com/documentation/ihi0036/latest
-.. _DBGOVL32: https://developer.arm.com/documentation/ihi0049/latest
+.. _DBGOVL32: https://github.com/ARM-software/abi-aa/releases
 .. _EHABI32: https://github.com/ARM-software/abi-aa/releases
 .. _FDPIC: https://github.com/mickael-guene/fdpic_doc
 .. _GDWARF: http://dwarfstd.org/Dwarf3Std.php

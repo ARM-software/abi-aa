@@ -31,6 +31,7 @@ cat <<EOF
 - $(spec ehabi32 "Exception Handling ABI for the Arm Architecture")
 - $(spec rtabi32 "Run-time ABI for the Arm Architecture")
 - $(spec clibabi32 "C Library for the Arm Architecture")
+- $(spec dbgovl32 "Support for Debugging Overlaid Programs")
 - $(spec addenda32 "Addenda to, and Errata in, the ABI for the ARM Architecture")
 
 #### ABI for the Arm 64-bit Architecture
