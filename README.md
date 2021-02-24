@@ -59,7 +59,7 @@ C++ ABI for the Arm Architecture                                   | [cppabi32](
 Exception Handling ABI for the Arm Architecture                    | [ehabi32](ehabi32/ehabi32.rst)       | [2018Q4](https://developer.arm.com/documentation/ihi0038/latest)
 Run-time ABI for the Arm Architecture                              | [rtabi32](rtabi32/rtabi32.rst)       | [2018Q4](https://developer.arm.com/documentation/ihi0043/latest)
 C Library for the Arm Architecture                                 | [clibabi32](clibabi32/clibabi32.rst) | [2018Q4](https://developer.arm.com/documentation/ihi0039/latest)
-Support for Debugging Overlaid Programs                            | -                                    | [2018Q4](https://developer.arm.com/documentation/ihi0049/latest)
+Support for Debugging Overlaid Programs                            | [dbgovl32](dbgovl32/dbgovl32.rst)    | [2018Q4](https://developer.arm.com/documentation/ihi0049/latest)
 Addenda to, and Errata in, the ABI for the ARM Architecture        | [addenda32](addenda32/addenda32.rst) | [2019Q1](https://developer.arm.com/documentation/ihi0045/latest)
 ABI Advisory Note - SP 8-byte alignment                            | -                                    | [2018Q4](https://developer.arm.com/documentation/ihi0046/latest)
 
