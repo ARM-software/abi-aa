@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 774.66669 109.33333"
+   height="109.33333"
+   width="774.66669"
+   xml:space="preserve"
+   id="svg2"
+   version="1.1"><metadata
+     id="metadata8"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+     id="defs6" /><g
+     transform="matrix(1.3333333,0,0,-1.3333333,0,109.33333)"
+     id="g10"><g
+       transform="scale(0.1)"
+       id="g12"><path
+         id="path14"
+         style="fill:none;stroke:#000000;stroke-width:7.51180983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 3.75,317.539 H 361.871 V 637.07 H 3.75 Z" /><path
+         id="path16"
+         style="fill:none;stroke:#000000;stroke-width:8.69371986;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 361.879,317.73 h 5442.23 V 637.07 H 361.879 Z" /><path
+         id="path18"
+         style="fill:none;stroke:#000000;stroke-width:7.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 3.75,317.539 V 0.351563" /><path
+         id="path20"
+         style="fill:none;stroke:#000000;stroke-width:7.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 5804.69,317.66 V 0.429688" /><g
+         transform="scale(10)"
+         id="g22"><text
+           id="text26"
+           style="font-variant:normal;font-size:12px;font-family:Helvetica;-inkscape-font-specification:f-0-0;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           transform="matrix(1,0,0,-1,12.3125,73.4922)"><tspan
+             id="tspan24"
+             y="0"
+             x="0 6.6719999 29.16012 35.832119">3130</tspan></text>
+<text
+           id="text32"
+           style="font-variant:normal;font-size:14px;font-family:Helvetica;-inkscape-font-specification:f-0-0;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           transform="matrix(1,0,0,-1,14.04453,42.1965)"><tspan
+             id="tspan28"
+             y="0"
+             x="0 145.81013 156.70213 160.59415 164.48615 171.48615 179.27014 183.16214 187.05414 194.83813 198.73013 202.58005 206.47205 214.25606 222.04005 225.93205 233.71605 241.50005 246.16205 253.16205 260.98788 268.77188 276.55588 279.66388 282.77188 286.66388 293.66388 297.55588 302.21786 310.04373 317.82773 321.71973 324.82773 332.61176">0Offset of the personality routine</tspan><tspan
+             id="tspan30"
+             y="32.537899"
+             x="136.68201 146.78999 154.57401 158.466 166.25 170.142 174.034 181.81799 186.48 190.37199 194.26401 202.048 209.832 213.724 221.508 229.29201 233.99606 240.99606 248.78006 256.56406 264.34805 267.49802 270.60602 274.49802 281.49802 285.39001 290.052 297.836 305.62 309.51202 312.62 320.40402 328.23004 332.12204 336.01404 339.90604">Data for the personality routine ...</tspan></text>
+<text
+           id="text36"
+           style="font-variant:normal;font-size:12px;font-family:Helvetica;-inkscape-font-specification:f-0-0;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           transform="matrix(1,0,0,-1,569.67553,73.4922)"><tspan
+             id="tspan34"
+             y="0"
+             x="0">0</tspan></text>
+</g></g></g></svg>

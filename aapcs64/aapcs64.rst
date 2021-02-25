@@ -617,11 +617,13 @@ The least significant bit in an object is always designated as bit 0.
 
 The mapping of a word-sized data object to memory is shown in the following figures. All objects are pure-endian, so the mappings may be scaled accordingly for larger or smaller objects [#aapcs64-f5]_.
 
-.. figure:: aapcs32-bigendian.png
+.. figure:: aapcs64-bigendian.svg
+    :scale: 50%
 
     Memory layout of big-endian data object
 
-.. figure:: aapcs32-littleendian.png
+.. figure:: aapcs64-littleendian.svg
+    :scale: 50%
 
     Memory layout of little-endian data object
 
@@ -1787,13 +1789,13 @@ set to zero, permitting a simplified implementation of ``va_arg`` which simply a
 
 Although this standard does not mandate a particular stack frame organisation beyond what is required to meet the stack constraints described in `The Stack`_, the following figure illustrates one possible stack layout for a variadic routine which invokes the ``va_start`` macro.
 
-.. figure:: aapcs64-variadic-stack.png
+.. figure:: aapcs64-variadic-stack.svg
 
     Example stack frame layout
 
 Focussing on just the top of callee’s stack frame, the following figure illustrates graphically how the ``__va_list`` structure might be initialised by ``va_start`` to identify the three potential locations of the next anonymous argument.
 
-.. figure:: aapcs64-va-list.png
+.. figure:: aapcs64-va-list.svg
 
     The va\_list
 

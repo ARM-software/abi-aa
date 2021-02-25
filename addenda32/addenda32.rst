@@ -408,8 +408,7 @@ compiler or assembler (`Attribute values are based on user intentions`_).
 The figure below depicts the software development flows in which build
 attributes are important.
 
-.. figure:: addenda32-toolflow.png
-   :scale: 300%
+.. figure:: addenda32-toolflow.svg
 
    Software development flows supported by build attributes
 
@@ -2052,8 +2051,7 @@ addressing architecture used by Linux for Arm.
 
 .. _Linux for Arm TLS addressing architecture:
 
-.. figure:: addenda32-linux-tls.png
-   :scale: 300%
+.. figure:: addenda32-linux-tls.svg
 
    Linux for Arm TLS addressing architecture
 
