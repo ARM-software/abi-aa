@@ -1132,7 +1132,7 @@ For the example, the available (unmasked) signatures associated to
 * ``float64x4_t _ZGVnN4v_g(float32x4_t vx);`` 4-lane ``g``;
 
 It is possible to tune the number of lanes using the ``simdlen(N)``
-clause, where :math:`N=2^k` for :math:`k>=0`. No other values of
+clause, where N = 2\ :sup:`k` for k ≥ 0. No other values of
 ``simdlen`` are allowed.
 
 .. code-block:: c
