@@ -1,5 +1,5 @@
 <div align="center">
-   <img src="Arm_logo_blue_150MN.png" />
+   <img src="Arm_logo_blue_RGB.svg" />
 </div>
 
 # ABI for the Arm® Architecture Base Standard (AArch32)

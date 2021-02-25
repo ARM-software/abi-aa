@@ -1,5 +1,5 @@
 <div align="center">
-   <img src="Arm_logo_blue_150MN.png" />
+   <img src="Arm_logo_blue_RGB.svg" />
 </div>
 
 # C++ ABI for the Arm® 32-bit Architecture (AArch32)
