@@ -438,7 +438,7 @@ practice, it is difficult to define an open interface between arbitrary
 run-time support functions. Realistically, there can only be one
 run-time system in a program, as depicted in the figure below.
 
-.. figure:: ehabi32-run-time-calls.png
+.. figure:: ehabi32-run-time-calls.svg
 
    Run-time calls governed by the ABI for the Arm architecture (EABI)
 
@@ -878,8 +878,7 @@ The generic model
 An exception-handling table entry for the generic model is laid out as
 in the conceptual illustration above.
 
-.. figure:: ehabi32-table-entry-generic.png
-   :scale: 200%
+.. figure:: ehabi32-table-entry-generic.svg
 
 The address of the personality routine is encoded as a prel31 offset.
 
@@ -890,8 +889,7 @@ Arm run-time systems additionally support a simple, compact model.
 
 An exception-handling table entry for the compact model looks like:
 
-.. figure:: ehabi32-table-entry-arm.png
-   :scale: 200%
+.. figure:: ehabi32-table-entry-arm.svg
 
 Bits 24-27 select one of 16 personality routines defined by the run-time
 support code. Remaining bytes are data for that personality routine.

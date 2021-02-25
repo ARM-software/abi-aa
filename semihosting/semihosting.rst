@@ -269,7 +269,8 @@ Semihosting is implemented by a set of defined software instructions that genera
 
 The semihosting interface is common across all debug agents that are provided by ARM. Semihosted operations work when you are debugging applications on your development platform, as shown in the following figure:
 
-.. figure:: semihosting-overview.png
+.. figure:: semihosting-overview.svg
+   :scale: 75%
 
 In many cases, semihosting is invoked by code within library functions. The application can also invoke the semihosting operation directly.
 
