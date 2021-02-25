@@ -1464,7 +1464,7 @@ We further define the truncation function
 
 .. parsed-literal::
 
-    TRUNCATE(X,Y) = Y * :math:`\lfloor`\ X/Y\ :math:`\rfloor`
+    TRUNCATE(X,Y) = Y * FLOOR(X/Y)
 
 That is, the largest integral multiple of ``Y`` that is no larger than ``X``.
 
