@@ -1,7 +1,7 @@
 [![Actions Status](https://github.com/ARM-software/abi-aa/workflows/CI/badge.svg)](https://github.com/ARM-software/abi-aa/actions)
 
 <div align="center">
-   <img src="Arm_logo_blue_150MN.png" />
+   <img src="Arm_logo_blue_RGB.svg" />
 </div>
 
 # Application Binary Interface for the Arm®  Architecture

@@ -30,7 +30,8 @@ Date of Issue: |date-of-issue|
 
 .. class:: logo
 
-.. image:: Arm_logo_blue_150MN.png
+.. image:: Arm_logo_blue_RGB.svg
+   :scale: 30%
 
 .. section-numbering::
 
