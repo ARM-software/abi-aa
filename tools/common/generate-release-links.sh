@@ -22,6 +22,7 @@ cat <<EOF
 ### the specifications included in this release
 
 #### ABI for the Arm 32-bit Architecture
+- $(spec bsabi32 "ABI for the Arm Architecture - Base Standard")
 - $(spec aapcs32 "Procedure Call Standard for the Arm Architecture")
 - $(spec aaelf32 "ELF for the Arm Architecture")
 - $(spec aadwarf32 "DWARF for the Arm Architecture")

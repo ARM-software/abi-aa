@@ -14,7 +14,7 @@ mkdir -p ${OUTPUT_DIR}
 
 declare -a docs=(
     # 32-bit
-    "aadwarf32" "aaelf32" "aapcs32" "addenda32" "bpabi32" "clibabi32" "cppabi32" "dbgovl32" "ehabi32" "rtabi32"
+    "aadwarf32" "aaelf32" "aapcs32" "addenda32" "bsabi32" "bpabi32" "clibabi32" "cppabi32" "dbgovl32" "ehabi32" "rtabi32"
 
     # 64-bit
     "aadwarf64" "aaelf64" "aapcs64" "cppabi64" "vfabia64"
