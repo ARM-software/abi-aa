@@ -11,7 +11,7 @@
 
 .. _AAELF32: https://github.com/ARM-software/abi-aa/releases
 .. _AAPCS32: https://github.com/ARM-software/abi-aa/releases
-.. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
+.. _BSABI32: https://github.com/ARM-software/abi-aa/releases
 .. _EHABI32: https://github.com/ARM-software/abi-aa/releases
 .. _RTABI32: https://github.com/ARM-software/abi-aa/releases
 .. _GDWARF: http://dwarfstd.org/Dwarf3Std.php

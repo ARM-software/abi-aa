@@ -17,7 +17,7 @@
 .. _AAELF32: https://github.com/ARM-software/abi-aa/releases
 .. _AAPCS32: https://github.com/ARM-software/abi-aa/releases
 .. _BPABI32: https://github.com/ARM-software/abi-aa/releases
-.. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
+.. _BSABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
 .. _RTABI32: https://github.com/ARM-software/abi-aa/releases
 .. _ELF: http://www.sco.com/developers/gabi/2001-04-24/contents.html
