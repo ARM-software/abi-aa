@@ -17,7 +17,7 @@
 .. _RTABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CLIBABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
-.. _BSABI32: https://developer.arm.com/documentation/ihi0045/latest
+.. _BSABI32: https://github.com/ARM-software/abi-aa/releases
 .. _AAELF32: https://github.com/ARM-software/abi-aa/releases
 .. _ACLE: https://developer.arm.com/products/software-development-tools/compilers/arm-compiler-5/docs/101028/latest/1-preface
 .. _ARMARM: https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition

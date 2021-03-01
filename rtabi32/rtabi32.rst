@@ -19,7 +19,7 @@
 .. _ARMARM: https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition
 .. _ARMv7MARM: https://developer.arm.com/products/architecture/m-profile/docs/ddi0403/e/armv7-m-architecture-reference-manual
 .. _ARMv5ARM: https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual
-.. _BSABI32: https://developer.arm.com/documentation/ihi0036/latest
+.. _BSABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CLIBABI32: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI32: https://github.com/ARM-software/abi-aa/releases
 .. _DBGOVL32: https://github.com/ARM-software/abi-aa/releases
