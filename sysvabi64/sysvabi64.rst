@@ -615,23 +615,26 @@ performance and reduce static code size. The relevant constraints are:
   +/-128MiB range. The size of executable sections must be limited to
   127 MiB to leave space for veneers to be inserted after the section.
 
+* The relative data relocations R_AARCH64_PLT32 and R_AARCH64_PREL32
+  have a range of +/-2GiB.
+
 The following code models are defined
 
 .. table::
 
-  +-------+---------+----------------------+-------------------+
-  | Code  | PIC     | Max Segment Size     | Max GOT size      |
-  | Model | support |                      |                   |
-  +=======+=========+======================+===================+
-  | tiny  | yes     | text+got+data < 1MiB | 1MiB              |
-  +-------+---------+----------------------+-------------------+
-  | small | yes     | text+got+data < 4GiB | 32KiB base+offset |
-  |       |         |                      | 4GiB  direct      |
-  +-------+---------+----------------------+-------------------+
-  | large | no      | no assumptions for   | see notes         |
-  |       |         | static linking       |                   |
-  |       |         |                      |                   |
-  +-------+---------+----------------------+-------------------+
+  +-------+---------+----------------------+-------------------------+
+  | Code  | PIC     | Max Segment Size     | Max GOT size            |
+  | Model | support |                      |                         |
+  +=======+=========+======================+=========================+
+  | tiny  | yes     | text+got+data < 1MiB | 1MiB                    |
+  +-------+---------+----------------------+-------------------------+
+  | small | yes     | text+got+data < 2GiB | 32KiB base+offset -fpic |
+  |       |         |                      | 4GiB  direct      -fPIC |
+  +-------+---------+----------------------+-------------------------+
+  | large | no      | text < 2GiB          | see notes               |
+  |       |         | no restrictions on   |                         |
+  |       |         | data size.           |                         |
+  +-------+---------+----------------------+-------------------------+
 
 .. note::
 
@@ -643,6 +646,9 @@ The following code models are defined
 
   The text segment includes the sharable PLT, code and read-only data
   sections.
+
+  The text segment maximum size for the large code model is limited
+  to 2GiB by R_AARCH64_PLT32 relocations from .ehframe sections.
 
   The data segment contains the statically defined, writeable,
   per-process data sections. In all models dynamically allocated data
@@ -890,6 +896,8 @@ addressing to access data which is all within +/- 4GiB of the code.
     ldr     x0, [x0, #:lo12:.LC0]        // R_AARCH64_LDST64_ABS_LO12_NC .LC0
     ret
     .align 3
+
+  .section ".rodata.cst.8", "aM", %progbits
   .LC0:
     .xword  weakref                      // R_AARCH64_ABS64 weakref
 
@@ -906,7 +914,7 @@ addressing to access data which is all within +/- 4GiB of the code.
   lbsrc:
     .zero   262144
 
-Small Code model PIC
+Small Code model pic
 ^^^^^^^^^^^^^^^^^^^^
 
 The base address of the GOT, rounded down to a 4KiB page boundary is
@@ -964,8 +972,8 @@ The address of a variable is a combination of ``adrp`` and ``add``
   lbsrc:
     .zero   262144
 
-Alternate small code model PIC GOT access
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Alternate Small Code model PIC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Instead of loading the page base of the GOT into a register and
 loading a GOT entry as an offset from the page base, an ``adrp`` and
@@ -988,11 +996,20 @@ GOT.
     str     w8, [x10]
     ret
 
+Compiler support for alternate Small Code models
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On compilers that support both forms of Small Code model the ``-fpic``
+option selects the limited GOT size form, the ``-fPIC`` option selects
+the larger GOT size form. Compilers that only support one form will
+accept the ``-fpic`` and ``-fPIC`` command line options but will
+generate the same code regardless of which option is used.
+
 Large Code Model
 ^^^^^^^^^^^^^^^^
 
-The large model makes no assumptions about the size of the static code
-and data segments, and therefore uses absolute 64-bit addresses in all
+The large model makes no assumptions about the size of the static
+data segments, and therefore uses absolute 64-bit addresses in all
 cases. As well as massive GNU/Linux executables, the large code model
 would also be suitable for bare-metal programs where a linker script
 causes sections to be mapped sparsely within the virtual address
@@ -1000,9 +1017,10 @@ space, or where a high-level code references absolute symbols defined
 in a linker script.
 
 Note that even if all code is compiled with the large code model,
-limitations on the size of the program may still exist due to code
-generated at link time or included from libraries. For example linker
-generated PLT sequences and veneers may use the small code model.
+limitations on the size of the program may still exist. For example
+.ehframe sections, .debug information, code generated at link time
+like PLT sequences and code included from libraries like startup code.
+In practice this may limit the size of the code to 2 GiB.
 
 .. code-block:: asm
 
