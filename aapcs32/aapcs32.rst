@@ -1630,7 +1630,12 @@ The following co-processor rules are defined for the VFP:
   | A.2.vfp | The floating point argument registers are marked as         |
   |         | unallocated.                                                |
   +---------+-------------------------------------------------------------+
-  | B.3.vfp | Nothing to do.                                              |
+  | B.3.vfp | If the argument is a homogeneous aggregate, its value is    |
+  |         | passed as a copy of the actual value.  The copy will have   |
+  |         | 4-byte alignment if its natural alignment is ≤ 4 and        |
+  |         | 8-byte alignment if its natural alignment is ≥ 8.  The      |
+  |         | alignment of the copy is used for applying marshalling      |
+  |         | rules.                                                      |
   +---------+-------------------------------------------------------------+
   | C.1.vfp | If the argument is a VFP CPRC and there are sufficient      |
   |         | consecutive VFP registers of the appropriate type           |
