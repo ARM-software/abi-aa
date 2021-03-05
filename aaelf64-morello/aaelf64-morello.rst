@@ -15,6 +15,8 @@
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
 .. |cherielf-url| replace:: https://github.com/CTSRD-CHERI/cheri-elf-gabi/blob/main/gabi.md
 .. _CHERI_ELF: https://github.com/CTSRD-CHERI/cheri-elf-gabi/blob/main/gabi.md
+.. |tls-url| replace:: https://akkadia.org/drepper/tls.pdf
+.. _TLS: https://akkadia.org/drepper/tls.pdf
 
 Morello extensions to ELF for the Arm\ :sup:`®` 64-bit Architecture (AArch64)
 *****************************************************************************
@@ -224,6 +226,8 @@ This document refers to, or is referred to by, the following documents.
   | TLSDESC_         | |tlsdesc-url|              | TLS Descriptors for Arm. Original proposal document.                              |
   +------------------+----------------------------+-----------------------------------------------------------------------------------+
   | CHERI_ELF_       | |cherielf-url|             | CHERI ELF gABI Extensions                                                         |
+  +------------------+----------------------------+-----------------------------------------------------------------------------------+
+  | TLS_             | |tls-url|                  | ELF Handling For Thread-Local Storage                                             |
   +------------------+----------------------------+-----------------------------------------------------------------------------------+
 
 Terms and abbreviations
@@ -470,6 +474,14 @@ The following nomenclature is used in the descriptions of relocation operations:
   the second entry holds a platform-specific offset or pointer. The pair of
   pointer-sized entries will be relocated with ``R_MORELLO_TLSDESC(S+A)``.
 
+- ``TPREL(S)`` resolves to a pair of two 64-bit values. The first value
+  contains the offset in the static TLS block of the thread-local symbol ``S``.
+  The second value contains the size of the symbol ``S``
+
+- ``GTPREL(S)`` represents an entry in the GOT containing a pair of two 64-bit
+  values. The first value contains the offset in the static TLS block of the
+  symbol ``S``. The second value contains the size of the symbol ``S``.
+
 - ``TLSDESC(S+A)`` resolves to a contiguous pair of pointer-sized values, as
   created by GTLSDESC(S+A).
 
@@ -478,6 +490,8 @@ The following nomenclature is used in the descriptions of relocation operations:
 
 - ``CAP_SIZE`` is the size of the underlying memory region that the capability can
   reference. This may not directly map to the symbol size.
+
+- ``SIZE(S)`` is the symbol size of the symbol ``S``.
 
 - ``CAP_PERM`` is the permission of the capability. This may not directly map to
   the type of the symbol.
@@ -551,6 +565,34 @@ Static Morello relocations
     |       |                         |                  | See `Call and Jump relocations`_.               |
     +-------+-------------------------+------------------+-------------------------------------------------+
 
+.. class:: aaelf64-morello-group-relocations
+
+.. table:: Group relocations to create a 16-, 32-, 48-, or 64-bit symbol size inline
+
+  +------------+--------------------------------+------------+-------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                           | Operation  | Comment                                                                             |
+  +============+================================+============+=====================================================================================+
+  | 57353      | R\_MORELLO\_MOVW\_SIZE\_G0     | SIZE       | Set a MOV[KZ] immediate field to bits [15:0] of X; check that 0 <= X < 2\ :sup:`16` |
+  +------------+--------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 57354      | R\_MORELLO\_MOVW\_SIZE\_G0\_NC | SIZE       | Set a MOV[KZ] immediate field to bits [15:0] of X. No overflow check                |
+  +------------+--------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 57355      | R\_MORELLO\_MOVW\_SIZE\_G1     | SIZE       | Set a MOV[KZ] immediate field to bits [31:16] of X; check that 0 <= X < 2\ :sup:`32`|
+  +------------+--------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 57356      | R\_MORELLO\_MOVW\_SIZE\_G1\_NC | SIZE       | Set a MOV[KZ] immediate field to bits [31:16] of X. No overflow check               |
+  +------------+--------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 57357      | R\_MORELLO\_MOVW\_SIZE\_G2     | SIZE       | Set a MOV[KZ] immediate field to bits [47:32] of X; check that 0 <= X < 2\ :sup:`48`|
+  +------------+--------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 57358      | R\_MORELLO\_MOVW\_SIZE\_G2\_NC | SIZE       | Set a MOV[KZ] immediate field to bits [47:32] of X. No overflow check               |
+  +------------+--------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 57359      | R\_MORELLO\_MOVW\_SIZE\_G3     | SIZE       | Set a MOV[KZ] immediate field to bits [63:48] of X (no overflow check needed)       |
+  +------------+--------------------------------+------------+-------------------------------------------------------------------------------------+
+
+.. note::
+
+  The group relocations to create a 16-, 32-, 48-, or 64-bit symbol size inline
+  do not accept an addend.
+
+
 Call and Jump relocations
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -602,7 +644,7 @@ Morello only defines the relocations needed to implement the descriptor based
 thread-local storage (TLS) models in a SysV-type environment. The details of
 TLS descriptors are beyond the scope of this specification; a general
 introduction can be found in [TLSDESC_]. Also, only the relocations needed to
-implement the Global Dynamic (GD) access model and the Local Executable (LE)
+implement the General Dynamic (GD) access model and the Local Executable (LE)
 access models are defined.
 
 Relocations needed to define the traditional TLS models are undefined.
@@ -611,21 +653,29 @@ Relocations needed to define the traditional TLS models are undefined.
 
 .. table:: TLS descriptor relocations
 
-    +-------+----------------------------------+----------------------------+-----------------------------------------------------------+
-    | ELF64 | Name                             | Operation                  | Comment                                                   |
-    | Code  |                                  |                            |                                                           |
-    +=======+==================================+============================+===========================================================+
-    | 57600 | ``R_MORELLO_TLSDESC_ADR_PAGE20`` | ``Page(G(GTLSDESC(S+A)))`` | Set the immediate value of an ADRP to bits [31:12] of X.  |
-    |       |                                  |                            | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.             |
-    |       |                                  | ``- Page(P)``              |                                                           |
-    +-------+----------------------------------+----------------------------+-----------------------------------------------------------+
-    | 57601 | ``R_MORELLO_TLSDESC_LD128_LO12`` | ``G(GTLSDESC(S+A))``       | Set the LD/ST immediate field to bits [11:4] of X.        |
-    |       |                                  |                            | No overflow check. Check that X&15 = 0.                   |
-    +-------+----------------------------------+----------------------------+-----------------------------------------------------------+
-    | 57602 | ``R_MORELLO_TLSDESC_CALL``       | None                       | For relaxation only. Must be used to identify a ``BLR``   |
-    |       |                                  |                            | instruction which performs an indirect call to the TLS    |
-    |       |                                  |                            | descriptor function for ``S + A``.                        |
-    +-------+----------------------------------+----------------------------+-----------------------------------------------------------+
+    +-------+-----------------------------------------+----------------------------+-----------------------------------------------------------+
+    | ELF64 | Name                                    | Operation                  | Comment                                                   |
+    | Code  |                                         |                            |                                                           |
+    +=======+=========================================+============================+===========================================================+
+    | 57600 | ``R_MORELLO_TLSDESC_ADR_PAGE20``        | ``Page(G(GTLSDESC(S+A)))`` | Set the immediate value of an ADRP to bits [31:12] of X.  |
+    |       |                                         |                            | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.             |
+    |       |                                         | ``- Page(P)``              |                                                           |
+    +-------+-----------------------------------------+----------------------------+-----------------------------------------------------------+
+    | 57601 | ``R_MORELLO_TLSDESC_LD128_LO12``        | ``G(GTLSDESC(S+A))``       | Set the LD/ST immediate field to bits [11:4] of X.        |
+    |       |                                         |                            | No overflow check. Check that X&15 = 0.                   |
+    +-------+-----------------------------------------+----------------------------+-----------------------------------------------------------+
+    | 57602 | ``R_MORELLO_TLSDESC_CALL``              | None                       | For relaxation only. Must be used to identify a ``BLR``   |
+    |       |                                         |                            | instruction which performs an indirect call to the TLS    |
+    |       |                                         |                            | descriptor function for ``S + A``.                        |
+    +-------+-----------------------------------------+----------------------------+-----------------------------------------------------------+
+    | 57603 | ``R_MORELLO_TLSIE_ADR_GOTTPREL_PAGE20`` | ``Page(G(GTPREL(S)))       | Set the immediate value of an ADRP to bits [31:12] of X.  |
+    |       |                                         | - Page(P)``                | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.             |
+    |       |                                         |                            |                                                           |
+    +-------+-----------------------------------------+----------------------------+-----------------------------------------------------------+
+    | 57604 | ``R_MORELLO_TLSIE_ADD_LO12``            | ``G(GTPREL(S))``           | Set the ADD immediate field to bits [11:0] of X.          |
+    |       |                                         |                            | No overflow check.                                        |
+    |       |                                         |                            |                                                           |
+    +-------+-----------------------------------------+----------------------------+-----------------------------------------------------------+
 
 Dynamic Morello relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -658,6 +708,9 @@ Dynamic Morello relocations
     | 59397 | ``R_MORELLO_TLSDESC``   | ``TLSDESC(S+A)``                        | Identifies a TLS descriptor to be filled.|
     |       |                         |                                         |                                          |
     +-------+-------------------------+-----------------------------------------+------------------------------------------+
+    | 59398 | ``R_MORELLO_TPREL128``  | ``TPREL(S)``                            | See note below.                          |
+    |       |                         |                                         |                                          |
+    +-------+-------------------------+-----------------------------------------+------------------------------------------+
 
 .. note::
 
@@ -686,6 +739,21 @@ Dynamic Morello relocations
   ``R_MORELLO_IRELATIVE`` is used by the linker when transforming ``IFUNC`` s. The
   rest are the same as ``R_MORELLO_RELATIVE``
 
+  ``R_MORELLO_TLSDESC`` : identifies a TLS descriptor to be filled by the dynamic loader.
+  If the size of ``S`` is known by the static linker the 256-bit fragment will contain the size
+  of the symbol in the last 64 bits of the fragment. Otherwise the fragment will contain
+  all zeroes. The fragment has the following format:
+
+  ``| 192-bits empty | 64-bits size |``
+
+  ``R_MORELLO_TPREL128`` : instructs the dynamic loader to create a pair of two
+  64-bit integers, the first integer containing the offset of ``S`` in the TLS
+  block and the second integer containing the size of the symbol ``S``. The first
+  64-bit integer (the offset) has the same fragment encoding as ``R_AARCH64_TLS_TPREL``.
+  If the size of ``S`` is known by the static linker the second 64-bit integer in the
+  fragment will contain the size of the symbol. The fragment has the following format:
+
+  ``| 64-bits offset | 64-bits size |``
 
 Static linking with Morello
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -866,3 +934,202 @@ veneer is used. The BX changes the execution state from A64 to C64:
   adrp c16, sym
   add c16, c16, :lo12:sym
   br c16
+
+TLS for the pure capability ABI
+-------------------------------
+
+The design is based on TLSDESC, with the purpose of minimizing the performance
+differences between A64 and C64, while providing strict bounds when resolving
+TLS globals.
+
+TLS static block
+^^^^^^^^^^^^^^^^
+
+The static block layout is the same used in AArch64 (Variant 1, see [TLS_]), with
+the only exception that TCB and the DTV pointer are capabilities.
+
+Thread pointer
+^^^^^^^^^^^^^^
+
+The thread pointer is a capability, held in ``CTPIDR_EL0``. The thread pointer
+needs to have the read, write, read capability and write capability permissions
+and bounds such that the entire TLS static block is accessible.
+
+Resolver functions
+^^^^^^^^^^^^^^^^^^
+
+A resolver function takes arguments in c0 (address of the TLS GOT slot), and c2
+(a copy of the thread pointer) and returns a pointer to the TLS global in c0.
+The resolver function has a custom calling convention that must preserve all
+registers except c0 and c1.
+
+Considerations:
+
+- Any dynamically loaded modules will be placed outside of the bounds of the
+  thread pointer, so a resolver function cannot return an offset from the
+  thread pointer, but rather needs to return a pointer (capability).
+- To minimize reading of ``CTPIDR_EL0``, the resolver functions take a
+  copy of ``CTPIDR_EL0`` as an argument and preserve it.
+
+
+Static TLS block resolver
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the TLS variable is in the static block, while resolving the
+``R_MORELLO_TLSDESC`` relocation, the dynamic linker will place in the two GOT
+slots associated with this variable:
+
+- A capability to the static TLS block resolver function at offset 0.
+
+- The offset of the variable in the static TLS block at offset 16 (8 bytes).
+
+- The size of the variable at offset 24 (8 bytes).
+
+An implementation of the static block resolver could be the following:
+
+.. code-block:: text
+
+  ldp x0, x1, [c0, #16]
+  add c0, c2, x0
+  scbnds c0, c0, x1
+  ret c30
+
+Local Exec
+^^^^^^^^^^
+
+The capability to the TLS variable is derived from ``CTPIDR_EL0``. There
+are no requirements on how this is performed or the registers used, except
+that the sequence doesn't produce a dynamic relocation. A possible
+instruction sequence could be:
+
+.. code-block:: text
+
+  mrs c0, CTPIDR_EL0
+  movz x8, #:tprel_g1:local_exec_var
+  movk x8, #:tprel_g0_nc:local_exec_var
+  movz x9, #:size_g1:local_exec_var
+  movk x9, #:size_g0_nc:local_exec_var
+  add c0, c0, x8, uxtx
+  scbnds c0, c0, x9
+
+Initial Exec
+^^^^^^^^^^^^
+
+The capability to the TLS variable is derived from ``CTPIDR_EL0``. The size
+and offset of the TLS variable is stored in a GOT slot (first 8 bytes contains the
+offset and the second 8 bytes the size). This GOT slot is initialized by a
+``R_MORELLO_TPREL128`` dynamic relocation. The access must use the
+``R_MORELLO_TLSIE_ADR_GOTTPREL_PAGE20`` and ``R_MORELLO_TLSIE_ADD_LO12``
+relocations in order to allow relaxation to Local Exec. There are no other
+requirements on how this is performed or the registers used. A possible
+instruction sequence could be:
+
+.. code-block:: text
+
+  adrp c0, :gottprel:initial_exec_var
+  add c0, c0, :gottprel_lo12:initial_exec_var
+  ldp x0, x8, [c0]
+  mrs c1, CTPIDR_EL0
+  add c0, c1, x0, uxtx
+  scbnds c0, c0, x8
+
+Initial Exec to Local Exec relaxation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The linker will generate 16 bytes in a read-only section, containing
+the offset in the static TLS block in the first 8 bytes and the size of the
+symbol in the next 8 bytes:
+
+.. code-block:: text
+
+  .section .rodata
+  _sym_data:
+    .xword tlsoffset(sym)
+    .xword sizeof(sym)
+
+.. note::
+
+  ``tlsoffset(sym)`` denotes the offset in the static TLS block of the symbol
+  ``sym``, while sizeof(sym) denotes the size of the symbol ``sym``. These are
+  not valid assebler directives.
+
+The relaxation is performed by:
+
+- changing the ``R_MORELLO_TLSIE_ADR_GOTTPREL_PAGE20`` relocation on the symbol
+  ``sym`` to a ``R_MORELLO_ADR_PREL_PG_HI20`` with the symbol ``_sym_data``
+
+- changing the ``R_MORELLO_TLSIE_ADD_LO12`` relocation on symbol the ``sym`` to
+  a ``R_AARCH64_ADD_ABS_LO12_NC`` relocation with the symbol ``_sym_data``.
+
+.. note::
+
+  The symbol and section names in the example above are only used for explanation
+  purposes. An implementation does not need to create an additional symbol when
+  performing this relaxation. There is no constraint on the name of the read-only
+  section where the data is placed.
+
+General Dynamic
+^^^^^^^^^^^^^^^
+
+The instruction sequence used for the General Dynamic access model is similar to
+that of other TLSDESC implementations, with the exception that the result
+doesn't need to be added to the thread pointer. However c2 needs to contain
+the thread pointer. The instruction sequence contains an additional NOP
+instruction in order to permit the static linker to perform a relaxation to Local
+Exec or Initial Exec.
+
+The General Dynamic access sequence must be output in the following form to
+allow correct linker relaxation:
+
+.. code-block:: text
+
+  adrp c0, :tlsdesc:sym
+  ldr c1, [c0, :tlsdesc_lo12:sym]
+  add c0, c0, :tlsdesc_lo12:sym
+  nop
+  .tlsdesccall sym
+  blr c1
+
+General Dynamic to Initial Exec relaxation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The relaxed sequence is:
+
+.. code-block:: text
+
+  adrp c0, :gottprel:sym
+  add c0, c0, :gottprel_lo12:sym
+  ldp x0, x1, [c0]
+  add c0, c2, x0
+  scbnds c0, c0, x1
+
+
+General Dynamic to Local Exec relaxation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The linker will generate 16 bytes in a read-only section, containing
+the offset in the static TLS block in the first 8 bytes and the size of the
+symbol in the next 8 bytes:
+
+.. code-block:: text
+
+  .section .rodata
+  _sym_data:
+    .xword tlsoffset(sym)
+    .xword sizeof(sym)
+
+.. note::
+
+  ``tlsoffset(sym)`` denotes the offset in the static TLS block of the symbol
+  ``sym``, while sizeof(sym) denotes the size of the symbol ``sym``. These are
+  not valid assebler directives.
+
+The relaxed sequence is:
+
+.. code-block:: text
+
+  adrp c0, _sym_data
+  add c0, c0, :lo12:_sym_data
+  ldp x0, x1, [c0]
+  add c0, c2, x0
+  scbnds c0, c0, x1
