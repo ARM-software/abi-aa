@@ -225,6 +225,9 @@ Change history
   |        |                                     |   `Trademark notice`_, and Copyright_  |
   |        |                                     | - Add Thread ID register numbers       |
   +--------+-------------------------------------+----------------------------------------+
+  | 2021Q1 | 8\ :sup:`th` March 2021             | Delete duplicated TPIDRURO register    |
+  |        |                                     | entry in regiter number table.         |
+  +--------+-------------------------------------+----------------------------------------+
 
 References
 ----------
@@ -447,10 +450,7 @@ LEB128 integers. Numbers 0-127 encode in 1 byte, 128-16383 in 2 bytes.
   | 192–199        | wC0–wC7                | Intel wireless MMX control          |
   |                |                        | register in co-processor 0–7        |
   +----------------+------------------------+-------------------------------------+
-  | 200            | TPIDRURO               | PL0 Read-Only Software Thread IR    |
-  |                |                        | register.                           |
-  +----------------+------------------------+-------------------------------------+
-  | 201–255        | None                   | Reserved for future allocation      |
+  | 200–255        | None                   | Reserved for future allocation      |
   +----------------+------------------------+-------------------------------------+
   | 256-287        | VFP-v3/Neon D0-D31     | VFP-v3/Neon 64-bit register file    |
   |                |                        | (`Note 4`_)                         |
