@@ -911,7 +911,7 @@ Universal stack constraints
 
 At all times the following basic constraints must hold:
 
-- Stack-limit < SP <= stack-base. The stack pointer must lie within the extent of the stack.
+- Stack-limit < SP ≤ stack-base. The stack pointer must lie within the extent of the stack.
 
 - A process may only access (for reading or writing) the closed interval of the entire stack delimited by [SP, stack-base – 1].
 
@@ -1046,7 +1046,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   |                      |   after any promotions.                                                                |
   |                      |                                                                                        |
   |                      | - For a Composite Type, the alignment of the copy will have 8-byte alignment if its    |
-  |                      |   natural alignment is <= 8 and 16-byte alignment if its natural alignment is >= 16.   |
+  |                      |   natural alignment is ≤ 8 and 16-byte alignment if its natural alignment is ≥ 16.     |
   |                      |                                                                                        |
   |                      | The alignment of the copy is used for applying marshaling rules.                       |
   +----------------------+----------------------------------------------------------------------------------------+
@@ -1067,7 +1067,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   |                       | argument has now been allocated.                                                       |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is an HFA or an HVA and there are sufficient unallocated SIMD and      |
-  |                       | Floating-point registers (NSRN + number of members <= 8), then the argument is         |
+  |                       | Floating-point registers (NSRN + number of members ≤ 8), then the argument is          |
   | C.2                   | allocated to SIMD and Floating-point Registers (with one register per member of the    |
   |                       | HFA or HVA). The NSRN is incremented by the number of registers used. The argument has |
   |                       | now been allocated.                                                                    |
@@ -1078,7 +1078,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is an HFA, an HVA, a Quad-precision Floating-point or Short Vector     |
   |                       | Type then the NSAA is rounded up to the next multiple of 8 if its natural              |
-  | C.4                   | alignment is <= 8 or the next multiple of 16 if its natural alignment is >= 16.        |
+  | C.4                   | alignment is ≤ 8 or the next multiple of 16 if its natural alignment is ≥ 16.          |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is a Half- or Single- precision Floating Point type, then the size of  |
   |                       | the argument is set to 8 bytes. The effect is as if the argument had been copied to    |
@@ -1519,7 +1519,7 @@ Over-sized bit-fields
 
 C++ permits the width specification of a bit-field to exceed the container size and the rules for allocation are given in [GC++ABI]. Using the notation described above, the allocation of an over-sized bit-field of width ``W``, for a container of width ``C`` and alignment ``A`` is achieved by:
 
-- Selecting a new container width ``C’`` which is the width of the fundamental integer data type with the largest size less than or equal to ``W``. The alignment of this container will be ``A’``. Note that ``C’ >= C and A’ >= A``.
+- Selecting a new container width ``C’`` which is the width of the fundamental integer data type with the largest size less than or equal to ``W``. The alignment of this container will be ``A’``. Note that ``C’ ≥ C and A’ ≥ A``.
 
 - If ``C’ > UCB(CBA, C’, A’)`` setting ``CBA = NCBA(CBA, A’)``. This ensures that the bit-field will be placed at the start of the next container type.
 
