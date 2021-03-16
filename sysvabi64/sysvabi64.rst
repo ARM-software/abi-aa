@@ -669,16 +669,18 @@ along with the assumptions that the code model may make.
   3. The data segment contains the statically defined, writeable,
   per-process data sections. In all models dynamically allocated data
   and stack can make use of the full virtual address space, dependent
-  on operating system addressing limits.. If the components are in
+  on operating system addressing limits. If the components are in
   separate ELF segments, the data segment is the maximum combined span
   of the ELF segments.
 
-  4. The code models assume the text and data segments are no more
-  than a page boundary apart in virtual address space.
+  4. The code models assume the text and data segments are consecutive
+  in virtual memory with only padding for segment alignment between
+  them. Programs that have significant separation between the code and
+  data segments must take this extra distance into account in the max
+  combined span of text and data segments.
 
-  5. The The text segment maximum size for the large code model is
-  limited to 2GiB by R_AARCH64_PLT32 relocations from .ehframe
-  sections.
+  5. The text segment maximum size is limited to 2GiB by
+  R_AARCH64_PLT32 relocations from .ehframe sections.
 
   6. While designing the code models it was estimated that only 2.6%
   of load modules (executables and dynamic shared objects) have a max
@@ -706,7 +708,7 @@ The convention for command-line option to select code model is
 ``-mcmodel=<model>`` where code model is one of small, medium or
 large.
 
-the convention for command-line option to select position-independent
+The convention for command-line option to select position-independent
 code is ``-fpic`` for pic ``-fPIC`` for PIC. When compiling for an
 executable ``-fpie`` and ``-fPIE`` have the same GOT size limitations
 as ``-fpic`` and ``-fPIC`` respectively.
