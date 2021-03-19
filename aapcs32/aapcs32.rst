@@ -1637,12 +1637,14 @@ The following co-processor rules are defined for the VFP:
   |         | unallocated then the argument is allocated to the           |
   |         | lowest-numbered sequence of such registers.                 |
   +---------+-------------------------------------------------------------+
-  | C.2.vfp | If the argument is a VFP CPRC then any VFP registers that   |
-  |         | are unallocated are marked as unavailable.  The NSAA is     |
-  |         | adjusted upwards until it is correctly aligned for the      |
-  |         | argument and the argument is copied to the stack at the     |
-  |         | adjusted NSAA.  The NSAA is further incremented by the size |
-  |         | of the argument.  The argument has now been allocated.      |
+  | C.2.vfp |  If the argument is a VFP CPRC then any VFP registers that  |
+  |         |  are unallocated are marked as unavailable.  The NSAA is    |
+  |         |  rounded up to the next multiple of 4 if the natural        |
+  |         |  alignment of the argument is ≤ 4 or the next multiple of 8 |
+  |         |  if its natural alignment is ≥ 8 and the argument is copied |
+  |         |  to the stack at the adjusted NSAA.  The NSAA is further    |
+  |         |  incremented by the size of the argument.  The argument has |
+  |         |  now been allocated.                                        |
   +---------+-------------------------------------------------------------+
 
 Note that the rules require the ‘back-filling’ of unused co-processor
