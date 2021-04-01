@@ -915,7 +915,7 @@ The following nomenclature is used in the descriptions of relocation operations:
 
 - ``G(expr)`` is the address of the GOT entry for the expression expr.
 
-- ``Delta(S)`` if S is a normal symbol, resolves to the difference between the static link address of S and the execution address of ``S``. If ``S`` is the null symbol (ELF symbol index 0), resolves to the difference between the static link address of ``P`` and the execution address of ``P``.
+- ``Delta(S)`` if ``S`` is a normal symbol, resolves to the difference between the static link address of ``S`` and the execution address of ``S``. If ``S`` is the null symbol (ELF symbol index 0), resolves to the difference between the static link address of ``P`` and the execution address of ``P``.
 
 - ``Indirect(expr)`` represents the result of calling expr as a function. The result is the return value from the function that is returned in ``r0``. The arguments passed to the function are defined by the platform ABI.
 
@@ -1253,7 +1253,7 @@ In addition to the terms defined in `Relocation types`_, the tables listing the 
 
 - ``GTPREL(S+A)`` represents a pointer-sized entry in the GOT for the offset from the current thread pointer (TP) of the thread-local variable located at offset ``A`` from the symbol ``S``. The entry will be relocated with ``R_<CLS>_TLS_TPREL(S+A)``.
 
-- ``GTLSDESC(S+A)`` represents a consecutive pair of pointer-sized entries in the GOT which contain a tlsdesc structure describing the thread-local variable located at offset A from thread-local symbol S. The first entry holds a pointer to the variable's TLS descriptor resolver function and the second entry holds a platform-specific offset or pointer. The pair of pointer-sized entries will be relocated with ``R_<CLS>_TLSDESC(S+A)``.
+- ``GTLSDESC(S+A)`` represents a consecutive pair of pointer-sized entries in the GOT which contain a tlsdesc structure describing the thread-local variable located at offset ``A`` from thread-local symbol ``S``. The first entry holds a pointer to the variable's TLS descriptor resolver function and the second entry holds a platform-specific offset or pointer. The pair of pointer-sized entries will be relocated with ``R_<CLS>_TLSDESC(S+A)``.
 
 - ``LDM(S)`` resolves to the load module index of the symbol ``S``.
 
@@ -1545,11 +1545,11 @@ The need for copy relocations can be avoided if a compiler generates all code re
 
 - The initial value stored in the place is the offset to the entry sequence stub for the dynamic linker. It must be adjusted during initial loading by the offset of the load address of the segment from its link address.
 
-- Addresses stored in the place of these relocations may not be used for pointer comparison until the relocation after has been resolved.
+- Addresses stored in the place of these relocations may not be used for pointer comparison until after the relocation has been resolved.
 
-- Because the initial value of the place is not related to the ultimate target of a ``R_<CLS>_JUMP_SLOT`` relocation the addend A of such a REL-type relocation shall be zero rather than the initial content of the place. A platform ABI shall prescribe whether or not the ``r_addend`` field of such a RELA-type relocation is honored. (There may be security-related reasons not to do so).
+- Because the initial value of the place is not related to the ultimate target of a ``R_<CLS>_JUMP_SLOT`` relocation the addend ``A`` of such a REL-type relocation shall be zero rather than the initial content of the place. A platform ABI shall prescribe whether or not the ``r_addend`` field of such a RELA-type relocation is honored. (There may be security-related reasons not to do so).
 
-``R_<CLS>_RELATIVE`` represents a relative adjustment to the place based on the load address of the object   relative to its original link address. All symbols defined in the same segment will have the same relative adjustment. If S is the null symbol (ELF symbol index 0) then the adjustment is based on the segment defining the place. On systems where all segments are mapped contiguously the adjustment will be the same for each reloction, thus adjustment never needs to resolve the symbol. This relocation represents an optimization; it can be used to replace ``R_<CLS>_GLOB_DAT`` when the symbol resolves to the current dynamic shared object.
+``R_<CLS>_RELATIVE`` represents a relative adjustment to the place based on the load address of the object relative to its original link address. All symbols defined in the same segment will have the same relative adjustment. If ``S`` is the null symbol (ELF symbol index 0) then the adjustment is based on the segment defining the place. On systems where all segments are mapped contiguously the adjustment will be the same for each reloction, thus adjustment never needs to resolve the symbol. This relocation represents an optimization; it can be used to replace ``R_<CLS>_GLOB_DAT`` when the symbol resolves to the current dynamic shared object.
 
 ``R_<CLS>_IRELATIVE`` represents a dynamic selection of the place’s resolved value. The means by which this relocation is generated is platform specific, as are the conditions that must hold when resolving takes place.
 
@@ -1674,7 +1674,7 @@ The following bits are defined for GNU_PROPERTY_AARCH64_FEATURE_1_AND:
 
 ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` This indicates that all executable
 sections are compatible with Branch Target Identification mechanism. An
-executable or shared object with this bit set is requried to generate
+executable or shared object with this bit set is required to generate
 `Custom PLTs`_ with BTI instruction.
 
 ``GNU_PROPERTY_AARCH64_FEATURE_1_PAC`` This indicates that all executable
@@ -1700,7 +1700,7 @@ Dynamic Linking
 Custom PLTs
 ^^^^^^^^^^^^
 
-- To support Branch Target Identification mechinasm, in the presense of a
+- To support Branch Target Identification mechanism, in the presence of a
   ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` all PLT entries generated
   by the linker must have a BTI instruction as the first instruction. The
   linker must add the ``DT_AARCH64_BTI_PLT`` (`AArch64 specific dynamic array tags`_) tag to
