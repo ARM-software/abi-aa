@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 
-#  Copyright (c) 2021, Arm Limited
-#  SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2021, Arm Limited
+# SPDX-License-Identifier: Apache-2.0
 #
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 # invocation example:
 # ./tools/common/new-release.py . 2021 Q1 "02\ :sup:\`nd\` March"
@@ -32,7 +32,7 @@ def convert(text, quarter, year, date_of_issue):
         (r"(\|date-of-issue\| replace:: )(.*)", lambda x: x.group(1) + date_of_issue),
         # In copyright statements:
         # append this year to last year with a hyphen if it's not a range:
-        # Copyright (c) 2003-2007, 2012, 2018, 2020-2021
+        # Copyright (c) 2003-2007, 2012, 2018, 2020
         # becomes:
         # Copyright (c) 2003-2007, 2012, 2018, 2020-2021
         (r"(opyright.* )(\d+)(?!.*\d)", lambda x: \
@@ -40,7 +40,7 @@ def convert(text, quarter, year, date_of_issue):
                                             if x.group(2) == year \
                                                 else x.group(1) + x.group(2) + "-" + year),
         # replace last year with this year, if it's part of a range:
-        # Copyright (c) 2003-2007, 2012, 2018-2021
+        # Copyright (c) 2003-2007, 2012, 2018-2020
         # becomes:
         # Copyright (c) 2003-2007, 2012, 2018-2021
         (r"(opyright.*-)(\d+)(?!.*\d)", lambda x: x.group(1) + year),
