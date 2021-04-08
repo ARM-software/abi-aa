@@ -431,7 +431,10 @@ LEB128 integers. Numbers 0-127 encode in 1 byte, 128-16383 in 2 bytes.
   +----------------+------------------------+-------------------------------------+
   | 133            | SPSR_SVC               | SVC-mode SPSR                       |
   +----------------+------------------------+-------------------------------------+
-  | 134–143        | None                   | Reserved for future allocation      |
+  | 134–142        | None                   | Reserved for future allocation      |
+  +----------------+------------------------+-------------------------------------+
+  | 143            | RA_AUTH_CODE           | `Return Address Authentication      |
+  |                |                        | Code`_                              |
   +----------------+------------------------+-------------------------------------+
   | 144–150        | R8_USR–R14_USR         | User mode registers                 |
   +----------------+------------------------+-------------------------------------+
@@ -701,3 +704,16 @@ must identify registers not preserved by callees, as follows.
 
 * If a function uses a callee-saved register R, its associated CIE must
   initialize R using one of the defined value methods (not DW_CFA_undefined).
+
+Return Address Authentication Code
+----------------------------------
+
+Functions, compiled with Return Address Authentication will need to keep a
+pointer authentication code, used to validate integrity of the return address
+upon function exit. The pseudo-register ``RA_AUTH_CODE`` records the
+authentication code. It is an unsigned integer with the same size as a
+general-purpose register.  If the value of ``RA_AUTH_CODE`` is used to
+authenticate a return address, the authentication shall use CFA as a
+modifier. The DWARF Call Frame Information table (GDWARF_, §6.4.1, Structure of
+Call Frame Information) can be extended with a column for RA_AUTH_CODE, as
+needed.
