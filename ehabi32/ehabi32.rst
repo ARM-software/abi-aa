@@ -1126,13 +1126,14 @@ Language-independent unwinding types and functions
 The language-independent unwind library routines give access to
 environment-specific functionality.
 
-Unwinding the stack (whether a real unwinding affecting the actual
-machine registers, or a virtual unwinding in which the machine-state is
-tracked through successive frames) requires one or more buffer areas to
-hold copies of the real machine registers. Such a buffer area is called
-a *virtual register set* or VRS. Virtual register set access routines
-are described separately in `Virtual register set manipulation`_; the runtime representation is opaque
-to users of the unwind library and hence implementation-defined.
+Unwinding the stack (whether a real unwinding affecting the actual machine
+registers, or a virtual unwinding in which the machine-state is tracked through
+successive frames) requires one or more buffer areas to hold copies of the real
+machine registers or other relevant machine state. Such a buffer area is called
+a *virtual register set* or VRS. Virtual register set access routines are
+described separately in `Virtual register set manipulation`_; the runtime
+representation is opaque to users of the unwind library and hence
+implementation-defined.
 
 The rest of this section describes the unwind control block and the
 language-independent routines used to control exception propagation. The
@@ -1504,7 +1505,8 @@ Control types
   _UVRSC_CORE = 0,          /* integer register */
     _UVRSC_VFP = 1,         /* vfp */
     _UVRSC_WMMXD = 3,       /* Intel WMMX data register */
-    _UVRSC_WMMXC = 4        /* Intel WMMX control register */
+    _UVRSC_WMMXC = 4,       /* Intel WMMX control register */
+    _UVRSC_PSEUDO = 5       /* Special purpose pseudo register */
   } _Unwind_VRS_RegClass;
 
   typedef enum {
@@ -1569,6 +1571,8 @@ and is explained in the table below.
   +------------------+-------------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
   | \_UVRSC\_WMMXC   | \_UVRSD\_UINT32   | 0-3     | Internally casts valuep to (uint32\_t \*) and sets the value of WMMX control register regno to the pointed-to value.                                                                                      |
   +------------------+-------------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | \_UVRSC\_PSEUDO  | \_UVRSD\_UINT32   | 0       | Internally casts valuep to (uint32\_t \*) and sets the value of Return Address Authentication Code pseudo-register to the pointed-to value.                                                               |
+  +------------------+-------------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 If a call is made with a (regclass, representation) pair not in the
 above table, the behaviour and return code are undefined.
@@ -1622,6 +1626,9 @@ and is explained in the table below.
   | \_UVRSC\_WMMXD   | \_UVRSD\_UINT64   | 0-15    | Internally casts valuep to (uint64\_t \*) and stores the value of WMMX data register regno to the pointed-to memory.      |
   +------------------+-------------------+---------+---------------------------------------------------------------------------------------------------------------------------+
   | \_UVRSC\_WMMXC   | \_UVRSD\_UINT32   | 0-3     | Internally casts valuep to (uint32\_t \*) and stores the value of WMMX control register regno to the pointed-to memory.   |
+  +------------------+-------------------+---------+---------------------------------------------------------------------------------------------------------------------------+
+  | \_UVRSC\_PSEUDO  | \_UVRSD\_UINT32   | 0       | Internally casts valuep to (uint32\_t \*) and stores the value of Return Address Authentication Code pseudo-register      |
+  |                  |                   |         | to the pointed-to memory.                                                                                                 |
   +------------------+-------------------+---------+---------------------------------------------------------------------------------------------------------------------------+
 
 If a call is made with a (regclass, representation) pair not in the
@@ -1685,6 +1692,8 @@ and is explained in the table below.
   +------------------+-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
   | \_UVRSC\_WMMXC   | \_UVRSD\_UINT32   | Pop Intel WMMX control registers, on the assumption the operation is undoing a sequence of WSTRW instructions which saved registers with the lowest numbered register at the lowest stack address. The discriminator is a mask specifying the registers to pop (register wCGRn represented by or'ing in 2^n).                                                                                                                                     |
   |                  |                   | [Example: 0x0000000e transfers wCGR1, wCGR2 and wCGR3]                                                                                                                                                                                                                                                                                                                                                                                            |
+  +------------------+-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | \_UVRSC\_PSEUDO  | \_UVRSD\_UINT32   | Pop a special-purpose pseudo-register, on the assumption the operation is undoing an STMFD. The discriminator specifies the register to pop. The Return Address Authentication Code pseudo-register is denoted by discriminator 0.                                                                                                                                                                                                                |
   +------------------+-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 If a call is made with a (regclass, representation) pair not in the
@@ -2623,6 +2632,14 @@ The encoding has been designed to meet the following criteria.
   f) If a Reserved or Spare code is encountered, the PR will return
      \_URC\_FAILURE.
 
+  g) Functions, compiled with Return Address Authentication, will need to keep a
+     pointer authentication code used to validate integrity of the return
+     address upon function exit. The Return Address Authentication Code is an
+     unsigned integer with the same size as a general-purpose register. Upon
+     completion of the unwinding instructions, the Return Address Authentication
+     Code can be used to validate the content of VRS[r15], using vsp as a
+     modifier.
+
 .. _ehabi32-table4:
 
 .. class:: ehabi32-frame-unwinding
@@ -2669,7 +2686,9 @@ The encoding has been designed to meet the following criteria.
   +---------------------------+--------------------------------------------------------------------------------------------------------------+
   | ``10110011 sssscccc``     | Pop VFP double-precision registers D[ssss]-D[ssss+cccc] saved (as if) by FSTMFDX (see **remark d**)          |
   +---------------------------+--------------------------------------------------------------------------------------------------------------+
-  | ``101101nn``              | Spare (was Pop FPA)                                                                                          |
+  | ``10110100``              | Pop Return Address Authentication Code pseudo-register (see **remark g**)                                    |
+  +---------------------------+--------------------------------------------------------------------------------------------------------------+
+  | ``101101nn``              | Spare (nn != 00, was Pop FPA)                                                                                |
   +---------------------------+--------------------------------------------------------------------------------------------------------------+
   | ``10111nnn``              | Pop VFP double-precision registers D[8]-D[8+nnn] saved (as if) by FSTMFDX (see **remark d**)                 |
   +---------------------------+--------------------------------------------------------------------------------------------------------------+
