@@ -1222,6 +1222,24 @@ In effect, ``Tag_MPextension_use`` describes the intended use of the PLDW
           architecture extension above the base architecture as indicated by
           Tag_CPU_arch.
 
+::
+
+    Tag_PAC_extension (=50), uleb128
+       0  The user did not permit this entity to use PAC/AUT instructions
+       1  The user permitted this entity to use PAC/AUT instructions in the NOP
+          space
+       2  The user permitted this entity to use PAC/AUT instructions in the NOP
+          and in the non-NOP space
+
+::
+
+   Tag_BTI_extension (=52), uleb128
+       0  The user did not permit this entity to use BTI instructions
+       1  The user permitted this entity to use BTI instructions in the NOP space
+       2  The user permitted this entity to use BTI instructions in the NOP and
+          in the non-NOP space
+
+
 Procedure call-related attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1459,8 +1477,28 @@ Generally this tag can be ignored for the purposes of diagnosing
 object file compatibility, unless a program explictly needs to depend
 on being able to walk the frame chain.
 
+The following tag describes a producer use of branch target identification
+instructions.
+
+::
+
+   Tag_BTI_use (=74), uleb128
+       0  This code is compiled without branch target enforcement
+       1  This code is compiled with branch target enforcement
+
+
 Miscellaneous attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following tag describes a producer use of pointer authentication
+instructions.
+
+::
+
+   Tag_PACRET_use (=76), uleb128
+       0  This code is compiled without return address signing and authentication
+       1  This code is compiled with return address signing and authentication
+
 
 Optimization attributes
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -1848,6 +1886,12 @@ revision by ABI revision.
    +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
    | Tag_DSP_extension             | 46    | uleb128        | 2018q4       |                                                        |
    +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
+   | Tag_MVE_arch                  | 48    | uleb128        | 2019q4       |                                                        |
+   +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
+   | Tag_PAC_extension             | 50    | uleb128        | 2021q2       |                                                        |
+   +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
+   | Tag_BTI_extension             | 52    | uleb128        | 2021q2       |                                                        |
+   +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
    | Tag_nodefaults                | 64    | uleb128        | r2.06        | r2.07: Re-specified tag value inheritance more         |
    |                               |       |                |              | precisely (`Inheritance of public tag values`_ and     |
    |                               |       |                |              | `No defaults tag`_). In the absence                    |
@@ -1875,6 +1919,10 @@ revision by ABI revision.
    |                               |       |                |              | undefined in architecture v7 w/o MP extensions.        |
    +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
    | Tag_FramePointer_use          | 72    | uleb128        | 2019q2       |                                                        |
+   +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
+   | Tag_BTI_use                   | 74    | uleb128        | 2021q2       |                                                        |
+   +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
+   | Tag_PACRET_use                | 76    | uleb128        | 2021q2       |                                                        |
    +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
 
 
