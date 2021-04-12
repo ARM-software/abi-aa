@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2003-2020, Arm Limited and its affiliates. All rights
+   Copyright (c) 2003, 2007-2009, 2012, 2015, 2018, 2020, 2021, Arm Limited and its affiliates. All rights
    reserved. CC-BY-SA-4.0 AND Apache-Patent-License See LICENSE file
    for details
 
-.. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
-.. |copyright-date| replace:: 2005-2020
+.. |release| replace:: 2021Q1
+.. |date-of-issue| replace:: 12\ :sup:`th` April 2021
+.. |copyright-date| replace:: 2003, 2007-2009, 2012, 2015, 2018, 2020, 2021
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 .. |armarmv5_link| replace:: https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual
@@ -206,6 +206,9 @@ All content in this document is at the **Release** quality level.
 
 Change history
 ^^^^^^^^^^^^^^
+
+If there is no entry in the change history table for a release, there are no
+changes to the content of the document for that release.
 
 .. table::
 

@@ -180,6 +180,9 @@ This document is a draft and all content is at the **Alpha** quality level.
 Change history
 ^^^^^^^^^^^^^^
 
+If there is no entry in the change history table for a release, there are no
+changes to the content of the document for that release.
+
 .. class:: aapcs64-morello-change
 
 .. table::

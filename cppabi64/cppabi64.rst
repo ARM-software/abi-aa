@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2010-2021, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2010, 2013, 2018, 2020, 2021, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
 .. |release| replace:: 2021Q1
-.. |date-of-issue| replace:: 18\ :sup:`th` February 2021
-.. |copyright-date| replace:: 2010-2021
+.. |date-of-issue| replace:: 12\ :sup:`th` April 2021
+.. |copyright-date| replace:: 2010, 2013, 2018, 2020, 2021
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
@@ -207,6 +207,9 @@ All content in this document is at the **Release** quality level.
 Change History
 --------------
 
+If there is no entry in the change history table for a release, there are no
+changes to the content of the document for that release.
+
 .. class:: cppabi64-change-history
 
 .. table::
@@ -226,7 +229,7 @@ Change History
   +---------+------------------------------+-------------------------------------------------------------------+
   | 2020Q2  | 1\ :sup:`st` July 2020       | Specify behaviour between BTI and unwind library.                 |
   +---------+------------------------------+-------------------------------------------------------------------+
-  | 2021Q1  | 21\ :sup:`st` December 2020  | - document released on Github                                     |
+  | 2021Q1  | 12\ :sup:`th` April 2021     | - document released on Github                                     |
   |         |                              | - new Licence_: CC-BY-SA-4.0                                      |
   |         |                              | - new sections on Contributions_,                                 |
   |         |                              |   `Trademark notice`_, and Copyright_                             |

@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2008-2021, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2008, 2018, 2021, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
 .. |release| replace:: 2021Q1
-.. |date-of-issue| replace:: 24\ :sup:`th` February 2021
-.. |copyright-date| replace:: 2008-2021
+.. |date-of-issue| replace:: 12\ :sup:`th` April 2021
+.. |copyright-date| replace:: 2008, 2018, 2021
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
@@ -194,6 +194,9 @@ All content in this document is at the **Release** quality level.
 Change history
 ^^^^^^^^^^^^^^
 
+If there is no entry in the change history table for a release, there are no
+changes to the content of the document for that release.
+
 .. table::
 
   +-------------+------------------------------+-----------------------------------------+
@@ -204,7 +207,7 @@ Change history
   | 2018Q4      | 21\ :sup:`st` December 2018  | Minor typographical                     |
   |             |                              | fixes, updated links.                   |
   +-------------+------------------------------+-----------------------------------------+
-  | 2021Q1      | 24\ :sup:`th` February 2021  | - document released on Github           |
+  | 2021Q1      | 12\ :sup:`th` April 2021     | - document released on Github           |
   |             |                              | - new Licence_: CC-BY-SA-4.0            |
   |             |                              | - new sections on Contributions_,       |
   |             |                              |   `Trademark notice`_, and Copyright_   |

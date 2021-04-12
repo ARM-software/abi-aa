@@ -185,6 +185,9 @@ The relocation codes in `Relocation`_ in particular are expected to change.
 Change history
 ^^^^^^^^^^^^^^
 
+If there is no entry in the change history table for a release, there are no
+changes to the content of the document for that release.
+
 .. class:: aaelf64-change
 
 .. table::
