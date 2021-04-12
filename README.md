@@ -28,6 +28,9 @@ See the *Document locations* section below for links to the individual documents
 
 The latest ABI releases are being made available only here on Github: https://github.com/ARM-software/abi-aa/releases
 
+If there is no entry in the change history table for a release, there are no
+changes to the content of the document for that release.
+
 For the last specifications released on developer.arm.com, see the links to the individual documents in the *Document locations* section below.
 
 

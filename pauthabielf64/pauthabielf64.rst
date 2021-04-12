@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2020, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2020, 2021, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
-.. |copyright-date| replace:: 2020
+.. |release| replace:: 2021Q1
+.. |date-of-issue| replace:: 12\ :sup:`th` April 2021
+.. |copyright-date| replace:: 2020, 2021
 
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -194,6 +194,12 @@ The following support level definitions are used by the Arm ABI specifications:
    likelihood of future incompatible changes to be significant.
 
 This document is at **Alpha** release quality.
+
+Change history
+^^^^^^^^^^^^^^
+
+If there is no entry in the change history table for a release, there are no
+changes to the content of the document for that release.
 
 .. table::
 
