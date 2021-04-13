@@ -273,6 +273,10 @@ AEABI
 Arm-based
    ... based on the Arm architecture ...
 
+Branch Target Identification
+   Security technique ensuring a degree of control flow integrity by marking
+   valid targets of indirect branches.
+
 core registers
    The general purpose registers visible in the Arm architecture’s
    programmer’s model, typically r0-r12, SP, LR, PC, and CPSR.
@@ -1427,6 +1431,12 @@ The details are as follows:
    .. note::
 
     In general an unwinder must load *all* the machine registers listed in the VRS.
+
+
+   If Branch Target Identification mechanism is enabled, the unwinder may
+   transfer control to the routine installed in VRS[r15] using a BTI-setting
+   instruction that requires a BTI-clearing instruction at the destination.
+
 
 6. After a cleanup has finished, the unwind must be continued by passing
    the UCB pointer to \_Unwind\_Resume. A cleanup may exit via some
