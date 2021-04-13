@@ -268,6 +268,10 @@ AEABI
 Arm-based
    ... based on the Arm architecture ...
 
+Branch Target Identification
+   Security technique ensuring a degree of control flow integrity by marking
+   valid targets of indirect branches.
+
 core registers
    The general purpose registers visible in the Arm architecture’s
    programmer’s model, typically r0-r12, SP, LR, PC, and CPSR.
@@ -1580,6 +1584,10 @@ of a target system jmp\_buf measured in 8-byte double-words.
 When \_AEABI\_PORTABILITY\_LEVEL != 0, the required definition of
 jmp\_buf cannot be used to create jmp\_buf objects. Instead, a jmp\_buf
 must be passed as a parameter or allocated dynamically.
+
+If the Branch Target Identification mechanism is enabled, longjmp may transfer
+control using a BTI-setting instruction that requires a BTI-clearing instruction
+at the destination.
 
 .. _setjmp.h definitions:
 
