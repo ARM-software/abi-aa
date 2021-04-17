@@ -531,7 +531,7 @@ The 16-byte ELF identification (``e_ident``) provides information on how to inte
 ``EI_DATA``
   This field may be either ``ELFDATA2LSB`` or ``ELFDATA2MSB``. The choice will be governed by the default data order in the execution environment.
 
-``I_OSABI``
+``EI_OSABI``
   This field shall be zero unless the file uses objects that have flags which have OS-specific meanings (for example, it makes use of a section index in the range ``SHN_LOOS`` through ``SHN_HIOS``).
 
 
