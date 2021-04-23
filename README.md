@@ -11,19 +11,6 @@ Interface for the Arm® Architecture, both for source files and officially
 released documents.
 
 
-## Transitioning the ABI specs
-
-Currently we are in a transition period while we convert all the ABI
-specifications to this new open-source format. One by one, once
-the individual documents have been converted, they will appear here, and they
-will be included in future releases here on Github.
-
-ABI documents that haven't been converted yet can be found on [the Arm-hosted
-developer
-site](https://developer.arm.com/architectures/system-architectures/software-standards/abi).
-
-See the *Document locations* section below for links to the individual documents, both here on Github and their last release on developer.arm.com.
-
 ## Releases
 
 The latest ABI releases are being made available only here on Github: https://github.com/ARM-software/abi-aa/releases
