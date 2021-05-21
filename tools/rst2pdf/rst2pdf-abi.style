@@ -246,6 +246,10 @@ styles:
         parent : table
         colWidths: [ 25%, 30%, 45% ]
 
+    aaelf64-morello-elf-flags:
+        parent : table
+        colWidths: [ 33%, 67% ]
+
     aaelf64-morello-mapping-symbols:
         parent : table
         colWidths: [ 25%, 75% ]

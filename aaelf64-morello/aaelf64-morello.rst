@@ -13,6 +13,8 @@
 .. _MORELLO_ARM: https://developer.arm.com/documentation/ddi0606/latest
 .. |tlsdesc-url| replace:: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
+.. |cherielf-url| replace:: https://github.com/CTSRD-CHERI/cheri-elf-gabi/blob/main/gabi.md
+.. _CHERI_ELF: https://github.com/CTSRD-CHERI/cheri-elf-gabi/blob/main/gabi.md
 
 Morello extensions to ELF for the Arm\ :sup:`®` 64-bit Architecture (AArch64)
 *****************************************************************************
@@ -220,6 +222,8 @@ This document refers to, or is referred to by, the following documents.
   +------------------+----------------------------+-----------------------------------------------------------------------------------+
   | TLSDESC_         | |tlsdesc-url|              | TLS Descriptors for Arm. Original proposal document.                              |
   +------------------+----------------------------+-----------------------------------------------------------------------------------+
+  | CHERI_ELF_       | |cherielf-url|             | CHERI ELF gABI Extensions                                                         |
+  +------------------+----------------------------+-----------------------------------------------------------------------------------+
 
 Terms and abbreviations
 -----------------------
@@ -251,6 +255,37 @@ the same name in `AAELF64`_:
 
 Object Files
 ============
+
+ELF Header
+----------
+
+The ELF header provides a number of fields that assist in interpretation of the
+file. Most of these are specified in the base standard. The following fields
+have Morello-specific meanings.
+
+``e_flags``
+  The processor-specific flags are shown in the following table.
+
+.. _Morello-specific e_flags:
+
+.. class:: aaelf64-morello-elf-flags
+
+.. table:: Morello-specific e_flags
+
+  +---------------------------------+--------------------------------------------------------------+
+  | Value                           | Meaning                                                      |
+  +---------------------------------+--------------------------------------------------------------+
+  | :code:`EF_AARCH64_MORELLO_EXT`  | The ELF file contains uses an ABI where all pointers are     |
+  | (:code:`0x00010000`)            | implemented using capabilities (Pure-capability ABI)         |
+  +---------------------------------+--------------------------------------------------------------+
+
+Sections
+--------
+
+Special Sections
+^^^^^^^^^^^^^^^^
+
+A Morello toolchain can emit ELF Note sections in accordance to [CHERI_ELF_].
 
 Symbol Table
 ------------
