@@ -272,12 +272,12 @@ have Morello-specific meanings.
 
 .. table:: Morello-specific e_flags
 
-  +---------------------------------+--------------------------------------------------------------+
-  | Value                           | Meaning                                                      |
-  +---------------------------------+--------------------------------------------------------------+
-  | :code:`EF_AARCH64_MORELLO_EXT`  | The ELF file contains uses an ABI where all pointers are     |
-  | (:code:`0x00010000`)            | implemented using capabilities (Pure-capability ABI)         |
-  +---------------------------------+--------------------------------------------------------------+
+  +-----------------------------------+--------------------------------------------------------------+
+  | Value                             | Meaning                                                      |
+  +-----------------------------------+--------------------------------------------------------------+
+  | :code:`EF_AARCH64_CHERI_PURECAP`  | The ELF file contains uses an ABI where all pointers are     |
+  | (:code:`0x00010000`)              | implemented using capabilities (Pure-capability ABI)         |
+  +-----------------------------------+--------------------------------------------------------------+
 
 Sections
 --------
