@@ -275,8 +275,8 @@ have Morello-specific meanings.
   +-----------------------------------+--------------------------------------------------------------+
   | Value                             | Meaning                                                      |
   +-----------------------------------+--------------------------------------------------------------+
-  | :code:`EF_AARCH64_CHERI_PURECAP`  | The ELF file contains uses an ABI where all pointers are     |
-  | (:code:`0x00010000`)              | implemented using capabilities (Pure-capability ABI)         |
+  | :code:`EF_AARCH64_CHERI_PURECAP`  | The ELF file uses an ABI where all pointers are implemented  |
+  | (:code:`0x00010000`)              | using capabilities (Pure-capability ABI).                    |
   +-----------------------------------+--------------------------------------------------------------+
 
 Sections
