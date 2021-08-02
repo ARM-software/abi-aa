@@ -1,5 +1,5 @@
 <div align="center">
-   <img src="Arm_logo_blue_150MN.png" />
+   <img src="Arm_logo_blue_RGB.svg" />
 </div>
 
 # System V ABI for the Arm® 64-bit Architecture (AArch64)
@@ -32,5 +32,5 @@ claims.
 
 ## Defects report
 
-Please report defects in the [System V ABI for the Arm® 64-bit Architecture (AArch64)](sysvabi.rst) to the [issue tracker page on
+Please report defects in the [System V ABI for the Arm® 64-bit Architecture (AArch64)](sysvabi64.rst) to the [issue tracker page on
 GitHub](https://github.com/ARM-software/abi-aa/issues).
