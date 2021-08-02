@@ -1,15 +1,14 @@
 ..
-   Copyright (c) 2011-2020, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2021, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2020Q3
-.. |date-of-issue| replace:: 1\ :sup:`st` October 2020
-.. |copyright-date| replace:: 2011-2020
+.. |release| replace:: 2021Q3
+.. |date-of-issue| replace:: 1\ :sup:`st` August 2021
+.. |copyright-date| replace:: 2021
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
-.. _ABIAA: https://github.com/ARM-software/abi-aa/releases
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
 .. _AAPCS64: https://github.com/ARM-software/abi-aa/releases
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -32,7 +31,8 @@ Date of Issue: |date-of-issue|
 
 .. class:: logo
 
-.. image:: ../Arm_logo_blue_150MN.png
+.. image::  Arm_logo_blue_RGB.svg
+   :scale: 30%
 
 .. section-numbering::
 
@@ -46,7 +46,8 @@ Preamble
 Abstract
 --------
 
-This document describes the System V Application Binary Interface (ABI) for the Arm 64-bit architecture.
+This document describes the System V Application Binary Interface
+(ABI) for the Arm 64-bit architecture.
 
 Keywords
 --------
@@ -192,7 +193,7 @@ Change History
  +------------+--------------------+------------------------------------------------------------------+
  | Issue      | Date               | Change                                                           |
  +============+====================+==================================================================+
- | 00Alp1     | 8th March 2021     | Alpha release containing Code Model only                         |
+ | 00Alp1     | 1st August 2021    | Alpha release containing Code Model only                         |
  +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -215,7 +216,7 @@ This document refers to, or is referred to by, the following documents.
   +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
   | CPPABI64_                    | IHI 0059                                                    | C++ ABI for the Arm 64-bit Architecture                                     |
   +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | GCABI_                       | <https://itanium-cxx-abi.github.io/cxx-abi/abi.html>`_      | Generic C++ ABI                                                             |
+  | GCABI_                       | https://itanium-cxx-abi.github.io/cxx-abi/abi.html          | Generic C++ ABI                                                             |
   +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
 
 Terms and Abbreviations
@@ -322,7 +323,7 @@ Scope
 =====
 
 Except where otherwise stated the AArch64 System V ABI follows the
-AArch64 base ABI documents in ABIAA_ . The AArch64 System V ABI
+base ABI documents in `ABI for the Arm 64 bit architecture <https://github.com/ARM-software/abi-aa#abi-for-the-arm-64-bit-architecture>`_. The AArch64 System V ABI
 documents the places where divergence exists with respect to the base
 ABI and attempts to act as a unifying document to cover information in
 a variety of places that is of relevance to a System V implementation.
@@ -347,12 +348,12 @@ Architectural Considerations
 The AArch64 architecture does not allow for instructions to encode
 arbitrary 64 bit constants in a single instructions. Immediates or
 constants need to be constructed by a sequence of instructions that
-are defined in the Arm Architecture Reference Manual for AArch64
-ARMARM_. Most instructions accept restricted immediate forms as
-detailed in the ARMARM_, the details of which are beyond the scope of
-this document. Given the range of immediates and offsets accepted by
-various instructions, programming on this architecture lends itself to
-a set of code models that define a set of constraints to allow an
+are defined in the Arm Architecture Reference Manual Armv8, for
+Armv8-A architecture profile [`ARMARM`_]. Most instructions accept
+restricted immediate forms, the details of which are beyond the scope
+of this document. Given the range of immediates and offsets accepted
+by various instructions, programming on this architecture lends itself
+to a set of code models that define a set of constraints to allow an
 efficient mapping of a program to a set of machine instructions. In
 the following section we document the code sequences for memory
 addressing; and in effect document the various memory models produced
