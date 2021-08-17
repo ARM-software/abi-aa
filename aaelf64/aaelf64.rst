@@ -1249,6 +1249,88 @@ Finally the bit-field of X specified in the table (those bits of X picked out by
 
 For "``MOVW``" type relocations it is the assembler’s responsibility to encode the hw bits (bits 21 and 22) to indicate the bits in the target value that the immediate field represents.
 
+Relocation optimization
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Linkers may optionally optimize instructions affected by relocation. Relocation optimizations improve the efficiency of relocated instructions without changing their visible behaviour. There are several classes of relocation optimizations:
+
+- A single relocation optimization may change an instruction after relocation into an equivalent, more efficient form.
+
+  - Several relocations may result in an addition with zero, which may be optimized as follows:
+
+    ::
+
+      ADD   x0, x1, 0   // eg. R_<CLS>_TLSLE_ADD_TPREL_HI12
+      ADD   x2, x2, 0   // or R_<CLS>_ADD_ABS_LO12_NC
+
+      // after optimization:
+
+      MOV   x0, x1
+      NOP
+
+  - The relocation ``R_<CLS>_ADR_PREL_PG_HI21`` may emit a MOV with zero immediate for undefined weak symbols.
+
+  - The following TLS relocations may be optimized if the symbol is not a pre-emptable definition and the TLS offset fits in 16 bits:
+
+    ::
+
+      ADRP  x0, :gottprel: symbol            // R_<CLS>_TLSIE_ADR_GOTTPREL_PAGE21
+      LDR   x1, [x0, :gottprel_lo12: symbol] // R_<CLS>_TLSIE_LD64_GOTTPREL_LO12_NC
+      LDR   x2, :gottprel: symbol            // R_<CLS>_TLSIE_LD_GOTTPREL_PREL19
+
+      // after optimization:
+
+      NOP
+      MOV   x1, :tprel_g0: symbol            // R_<CLS>_TLSLE_MOVW_TPREL_G0
+      MOV   x2, :tprel_g0: symbol            // R_<CLS>_TLSLE_MOVW_TPREL_G0
+
+    If a linker supports optimizing ``R_<CLS>_TLSIE_ADR_GOTTPREL_PAGE21``, it must also support optimizing ``R_<CLS>_TLSIE_LD64_GOTTPREL_LO12_NC``.
+
+- A sequence of relocated instructions may be optimized if all of the following conditions are true:
+
+  - The relocations apply to consecutive instructions in the order specified.
+  - The relocations use the same symbol.
+  - The relocated instructions have the same source and destination register.
+  - The relocations do not appear separately or in a different order.
+
+  In this case each set of relocations is independent and may be optimized. The following sequences are defined:
+
+  - Large GOT indirection
+
+    A GOT indirection may be optimized into PC-relative addressing:
+
+    ::
+
+      ADRP  x0, :got: symbol            // R_<CLS>_ADR_GOT_PAGE
+      LDR   x0, [x0 :got_lo12: symbol]  // R_<CLS>_LD64_GOT_LO12_NC
+
+      // after optimization:
+
+      ADRP  x0, symbol                  // R_<CLS>_ADR_PREL_PG_HI21
+      ADD   x0, x0, :lo12: symbol       // R_<CLS>_ADD_ABS_LO12_NC
+
+    This sequence may be optimized if it meets all of the following conditions:
+
+    - ``symbol`` is not a pre-emptable definition.
+    - ``symbol`` is not of type ``STT_GNU_IFUNC``.
+    - ``symbol`` is within range of the ``R_<CLS>_ADR_PREL_PG_HI21`` relocation.
+    - The addend of both relocations is zero.
+
+    The optimized sequence does not require a GOT entry. A linker may avoid creating a GOT entry if no other GOT relocations exist for the symbol.
+
+  - PC-relative addressing
+
+    ``ADR`` may replace ``ADRP/ADD`` if ``symbol`` is within +-1MiB range:
+
+    ::
+
+      ADRP  x0, symbol                  // R_<CLS>_ADR_PREL_PG_HI21
+      ADD   x0, x0, :lo12: symbol       // R_<CLS>_ADD_ABS_LO12_NC
+
+      // after optimization:
+
+      NOP
+      ADR   x0, symbol                  // R_<CLS>_ADR_PREL_LO21
 
 Proxy-generating relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
