@@ -612,7 +612,7 @@ performance and reduce static code size. The relevant constraints are:
   typically used for function / procedure calls.
 
 * A series of MOVZ and up to 3 MOVK instructions can be used to
-  construct a 64-bit value
+  construct a 64-bit value.
 
 * Static linkers may insert a veneer (a sequence of instructions) to
   implement a relocated B or BL to a destination further away than the
@@ -636,24 +636,28 @@ along with the assumptions that the code model may make.
 
 .. table:: Code Models
 
-  +-------+----------------+----------------+------------------------+
-  | Code  | Max text       | Max combined   | Additional GOT         |
-  | Model | segment size   | span of text   | restrictions           |
-  |       |                | and data       |                        |
-  |       |                | segments       |                        |
-  +=======+================+================+========================+
-  | tiny  | 1 MiB          | 1 Mib          | none                   |
-  |       |                |                |                        |
-  +-------+----------------+----------------+------------------------+
-  | small | 2GiB           | 4 GiB          | pic: got size < 32 KiB |
-  |       |                |                +------------------------+
-  |       |                |                | PIC: none              |
-  +-------+----------------+----------------+------------------------+
-  | large | 2GiB           | no restriction | pic: got size < 32 KiB |
-  |       |                |                +------------------------+
-  |       |                |                | PIC: max distance from |
-  |       |                |                | text to GOT < 4 GiB    |
-  +-------+----------------+----------------+------------------------+
+  +--------+----------------+----------------+------------------------+
+  | Code   | Max text       | Max combined   | Additional GOT         |
+  | Model  | segment size   | span of text   | restrictions           |
+  |        |                | and data       |                        |
+  |        |                | segments       |                        |
+  +========+================+================+========================+
+  | tiny   | 1 MiB          | 1 Mib          | none                   |
+  |        |                |                |                        |
+  +--------+----------------+----------------+------------------------+
+  | small  | 2GiB           | 4 GiB          | pic: got size < 32 KiB |
+  |        |                |                +------------------------+
+  |        |                |                | PIC: none              |
+  +--------+----------------+----------------+------------------------+
+  | medium | 2GiB           | no restriction | pic: got size < 32 KiB |
+  |        |                |                +------------------------+
+  |        |                |                | PIC: none              |
+  +--------+----------------+----------------+------------------------+
+  | large  | 2GiB           | no restriction | max distance from text |
+  |        |                |                | to GOT < 4 GiB         |
+  |        |                |                |                        |
+  |        |                |                |                        |
+  +--------+----------------+----------------+------------------------+
 
 .. note::
 
@@ -706,8 +710,8 @@ Implementation of code models
 -----------------------------
 
 The convention for command-line option to select code model is
-``-mcmodel=<model>`` where code model is one of small, medium or
-large.
+``-mcmodel=<model>`` where code model is one of ``tiny``, ``small``,
+``medium`` or ``large``.
 
 The convention for command-line option to select position-independent
 code is ``-fpic`` for pic ``-fPIC`` for PIC. When compiling for an
@@ -720,22 +724,37 @@ open-source compilers.
 
 .. table:: Code Model Support
 
-  +-------+----------------+----------------+
-  | Code  | GCC 11         | Clang 12.0     |
-  | Model |                |                |
-  +=======+================+================+
-  | tiny  | yes            | yes            |
-  |       |                |                |
-  +-------+----------------+----------------+
-  | small | pic and PIC    | pic and PIC    |
-  |       | implemented    | accepted but   |
-  |       |                | PIC used       |
-  +-------+----------------+----------------+
-  | large | no-pic support | no-pic support |
-  |       |                |                |
-  |       |                |                |
-  |       |                |                |
-  +-------+----------------+----------------+
+  +--------+----------------+----------------+
+  | Code   | GCC 11         | Clang 12.0     |
+  | Model  |                |                |
+  +========+================+================+
+  | tiny   | yes            | yes            |
+  |        |                |                |
+  +--------+----------------+----------------+
+  | small  | pic and PIC    | pic and PIC    |
+  |        | implemented    | accepted but   |
+  |        |                | PIC used       |
+  +--------+----------------+----------------+
+  | medium | pic and PIC    | pic and PIC    |
+  |        | proposed       | proposed       |
+  |        |                |                |
+  +--------+----------------+----------------+
+  | large  | no-pic support | no-pic support |
+  |        |                |                |
+  |        |                |                |
+  |        |                |                |
+  +--------+----------------+----------------+
+
+
+Medium code model
+-----------------
+
+Symbols smaller than 64KiB (value TBD) are treated like the small code model.
+Symbols which are larger than 64KiB, are ``common`` or of unknown size use
+sections ``.ldata``, ``.lbss`` and ``.lrodata``. These sections are placed after
+all other sections and can be unlimited in size. Symbols in them are addressed
+via the GOT. Linkers may relax GOT indirections into PC-relative addressing for
+non pre-emptible symbols within 4GiB.
 
 Sample code sequences for code models
 -------------------------------------
@@ -759,12 +778,20 @@ PC-relative offset of +/- 1 MiB. Suitable for tiny code model.
 
     adr x0, var
 
-PC-relative offset of +/- 4 GiB. Suitable for small code model.
+PC-relative offset of +/- 4 GiB. Suitable for small/medium code model.
 
 .. code-block:: asm
 
     adrp x0, var
     add x0, x0, #:lo12: var
+
+PC-relative offset not within +/- 4 GiB. Suitable for large symbols in
+the medium code model.
+
+.. code-block:: asm
+
+    adrp x0, :got: var
+    ldr x0, [x0, :got_lo12: var]
 
 Absolute load of a literal, where the literal is within 1
 MiB. Suitable for large code model if the literal is defined within
@@ -802,7 +829,7 @@ In the general case one of the sequences above is used to get the
 address. A load instruction can then be used to obtain the value. In
 some cases the add can be folded into the load.
 
-PC-relative offset of +/- 4 GiB. Suitable for the small code model.
+PC-relative offset of +/- 4 GiB. Suitable for the small/medium code model.
 
 .. code-block:: asm
 
@@ -817,7 +844,7 @@ The GOT is a linker generated table of addresses. Every address in the
 GOT is at least 8 byte aligned and the base of the GOT can be obtained
 by the linker defined ``__GLOBAL_OFFSET_TABLE__`` symbol.
 
-All of GOT is within 1 MiB
+All of GOT is within 1 MiB. Suitable for the tiny code model.
 
 .. code-block:: asm
 
