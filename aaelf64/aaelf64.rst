@@ -450,7 +450,7 @@ A PLT entry must be able to branch any distance. This is typically achieved by l
 
 On-demand dynamic linking constrains the code sequences that can be generated for a PLT entry. Specifically, there is a requirement from the dynamic linker for certain registers to contain certain values. Typically these are:
 
-- The address or index of the of not-yet-linked PLT entry.
+- The address or index of the not-yet-linked PLT entry.
 
 - The return address of the call to the PLT entry.
 
