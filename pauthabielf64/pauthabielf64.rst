@@ -14,7 +14,7 @@
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html
 .. _SCO-ELF: http://www.sco.com/developers/gabi/
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
-
+.. _LINUX_ABI: https://github.com/hjl-tools/linux-abi/wiki
 .. footer::
 
    ###Page###
@@ -253,6 +253,8 @@ This document refers to, or is referred to by, the following documents.
   | TLSDESC_                                                                                | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf | TLS Descriptors for Arm. Original proposal document                      |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | `GABI_SHT_RELR <https://groups.google.com/d/msg/generic-abi/bX460iggiKg/YT2RrjpMAwAJ>`_ | ELF GABI Google Groups                                      | Proposal for a new section type SHT_RELR                                 |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
+  | LINUX_ABI_                                                                              | https://github.com/hjl-tools/linux-abi/wiki                 | Linux Extensions to gABI                                                 |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
 
 Terms and Abbreviations
@@ -832,10 +834,20 @@ language to signing schema is expected to evolve over time. Even if
 the low-level ELF extensions remain constant, a change to the
 high-level language mapping may result in incompatible ELF files.
 
-Every relocatable object, executable and shared library that uses the
-PAuth ABI ELF extensions must have a section named
-``.note.AARCH64-PAUTH-ABI-tag`` of type ``SHT_NOTE``. This section is
-structured as a note section as documented in SCO-ELF_.
+This document defines a default ELF marking schema and a base
+compatibility model. Platforms may define their own ELF marking and
+compatibility model that replace or extend the default ones. `Appendix
+Alternative ELF Marking Using GNU Program Properties`_ defines an
+alternative marking schema for platforms that support the
+``.note.gnu.property`` section.
+
+Default Marking Schema
+----------------------
+
+A new section named ``.note.AARCH64-PAUTH-ABI-tag`` of type
+``SHT_NOTE`` is defined. This section is structured as a note section
+as documented in SCO-ELF_, and its attribute flag ``SHF_ALLOC`` must
+be set.
 
 The name field (``namesz`` / ``name``) contains the string "ARM". The
 type field shall be 1, and the ``descsz`` field must be at least 16.
@@ -846,17 +858,25 @@ identified for the first word. When ``descsz`` is larger than 16 the
 remainder of the contents of desc are defined by the (platform id,
 version number).
 
-This ABI does not determine the format of the platform identifier. Arm
-reserves the platform id 0 for a bare-metal platform.
+The following values of the platform id are reserved:
 
-The (platform id, version number) of (0, 0) is reserved as an invalid
-combination. The program cannot be run when pointer authentication is
-enabled.
+    +-----------+-----------+
+    | Platform  | Hex value |
+    +===========+===========+
+    | Invalid   | 0x0       |
+    +-----------+-----------+
+    | Baremetal | 0x1       |
+    +-----------+-----------+
 
-The version id in ``.note.AARCH64-PAUTH-ABI-tag`` is not directly
+The version number in ``.note.AARCH64-PAUTH-ABI-tag`` is not directly
 related to the version number of this document. It is controlled by
-the object-producer based on the signing schema that have been used
-for pointers.
+the object-producer based on the signing schema that has been used for
+pointers.
+
+If a file contains a section named ``.note.AARCH64-PAUTH-ABI-tag``,
+it must observe the entirety of the rules in this default marking
+schema. Generating such section with a platform-specific schema is
+forbidden.
 
 Base Compatibility Model
 ------------------------
@@ -868,24 +888,36 @@ compatibility.
   information on how pointers are signed is available for this ELF
   file.
 
-* The presence of a ``.note.AARCH64-PAUTH-ABI-tag`` means that the
-  pointers were signed in a compatible way with the default signing
-  rules for tuple (platform id, version number).
+* The presence of a ``.note.AARCH64-PAUTH-ABI-tag`` means that, if the
+  file contains pointers, they were signed in a compatible way with
+  the default signing rules for tuple (platform id, version number).
+
+* The result of a successful combination of
+  ``.note.AArch64-PAUTH-ABI-tag`` sections is a single
+  ``.note.AArch64-PAUTH-ABI-tag`` section containing the (platform id,
+  version number) tuple. The result of an unsuccesful combination must
+  be either a single ``.note.AArch64-PAUTH-ABI-tag`` section containing
+  a platform id with value Invalid, or no ``.note.AArch64-PAUTH-ABI-tag``
+  section written to the output file.
 
 * The static linker may fault the combination of relocatable
   objects that contain ``.note.AARCH64-PAUTH-ABI-tag`` sections with
-  incompatible (platform id, version number) tuples. If an ELF file is
-  produced, the output ``.note.AARCH64-PAUTH-ABI-tag`` must have the
-  invalid (platform id, version number) of (0, 0).
+  incompatible (platform id, version number) tuples.
 
-* The combination of relocatable objects with
-  ``.note.AARCH64-PAUTH-ABI-tag`` and relocatable objects without a
-  ``.note.AARCH64-PAUTH-ABI-tag`` is not defined by this ABI.
+* A dynamic loader may disable pointer authentication, or fault the
+  program with an error message, in case it encounters an incompatible
+  ELF file. A file is incompatible with the loader in any of the
+  following cases:
 
-* A dynamic loader that encounters a (platform id, version number)
-  that it does not recognize, or if the (platform id, version number)
-  is (0,0), it must disable pointer authentication for the process or
-  give an error message.
+  * If section ``.note.AARCH64-PAUTH-ABI-tag`` is missing.
+
+  * If the (platform id, version number) tuple is not recognized.
+
+  * If the platform id is Invalid.
+
+The combination of relocatable objects with
+``.note.AARCH64-PAUTH-ABI-tag`` and relocatable objects without a
+``.note.AARCH64-PAUTH-ABI-tag`` is not defined by this ABI.
 
 Platforms may replace the base compatibility model with a
 platform-specific model.
@@ -1196,3 +1228,34 @@ Some observations:
 * When not dynamic linking a static linker may choose to encode the
   pointer signing information in a custom encoding understood by the
   start-up code used.
+
+Appendix Alternative ELF Marking Using GNU Program Properties
+=============================================================
+
+If a platform supports section ``.note.gnu.property``, this can be used
+as the base for an alternative schema. The format of this section is
+defined in LINUX_ABI_.
+
+The following processor-specific program property types are defined:
+
+    +----------------------------------------+------------+
+    | Name                                   | Value      |
+    +========================================+============+
+    | GNU\_PROPERTY\_AARCH64\_FEATURE\_PAUTH | 0xc0000001 |
+    +----------------------------------------+------------+
+
+The format of the data in ``pr_data`` is at least two 64-bit words,
+the first being a platform identifier, and the second being a version
+number specific to the platform identified in the first word.
+Consequently, the ``pr_datasz`` field must be at least 16. When
+``pr_datasz`` is larger than 16, the remainder of the contents of
+``pr_data`` are specific to the (platform id, version number). If
+``pr_datasz`` is not a multiple of 8, ``pr_padding`` must be added so
+that PR_DATASZ + PR_PADDING is a multiple of 8 and the property
+remains 8-byte aligned.
+
+The rules for the fields are the same as for the default marking
+schema: this ABI does not define the exact format of the platform and
+version identifiers, but reserves the combination of (platform,
+version) equal to (0,0) to represent an ELF file incompatible with
+this ABI.
