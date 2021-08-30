@@ -376,7 +376,9 @@ Additionally, a stack-pointer register, SP in a 64-bit context or CSP in a capab
     +------------+----------+----------------------------------------------------------------------------------------------------+
     | r16        | CIP0     | The first intra-procedure-call scratch register (can be used by call veneers and PLT code).        |
     +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r9-r15     |          | Temporary registers.                                                                               |
+    | r10-r15    |          | Temporary registers.                                                                               |
+    +------------+----------+----------------------------------------------------------------------------------------------------+
+    | r9         |          | Parameter register for variadic calls, temporary register otherwise.                               |
     +------------+----------+----------------------------------------------------------------------------------------------------+
     | r8         |          | The capability indirect result location register.                                                  |
     +------------+----------+----------------------------------------------------------------------------------------------------+
@@ -415,6 +417,8 @@ Additionally, a stack-pointer register, SP in a 64-bit context or CSP in a capab
 
 
 The first eight registers, r0-r7, are used to pass argument values into a subroutine and to return result values from a function. They may also be used to hold intermediate values within a routine (but, in general, only between subroutine calls).
+
+In AAPCS64-cap the r9 register is used to pass anonymous arguments in variadic calls.
 
 Registers r16 (IP0/CIP0) and r17 (IP1/CIP1) may be used by a linker as a scratch register between a routine and any subroutine it calls (for details, see `Use of CIP0 and CIP1 by the linker`_). They can also be used within a routine to hold intermediate values between subroutine calls.
 
@@ -519,6 +523,16 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     |                              |                                                                                          |
     | A.3                          |                                                                                          |
     +------------------------------+------------------------------------------------------------------------------------------+
+    |                              | If the callee is variadic in AAPCS64-cap, the Anonymous Arguments Memory area is         |
+    |                              | allocated in memory with a size of at least 16 * (number of Anonymous arguments) bytes.  |
+    |                              | The Anonymous Arguments Memory area is 16-byte aligned. The Anonymous Arguments          |
+    |                              | Capability points to the Anonymous Arguments Memory area and is copied to C9. If there   |
+    | A.4                          | are no Anonymous arguments passed, C9 is set to NULL.                                    |
+    +------------------------------+------------------------------------------------------------------------------------------+
+    |                              | The Anonymous Arguments Index (AArgsIdx) is set to zero.                                 |
+    |                              |                                                                                          |
+    | A.5                          |                                                                                          |
+    +------------------------------+------------------------------------------------------------------------------------------+
 
 
 .. rubric:: Stage B – Pre-padding and extension of arguments
@@ -534,28 +548,39 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     |                              | AAPCS64-cap. (There are no such types in C/C++ but they exist in other languages or in |
     |                              | language extensions).                                                                  |
     +------------------------------+----------------------------------------------------------------------------------------+
+    |                              | If the argument is Anonymous in AAPCS64-cap and the size or alignment of the argument  |
+    |                              | is larger than 16, the argument is copied to memory and the argument is replaced by a  |
+    | B.2                          | capability to the copy.                                                                |
+    |                              |                                                                                        |
+    |                              |                                                                                        |
+    |                              |                                                                                        |
+    +------------------------------+----------------------------------------------------------------------------------------+
+    |                              | If the argument is Anonymous in AAPCS64 and the argument type is a capability or       |
+    | B.3                          | the argument type is a Composite Type which contains capabilities, the argument is     |
+    |                              | copied to memory and the argument is replaced by a pointer to the copy.                |
+    +------------------------------+----------------------------------------------------------------------------------------+
     |                              | If the argument type is an HFA or an HVA, then the argument is used unmodified.        |
     |                              |                                                                                        |
-    | B.2                          |                                                                                        |
+    | B.4                          |                                                                                        |
     +------------------------------+----------------------------------------------------------------------------------------+
     |                              | If the argument type is a Composite Type which does not contain capabilities that is   |
     |                              | larger than 16 bytes, then the argument is copied to memory allocated by the caller    |
     |                              | and the argument is replaced by a pointer to the copy in AAPCS64 or a capability to    |
-    | B.3                          | the copy in AAPCS64-cap.                                                               |
+    | B.5                          | the copy in AAPCS64-cap.                                                               |
     +------------------------------+----------------------------------------------------------------------------------------+
     |                              | If the argument type is a Composite Type then the size of the argument is rounded up   |
     |                              | to the nearest multiple of 8 bytes.                                                    |
-    | B.4                          |                                                                                        |
+    | B.6                          |                                                                                        |
     +------------------------------+----------------------------------------------------------------------------------------+
     |                              | If the argument is a Composite Type containing Capabilities and the size is larger     |
     |                              | than 32 bytes or there are addressable members which are not Capabilities that overlap |
-    | B.5                          | bytes 8-15 or 24-31 of the argument (if such bytes exist) then the argument is copied  |
+    | B.7                          | bytes 8-15 or 24-31 of the argument (if such bytes exist) then the argument is copied  |
     |                              | to memory allocated by the caller and the argument is replaced by a pointer to the     |
     |                              | copy in AAPCS64 or a capability to a copy in AAPCS64-cap.                              |
     +------------------------------+----------------------------------------------------------------------------------------+
     |                              | If the argument is an alignment adjusted type its value is passed as a copy of the     |
     |                              | actual value. The copy will have an alignment defined as follows.                      |
-    | B.6                          |                                                                                        |
+    | B.8                          |                                                                                        |
     |                              | - For a Fundamental Data Type, the alignment is the natural alignment of that type,    |
     |                              |   after any promotions.                                                                |
     |                              |                                                                                        |
@@ -573,43 +598,52 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
 .. table::
 
     +-------------------------------+----------------------------------------------------------------------------------------+
+    | C.1                           | If the argument is Anonymous in AAPCS64-cap and its size is less than 16 bytes, the    |
+    |                               | size of the argument is set to 16 bytes. The effect is as if the argument was copied   |
+    |                               | to the least significant bits of a 128-bit register and the remaining bits filled with |
+    |                               | unspecified values.                                                                    |
+    +-------------------------------+----------------------------------------------------------------------------------------+
+    |                               | If the argument is Anonymous in AAPCS64-cap the argument is copied to memory at an     |
+    | C.2                           | offset of (AArgsIdx * 16) bytes into the Anonymous Arguments Memory area. The          |
+    |                               | Anonymous Arguments Index is incremented by one. The argument has now been allocated.  |
+    +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a Half-, Single-, Double- or Quad- precision Floating-point or      |
     |                               | Short Vector Type and the NSRN is less than 8, then the argument is allocated to the   |
-    | C.1                           | least significant bits of register v[NSRN]. The NSRN is incremented by one. The        |
+    | C.3                           | least significant bits of register v[NSRN]. The NSRN is incremented by one. The        |
     |                               | argument has now been allocated.                                                       |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an HFA or an HVA and there are sufficient unallocated SIMD and      |
     |                               | Floating-point registers (NSRN + number of members <= 8), then the argument is         |
-    | C.2                           | allocated to SIMD and Floating-point Registers (with one register per member of the    |
+    | C.4                           | allocated to SIMD and Floating-point Registers (with one register per member of the    |
     |                               | HFA or HVA). The NSRN is incremented by the number of registers used. The argument has |
     |                               | now been allocated.                                                                    |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an HFA or an HVA then the NSRN is set to 8 and the size of the      |
     |                               | argument is rounded up to the nearest multiple of 8 bytes.                             |
-    | C.3                           |                                                                                        |
+    | C.5                           |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an HFA, an HVA, a Quad-precision Floating-point or Short Vector     |
     |                               | Type then the NSAA is rounded up to the larger of 8 or the Natural Alignment of the    |
-    | C.4                           | argument type.                                                                         |
+    | C.6                           | argument type.                                                                         |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a Half- or Single- precision Floating Point type, then the size of  |
     |                               | the argument is set to 8 bytes. The effect is as if the argument had been copied to    |
-    | C.5                           | the least significant bits of a 64-bit register and the remaining bits filled with     |
+    | C.7                           | the least significant bits of a 64-bit register and the remaining bits filled with     |
     |                               | unspecified values.                                                                    |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an HFA, an HVA, a Half-, Single-, Double- or Quad- precision        |
     |                               | Floating-point or Short Vector Type, then the argument is copied to memory at the      |
-    | C.6                           | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
+    | C.8                           | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
     |                               | now been allocated.                                                                    |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an Integral or Pointer Type, the size of the argument is less than  |
     |                               | or equal to 8 bytes and the NGRN is less than 8, the argument is copied to the least   |
-    | C.7                           | significant bits in x[NGRN]. The NGRN is incremented by one. The argument has now been |
+    | C.9                           | significant bits in x[NGRN]. The NGRN is incremented by one. The argument has now been |
     |                               | allocated.                                                                             |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a Capability Type or a Composite Type containing Capabilities, and  |
     |                               | the size of the argument in bytes is less than or equal to 16 * (8 minus NGRN), the    |
-    | C.8                           | argument is passed as though it had been loaded into capability registers starting     |
+    | C.10                          | argument is passed as though it had been loaded into capability registers starting     |
     |                               | from a 16-byte aligned address with an appropriate sequence of capability loading      |
     |                               | instructions loading consecutive capability values from memory, starting from c[NGRN]. |
     |                               | The NGRN is incremented by the number of capability registers used to hold the         |
@@ -617,17 +651,17 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is not a Capability Type and is not a Composite Type containing        |
     |                               | Capability Types and has an alignment of 16 then the NGRN is rounded up to the next    |
-    | C.9                           | even number.                                                                           |
+    | C.11                          | even number.                                                                           |
     |                               |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an Integral Type, the size of the argument is equal to 16 and the   |
     |                               | NGRN is less than 7, the argument is copied to x[NGRN] and x[NGRN+1]. x[NGRN] shall    |
-    | C.10                          | contain the lower addressed double-word of the memory representation of the argument.  |
+    | C.12                          | contain the lower addressed double-word of the memory representation of the argument.  |
     |                               | The NGRN is incremented by two. The argument has now been allocated.                   |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a Composite Type which does not contain Capability Types and the    |
     |                               | size in double-words of the argument is not more than 8 minus NGRN, then the argument  |
-    | C.11                          | is copied into consecutive general-purpose registers, starting at x[NGRN]. The         |
+    | C.13                          | is copied into consecutive general-purpose registers, starting at x[NGRN]. The         |
     |                               | argument is passed as though it had been loaded into the registers from a double-word- |
     |                               | aligned address with an appropriate sequence of LDR instructions loading consecutive   |
     |                               | registers from memory (the contents of any unused parts of the registers are           |
@@ -636,25 +670,28 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | The NGRN is set to 8.                                                                  |
     |                               |                                                                                        |
-    | C.12                          |                                                                                        |
+    | C.14                          |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | The NSAA is rounded up to the larger of 8 or the Natural Alignment of the argument's   |
     |                               | type.                                                                                  |
-    | C.13                          |                                                                                        |
+    | C.15                          |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a composite type then the argument is copied to memory at the       |
     |                               | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
-    | C.14                          | now been allocated.                                                                    |
+    | C.16                          | now been allocated.                                                                    |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the size of the argument is less than 8 bytes then the size of the argument is set  |
     |                               | to 8 bytes. The effect is as if the argument was copied to the least significant bits  |
-    | C.15                          | of a 64-bit register and the remaining bits filled with unspecified values.            |
+    | C.17                          | of a 64-bit register and the remaining bits filled with unspecified values.            |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | The argument is copied to memory at the adjusted NSAA.  The NSAA is incremented by the |
     |                               | size of the argument. The argument has now been allocated.                             |
-    | C.16                          |                                                                                        |
+    | C.18                          |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
 
+.. note::
+
+    In AAPCS64-cap if the callee is variadic and there are fewer than 4096 Anonymous arguments, the length of C9 divided by 16 is equal to the number of Anonymous arguments. The length of C9 divided by 16 is always greater or equal to the number of Anonymous arguments.
 
 Result Return
 -------------
@@ -726,10 +763,10 @@ These differences, and new Morello-specific data types are shown in `C/C++ type 
     +-----------------------------+-------------------------------------+------------------------+------------------------------+
 
 
-Definition of va_list
-^^^^^^^^^^^^^^^^^^^^^
+Definition of va_list in AAPCS64-cap
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The definition of ``va_list`` has implications for the internal implementation in the compiler. An AAPCS64 or AAPCS64-cap conforming object must use the definitions shown in `va\_list definition`_.
+The definition of ``va_list`` has implications for the internal implementation in the compiler. An AAPCS64-cap conforming object must use the definitions shown in `va\_list definition`_.
 
 .. _va\_list definition:
 
@@ -740,13 +777,9 @@ The definition of ``va_list`` has implications for the internal implementation i
     +===================+========================+============================================================+
     |                   | .. code-block:: c      |                                                            |
     |                   |                        |                                                            |
-    |  ``va_list``      |    struct __va_list {  | A ``va_list`` may address any object in a parameter list.  |
-    |                   |      void *__stack;    | In C++, ``__va_list`` is in namespace ``std``.             |
-    |                   |       void *__gr_top;  | See `APPENDIX Variable argument Lists`_.                   |
-    |                   |       void *__vr_top;  | Note that ``__stack``,  ``__gr__top`` and ``__vr_top``     |
-    |                   |       int   __gr_offs; | are capabilities in AAPCS64-cap.                           |
-    |                   |       int   __vr_offs; |                                                            |
-    |                   |     }                  |                                                            |
+    |  ``va_list``      |    void *              | A ``va_list`` may address any object in a parameter list.  |
+    |                   |                        | In C++, ``__va_list`` is in namespace ``std``.             |
+    |                   |                        | See `APPENDIX Variable argument Lists in AAPCS64-cap`_.    |
     |                   |                        |                                                            |
     +-------------------+------------------------+------------------------------------------------------------+
 
@@ -755,53 +788,25 @@ The definition of ``va_list`` has implications for the internal implementation i
 
    PageBreak
 
-APPENDIX Variable argument Lists
-================================
+APPENDIX Variable argument Lists in AAPCS64-cap
+===============================================
+
 Languages such as C and C++ permit routines that take a variable number of arguments (that is, the number of parameters is controlled by the caller rather than the callee). Furthermore, they may then pass some or even all of these parameters as a block to further subroutines to process the list. If a routine shares any of its optional arguments with other routines then a parameter control block needs to be created. The remainder of this appendix is informative.
 
-
-Register Save Areas
--------------------
-
-The prologue of a function which accepts a variable argument list and which invokes the ``va_start`` macro is expected to save the incoming argument registers to three register save areas within its own stack frame: one area to hold the 64-bit general registers xn-x7, a second area to hold the 128-bit FP/SIMD registers vn-v7 and a third area to hold the capability registers cn-c7. Only parameter registers beyond those which hold the named parameters need be saved, and if a function is known never to accept parameters in registers of that class, then that register save area may be omitted altogether. In the first two areas the registers are saved in ascending order. The memory format of FP/SIMD registers save area must be as if each register were saved using the integer str instruction for the entire (ie Q) register.
-
-
-The third register save area is located immediately above the general-purpose register area. The start of this area must be 16-byte aligned. It will contain the values of the capability registers cn-c7, stored starting at the address ``__gr_top`` from the highest numbered register to the lowest number register. All registers saved in this area must have their corresponding x sub-register stored in the general-purpose register save area as well. The capability register save area can be omitted if no capability arguments are used.
 
 The va_list type
 ----------------
 
-The ``va_list`` type may refer to any parameter in a parameter list, which depending on its type and position in the argument list may be in one of three memory locations: the current function’s general register argument save area, its FP/SIMD register argument save area, or the calling function’s outgoing stack argument area.
+The ``va_list`` type may refer to any parameter in a parameter list. All Anonymous parameters are passed on the stack in AAPCS64-cap.
 
 .. code-block:: c
 
-    typedef struct  va_list {
-        void * stack; // next stack param
-        void * gr_top; // end of GP arg reg save area
-        void * vr_top; // end of FP/SIMD arg reg save area
-        int gr_offs; // offset from  gr_top to next GP register arg
-        int vr_offs; // offset from  vr_top to next FP/SIMD register arg
-    } va_list;
-
-In AAPCS64-cap the stack, ``gr_top`` and ``vr_top`` fields of ``va_list`` are capabilities, while in the AAPCS64 they are pointers.
+    typedef void * va_list;
 
 The va_start() macro
 --------------------
 
-The ``va_start`` macro shall initialize the fields of its ``va_list`` argument as follows, where ``named_gr`` represents the number of general registers known to hold named incoming arguments and ``named_vr`` the number of FP/SIMD registers known to hold named incoming arguments.
-
-- ``__stack``: set to the address following the last (highest addressed) named incoming argument on the stack, rounded upwards to a multiple of 8 bytes, or if there are no named arguments on the stack, then the value of the stack pointer when the function was entered.
-
-- ``__gr_top``: set to the address of the byte immediately following the general register argument save area, the end of the save area being aligned to a 16 byte boundary.
-
-- ``__vr_top``: set to the address of the byte immediately following the FP/SIMD register argument save area, the end of the save area being aligned to a 16 byte boundary.
-
-- ``__gr_offs``: set to ``0 – ((8 – named_gr) * 8)``.
-
-- ``__vr_offs``: set to ``0 – ((8 – named_vr) * 16)``.
-
-If it is known that a ``va_list`` structure is never used to access arguments that could be passed in the FP/SIMD argument registers, then no FP/SIMD argument registers need to be saved, and the ``__vr_top`` and ``__vr_offs`` fields initialised to the NULL capability and zero respectively. Furthermore, if in this case the general register argument save area is located immediately below the value of the stack pointer on entry, then the ``__stack`` field may be set to the address of the anonymous argument in the general register argument save area and the ``__gr_top`` and ``__gr_offs`` fields also
-set to the NULL capability and zero, permitting a simplified implementation of ``va_arg`` which simply advances the ``__stack`` pointer through the argument save area and into the incoming stacked arguments. This simplification may not be used in the reverse case where anonymous arguments are known to be in FP/SIMD registers but not in general registers.
+The ``va_start`` macro shall initialize the ``va_list`` argument to the value of C9 as seen in the entry of the callee.
 
 The va_arg() macro
 ------------------
@@ -812,78 +817,9 @@ The algorithm to implement the generic ``va_arg(ap,type)`` macro is then most ea
 
     type va_arg (va_list ap, type)
     {
-        int nreg, offs;
-        if (type passed in general registers) {
-            offs = ap.__gr_offs;
-            if (offs >= 0)
-                goto on_stack;              // reg save area empty
-            if (!containsCapabilities(type)) {
-              if (alignof(type) > 8)
-                  offs = (offs + 15) & -16;   // round up
-              nreg = (sizeof(type) + 7) / 8;
-              ap.__gr_offs = offs + (nreg * 8);
-            } else {
-              offs = (offs + 7) & -8;// round up
-              nreg = sizeof(type) / sizeof(void * __capability);
-              ap.__gr_offs = offs + (nreg * 8);
-            }
-            if (ap.__gr_offs > 0)
-                goto on_stack;              // overflowed reg save area
-    #ifdef BIG_ENDIAN
-            if (classof(type) != "aggregate" && sizeof(type) < 8)
-                offs += 8 - sizeof(type);
-    #endif
-            if (containsCapabilities(type)) {
-              // Types containing capabilities are passed in capability
-              // registers. Capability registers are stored in reverse
-              // order.
-              type T;
-              for (unsigned reg = 0; reg < nreg; ++reg) {
-                index = (reg + 1) * 16;
-                ((void *__capability *)&T)[reg] =
-                    *(void *__capability)(ap.__gr_top - 2 * offs - index;
-              }
-              return T;
-            }
-            return *(type *)(ap.__gr_top + offs);
-        } else if (type is an HFA or an HVA) {
-            type ha;       // treat as "struct {ftype field[n];}"
-            offs = ap.__vr_offs;
-            if (offs >= 0)
-                goto on_stack;              // reg save area empty
-            nreg = sizeof(type) / sizeof(ftype);
-            ap.__vr_offs = offs + (nreg * 16);
-            if (ap.__vr_offs > 0)
-                goto on_stack;              // overflowed reg save area
-    #ifdef BIG_ENDIAN
-            if (sizeof(ftype) < 16)
-                offs += 16 - sizeof(ftype);
-    #endif
-            for (i = 0; i < nreg; i++, offs += 16)
-                ha.field[i] = *((ftype *)(ap.__vr_top + offs));
-            return ha;
-        } else if (type passed in fp/simd registers) {
-            offs = ap.__vr_offs;
-            if (offs >= 0)
-                goto on_stack;              // reg save area empty
-            nreg = (sizeof(type) + 15) / 16;
-            ap.__vr_offs = offs + (nreg * 16);
-            if (ap.__vr_offs > 0)
-                goto on_stack;              // overflowed reg save area
-    #ifdef BIG_ENDIAN
-            if (classof(type) != "aggregate" && sizeof(type) < 16)
-                offs += 16 - sizeof(type);
-    #endif
-            return *(type *)(ap.__vr_top + offs);
-        }
-    on_stack:
-        intptr_t arg = ap.__stack;
-        if (alignof(type) > 8)
-            arg = (arg + 15) & -16;
-        ap.__stack = (void *)((arg + sizeof(type) + 7) & -8);
-    #ifdef BIG_ENDIAN
-        if (classof(type) != "aggregate" && sizeof(type) < 8)
-            arg += 8 - sizeof(type);
-    #endif
+        void *arg = ap;
+        if (alignof(type) > 16 || sizeof(type) > 16)
+            arg = *(void **)arg;
+        ap = (void **)ap + 1;
         return *(type *)arg;
     }
