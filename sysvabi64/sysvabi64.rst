@@ -749,12 +749,27 @@ open-source compilers.
 Medium code model
 -----------------
 
-Symbols smaller than 64KiB (value TBD) are treated like the small code model.
-Symbols which are larger than 64KiB, are ``common`` or of unknown size use
-sections ``.ldata``, ``.lbss`` and ``.lrodata``. These sections are placed after
-all other sections and can be unlimited in size. Symbols in them are addressed
-via the GOT. Linkers may relax GOT indirections into PC-relative addressing for
-non pre-emptible symbols within 4GiB.
+
+The medium code model is suitable for programs that do not have large amounts
+of executable code, but do contain large static data objects. The medium code
+model separates data into small data and large data. Small data is addressed
+in the same way as the small code model, with the same maximum size
+restrictions as the small code model. Large data is addressed via the GOT and
+does not have a maximum size limit.
+
+Data is defined as large data if any of the following are true:
+
+- The data is >= 64 KiB in size.
+- The data is of unknown size.
+- The data has type ``SHN_COMMON``.
+
+All other data is small data.
+
+Large data is placed in sections with a ``l`` prefix, for example ``.lbss``,
+``.ldata`` and ``.lrodata``.  These large data sections must be placed after
+all other sections. ``SHN_COMMON`` data may be placed at the end of the
+``.bss`` section if it is the last small data section, otherwise it should be
+added to ``.lbss``.
 
 Sample code sequences for code models
 -------------------------------------
