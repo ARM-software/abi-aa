@@ -456,7 +456,7 @@ The following nomenclature is used in the descriptions of relocation operations:
   addresses to be resolved at dynamic link time. The ``GOT`` and each entry in it
   must be aligned to the pointer-size.
 
-- ``GDAT(S+A)`` represents a pointer_sized entry in the ``GOT`` for address
+- ``GDAT(S+A)`` represents a pointer-sized entry in the ``GOT`` for address
   ``S+A``. The entry will be relocated at run time with relocation
   ``R_MORELLO_GLOB_DAT(S+A)``.
 
