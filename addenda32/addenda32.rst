@@ -1069,6 +1069,7 @@ code.
       19  Arm v8.2-A
       20  Arm v8.3-A
       21  Arm v8.1-M.mainline
+      22  Arm v9-A
 
    Tag_CPU_arch_profile (=7), uleb128
        0  Architecture profile is not applicable (e.g. pre v7, or cross-profile code),
