@@ -749,7 +749,6 @@ open-source compilers.
 Medium code model
 -----------------
 
-
 The medium code model is suitable for programs that do not have large amounts
 of executable code, but do contain large static data objects. The medium code
 model separates data into small data and large data. Small data is addressed
@@ -761,15 +760,20 @@ Data is defined as large data if any of the following are true:
 
 - The data is >= 64 KiB in size.
 - The data is of unknown size.
-- The data has type ``SHN_COMMON``.
+- The data will be represented by an unallocated common block, described by a
+  ``SHN_COMMON`` symbol.
 
 All other data is small data.
 
 Large data is placed in sections with a ``l`` prefix, for example ``.lbss``,
-``.ldata`` and ``.lrodata``.  These large data sections must be placed after
-all other sections. ``SHN_COMMON`` data may be placed at the end of the
-``.bss`` section if it is the last small data section, otherwise it should be
-added to ``.lbss``.
+``.ldata`` and ``.lrodata``. Both small and large RELRO data are placed in
+``.data.rel.ro`` as many loaders only support one ``PT_GNU_RELRO`` program
+header.
+
+At static link time the large data sections must be placed after all small data
+sections. The static linker allocates storage for ``SHN_COMMON`` symbols at the
+end of the ``.bss`` section if it is the last small data section, otherwise it
+is allocated in ``.lbss``.
 
 Sample code sequences for code models
 -------------------------------------
