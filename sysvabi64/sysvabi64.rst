@@ -40,8 +40,8 @@ Date of Issue: |date-of-issue|
 
    PageBreak oneColumn
 
-Preamble
-========
+Preface
+=======
 
 Abstract
 --------
@@ -183,7 +183,7 @@ The following support level definitions are used by the Arm ABI specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-This document is at **Beta** release quality.
+This document is at **Alpha** release quality.
 
 Change History
 ^^^^^^^^^^^^^^
@@ -331,13 +331,13 @@ a variety of places that is of relevance to a System V implementation.
 Software Installation
 =====================
 
-This document does not specify how software must be installed on an
+This document does not describe the software installation on an
 AArch64 system.
 
 Low Level Information
 =====================
 
-TBD
+Not available for this Alpha release.
 
 Programming / Coding Examples
 =============================
@@ -855,7 +855,7 @@ These follow the AAELF64_ base definition from Arm.
 Program Linking and Dynamic Linking
 ===================================
 
-TBD
+Not available for this Alpha release.
 
 Libraries
 =========
@@ -879,4 +879,5 @@ Refer to CPPABI64_
 
 Linux Implementation Notes
 ==========================
-TBD
+
+Not available for this Alpha release.
