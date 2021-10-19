@@ -241,6 +241,8 @@ changes to the content of the document for that release.
 |            | 2021               |   is an overaligned HFA.                                         |
 |            |                    | - Minor formatting changes.                                      |
 +------------+--------------------+------------------------------------------------------------------+
+| 2021Q3     |                    | - Add support for Decimal-floating-point formats                 |
++------------+--------------------+------------------------------------------------------------------+
 
 References
 ^^^^^^^^^^
@@ -257,6 +259,10 @@ This document refers to, or is referred to by, the following documents:
 | CPPABI64_                                                               | IHI 0059                                           | C++ ABI for the Arm 64-bit Architecture                  |
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 | GC++ABI                                                                 | https://itanium-cxx-abi.github.io/cxx-abi/abi.html | Generic C++ ABI                                          |
++-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
+| C99                                                                     | https://www.iso.org/standard/29237.html            | C Programming Language ISO/IEC 9899:1999                 |
++-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
+| C2x                                                                     | http://www.open-std.org/jtc1/sc22/wg14/            | Draft C Programming Language (expected circa 2023)       |
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 
 
@@ -517,6 +523,12 @@ Fundamental Data Types
   |                        | Double precision                      | 8          | 8                         |                                               |
   |                        +---------------------------------------+------------+---------------------------+                                               |
   |                        | Quad precision                        | 16         | 16                        |                                               |
+  |                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
+  |                        | 32-bit decimal fp                     | 4          | 4                         | IEEE 754-2008 using BID encoding              |
+  |                        +---------------------------------------+------------+---------------------------+                                               |
+  |                        | 64-bit decimal fp                     | 8          | 8                         |                                               |
+  |                        +---------------------------------------+------------+---------------------------+                                               |
+  |                        | 128-bit decimal fp                    | 16         | 16                        |                                               |
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
   | Short vector           | 64-bit vector                         | 8          | 8                         | See `Short Vectors`_                          |
   |                        +---------------------------------------+------------+---------------------------+                                               |
@@ -547,14 +559,25 @@ Half-precision Floating Point
 
 The architecture provides hardware support for half-precision values. Three formats are currently supported:
 
-1. half-precision format specified in IEEE754-2008
+1. half-precision format specified in IEEE 754-2008
 
 2. Arm Alternative format, which provides additional range but has no NaNs or Infinities.
 
 3. Brain floating-point format, which provides a dynamic range similar to the 32-bit floating-point format, but with less precision.
 
-The first two formats are mutually exclusive. The base standard of the AAPCS specifies use of the IEEE754-2008 variant, and a procedure call variant that uses the Arm Alternative format is permitted.
+The first two formats are mutually exclusive. The base standard of the AAPCS specifies use of the IEEE 754-2008 variant, and a procedure call variant that uses the Arm Alternative format is permitted.
 
+Decimal Floating Point
+----------------------
+
+The AAPCS permits use of Decimal Floating Point numbers encoded using
+the BID format as specified in IEEE 754-2008.  Unless explicitly noted
+elsewhere, Decimal floating-point objects should be treated in exactly
+the same way as (binary) Floating Point objects for the purposes of
+structure layout, parameter passing and result return.
+
+.. note:: There is no support in the AArch64 ISA for Decimal Floating
+	  Point, so all operations must be emulated in software.
 
 Short Vectors
 -------------
@@ -835,6 +858,13 @@ The FPCR is used to control the behavior of the floating-point unit. It is a glo
 - The NEP bit (bit 2) must be zero on entry to and return from a public interface.
 
 - All other bits are reserved and must not be modified. It is not defined whether the bits read as zero or one, or whether they are preserved across a public interface.
+
+Decimal Floating-Point emulation code requires additional control bits
+which cannot be stored in the FPCR.  Since the information must be
+held for each thread of execution the state must be held in
+thread-local storage on platforms where multi-threaded code is
+supported.  The exact location of such information is platform
+specific.
 
 Scalable Vector Registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1280,6 +1310,12 @@ The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``long double``              | quad precision (IEEE 754- 2008)         |                                                                        |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+  | ``_Decimal32``               | 32-bit decimal fp (IEEE 754-2008)       | C2x Only                                                               |
+  +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+  | ``_Decimal64``               | 64-bit decimal fp (IEEE 754-2008)       | C2x Only                                                               |
+  +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
+  | ``_Decimal128``              | 128-bit decimal fp (IEEE 754-2008)      | C2x Only                                                               |
+  +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``float _Imaginary``         | single precision (IEEE 754)             | C99 Only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``double _Imaginary``        | double precision (IEEE 754)             | C99 Only                                                               |
@@ -1595,7 +1631,7 @@ APPENDIX Support for Advanced SIMD Extensions
 
 The AARCH64 architecture supports a number of short-vector operations. To facilitate accessing these types from C and C++ a number of extended types need to be added to the language.
 
-Following the conventions used for adding types to C99 a number of additional types (internal types) are defined unconditionally. To facilitate use in applications a header file is also defined (``arm_neon.h``) that maps these internal types onto more user-friendly names. These types are listed in `Table 7`_: Short vector extended types.
+Following the conventions used for adding types to C99 a number of additional types (internal types) are defined unconditionally. To facilitate use in applications a header file is also defined (``arm_neon.h``) that maps these internal types onto more user-friendly names. These types are listed in `Table 7`_: Short vector extended types [#aapcs64-f8]_.
 
 The header file ``arm_neon.h`` also defines a number of intrinsic functions that can be used with the types defined below. The list of intrinsic functions and their specification is beyond the scope of this document.
 
@@ -1939,3 +1975,6 @@ Footnotes
 
 .. [#aapcs64-f7]
    This includes double-precision or smaller floating-point values and 64-bit short vector values.
+
+.. [#aapcs64-f8]
+   The Advanced SIMD Extension does not provide any vector operations for Decimal Floating-point types, so short vector types are not defined for these.
