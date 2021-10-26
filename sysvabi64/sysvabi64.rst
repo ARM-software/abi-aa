@@ -65,10 +65,6 @@ Please report defects in this specification to the `issue tracker page
 on GitHub
 <https://github.com/ARM-software/abi-aa/issues>`_.
 
-.. raw:: pdf
-
-   PageBreak
-
 Licence
 -------
 
@@ -328,16 +324,28 @@ documents the places where divergence exists with respect to the base
 ABI and attempts to act as a unifying document to cover information in
 a variety of places that is of relevance to a System V implementation.
 
+.. raw:: pdf
+
+   PageBreak oneColumn
+
 Software Installation
 =====================
 
 This document does not describe the software installation on an
 AArch64 system.
 
+.. raw:: pdf
+
+   PageBreak oneColumn
+
 Low Level Information
 =====================
 
 Not available for this Alpha release.
+
+.. raw:: pdf
+
+   PageBreak oneColumn
 
 Programming / Coding Examples
 =============================
@@ -591,6 +599,10 @@ syntax is of the form ``#:<operator>:<symbol name>``
 
    Relocations are defined in AAELF64_.
 
+.. raw:: pdf
+
+   PageBreak oneColumn
+
 Code Models
 ===========
 
@@ -630,6 +642,7 @@ file layout similar to the diagram below.
 .. rubric:: Illustrative ELF file layout
 
 .. figure:: sysvabi64-elf-layout.svg
+   :scale: 35%
 
 The table below identifies the code models that have been defined,
 along with the assumptions that the code model may make.
@@ -892,36 +905,63 @@ in 0. To get the address of a weak reference the compiler can use a
 load from literal or acccess the address via a GOT entry, which will
 evaluate to 0 if the symbol is undefined.
 
+.. raw:: pdf
+
+   PageBreak oneColumn
 
 Object Files
 ============
 
 These follow the AAELF64_ base definition from Arm.
 
+.. raw:: pdf
+
+   PageBreak oneColumn
+
 Program Linking and Dynamic Linking
 ===================================
 
 Not available for this Alpha release.
+
+.. raw:: pdf
+
+   PageBreak oneColumn
 
 Libraries
 =========
 
 Not applicable
 
+.. raw:: pdf
+
+   PageBreak oneColumn
+
 Development Environment
 =======================
 
 Not applicable
+
+.. raw:: pdf
+
+   PageBreak oneColumn
 
 Fortran
 =======
 
 Not applicable
 
+.. raw:: pdf
+
+   PageBreak oneColumn
+
 C++
 ===
 
 Refer to CPPABI64_
+
+.. raw:: pdf
+
+   PageBreak oneColumn
 
 Linux Implementation Notes
 ==========================
