@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2021Q1
-.. |date-of-issue| replace:: 12\ :sup:`th` April 2021
+.. |release| replace:: 2021Q3
+.. |date-of-issue| replace:: 1\ :sup:`st` November 2021
 .. |copyright-date| replace:: 2005-2009, 2012, 2015, 2018, 2020, 2021
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -205,112 +205,114 @@ changes to the content of the document for that release.
 
 .. class :: addenda32-change-history
 
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| Issue | Date                                | Change                                                                      |
-+=======+=====================================+=============================================================================+
-| v1.0  | 24\ :superscript:`th` March 2005    | First public release.                                                       |
-| r2.0  |                                     |                                                                             |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| v1.01 | 4\ :superscript:`th` July 2005      | Added new `Coding extensibility and compatibility`_. Noted component errata |
-| r2.01 |                                     | omissions (`ELF for the Arm Architecture`_,                                 |
-|       |                                     | `C Library ABI for the Arm Architecture`_, and                              |
-|       |                                     | `C++ ABI for the Arm Architecture`_).                                       |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| v1.02 | 7\ :superscript:`th` October 2005   | Added WMMX v2 architecture, TAG_CPU_unaligned_access                        |
-|       |                                     | (`Public ("aeabi") attribute tags`_); changed R_ARM_PC24 to R_ARM_CALL      |
-|       |                                     | (`Linux for Arm general dynamic model`_); added list of reserved name-space |
-|       |                                     | prefixes (`Reserved Names`_); noted errata and omissions                    |
-|       |                                     | (`DWARF for the Arm Architecture`_,                                         |
-|       |                                     | `Procedure Call Standard for the Arm Architecture`_,                        |
-|       |                                     | `C Library ABI for the Arm Architecture`_,                                  |
-|       |                                     | `Exception Handling ABI for the Arm Architecture`_, and                     |
-|       |                                     | `Run-time ABI for the Arm Architecture`_)                                   |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| v1.03 | 13\ :superscript:`th` October 2005  | Minor typographical fixes.                                                  |
-| r2.02 |                                     |                                                                             |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| v1.04 | 6\ :superscript:`th` January 2006   | Noted errata and omissions (`aaelf32-clarifications`_,                      |
-| r2.03 |                                     | `aaelf32-additions-omissions`_, and `cppabi32-clarifications`_).            |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| v1.05 | 8\ :superscript:`th` May 2006       | Added missing Tag_FP_arch value for VFPv3                                   |
-| r2.04 |                                     | (`Target-related attributes`_). Noted errata and omissions                  |
-|       |                                     | (`aadwarf32-errors-fixed`_, `aaelf32-additions-omissions`_,                 |
-|       |                                     | `aapcs32-clarifications`_, `clibabi32-errors-fixed`_,                       |
-|       |                                     | and `cppabi32-clarifications`_).                                            |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| v1.06 | 18\ :superscript:`th` January 2007  | Major clarification of, and some compatible extension to,                   |
-| r2.05 |                                     | `ADDENDUM: Build Attributes`_.                                              |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| v1.07 | 23\ :superscript:`rd` October 2007  | Added: CPU_arch values for v6S-M and v6-M; and VFP_arch value for           |
-| r2.06 |                                     | VFPv3-D16; added Tag_nodefaults, Tag_ABI_FP_16bit_format, and               |
-|       |                                     | Tag_FP_HP_extension. Rewrote `ADDENDUM: Build Attributes`_. Noted errata    |
-|       |                                     | and omissions.                                                              |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| A     | 25\ :superscript:`th` October 2007  | Document renumbered (formerly GENC-005895 v1.07).                           |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| A     | 13\ :superscript:`th` November 2007 | Minor corrections to `Errata and Minor Addenda`_                            |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| B     | 10\ :superscript:`th` October 2008  | Added architecture tags Tag_T2EE_use, Tag_Virtualization_use, and           |
-| r2.07 |                                     | Tag_MPextension_use; clarified definitions of Tag_CPU_name and              |
-|       |                                     | Tag_CPU_raw_name (`The target-related attributes`_); clarified tag          |
-|       |                                     | value inheritance and Tag_Nodefaults (`Default values for public tags`_,    |
-|       |                                     | `Inheritance of public tag values`_, `No defaults tag`_).                   |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| C     | 4\ :superscript:`th` November 2009  | (`The target-related attributes`_): added Tag_CPU_arch enum value           |
-| r2.08 |                                     | V7E-M =13; renamed Tag_VFP_arch to Tag_FP_arch, added values for            |
-|       |                                     | VFPv4; renamed Tag_VFP_HP_extension to Tag_FP_HP_extension; added           |
-|       |                                     | value to Tag_Advanced_SIMD_arch for Neon with fused MAC; added values       |
-|       |                                     | to Tag_Virtualization_use describing use of the virtualization              |
-|       |                                     | extensions; recoded Tag_MPextension use to catch potential user-mode        |
-|       |                                     | faults; added Tag_DIV_use to describe use of UDIV/SDIV in code for          |
-|       |                                     | v7A. (`The procedure call-related attributes`_) clarified the role of R9    |
-|       |                                     | when used as a TLS (Tag_ABI_PCS_R9_use = 2). Renamed and extended           |
-|       |                                     | Tag_ABI_align8_needed, Tag_ABI_align8_preserved to data with extended       |
-|       |                                     | 2n-byte alignment (for n in 4-12).                                          |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| D     | 30\ :superscript:`th` November 2012 | Made section and symbol attributes deprecated and optional                  |
-| r2.09 |                                     | (`The kinds of compatibility modeled by build attributes`_,                 |
-|       |                                     | `Formal syntax of a public (“aeabi”) attributes subsection`_,               |
-|       |                                     | `Inheritance of public tag values`_, `No defaults tag`_).                   |
-|       |                                     | (`Formal syntax of a public (“aeabi”) attributes subsection`_)              |
-|       |                                     | clarified section and symbol numbers are                                    |
-|       |                                     | ULEB128.  (`The target-related attributes`_) added architecture v8 values   |
-|       |                                     | to Tag_CPU_arch, Tag_FP_arch, Tag_Advanced_SIMD_arch; clarified use of      |
-|       |                                     | existing Tag_Advanced_SIMD_arch and Tag_FP_HP_extension values; clarified   |
-|       |                                     | the meaning of Tag_DIV_use; deprecated Tag_T2EE_use.                        |
-|       |                                     | (`The procedure call-related attributes`_) fixed typo in                    |
-|       |                                     | Tag_ABI_FP_exceptions;                                                      |
-|       |                                     | clarified use of Tag_ABI_HardFP_use values and removed pointless DP-only    |
-|       |                                     | option; added enum value to Tag_ABI_VFP_args for code compatible with both  |
-|       |                                     | the base and VFP variants. (`Secondary compatibility tag`_ clarified the    |
-|       |                                     | format of Tag_also_compatible_with data.                                    |
-|       |                                     | `Arm CPU names recognized by Arm Compiler 5.01 \(armcc\)`_) updated list of |
-|       |                                     | recognised CPU names.                                                       |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| E     | 24\ :superscript:`th` November 2015 | (`The target-related attributes`_) added architecture v8.1 values to        |
-| r2.10 |                                     | Tag_Advanced_SIMD_arch.                                                     |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| F     | 21\ :sup:`st` December 2018         | In `The target-related attributes`_, deprecated values 1 and 2 of           |
-| 2018Q4|                                     | Tag_THUMB_ISA_use, added value 3.                                           |
-|       |                                     |                                                                             |
-|       |                                     | In `The target-related attributes`_, deprecated Tag_CPU_arch_profile for    |
-|       |                                     | architecture version 8 onwards.                                             |
-|       |                                     |                                                                             |
-|       |                                     | In `The target-related attributes`_, defined build attributes for Armv8-M,  |
-|       |                                     | Armv8-R, Armv8.1-A, Armv8.2-A and Armv8.3-A.                                |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| G     | 30\ :sup:`th` January 2020          | Added Tag_FramePointer_use: `The procedure call-related attributes`_,       |
-| 2019Q4|                                     | `Table 1`_.                                                                 |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| 2020Q3| 1\ :sup:`st` October 2020           | - document released on Github                                               |
-|       |                                     | - new Licence_: CC-BY-SA-4.0                                                |
-|       |                                     | - new sections on Contributions_, `Trademark notice`_, and Copyright_       |
-|       |                                     | - `Table 1`_: added a missing table entry for Tag_DSP_extension             |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
-| 2021Q1| 12\ :sup:`th` April 2021            | Add definitions for PACBTI-M related build attributes: `The target-related  |
-|       |                                     | attributes`_, `The procedure call-related attributes`_, `Miscellaneous      |
-|       |                                     | attributes`_, `Table 1`_                                                    |
-+-------+-------------------------------------+-----------------------------------------------------------------------------+
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| Issue  | Date                                | Change                                                                      |
++========+=====================================+=============================================================================+
+| v1.0   | 24\ :superscript:`th` March 2005    | First public release.                                                       |
+| r2.0   |                                     |                                                                             |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| v1.01  | 4\ :superscript:`th` July 2005      | Added new `Coding extensibility and compatibility`_. Noted component errata |
+| r2.01  |                                     | omissions (`ELF for the Arm Architecture`_,                                 |
+|        |                                     | `C Library ABI for the Arm Architecture`_, and                              |
+|        |                                     | `C++ ABI for the Arm Architecture`_).                                       |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| v1.02  | 7\ :superscript:`th` October 2005   | Added WMMX v2 architecture, TAG_CPU_unaligned_access                        |
+|        |                                     | (`Public ("aeabi") attribute tags`_); changed R_ARM_PC24 to R_ARM_CALL      |
+|        |                                     | (`Linux for Arm general dynamic model`_); added list of reserved name-space |
+|        |                                     | prefixes (`Reserved Names`_); noted errata and omissions                    |
+|        |                                     | (`DWARF for the Arm Architecture`_,                                         |
+|        |                                     | `Procedure Call Standard for the Arm Architecture`_,                        |
+|        |                                     | `C Library ABI for the Arm Architecture`_,                                  |
+|        |                                     | `Exception Handling ABI for the Arm Architecture`_, and                     |
+|        |                                     | `Run-time ABI for the Arm Architecture`_)                                   |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| v1.03  | 13\ :superscript:`th` October 2005  | Minor typographical fixes.                                                  |
+| r2.02  |                                     |                                                                             |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| v1.04  | 6\ :superscript:`th` January 2006   | Noted errata and omissions (`aaelf32-clarifications`_,                      |
+| r2.03  |                                     | `aaelf32-additions-omissions`_, and `cppabi32-clarifications`_).            |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| v1.05  | 8\ :superscript:`th` May 2006       | Added missing Tag_FP_arch value for VFPv3                                   |
+| r2.04  |                                     | (`Target-related attributes`_). Noted errata and omissions                  |
+|        |                                     | (`aadwarf32-errors-fixed`_, `aaelf32-additions-omissions`_,                 |
+|        |                                     | `aapcs32-clarifications`_, `clibabi32-errors-fixed`_,                       |
+|        |                                     | and `cppabi32-clarifications`_).                                            |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| v1.06  | 18\ :superscript:`th` January 2007  | Major clarification of, and some compatible extension to,                   |
+| r2.05  |                                     | `ADDENDUM: Build Attributes`_.                                              |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| v1.07  | 23\ :superscript:`rd` October 2007  | Added: CPU_arch values for v6S-M and v6-M; and VFP_arch value for           |
+| r2.06  |                                     | VFPv3-D16; added Tag_nodefaults, Tag_ABI_FP_16bit_format, and               |
+|        |                                     | Tag_FP_HP_extension. Rewrote `ADDENDUM: Build Attributes`_. Noted errata    |
+|        |                                     | and omissions.                                                              |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| A      | 25\ :superscript:`th` October 2007  | Document renumbered (formerly GENC-005895 v1.07).                           |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| A      | 13\ :superscript:`th` November 2007 | Minor corrections to `Errata and Minor Addenda`_                            |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| B      | 10\ :superscript:`th` October 2008  | Added architecture tags Tag_T2EE_use, Tag_Virtualization_use, and           |
+| r2.07  |                                     | Tag_MPextension_use; clarified definitions of Tag_CPU_name and              |
+|        |                                     | Tag_CPU_raw_name (`The target-related attributes`_); clarified tag          |
+|        |                                     | value inheritance and Tag_Nodefaults (`Default values for public tags`_,    |
+|        |                                     | `Inheritance of public tag values`_, `No defaults tag`_).                   |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| C      | 4\ :superscript:`th` November 2009  | (`The target-related attributes`_): added Tag_CPU_arch enum value           |
+| r2.08  |                                     | V7E-M =13; renamed Tag_VFP_arch to Tag_FP_arch, added values for            |
+|        |                                     | VFPv4; renamed Tag_VFP_HP_extension to Tag_FP_HP_extension; added           |
+|        |                                     | value to Tag_Advanced_SIMD_arch for Neon with fused MAC; added values       |
+|        |                                     | to Tag_Virtualization_use describing use of the virtualization              |
+|        |                                     | extensions; recoded Tag_MPextension use to catch potential user-mode        |
+|        |                                     | faults; added Tag_DIV_use to describe use of UDIV/SDIV in code for          |
+|        |                                     | v7A. (`The procedure call-related attributes`_) clarified the role of R9    |
+|        |                                     | when used as a TLS (Tag_ABI_PCS_R9_use = 2). Renamed and extended           |
+|        |                                     | Tag_ABI_align8_needed, Tag_ABI_align8_preserved to data with extended       |
+|        |                                     | 2n-byte alignment (for n in 4-12).                                          |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| D      | 30\ :superscript:`th` November 2012 | Made section and symbol attributes deprecated and optional                  |
+| r2.09  |                                     | (`The kinds of compatibility modeled by build attributes`_,                 |
+|        |                                     | `Formal syntax of a public (“aeabi”) attributes subsection`_,               |
+|        |                                     | `Inheritance of public tag values`_, `No defaults tag`_).                   |
+|        |                                     | (`Formal syntax of a public (“aeabi”) attributes subsection`_)              |
+|        |                                     | clarified section and symbol numbers are                                    |
+|        |                                     | ULEB128.  (`The target-related attributes`_) added architecture v8 values   |
+|        |                                     | to Tag_CPU_arch, Tag_FP_arch, Tag_Advanced_SIMD_arch; clarified use of      |
+|        |                                     | existing Tag_Advanced_SIMD_arch and Tag_FP_HP_extension values; clarified   |
+|        |                                     | the meaning of Tag_DIV_use; deprecated Tag_T2EE_use.                        |
+|        |                                     | (`The procedure call-related attributes`_) fixed typo in                    |
+|        |                                     | Tag_ABI_FP_exceptions;                                                      |
+|        |                                     | clarified use of Tag_ABI_HardFP_use values and removed pointless DP-only    |
+|        |                                     | option; added enum value to Tag_ABI_VFP_args for code compatible with both  |
+|        |                                     | the base and VFP variants. (`Secondary compatibility tag`_ clarified the    |
+|        |                                     | format of Tag_also_compatible_with data.                                    |
+|        |                                     | `Arm CPU names recognized by Arm Compiler 5.01 \(armcc\)`_) updated list of |
+|        |                                     | recognised CPU names.                                                       |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| E      | 24\ :superscript:`th` November 2015 | (`The target-related attributes`_) added architecture v8.1 values to        |
+| r2.10  |                                     | Tag_Advanced_SIMD_arch.                                                     |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| F      | 21\ :sup:`st` December 2018         | In `The target-related attributes`_, deprecated values 1 and 2 of           |
+| 2018Q4 |                                     | Tag_THUMB_ISA_use, added value 3.                                           |
+|        |                                     |                                                                             |
+|        |                                     | In `The target-related attributes`_, deprecated Tag_CPU_arch_profile for    |
+|        |                                     | architecture version 8 onwards.                                             |
+|        |                                     |                                                                             |
+|        |                                     | In `The target-related attributes`_, defined build attributes for Armv8-M,  |
+|        |                                     | Armv8-R, Armv8.1-A, Armv8.2-A and Armv8.3-A.                                |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| G      | 30\ :sup:`th` January 2020          | Added Tag_FramePointer_use: `The procedure call-related attributes`_,       |
+| 2019Q4 |                                     | `Table 1`_.                                                                 |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| 2020Q3 | 1\ :sup:`st` October 2020           | - document released on Github                                               |
+|        |                                     | - new Licence_: CC-BY-SA-4.0                                                |
+|        |                                     | - new sections on Contributions_, `Trademark notice`_, and Copyright_       |
+|        |                                     | - `Table 1`_: added a missing table entry for Tag_DSP_extension             |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| 2021Q1 | 12\ :sup:`th` April 2021            | Add definitions for PACBTI-M related build attributes: `The target-related  |
+|        |                                     | attributes`_, `The procedure call-related attributes`_, `Miscellaneous      |
+|        |                                     | attributes`_, `Table 1`_                                                    |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
+| 2021Q3 | 1\ :sup:`st` November 2021          | Add Armv9-A value to Tag_CPU_arch.                                          |
++--------+-------------------------------------+-----------------------------------------------------------------------------+
 
 
 References

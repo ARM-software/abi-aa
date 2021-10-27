@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2021Q1
-.. |date-of-issue| replace:: 12\ :sup:`th` April 2021
+.. |release| replace:: 2021Q3
+.. |date-of-issue| replace:: 1\ :sup:`st` November 2021
 .. |copyright-date| replace:: 2011, 2013, 2018-2021
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -248,8 +248,8 @@ changes to the content of the document for that release.
   |               |                    |   section `Thread-local storage         |
   |               |                    |   descriptors`_                         |
   +---------------+--------------------+-----------------------------------------+
-  | 2021Q2        |                    | - Reserved relocation codes for         |
-  |               |                    |   `PAuthABIELF64`_                      |
+  | 2021Q3        | 1\ :sup:`st`       | - Reserved relocation codes for         |
+  |               | November 2021      |   `PAuthABIELF64`_                      |
   +---------------+--------------------+-----------------------------------------+
 
 References
