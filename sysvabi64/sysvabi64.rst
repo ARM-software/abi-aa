@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2021Q3
-.. |date-of-issue| replace:: 1\ :sup:`st` August 2021
+.. |date-of-issue| replace:: 1\ :sup:`st` November 2021
 .. |copyright-date| replace:: 2021
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -186,11 +186,11 @@ Change History
 
 .. table::
 
- +------------+--------------------+------------------------------------------------------------------+
- | Issue      | Date               | Change                                                           |
- +============+====================+==================================================================+
- | 00Alp1     | 1st August 2021    | Alpha release containing Code Model only                         |
- +------------+--------------------+------------------------------------------------------------------+
+ +------------+------------------------------+-------------------------------------------------------+
+ | Issue      | Date                         | Change                                                |
+ +============+==============================+=======================================================+
+ | 00Alpha    | 1\ :sup:`st` November 2021   | Alpha release containing Code Model only              |
+ +------------+------------------------------+-------------------------------------------------------+
 
 References
 ----------

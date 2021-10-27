@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2021Q1
-.. |date-of-issue| replace:: 12\ :sup:`th` April 2021
+.. |release| replace:: 2021Q3
+.. |date-of-issue| replace:: 1\ :sup:`st` November 2021
 .. |copyright-date| replace:: 2020, 2021
 
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
@@ -169,7 +169,7 @@ Change Control
 Current Status and Anticipated Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following support level definitions are used by the Arm ABI specifications:
+ The following support level definitions are used by the Arm ABI specifications:
 
 **Release**
    Arm considers this specification to have enough
@@ -203,30 +203,34 @@ changes to the content of the document for that release.
 
 .. table::
 
-  +------------+---------------------+------------------------------------------------------------------+
-  | Issue      | Date                | Change                                                           |
-  +============+=====================+==================================================================+
-  | 0.1        | 21st September 2020 | Alpha draft release.                                             |
-  +------------+---------------------+------------------------------------------------------------------+
-  | 0.2        | 7th  October 2020   | Restructure after initial review comments.                       |
-  |            |                     |                                                                  |
-  |            |                     | Move GOT relocations with custom signing schema to appendix      |
-  |            |                     | along with commentary.                                           |
-  |            |                     |                                                                  |
-  |            |                     | Specify AUTH variant dynamic relocations and tighten up          |
-  |            |                     | descriptions of existing encoding and relocations. Add           |
-  |            |                     | description of SHT_AUTH_RELR.                                    |
-  +------------+---------------------+------------------------------------------------------------------+
-  | 0.3        | 22nd October 2020   | Delete the appendix giving an encoding for GOT generating        |
-  |            |                     | relocations using the relocation addend to carry the             |
-  |            |                     | signing schema.                                                  |
-  |            |                     |                                                                  |
-  |            |                     | Move the remaining GOT signing text to an optional appendix      |
-  |            |                     | Describe the default dlsym signing schema and add .symauth and   |
-  |            |                     | .dynauth as an appendix.                                         |
-  |            |                     |                                                                  |
-  |            |                     | Provide details for the ELF marking scheme.                      |
-  +------------+---------------------+------------------------------------------------------------------+
+  +------------+-----------------------------+------------------------------------------------------------------+
+  | Issue      | Date                        | Change                                                           |
+  +============+=============================+==================================================================+
+  | 0.1        | 21\ :sup:`st` September 2020| Alpha draft release.                                             |
+  +------------+-----------------------------+------------------------------------------------------------------+
+  | 0.2        | 7\ :sup:`th` October 2020   | Restructure after initial review comments.                       |
+  |            |                             |                                                                  |
+  |            |                             | Move GOT relocations with custom signing schema to appendix      |
+  |            |                             | along with commentary.                                           |
+  |            |                             |                                                                  |
+  |            |                             | Specify AUTH variant dynamic relocations and tighten up          |
+  |            |                             | descriptions of existing encoding and relocations. Add           |
+  |            |                             | description of SHT_AUTH_RELR.                                    |
+  +------------+-----------------------------+------------------------------------------------------------------+
+  | 0.3        | 22\ :sup:`nd` October 2020  | Delete the appendix giving an encoding for GOT generating        |
+  |            |                             | relocations using the relocation addend to carry the             |
+  |            |                             | signing schema.                                                  |
+  |            |                             |                                                                  |
+  |            |                             | Move the remaining GOT signing text to an optional appendix      |
+  |            |                             | Describe the default dlsym signing schema and add .symauth and   |
+  |            |                             | .dynauth as an appendix.                                         |
+  |            |                             |                                                                  |
+  |            |                             | Provide details for the ELF marking scheme.                      |
+  |            |                             | description of SHT_AUTH_RELR.                                    |
+  +------------+-----------------------------+------------------------------------------------------------------+
+  | 2021q3     | 1\ :sup:`st` November 2021  | Clarify the concepts of a default and alternate PAuth elf signing|
+  |            |                             | schemes.                                                         |
+  +------------+-----------------------------+------------------------------------------------------------------+
 
 References
 ----------

@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2020, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2020-2021, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2020Q4
-.. |date-of-issue| replace:: 21\ :sup:`st` December 2020
-.. |copyright-date| replace:: 2020
+.. |release| replace:: 2021Q3
+.. |date-of-issue| replace:: 1\ :sup:`st` November 2021
+.. |copyright-date| replace:: 2020-2021
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
