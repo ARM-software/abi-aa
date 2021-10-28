@@ -574,7 +574,7 @@ The AAPCS permits use of Decimal Floating Point numbers encoded using
 the BID format as specified in IEEE 754-2008.  Unless explicitly noted
 elsewhere, Decimal floating-point objects should be treated in exactly
 the same way as (binary) Floating Point objects for the purposes of
-structure layout, parameter passing and result return.
+structure layout, parameter passing, and result return.
 
 .. note:: There is no support in the AArch64 ISA for Decimal Floating
 	  Point, so all operations must be emulated in software.
@@ -861,7 +861,7 @@ The FPCR is used to control the behavior of the floating-point unit. It is a glo
 
 Decimal Floating-Point emulation code requires additional control bits
 which cannot be stored in the FPCR.  Since the information must be
-held for each thread of execution the state must be held in
+held for each thread of execution, the state must be held in
 thread-local storage on platforms where multi-threaded code is
 supported.  The exact location of such information is platform
 specific.
