@@ -778,15 +778,13 @@ Data is defined as large data if any of the following are true:
 
 All other data is small data.
 
-Large data is placed in sections with a ``l`` prefix, for example ``.lbss``,
+Large data is placed in sections with an ``l`` prefix, for example ``.lbss``,
 ``.ldata`` and ``.lrodata``. Both small and large RELRO data are placed in
 ``.data.rel.ro`` as many loaders only support one ``PT_GNU_RELRO`` program
-header.
-
-At static link time the large data sections must be placed after all small data
-sections. The static linker allocates storage for ``SHN_COMMON`` symbols at the
-end of the ``.bss`` section if it is the last small data section, otherwise it
-is allocated in ``.lbss``.
+header. At static link time the large data sections must be placed after all
+small data sections. If it is the last small data section, the static linker
+allocates storage for ``SHN_COMMON`` symbols at the end of the ``bss``
+section. Otherwise they are allocated in ``lbss``.
 
 Sample code sequences for code models
 -------------------------------------
