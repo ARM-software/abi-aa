@@ -606,12 +606,12 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     |                               | allocated.                                                                             |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a Capability Type or a Composite Type containing Capabilities, and  |
-    |                               | the size of the argument in quad words is less than 8 minus NGRN, the argument is      |
-    | C.8                           | passed as though it had been loaded into capability registers starting from a 16-byte  |
-    |                               | aligned address with an appropriate sequence of capability loading instructions        |
-    |                               | loading consecutive capability values from memory, starting from c[NGRN].  The NGRN is |
-    |                               | incremented by the number of capability registers used to hold the argument.           |
-    |                               | The argument has now been allocated.                                                   |
+    |                               | the size of the argument in bytes is less than or equal to 16 * (8 minus NGRN), the    |
+    | C.8                           | argument is passed as though it had been loaded into capability registers starting     |
+    |                               | from a 16-byte aligned address with an appropriate sequence of capability loading      |
+    |                               | instructions loading consecutive capability values from memory, starting from c[NGRN]. |
+    |                               | The NGRN is incremented by the number of capability registers used to hold the         |
+    |                               | argument. The argument has now been allocated.                                         |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is not a Capability Type and is not a Composite Type containing        |
     |                               | Capability Types and has an alignment of 16 then the NGRN is rounded up to the next    |
