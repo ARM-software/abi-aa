@@ -1782,10 +1782,11 @@ sections are compatible with Branch Target Identification mechanism. An
 executable or shared object with this bit set is required to generate
 `Custom PLTs`_ with BTI instruction.
 
-``GNU_PROPERTY_AARCH64_FEATURE_1_PAC`` This indicates that all executable
-sections have Return Address Signing enabled. An executable or shared object
-with this bit set can generate `Custom PLTs`_ with a PAC
-instruction.
+``GNU_PROPERTY_AARCH64_FEATURE_1_PAC`` This indicates that all
+executable sections have been protected with Return Address Signing.
+Its use is optional, meaning that an ELF file where this feature bit
+is unset can still have Return Address signing enabled in some or all
+its executable sections.
 
 Program Loading
 ---------------
