@@ -178,6 +178,8 @@ The following support level definitions are used by the Arm ABI specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
+Parts related to SME are at **Alpha** release quality.
+
 The ILP32 variant is at **Beta** release quality.
 
 All other content in this document is at the **Release** quality level.
@@ -242,6 +244,8 @@ changes to the content of the document for that release.
 |            |                    | - Minor formatting changes.                                      |
 +------------+--------------------+------------------------------------------------------------------+
 | 2021Q3     |                    | - Add support for Decimal-floating-point formats                 |
++------------+--------------------+------------------------------------------------------------------+
+|            |                    | - Add support for SME                                            |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -328,8 +332,18 @@ SIMD and floating point
    the floating point instruction set, the SIMD instruction set and the
    register set shared by them.
 
+_`SME`
+   The Arm architecture's Scalable Matrix Extension.
+
 SVE
    The Arm architecture's Scalable Vector Extension.
+
+_`SVL`
+   Streaming Vector Length; that is, the number of bits in a `Scalable Vector`_
+   when the processor is in streaming mode.
+
+_`SVL.B`
+   As for `SVL`_, but measured in bytes rather than bits.
 
 T32
    The instruction set named Thumb in the Armv7 architecture; T32 uses
@@ -588,6 +602,8 @@ A language binding may define extended types that map directly onto short vector
 
 Scalable Vectors
 ----------------
+
+.. _`Scalable Vector`:
 
 Like a short vector (see `Short Vectors`_), a scalable vector is a
 machine type that is composed of repeated instances of one fundamental
@@ -898,8 +914,34 @@ registers, or if it is a function that returns results in such registers,
 it must ensure that p4-p15 are preserved across the call. In other cases
 it need not preserve any scalable predicate register contents.
 
+SME state
+---------
+
+**(Alpha)**
+
+`SME`_ defines the following pieces of processor state:
+
+ZA storage
+   a storage array of size `SVL.B`_ × `SVL.B`_ bytes, hereafter referred to
+   simply as “ZA”
+
+_`PSTATE.SM`
+   indicates whether the processor is in “streaming mode” (PSTATE.SM==1) or
+   “non-streaming mode” (PSTATE.SM==0)
+
+_`PSTATE.ZA`
+   indicates whether ZA might have useful contents (PSTATE.ZA==1) or
+   whether it definitely does not (PSTATE.ZA==0)
+
+TPIDR2_EL0
+   a system register that software can use to manage thread-local state
+
+   See `TPIDR2_EL0`_ for a description of how the AAPCS64 uses this register.
+
 Threads and processes
 ---------------------
+
+.. _`threads`:
 
 The AAPCS64 applies to a single _`thread` of execution.  Each thread is in
 turn part of a _`process`.  A process might contain one thread or several
@@ -934,6 +976,99 @@ The use of tagged addressing is platform specific and does not apply to
 address are passed to the translation system. When tagged addressing is
 enabled, the top eight bits of an address are ignored for the purposes
 of address translation. See also `Pointers`_, above.
+
+Properties of a thread
+^^^^^^^^^^^^^^^^^^^^^^
+
+**(Alpha)**
+
+The AAPCS64 classifies `threads`_ as follows, with the classification being
+invariant for the lifetime of a given thread:
+
+.. _`access to SME`:
+
+The thread “has access” or “does not have access” to SME
+   If the thread has access to SME, the platform should generally allow
+   the thread to make full use of SME instructions.  However, the platform
+   may forbid the use of SME in certain platform-defined contexts.
+
+   If the thread does not have access to SME, the platform must forestall
+   all attempts to use SME instructions.
+
+.. _`access to TPIDR2_EL0`:
+
+The thread “has access” or “does not have access” to TPIDR2_EL0
+   If the thread has access to TPIDR2_EL0, the platform must allow
+   the thread to read or write TPIDR2_EL0 at any time.
+
+   If the thread does not have access to TPIDR2_EL0, the platform must
+   forestall all attempts to read or write TPIDR2_EL0.
+
+If the thread has access to SME then it must also have access to TPIDR2_EL0.
+
+TPIDR2_EL0
+^^^^^^^^^^
+
+**(Alpha)**
+
+This section only applies to threads that have `access to TPIDR2_EL0`_.
+
+Conforming software must ensure that, all times during the execution
+of a thread, TPIDR2_EL0 is in one of two states:
+
+* TPIDR2_EL0 is null.
+
+* TPIDR2_EL0 points to a “TPIDR2 block” with the format below, and the
+  thread has read access to every byte of the block.
+
+A _`TPIDR2 block` has the following format:
+
++--------------+---------------------+-------------------------------+
+| Byte offset  | Type                | Referred to in the AAPCS64 as |
++==============+=====================+===============================+
+| 0-7          | 64-bit data pointer | ``za_save_buffer``            |
++--------------+---------------------+-------------------------------+
+| 8-9          | Unsigned halfword   | ``num_za_save_slices``        |
++--------------+---------------------+-------------------------------+
+| 10-15        | Reserved, must be zero                              |
++--------------+-----------------------------------------------------+
+
+Note that the field names are just a notational convenience.  Language
+bindings may choose different names.
+
+The reserved parts of the block are defined to be zero by this revision
+of the AAPCS64.  All nonzero values are reserved for use by future revisions
+of the AAPCS64.
+
+.. _`reserved bytes in the TPIDR2 block`:
+.. _`handle future extensions safely or abort`:
+
+If TPIDR2_EL0 is nonnull and if any reserved byte in the first 16 bytes
+of the TPIDR2 block has a nonzero value, the thread must do one of the
+following:
+
+* leave TPIDR2_EL0 unchanged;
+
+* abort in some platform-defined manner; or
+
+* handle the nonzero reserved bytes of the TPIDR2 block in accordance
+  with future versions of the AAPCS64.
+
+Byte offsets of 16 and greater are reserved for use by future revisions
+of the AAPCS64.
+
+Negative offsets from TPIDR2_EL0 are reserved for use by the platform.
+The block of data stored at negative offsets is therefore referred to as the
+“platform TPIDR2 block”; this block starts at a platform-defined offset
+from TPIDR2_EL0 and ends at TPIDR2_EL0.
+
+In the rest of this document, ``za_save_buffer`` and ``num_za_save_slices``
+(without qualification) refer to the fields of a TPIDR2 block at address
+TPIDR2_EL0.  ``BLK.za_save_buffer`` and ``BLK.num_za_save_slices`` instead
+refer to the fields of a TPIDR2 block at address BLK.
+
+See `Changes to the TPIDR2 block`_ for additional requirements relating
+to the TPIDR2 block.
 
 Categories of memory
 ^^^^^^^^^^^^^^^^^^^^
@@ -1064,6 +1199,604 @@ The A64 branch instructions are unable to reach every destination in the address
 
     R\_AARCH64\_CALL26, and R\_AARCH64\_JUMP26 are the ELF relocation types with this property.
 
+Normal returns
+^^^^^^^^^^^^^^
+
+.. _`return normally`:
+.. _`returns normally`:
+.. _`returned normally`:
+
+**(Alpha)**
+
+The AAPCS64 uses “\ _`normal return`\ ” to refer to the act of causing
+execution to resume at a caller-supplied address after a subroutine call,
+such as by using the RET instruction.
+
+Specifically, if a subroutine S1 calls a subroutine S2 with register LR
+having the value X, a normal return is a partnering resumption of
+execution at X.  S2 then “returns normally” to S1 from that call
+(or, equivalently, the call returns normally to S1).
+
+Here, S2 is considered to return normally to S1 even if X is not
+part of S1.  For example, if the call from S1 to S2 is a “tail call”,
+X will be the return address supplied by S1's caller.  The act of
+resuming execution at X is then a normal return from S2 to S1 and a
+normal return from S1 to S1's caller.
+
+.. _`each normal return`:
+
+A subroutine call might return normally more than once.  For example,
+the C subroutine ``setjmp`` can return normally twice: once to complete
+the initial call and once from a ``longjmp``.
+
+The main distinction is between a “normal return” and an “exceptional
+return”, where “exceptional return” includes things like thread
+cancelation and C++ exception handling.
+
+The ZA lazy saving scheme
+-------------------------
+
+Overview
+^^^^^^^^
+
+**(Alpha)**
+
+SME provides a piece of storage called “ZA” that can be enabled and
+disabled using a processor state bit called “\ `PSTATE.ZA`_\ ”.  This storage
+is `SVL.B`_ × `SVL.B`_ bytes in size.  It can be accessed both
+horizontally and vertically, with each horizontal and vertical
+“slice” containing `SVL.B`_ bytes.
+
+The size of ZA can therefore vary between implementations of the Arm
+Architecture.  For a 256-bit SME implementation, ZA can hold the same
+amount of data as the 32 `Scalable Vector Registers`_.  For a 512-bit
+SME implementation, ZA can handle twice as much data as the vector registers,
+and so on.
+
+Suppose that a subroutine S1 with live data in ZA calls a subroutine S2 that
+has no knowledge of S1.  If the AAPCS64 defined ZA to be “call-preserved”
+(“callee-saved”), S1 would need to save and restore ZA around S1's own
+use of ZA, in case S1's caller also had live data in ZA.  If the AAPCS64
+defined ZA to be “call-clobbered” (“caller-saved”), S1 would need to
+save and restore ZA around the call to S2, in case S2 also used ZA.
+However, nested uses of ZA are expected to be rare, so these saves and
+restores would usually be wasted work.
+
+The AAPCS64 therefore defines a “lazy saving” scheme that often reduces
+the total number of saves and restores compared to the two approaches
+above.  Informally, the scheme allows “ZA is call-preserved” to become a
+dynamic rather than a static property: if S2 `complies with the lazy saving
+scheme`_, S1 can test after the call to S2 whether the call did in fact
+preserve ZA.  If the call did not preserve ZA, S1 is able to restore the
+old contents of ZA from a known buffer.
+
+The procedure is as follows:
+
+1. S1 `sets up a lazy save buffer`_ before calling S2.
+
+2. If the call to S2 `returns normally`_, the call is guaranteed to have
+   either `preserved ZA`_ or “\ `committed the lazy save`_\ ” (meaning that
+   it has saved ZA to the lazy save buffer).
+
+3. S1 then checks whether the call preserved ZA or not: `TPIDR2_EL0`_ is
+   nonnull if the call did preserve ZA; TPIDR2_EL0 is null if the call
+   committed the lazy save.
+
+   If TPIDR2_EL0 is null, S1 can restore the old contents of ZA
+   from the lazy save buffer that it set up in step (1).
+
+4. S1 `abandons the lazy save`_ when it no longer requires the contents
+   of ZA to be saved.
+
+See `SME pseudo-code examples`_ for a pseudo-code version of this procedure.
+
+Note that subroutines do not need to behave like S1 in the procedure
+above.  They could instead choose to save ZA before the call to S2
+and restore ZA after the call.
+
+ZA save buffers
+^^^^^^^^^^^^^^^
+
+**(Alpha)**
+
+A “\ _`ZA save buffer`\ “ is an area of memory of size W×16×\ `SVL.B`_
+bytes for some cardinal W.  The value of W is a property of the save
+buffer and can vary between buffers.
+
+The start of a ZA save buffer is aligned to a 16-byte boundary.
+
+When ZA contents are stored to a ZA save buffer, they are laid out in
+order of increasing horizontal slice index.  Each individual horizontal
+slice is laid out in the same order as for the ZA STR instruction.
+
+ZA states
+^^^^^^^^^
+
+**(Alpha)**
+
+The AAPCS64 uses the term “\ _`ZA_LIVE`\ ” to refer the number of leading
+horizontal slices of ZA that might have useful contents.  That is,
+horizontal slice ZA[\ *i*\ ] can have useful contents only if
+*i* is less than ZA_LIVE.
+
+The term “\ _`live contents of ZA`\ ” refers to the first ZA_LIVE
+horizontal slices of ZA.
+
+The current state of ZA depends on PSTATE.ZA and on the following
+fields of the `TPIDR2 block`_:
+
+``za_save_buffer``
+   a 64-bit data pointer at byte offset 0 from TPIDR2_EL0
+
+``num_za_save_slices``
+   an unsigned halfword at byte offset 8 from TPIDR2_EL0
+
+At any given time during the execution of a thread, ZA must be in one of
+three states:
+
+off
+   PSTATE.ZA is 0 and either:
+
+   * TPIDR2_EL0 is null; or
+
+   * both of the following are true:
+
+     * ``za_save_buffer`` is null and
+
+     * ``num_za_save_slices`` is zero.
+
+   This state indicates that ZA has no useful contents.
+
+active
+   .. _`ZA active state`:
+
+   PSTATE.ZA is 1 and TPIDR2_EL0 is null.
+
+   This state indicates that both of the following are true:
+
+   * ZA might have useful contents; and
+
+   * if ZA *does* have useful contents, the lazy saving scheme is not
+     currently in use.
+
+   There are several reasons why the thread might be in this state.
+   Example scenarios include:
+
+   * The thread has set PSTATE.ZA to 1 in preparation for using ZA,
+     but it has not yet put any data into ZA.
+
+   * The thread no longer has useful data in ZA, but it has not yet
+     cleared PSTATE.ZA.
+
+   * The thread is actively using ZA and it is not executing a call that
+     would benefit from the lazy saving scheme.
+
+dormant
+   All of the following are true:
+
+   * PSTATE.ZA is 1
+
+   * TPIDR2_EL0 is nonnull
+
+   * ``za_save_buffer`` is nonnull
+
+   * ``za_save_buffer`` points to a `ZA save buffer`_ of size W×16×\ `SVL.B`_
+     for some cardinal W
+
+   * 0 < ``num_za_save_slices`` ≤ W×16
+
+   This state indicates that both of the following are true:
+
+   * only the first ``num_za_save_slices`` horizontal slices in ZA have
+     useful contents (that is, `ZA_LIVE`_ is equal to
+     ``num_za_save_slices``); and
+
+   * the lazy saving scheme is in use for those ZA contents.
+
+   A thread that is in this state must have read and write access to
+   every byte of ``za_save_buffer``.  The thread may store the
+   `live contents of ZA`_ to this buffer at any time.  A thread
+   must not store any other data into ``za_save_buffer`` while the
+   thread is in this state.
+
+   That is, if *i* < `SVL.B`_ and if *j* < W×16, the thread may store
+   byte *i* of horizontal slice ZA[*j*] to the following address
+   at any time:
+
+     ``za_save_buffer`` + *j* * SVL.B + *i*
+
+   The thread must not store any other value to that address.
+
+A consequence of the above requirements is that:
+
+* If the thread needs to set PSTATE.ZA to 1 and set ``za_save_buffer``
+  to a nonnull value, it must set PSTATE.ZA to 1 first.
+
+* If the thread needs to set PSTATE.ZA to 0 and set TPIDR2_EL0 to null,
+  it must set TPIDR2_EL0 to null first.
+
+Therefore, it is not possible for a running thread to enter the ZA
+dormant state directly from the ZA off state; the thread must go through
+the ZA active state first.  The same is true in reverse: it is not
+possible for a running thread to enter the ZA off state directly from the
+ZA dormant state; the thread must go through the ZA active state first.
+
+The following table summarizes the three ZA states:
+
++-------------------------+-----------------+--------+------------------------+-------------+
+|                         |             off | active |                dormant | Notes       |
++=========================+=================+========+========================+=============+
+| PSTATE.ZA               |               0 |      1 |                      1 |             |
++-------------------------+-----------------+--------+------------------------+-------------+
+| TPIDR2_EL0              | null or nonnull |   null |                nonnull |             |
++-------------------------+-----------------+--------+------------------------+-------------+
+| ``za_save_buffer``      |            null |    N/A |                nonnull | [#za-vars]_ |
++-------------------------+-----------------+--------+------------------------+-------------+
+| ``num_za_save_buffers`` |               0 |    N/A |                nonzero | [#za-vars]_ |
++-------------------------+-----------------+--------+------------------------+-------------+
+| ZA_LIVE                 |               0 |    all | ``num_za_save_slices`` |             |
++-------------------------+-----------------+--------+------------------------+-------------+
+
+.. [#za-vars] These variables only exist when TPIDR2_EL0 is nonnull.
+
+The following table lists the possible state transitions
+
++--------------+----------------------------------------------+--------------+
+| Old ZA state | Action taken                                 | New ZA state |
++==============+==============================================+==============+
+| off          | Turn ZA on, for example using SMSTART or     | active       |
+|              | SMSTART ZA.                                  |              |
++--------------+----------------------------------------------+--------------+
+| active       | Turn ZA off, for example using SMSTOP or     | off          |
+|              | SMSTOP ZA.                                   |              |
++--------------+----------------------------------------------+--------------+
+| active       | `Set up a lazy save buffer`_ for the current | dormant      |
+|              | ZA contents.                                 |              |
++--------------+----------------------------------------------+--------------+
+| dormant      | `Abandon the lazy save`_, setting TPIDR2_EL0 | active       |
+|              | to null.                                     |              |
++--------------+----------------------------------------------+--------------+
+| dormant      | `Commit the lazy save`_, storing the current | active       |
+|              | ZA contents to ``za_save_buffer``.           |              |
++--------------+----------------------------------------------+--------------+
+
+Setting up a lazy save buffer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _`set up a lazy save buffer`:
+.. _`sets up a lazy save buffer`:
+
+**(Alpha)**
+
+If ZA is active, a thread can “set up a lazy save buffer” for the current
+ZA contents by using the following procedure:
+
+* Create a `TPIDR2 block`_ BLK.
+
+* Set ``BLK.num_za_save_slices`` to the value of `ZA_LIVE`_.
+
+* Point ``BLK.za_save_buffer`` at a `ZA save buffer`_ B.
+
+* Point TPIDR2_EL0 to BLK.  At this point ZA becomes dormant.
+
+Both BLK and B would typically be on the stack, but they do not need to be.
+
+Note that TPIDR2_EL0 must necessarily be null before this procedure;
+see the requirements for the `ZA active state`_ for details.
+
+Abandoning a lazy save
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. _`abandon the lazy save`:
+.. _`abandons the lazy save`:
+
+**(Alpha)**
+
+If ZA is dormant and the current contents of ZA are no longer needed,
+the thread can “abandon the lazy save” and free up ZA for other operations
+by setting TPIDR2_EL0 to null.  At this point ZA becomes active and its
+contents can be changed.  It also becomes possible to turn ZA off.
+
+Committing a lazy save
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. _`commit a lazy save`:
+.. _`commit the lazy save`:
+.. _`commits the lazy save`:
+
+**(Alpha)**
+
+If ZA is dormant, a thread can “commit the lazy save” and free up ZA for
+other operations by using the following procedure:
+
+* Store the first ``num_za_save_slices`` horizontal slices of ZA to
+  ``za_save_buffer``.  The thread can (at its option) store to any other
+  part of ``za_save_buffer`` as well.  In particular, the thread can
+  store slices in groups of 16 regardless of whether ``num_za_save_slices``
+  is a multiple of 16.
+
+* Set TPIDR2_EL0 to null.  At this point ZA becomes active and its
+  contents can be changed.  It also becomes possible to turn ZA off.
+
+The easiest way of doing this while following the requirements
+for `reserved bytes in the TPIDR2 block`_ is to call ``__arm_tpidr2_save``;
+see `SME support routines`_ for details.
+
+.. _`committed the lazy save`:
+
+If a call to a subroutine S `returns normally`_, the call is said to
+“commit a lazy save” *for that particular return* if all the following
+conditions are true:
+
+* ZA is dormant on entry ot S, which implies that `TPIDR2_EL0`_ has
+  a nonzero value (“BLK”) on entry to S.
+
+* On return from S, all the following conditions are true:
+
+  * ZA is off.
+
+  * ``BLK.za_save_buffer`` holds the data that was stored in the first
+    ``BLK.num_za_save_slices`` horizontal slices of ZA on entry to S.
+
+More generally, a call to a subroutine S is said to “commit a lazy save”
+if the call returns normally at least once and if the call commits a
+lazy save for one such return.
+
+Preserving ZA
+^^^^^^^^^^^^^
+
+.. _`preserve ZA`:
+.. _`preserved ZA`:
+.. _`preserves ZA`:
+
+**(Alpha)**
+
+If a call to a subroutine S `returns normally`_, the call is said to
+“preserve ZA” *for that particular return* if one of the following
+conditions is true:
+
+* ZA is off on entry to S and ZA is off on return from S.
+
+* ZA is dormant on entry to S and all the following conditions are true
+  on return from S:
+
+  * ZA is dormant.
+
+  * TPIDR2_EL0 has the same value (“BLK”) as it did on entry to S.
+
+  * The contents of BLK on return from S are the same as they were
+    on entry to S.
+
+  * The first ``BLK.num_za_save_slices`` horizontal slices of ZA have
+    the same contents on return from S as they did on entry to S.
+
+* ZA is active on entry to S and all the following conditions are true on
+  return from S:
+
+  * ZA is active.
+
+  * Every byte of ZA has the same value on return from S as it did on
+    entry to S.
+
+More generally, a call to a subroutine S is said to “preserve ZA” if
+the call preserves ZA `every time <each normal return>`_ that the call
+returns normally.  A call trivially satisfies this requirement if the
+call never returns normally.
+
+A subroutine S can (at its option) choose to guarantee that every possible
+call to S preserves ZA.  S itself is then said to “preserve ZA”.
+
+Complying with the lazy saving scheme
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _`complies with the lazy saving scheme`:
+
+**(Alpha)**
+
+A call to a subroutine S is said to “\ _`comply with the lazy saving scheme`\ ”
+if one of the following conditions is true:
+
+* ZA is not dormant on entry to S.
+
+* ZA is dormant on entry to S and, `every time <each normal return>`_ that the
+  call `returns normally`_, one of the following conditions is true:
+
+  * The call `preserves ZA`_ for that return.
+
+  * The call `commits the lazy save`_ for that return.
+
+A call trivially satisfies this requirement if the call never returns
+normally.
+
+A subroutine S is said to “comply with the lazy saving scheme” if
+every possible call to S complies with the lazy saving scheme.
+
+One trivial way for a subroutine S to satisfy this condition is to call
+``__arm_tpidr2_save`` on entry; see `SME support routines`_ for details.
+S could do this unconditionally or when TPIDR2_EL0 is nonnull.
+In this case, S would always commit any lazy save.
+
+Another trivial way for S to meet the requirement is to save the
+`live contents of ZA`_ on entry and restore them before returning.
+In this case, S would always preserve ZA.
+
+However, from a quality of implementation perspective, subroutines
+are encouraged not to take either extreme.  The intention of the
+scheme is that S should try to pick the more efficient of the two
+return states where it can.  The following observations might affect
+this choice:
+
+* Keeping PSTATE.ZA set to 1 for a (subjectively) “long” time
+  might increase the chances that higher exception levels will need
+  to save and restore ZA.
+
+* Keeping PSTATE.ZA set to 1 for a (subjectively) “long” time
+  might be less energy-efficient than committing the lazy save.
+
+* Committing the lazy save will almost certainly require the caller
+  to restore ZA, whereas preserving ZA will not.
+
+As a general rule, a subroutine S that complies with the lazy saving scheme
+is encouraged to do the following:
+
+* Commit the lazy save if preserving ZA would require S to restore ZA.
+  For example, this would be true if S directly changes PSTATE.ZA or ZA.
+
+* Clear PSTATE.ZA after a lazy save, unless S is about to use ZA for
+  something else.
+
+* Rely on the lazy saving scheme for any calls that S makes.  For example,
+  if S is simply a wrapper around a call to another subroutine S2 and if
+  S2 also complies with the lazy saving scheme, S is encouraged to
+  delegate the handling of the lazy saving scheme to S2.
+
+* Use ``__arm_tpidr2_save`` when committing a lazy save.  This ensures
+  that the code will `handle future extensions safely or abort`_.
+
+The intention is that the vast majority of SME-unaware subroutines would
+naturally comply with the lazy saving scheme and so would not need to
+become SME-aware.  Counterexamples include the C library subroutine
+``longjmp``; see `setjmp and longjmp`_ for details.
+
+Changes to the TPIDR2 block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**(Alpha)**
+
+If, for a particular call C to a subroutine S:
+
+* S `complies with the lazy saving scheme`_;
+
+* ZA is dormant on entry to S; and
+
+* TPIDR2_EL0 has the value BLK on entry to S
+
+then conforming software must ensure that, `every time <each normal return>`_
+that S `returns normally`_ from C, BLK still has the same contents as it did
+on entry to S.  For example, this means that:
+
+* No subroutine is permitted to modify BLK directly until S returns
+  from C for the final time.
+
+* No subroutine is permitted to induce another subroutine to modify BLK
+  until S returns from C for the final time.  This requirement applies
+  to callers of S as well as to S and its callees.
+
+For example, the C function ``memset`` complies with the lazy saving scheme.
+The following artificial pseudo-code is therefore non-conforming, because
+it induces ``memset`` to modify ``BLK`` before ``memset`` has returned:
+
+.. code-block:: c
+
+   __arm_tpidr2_block BLK = {};  // Zero initialize.
+   BLK.za_save_buffer = …pointer to a buffer…;
+   TPIDR2_EL0 = &BLK;
+   memset(&BLK, 0, 16);          // Non-conforming
+
+Types of subroutine interface
+-----------------------------
+
+PSTATE.SM interfaces
+^^^^^^^^^^^^^^^^^^^^
+
+**(Alpha)**
+
+A subroutine's “PSTATE.SM interface” specifies the possible states of
+`PSTATE.SM`_ on entry to a subroutine and the possible states of `PSTATE.SM`_
+on a `normal return`_.  The AAPCS64 defines three types of PSTATE.SM
+interface:
+
+.. _`non-streaming interface`:
+.. _`streaming interface`:
+.. _`streaming-compatible interface`:
+
++----------------------+--------------------------+----------------------------+
+| Type of interface    | PSTATE.SM on entry       | PSTATE.SM on normal return |
++======================+==========================+============================+
+| Non-streaming        | 0                        | 0                          |
++----------------------+--------------------------+----------------------------+
+| Streaming            | 1                        | 1                          |
++----------------------+--------------------------+----------------------------+
+| Streaming-compatible | 0 or 1 (caller's choice) | unchanged                  |
++----------------------+--------------------------+----------------------------+
+
+Every subroutine has exactly one PSTATE.SM interface.  A subroutine's
+PSTATE.SM interface is independent of all other aspects of its interface.
+Callers must know which PSTATE.SM interface a callee has.
+
+All subroutines that were written before the introduction of SME are
+retroactively classified as having a non-streaming interface.
+
+In the table above, the “PSTATE.SM on entry” column describes a
+requirement on callers: it is the caller's responsibility to ensure
+that PSTATE.SM has a valid value on entry to a callee.  The “PSTATE.SM
+on normal return” column describes a requirement on callees: callees
+must ensure that PSTATE.SM has a valid value before returning to their
+caller.
+
+.. _`processor state argument`:
+
+If a subroutine has a streaming-compatible interface, the first argument
+to the subroutine is an unsigned double-word, called ``current_state``
+for ease of reference.  This argument is passed in register X0.
+
+Bit 0 of the ``current_state`` argument holds the current value of
+PSTATE.SM.  The upper 63 bits must be zero in this revision of the AAPCS64
+but are reserved for future expansion.  More specifically:
+
+* When a subroutine S1 that has either a non-streaming interface or a
+  streaming interface calls a subroutine S2 that has a streaming-compatible
+  interface, S1 must set the upper 63 bits of the X0 argument to zero,
+
+* When a subroutine S1 that has a streaming-compatible interface
+  calls a subroutine S2 that has a streaming-compatible interface,
+  S1 must set the upper 63 bits of the X0 argument to the corresponding
+  bits of S1's ``current_state`` argument.
+
+  If S1 does not change PSTATE.SM then it can simply copy its
+  ``current_state`` argument to X0.
+
+A subroutine can therefore always determine the current value of PSTATE.SM
+without having to use SME instructions.
+
+ZA interfaces
+^^^^^^^^^^^^^
+
+**(Alpha)**
+
+As noted in `ZA states`_, there are three possible ZA states: off,
+dormant, and active.  A subroutine's “ZA interface” specifies the possible
+states of ZA on entry to a subroutine and the possible states of ZA on a
+`normal return`_.  The AAPCS64 defines two types of ZA interface:
+
+.. _`private-ZA`:
+.. _`shared-ZA`:
+
++-------------------+-------------------+---------------------------+
+| Type of interface | ZA state on entry | ZA state on normal return |
++===================+===================+===========================+
+| private ZA        | dormant or off    | unchanged or off          |
++-------------------+-------------------+---------------------------+
+| shared ZA         | active            | active                    |
++-------------------+-------------------+---------------------------+
+
+Every subroutine has exactly one ZA interface.  A subroutine's ZA interface
+is independent of all other aspects of its interface.  Callers must know
+which ZA interface a callee has.
+
+All subroutines that were written before the introduction of SME are
+retroactively classified as having a private-ZA interface.
+
+Every subroutine with a `private-ZA`_ interface must `comply with the lazy
+saving scheme`_.
+
+The shared-ZA interface is so called because it allows the subroutine
+to share ZA contents with its caller.  This can be useful if an SME
+operation is split into several cooperating subroutines.
+
+Subroutines with a `private-ZA`_ interface and subroutines with a `shared-ZA`_
+interface can both (at their option) choose to guarantee that they
+`preserve ZA`_.
 
 Parameter passing
 -----------------
@@ -1318,6 +2051,324 @@ See `Arm C and C++ language mappings`_.
 .. raw:: pdf
 
    PageBreak
+
+Support routines
+================
+
+SME support routines
+--------------------
+
+**(Alpha)**
+
+Every platform that supports SME must provide the following runtime
+support routines:
+
+``__arm_tpidr2_save``
+   Provides a safe way to `commit a lazy save`_
+
+``__arm_za_disable``
+   Provides a safe way to turn ZA off without losing data.
+
+``__arm_tpidr2_restore``
+   Provides a simple way of restoring lazily-saved ZA data.
+
+``__arm_tpidr2_save``
+^^^^^^^^^^^^^^^^^^^^^
+
+**(Alpha)**
+
+Platforms that support SME must provide a subroutine to `commit a lazy save`_,
+with the subroutine having the following properties:
+
+* The subroutine is called ``__arm_tpidr2_save``.
+
+* The subroutine has a `private-ZA`_ `streaming-compatible interface`_ with the
+  following properties:
+
+  * X0-X13, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+
+* The subroutine takes the following arguments:
+
+  current_state
+    the standard `processor state argument`_ for streaming-compatible
+    interfaces, passed in register X0
+
+* The subroutine does not return a value.
+
+* The subroutine behaves as follows:
+
+  * If the current thread does not have `access to TPIDR2_EL0`_, the subroutine
+    does nothing.
+
+  * If TPIDR2_EL0 is null, the subroutine does nothing.
+
+  * Otherwise:
+
+    * If any of the reserved bytes in the first 16 bytes of
+      the `TPIDR2 block`_ are nonzero, the subroutine either:
+
+      * aborts in some platform-defined manner; or
+
+      * handles the nonzero reserved bytes of the TPIDR2 block in accordance
+        with future versions of the AAPCS64.
+
+    * If ``za_save_buffer`` is nonnull, the subroutine saves the first
+      ``num_za_save_slices`` horizontal slices of ZA to ``za_save_buffer``.
+      The subroutine can (at its option) store to any other part of
+      ``za_save_buffer`` as well.  In particular, the subroutine can store
+      slices in groups of 16 regardless of whether ``num_za_save_slices``
+      is a multiple of 16.
+
+    * The subroutine clears TPIDR2_EL0.
+
+Note that the subroutine does *not* change PSTATE.ZA.  If ZA was dormant
+on entry then it remains dormant on return.
+
+.. note::
+
+   The idea here is to make as many registers call-preserved as possible,
+   so that the save does not require much spilling in the caller.
+
+   Aborting for unrecognized reserved bytes prevents older runtimes from
+   silently mishandling any future TPIDR2 state.
+
+``__arm_za_disable``
+^^^^^^^^^^^^^^^^^^^^
+
+.. _`turn ZA off`:
+
+**(Alpha)**
+
+Platforms that support SME must provide a subroutine to set PSTATE.ZA to 0,
+with the subroutine having the following properties:
+
+* The subroutine is called ``__arm_za_disable``.
+
+* The subroutine has a `private-ZA`_ `streaming-compatible interface`_ with the
+  following properties:
+
+  * X0-X13, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+
+* The subroutine takes the following arguments:
+
+  current_state
+    the standard `processor state argument`_ for streaming-compatible
+    interfaces, passed in register X0
+
+* The subroutine does not return a value.
+
+* The subroutine behaves as follows:
+
+  * If the current thread does not have `access to SME`_, the subroutine does
+    nothing.
+
+  * Otherwise, the subroutine behaves as if it did the following:
+
+    * Call ``__arm_tpidr2_save``.
+
+    * Set PSTATE.ZA to 0.
+
+``__arm_tpidr2_restore``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+**(Alpha)**
+
+Platforms that support SME must provide a subroutine to restore data after
+a lazy save, with the subroutine having the following properties:
+
+* The subroutine is called ``__arm_tpidr2_restore``.
+
+* The subroutine has a `shared-ZA`_ `streaming-compatible interface`_ with
+  following properties:
+
+  * X0-X13, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+
+* The subroutine takes the following arguments:
+
+  current_state
+    the standard `processor state argument`_ for streaming-compatible
+    interfaces, passed in register X0
+
+  BLK
+    a 64-bit data pointer that points to a `TPIDR2 block`_, passed in
+    register X1
+
+* The subroutine does not return a value.
+
+* The subroutine behaves as follows:
+
+  * If TPIDR2_EL0 is nonnull, the subroutine aborts in some platform-specific
+    manner.
+
+  * If any of the reserved bytes in the first 16 bytes of BLK are nonzero,
+    the subroutine either:
+
+    * aborts in some platform-defined manner; or
+
+    * handles the nonzero reserved bytes of BLK in accordance
+      with future versions of the AAPCS64.
+
+  * If ``BLK.za_save_buffer`` points to a ZA save buffer B and if
+    ``BLK.num_za_save_slices`` contains the value NS, then the subroutine
+    restores the first NS horizontal slices of ZA from B.  The subroutine
+    can (at its option) restore from any other part of B as well.
+    In particular, the subroutine can restore slices in groups of 16
+    regardless of whether NS is a multiple of 16.
+
+Pseudo-code examples
+====================
+
+SME pseudo-code examples
+------------------------
+
+**(Alpha)**
+
+This section gives examples of various sequences that conform
+to the SME PCS rules.  In each case, comments in the code give
+the set of preconditions that are assumed to hold at the start of the
+sequence and the set of postconditions that hold at the end of the sequence.
+These comments help to document the example's intended use case;
+the example will only be useful in situations where the given preconditions
+apply and where the given postconditions describe the desired outcome.
+
+If S has a `private-ZA`_ interface, the following pseudo-code describes a
+conforming way for S to flush any dormant ZA state before S uses ZA itself:
+
+.. code-block:: c++
+
+   // Current state:
+   //   PSTATE.SM == SM (might be 0 or 1)
+   //   PSTATE.ZA == 0 or 1
+   //   TPIDR2_EL0 might or might not be null
+
+   // This check is simply an optimization; it would be valid to call
+   // __arm_tpidr2_save unconditionally.
+   if (TPIDR2_EL0) {
+     // Commit the lazy save.
+     __arm_tpidr2_save(SM);
+   }
+   // Set PSTATE.ZA to 1.
+   smstart_za();
+
+   // Current state:
+   //   PSTATE.SM == SM
+   //   PSTATE.ZA == 1
+   //   TPIDR2_EL0 is null
+
+.. _`pseudo-code for clearing PSTATE.ZA`:
+
+If S has a `private-ZA`_ interface, the following pseudo-code describes a
+conforming way for S to clear PSTATE.ZA.  This procedure is useful for
+things like the C subroutine ``longjmp`` (see `setjmp and longjmp`_) and
+exception unwinders (see `Exceptions`_).
+
+.. code-block:: c++
+
+   // Current state:
+   //   PSTATE.SM == SM (might be 0 or 1)
+   //   PSTATE.ZA == 0 or 1
+   //   TPIDR2_EL0 might or might not be null
+
+   // Commit any lazy save and set PSTATE.ZA to 0.
+   __arm_za_disable(SM);
+
+   // Current state:
+   //   PSTATE.SM == SM
+   //   PSTATE.ZA == 0
+   //   TPIDR2_EL0 is null
+
+The following pseudo-code shows a basic example of a subroutine S1 calling
+a subroutine S2, where:
+
+* S2 has a `private-ZA`_ `non-streaming interface`_;
+
+* S1 has ZA state that is live across the call to S2; and
+
+* S1 chooses to use the lazy saving scheme:
+
+.. code-block:: c++
+
+   // Current state:
+   //   PSTATE.SM == 1
+   //   PSTATE.ZA == 1
+   //   TPIDR2_EL0 is null
+   //   the first NS horizontal slices of ZA contain useful contents
+
+   za_save_buffer_type B;
+   __arm_tpidr2_block BLK = {}; // Zero initialize.
+   BLK.za_save_buffer = &B;
+   BLK.num_za_save_slices = NS;
+   TPIDR2_EL0 = &BLK;
+
+   // Set PSTATE.SM to 0, keep PSTATE.ZA == 1.
+   smstop_sm();
+
+   S2();
+
+   // Set both PSTATE.SM and PSTATE.ZA to 1.
+   smstart();
+
+   if (TPIDR2_EL0) {
+     // No need to restore ZA.  Abandon the lazy save.
+     assert(TPIDR2_EL0 == &BLK);
+     TPIDR2_EL0 = nullptr;
+   } else {
+     // Restore the saved ZA contents.
+     __arm_tpidr2_restore(1, &BLK);
+   }
+
+   // Current state:
+   //   PSTATE.SM == 1
+   //   PSTATE.ZA == 1
+   //   TPIDR2_EL0 is null
+
+The same approach works if S1 calls multiple subroutines in succession.
+For example:
+
+.. code-block:: c++
+
+   // Current state:
+   //   PSTATE.SM == 1
+   //   PSTATE.ZA == 1
+   //   TPIDR2_EL0 is null
+   //   the first NS slices of ZA contain useful contents
+
+   za_save_buffer_type B;
+   __arm_tpidr2_block BLK = {};
+   BLK.za_save_buffer = &B;
+   BLK.num_za_save_slices = NS;
+   TPIDR2_EL0 = &BLK;
+
+   // Set PSTATE.SM to 0, keep PSTATE.ZA == 1.
+   smstop_sm();
+
+   for (int i = 0; i < 10; ++i) {
+     S2();
+   }
+
+   // Set both PSTATE.SM and PSTATE.ZA to 1.
+   smstart();
+
+   if (TPIDR2_EL0) {
+     // No need to restore ZA.  Abandon the lazy save.
+     assert(TPIDR2_EL0 == &BLK);
+     TPIDR2_EL0 = nullptr;
+   } else {
+     // Restore the saved ZA contents.
+     __arm_tpidr2_restore(1, &BLK);
+   }
+
+   // Current state:
+   //   PSTATE.SM == 1
+   //   PSTATE.ZA == 1
+   //   TPIDR2_EL0 is null
+
 
 Arm C and C++ language mappings
 ===============================
@@ -1690,6 +2741,110 @@ The argument list for a subroutine call is formed by taking the user arguments i
 - The rules for passing Pure Scalable Types depend on whether the arguments are named. It is an error to pass such types to an unprototyped function.
 
 The argument list is then processed according to the standard rules for procedure calls (see `Parameter passing`_) or the appropriate variant.
+
+setjmp and longjmp
+------------------
+
+**(Alpha)**
+
+The C subroutines ``setjmp`` and ``longjmp`` have a `private-ZA`_
+`non-streaming interface`_.  In addition to the standard requirements
+for such an interface, there is an additional requirement that applies
+specificially to ``setjmp`` and ``longjmp``:
+
+* ZA must be in the “off” state when ``setjmp`` returns to its caller via a
+  ``longjmp``.
+
+``longjmp`` can meet this requirement by using ``__arm_za_disable``
+to `turn ZA off`_.
+
+The intention of this definition is to allow a subroutine that has a
+`private-ZA`_ interface to use ``setjmp`` and ``longjmp`` without being aware
+of ZA.
+
+This approach to saving ZA is intended to be conservatively correct.
+It may lead to ``longjmp`` saving the ZA contents for a subroutine that is
+about to be “unwound”, in which case the save is wasted work but is
+otherwise harmless.
+
+``setjmp`` is encouraged not to `commit a lazy save`_.  The intention is
+for ``longjmp`` rather than ``setjmp`` to bear the cost of the save,
+because not all calls to ``setjmp`` have a partnering call to
+``longjmp``.
+
+.. note::
+
+   A consequence of this is that any existing open-coded copies of ``longjmp``
+   become invalid.
+
+Exceptions
+----------
+
+**(Alpha)**
+
+If:
+
+* an instruction I in a subroutine S directly or indirectly causes an
+  exception to be thrown; and
+
+* S catches that exception with an exception handler EH
+
+then the platform must ensure that all the following conditions are true
+on entry to EH:
+
+* PSTATE.SM is 0.
+
+* PSTATE.ZA is 0.
+
+* TPIDR2_EL0 is null.
+
+The platform subroutines for throwing synchronous exceptions would
+typically have a `private-ZA`_ `non-streaming interface`_.  Such subroutines
+can meet the requirements above by using ``__arm_za_disable`` to `turn
+ZA off`_ before entering EH.
+
+An asynchronous exception might be thrown when PSTATE.SM is 1.  In this
+case, the platform code that is responsible for implementing exceptions
+must clear PSTATE.SM before entering the exception handler.  The platform
+code can again use ``__arm_za_disable`` to `turn ZA off`_
+
+The intention is to allow a subroutine that implements the lazy saving
+scheme to catch exceptions without being aware of ZA.
+
+A consequence of this definition is that the subroutine S above can choose
+to use the lazy saving scheme to manage ZA contents that are live between
+I and EH.  For example, the following pseudo-code describes a conforming
+way for S to retain ZA contents across an exception:
+
+.. code-block:: c++
+
+   // Current state:
+   //   PSTATE.SM == 1
+   //   PSTATE.ZA == 1
+   //   TPIDR2_EL0 is null
+   //   the first NS slices of ZA contain useful contents
+
+   za_save_buffer_type B;
+   __arm_tpidr2_block BLK = {};
+   BLK.za_save_buffer = &B;
+   BLK.num_za_save_slices = NS;
+   TPIDR2_EL0 = &BLK;
+
+   try {
+     …
+   } catch (…) {
+     // Current state:
+     //   PSTATE.SM == 0
+     //   PSTATE.ZA == 0
+     //   TPIDR2_EL0 is null
+
+     // Set both PSTATE.SM and PSTATE.ZA to 1.
+     smstart();
+
+     __arm_tpidr2_restore(1, &BLK);
+     …
+   }
+
 
 .. raw:: pdf
 
