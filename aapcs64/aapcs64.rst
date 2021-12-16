@@ -898,10 +898,32 @@ registers, or if it is a function that returns results in such registers,
 it must ensure that p4-p15 are preserved across the call. In other cases
 it need not preserve any scalable predicate register contents.
 
-Processes, Memory and the Stack
--------------------------------
+Threads and processes
+---------------------
 
-The AAPCS64 applies to a single thread of execution or process (hereafter referred to as a process). A process has a program state defined by the underlying machine registers and the contents of the memory it can access. The memory a process can access, without causing a run-time fault, may vary during the execution of the process.
+The AAPCS64 applies to a single _`thread` of execution.  Each thread is in
+turn part of a _`process`.  A process might contain one thread or several
+threads.
+
+The exact definition of “thread” and “process” depends on the platform.
+If the platform is a traditional multi-threaded operating system,
+“thread” and “process” generally have their usual meaning for that
+operating system. If the platform supports multiple processes but has
+no separate concept of threads, “thread” is synonymous with “process”.
+If a platform has no concurrency or preemption then it will generally
+have a single “thread” and “process” that executes all instructions.
+
+Each thread has its own register state, defined by the contents of the
+underlying machine registers. A process has a program state defined by
+its threads' register states and by the contents of the memory that the
+process can access. The memory that a process can access, without causing
+a run-time fault, may vary during the execution of its threads.
+
+Memory and the Stack
+--------------------
+
+Categories of memory
+^^^^^^^^^^^^^^^^^^^^
 
 The memory of a process can normally be classified into five categories:
 
@@ -913,14 +935,24 @@ The memory of a process can normally be classified into five categories:
 
 - The heap.
 
-- The stack.
+- Stacks, with one stack for each thread.
 
-Writable static data may be further sub-divided into initialized, zero-initialized and uninitialized data. Except for the stack there is no requirement for each class of memory to occupy a single contiguous region of memory. A process must always have some code and a stack, but need not have any of the other categories of memory.
+Each category of memory can contain multiple individual regions.
+These individual regions do not need to be contiguous and regions of one
+memory class can be interspersed with regions of another memory class.
+
+Writable static data may be further sub-divided into initialized, zero-initialized and uninitialized data.
 
 The heap is an area (or areas) of memory that are managed by the process itself (for example, with the C malloc function). It is typically used for the creation of dynamic data objects.
 
-A conforming program must only execute instructions that are in areas of memory designated to contain code.
+Each individual stack must occupy a single, contiguous region of memory.
+However, as noted above, multiple stacks do not need to be organized
+contiguously.
 
+A process must always have access to code and stacks, but need not have
+access to any of the other categories of memory.
+
+A conforming program must only execute instructions that are in areas of memory designated to contain code.
 
 Memory addresses
 ^^^^^^^^^^^^^^^^
@@ -928,7 +960,6 @@ Memory addresses
 The address space may consist of one or more disjoint regions. No region may span address zero (although one region may start at zero).
 
 The use of tagged addressing is platform specific and does not apply to 32-bit pointers. When tagged addressing is disabled all 64 bits of an address are passed to the translation system. When tagged addressing is enabled, the top eight bits of an address are ignored for the purposes of address translation. See also `Pointers`_, above.
-
 
 The Stack
 ^^^^^^^^^
@@ -948,7 +979,7 @@ At all times the following basic constraints must hold:
 
 - Stack-limit ≤ SP ≤ stack-base. The stack pointer must lie within the extent of the stack.
 
-- A process may only access (for reading or writing) the closed interval of the entire stack delimited by [SP, stack-base – 1].
+- A conforming program may only access (for reading or writing) the closed interval of the entire stack delimited by [SP, stack-base – 1].
 
 - If MTE is enabled, then the tag stored in the stack pointer must match the tag set on the range SP - Stack-limit (i.e. the unallocated portion of the stack).
 
