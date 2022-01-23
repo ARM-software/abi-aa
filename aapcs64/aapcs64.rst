@@ -48,7 +48,7 @@ Keywords
 
 Procedure call, function call, calling conventions, data layout
 
-Latest Release and Defects Report
+Latest release and defects report
 ---------------------------------
 
 Please check `Application Binary Interface for the Arm® Architecture
@@ -89,7 +89,7 @@ contributory patent infringement, then any licenses granted to You
 under this license for that Licensed Material shall terminate as of
 the date such litigation is filed.
 
-About the License
+About the license
 -----------------
 
 As identified more fully in the Licence_ section, this project
@@ -118,7 +118,7 @@ Contributions to this project are licensed under an inbound=outbound
 model such that any such contributions are licensed by the contributor
 under the same terms as those in the `Licence`_ section.
 
-Trademark Notice
+Trademark notice
 ----------------
 
 The text of and illustrations in this document are licensed by Arm
@@ -147,13 +147,13 @@ reserved.
 
    PageBreak
 
-About this Document
+About this document
 ===================
 
-Change Control
+Change control
 --------------
 
-Current Status and Anticipated Changes
+Current status and anticipated changes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following support level definitions are used by the Arm ABI specifications:
@@ -182,7 +182,7 @@ The ILP32 variant is at **Beta** release quality.
 
 All other content in this document is at the **Release** quality level.
 
-Change History
+Change history
 ^^^^^^^^^^^^^^
 
 If there is no entry in the change history table for a release, there are no
@@ -206,25 +206,25 @@ changes to the content of the document for that release.
 |            |                    | Major changes:                                                   |
 |            |                    |                                                                  |
 |            |                    | 1. New Licence_, with relative explanation in                    |
-|            |                    |    `About the License`_.                                         |
+|            |                    |    `About the license`_.                                         |
 |            |                    |                                                                  |
-|            |                    | 2. New sections on Contributions_, `Trademark Notice`_, and      |
+|            |                    | 2. New sections on Contributions_, `Trademark notice`_, and      |
 |            |                    |    Copyright_.                                                   |
 |            |                    |                                                                  |
 |            |                    | 3. Specify that the frame chain should use the signed return     |
-|            |                    |    address (`The Frame Pointer`_)                                |
+|            |                    |    address (`The Frame Pointer`_).                               |
 |            |                    |                                                                  |
 |            |                    | 4. Add description of half-precision Brain floating-point format |
-|            |                    |    (`Half-precision Floating Point`_, `Half-precision Format     |
-|            |                    |    Compatibility`_, `Arithmetic Types`_, `Types Varying by Data  |
-|            |                    |    Model`_, `APPENDIX Support for Advanced SIMD Extensions`_)    |
+|            |                    |    (`Half-precision Floating Point`_, `Half-precision format     |
+|            |                    |    compatibility`_, `Arithmetic types`_, `Types varying by data  |
+|            |                    |    model`_, `APPENDIX Support for Advanced SIMD Extensions`_).   |
 |            |                    |                                                                  |
 |            |                    | 5. Update C++ mangling to reflect existing practice              |
-|            |                    |    (`APPENDIX C++ Mangling`_).                                   |
+|            |                    |    (`APPENDIX C++ mangling`_).                                   |
 |            |                    |                                                                  |
 |            |                    | Minor changes:                                                   |
 |            |                    |                                                                  |
-|            |                    | 1. The section `Bit-fields Subdivision`_ has been renamed to make|
+|            |                    | 1. The section `Bit-fields subdivision`_ has been renamed to make|
 |            |                    |    the associated implicit link target unique and avoid clashing |
 |            |                    |    with the one of `Bit-fields`_.                                |
 |            |                    |                                                                  |
@@ -237,7 +237,7 @@ changes to the content of the document for that release.
 +------------+--------------------+------------------------------------------------------------------+
 | 2020Q3     | 1st October 2020   | Specify ABI handling for 8.7-A's new FPCR bits.                  |
 +------------+--------------------+------------------------------------------------------------------+
-| 2021Q1     | 12\ :sup:`th` April| - Clarify rule C.4 of the `Parameter Passing Rules`_ when there  |
+| 2021Q1     | 12\ :sup:`th` April| - Clarify rule C.4 of the `Parameter passing rules`_ when there  |
 |            | 2021               |   is an overaligned HFA.                                         |
 |            |                    | - Minor formatting changes.                                      |
 +------------+--------------------+------------------------------------------------------------------+
@@ -266,10 +266,10 @@ This document refers to, or is referred to by, the following documents:
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 
 
-Terms and Abbreviations
+Terms and abbreviations
 -----------------------
 
-This Document Uses the Following Abbreviations
+This document uses the following abbreviations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A32
@@ -349,7 +349,7 @@ LP64
 LLP64
    Windows-like data model where int and long int are 32-bit, but long long int and pointer are 64-bit.
 
-This Document Uses the Following Terms
+This document uses the following terms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Routine, subroutine
@@ -370,7 +370,7 @@ Activation record, call frame
 PIC, PID
    Position-independent code, position-independent data.
 
-Argument, Parameter
+Argument, parameter
    The terms argument and parameter are used interchangeably. They may denote a formal parameter of a routine given the value of the actual parameter when the routine is called, or an actual parameter, according to context.
 
 Externally visible [interface]
@@ -420,7 +420,7 @@ This standard specifies the base for a family of *Procedure Call Standard* (PCS)
 
 - Byte order.
 
-- Size and format of data types: pointer, long int and wchar\_t and the format of half-precision floating-point values. Here we define three data models (see `The Standard Variants`_ and `Arm C and C++ Language Mappings`_ for details):
+- Size and format of data types: pointer, long int and wchar\_t and the format of half-precision floating-point values. Here we define three data models (see `The standard variants`_ and `Arm C and C++ language mappings`_ for details):
 
     - ILP32: **(Beta)** SysV-like variant where int, long int and pointer are 32-bit.
 
@@ -452,7 +452,7 @@ Introduction
 The AAPCS64 is the first revision of Procedure Call standard for the Arm 64-bit Architecture. It forms part of the complete ABI specification for the Arm 64-bit Architecture.
 
 
-Design Goals
+Design goals
 ------------
 
 The goals of the AAPCS64 are to:
@@ -481,7 +481,7 @@ Conformance to the AAPCS64 requires that [#aapcs64-f2]_:
 
    PageBreak
 
-Data Types and Alignment
+Data types and alignment
 ========================
 
 Fundamental Data Types
@@ -494,7 +494,7 @@ Fundamental Data Types
 .. table:: Table 1, Byte size and byte alignment of fundamental data types
 
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
-  | Type Class             | Machine Type                          | Byte size  | Natural Alignment (bytes) | Note                                          |
+  | Type class             | Machine type                          | Byte size  | Natural Alignment (bytes) | Note                                          |
   +========================+=======================================+============+===========================+===============================================+
   | Integral               | Unsigned byte                         | 1          | 1                         | Character                                     |
   |                        +---------------------------------------+------------+---------------------------+                                               |
@@ -516,7 +516,7 @@ Fundamental Data Types
   |                        +---------------------------------------+------------+---------------------------+                                               |
   |                        | Signed quad-word                      | 16         | 16                        |                                               |
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
-  | Floating Point         | Half precision                        | 2          | 2                         | See `Half-precision Floating Point`_.         |
+  | Floating Point         | Half precision                        | 2          | 2                         | See `Half-precision Floating Point`_          |
   |                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
   |                        | Single precision                      | 4          | 4                         | IEEE 754-2008                                 |
   |                        +---------------------------------------+------------+---------------------------+                                               |
@@ -626,7 +626,7 @@ Pointers
 
 Code and data pointers are either 64-bit or 32-bit unsigned types [#aapcs64-f4]_. A NULL pointer is always represented by all-bits-zero.
 
-All 64 bits in a 64-bit pointer are always significant. When tagged addressing is enabled, a tag is part of a pointer’s value for the purposes of pointer arithmetic. The result of subtracting or comparing two pointers with different tags is unspecified. See also `Memory Addresses`_, below. A 32-bit pointer does not support tagged addressing.
+All 64 bits in a 64-bit pointer are always significant. When tagged addressing is enabled, a tag is part of a pointer’s value for the purposes of pointer arithmetic. The result of subtracting or comparing two pointers with different tags is unspecified. See also `Memory addresses`_, below. A 32-bit pointer does not support tagged addressing.
 
 .. note::
 
@@ -635,7 +635,7 @@ All 64 bits in a 64-bit pointer are always significant. When tagged addressing i
     The A64 load and store instructions always use the full 64-bit base register and perform a 64-bit address calculation. Care must be taken within ILP32 to ensure that the upper 32 bits of a base register are zero and 32-bit register offsets are sign-extended to 64 bits (immediate offsets are implicitly extended).
 
 
-Byte Order ("Endianness")
+Byte order ("Endianness")
 -------------------------
 
 From a software perspective, memory is an array of bytes, each of which is addressable. This ABI supports two views of memory implemented by the underlying hardware.
@@ -702,7 +702,7 @@ Arrays
 
 - The size of an array shall be the size of the base type multiplied by the number of elements in the array.
 
-Bit-fields Subdivision
+Bit-fields subdivision
 ^^^^^^^^^^^^^^^^^^^^^^
 
 A member of an aggregate that is a Fundamental Data Type may be subdivided into bit-fields; if there are unused portions of such a member that are sufficient to start the following member at its Natural Alignment then the following member may use the unallocated portion. For the purposes of calculating the alignment of the aggregate the type of the member shall be the Fundamental Data Type upon which the bit-field is based [#aapcs64-f6]_. The layout of bit-fields within an aggregate is defined by the appropriate language binding.
@@ -710,7 +710,7 @@ A member of an aggregate that is a Fundamental Data Type may be subdivided into 
 Homogeneous Aggregates
 ^^^^^^^^^^^^^^^^^^^^^^
 
-A Homogeneous Aggregate is a Composite Type where all of the Fundamental Data Types of the members that compose the type are the same. The test for homogeneity is applied after data layout is completed and without regard to access control or other source language restrictions. Note that for short-vector types the fundamental types are 64-bit vector and 128-bit vector; the type of the elements in the short vector does not form part of the test for homogeneity.
+A Homogeneous Aggregate is a composite type where all of the Fundamental Data Types of the members that compose the type are the same. The test for homogeneity is applied after data layout is completed and without regard to access control or other source language restrictions. Note that for short-vector types the fundamental types are 64-bit vector and 128-bit vector; the type of the elements in the short vector does not form part of the test for homogeneity.
 
 A Homogeneous Aggregate has a Base Type, which is the Fundamental Data Type of each Member. The overall size is the size of the Base Type multiplied by the number uniquely addressable Members; its alignment will be the alignment of the Base Type.
 
@@ -816,7 +816,7 @@ There are thirty-one, 64-bit, general-purpose (integer) registers visible to the
 
 The first eight registers, r0-r7, are used to pass argument values into a subroutine and to return result values from a function. They may also be used to hold intermediate values within a routine (but, in general, only between subroutine calls).
 
-Registers r16 (IP0) and r17 (IP1) may be used by a linker as a scratch register between a routine and any subroutine it calls (for details, see `Use of IP0 and IP1 by the Linker`_). They can also be used within a routine to hold intermediate values between subroutine calls.
+Registers r16 (IP0) and r17 (IP1) may be used by a linker as a scratch register between a routine and any subroutine it calls (for details, see `Use of IP0 and IP1 by the linker`_). They can also be used within a routine to hold intermediate values between subroutine calls.
 
 The role of register r18 is platform specific. If a platform ABI has need of a dedicated general-purpose register to carry inter-procedural state (for example, the thread context) then it should use this register for that purpose. If the platform ABI has no such requirements, then it should use r18 as an additional temporary register. The platform ABI specification must document the usage for this register.
 
@@ -836,7 +836,7 @@ The NZCV register is a global condition flag register with the following propert
 
 - The N, Z, C and V flags are undefined on entry to and return from a public interface.
 
-SIMD and Floating-Point Registers
+SIMD and Floating-Point registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Arm 64-bit architecture also has a further thirty-two registers, v0-v31, which can be used by SIMD and Floating-Point operations. The precise name of the register will change indicating the size of the access.
@@ -866,13 +866,13 @@ thread-local storage on platforms where multi-threaded code is
 supported.  The exact location of such information is platform
 specific.
 
-Scalable Vector Registers
+Scalable vector registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Arm 64-bit architecture also defines an optional set of thirty-two
 scalable vector registers, z0-z31. Each register extends the
 corresponding SIMD and Floating-Point register so that it can hold the
-contents of a single Scalable Vector Type (see `Scalable Vectors`_).
+contents of a single Scalable Vector Type (see `Scalable vectors`_).
 That is, scalable vector register z0 is an extension of SIMD and
 Floating-Point register v0.
 
@@ -882,14 +882,14 @@ at least one argument in scalable vector registers or scalable predicate
 registers, or if it is a function that returns results in such registers,
 it must ensure that the entire contents of z8-z23 are preserved across
 the call. In other cases it need only preserve the low 64 bits of z8-z15,
-as described in `SIMD and Floating-Point Registers`_.
+as described in `SIMD and Floating-Point registers`_.
 
 Scalable Predicate Registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Arm 64-bit architecture defines an optional set of sixteen scalable
 predicate registers p0-p15. These registers are available if and only if
-the scalable vector registers are available (see `Scalable Vector Registers`_).
+the scalable vector registers are available (see `Scalable vector registers`_).
 Each register can store the contents of a Scalable Predicate Type
 (see `Scalable Predicates`_).
 
@@ -924,7 +924,7 @@ The heap is an area (or areas) of memory that are managed by the process itself 
 A conforming program must only execute instructions that are in areas of memory designated to contain code.
 
 
-Memory Addresses
+Memory addresses
 ^^^^^^^^^^^^^^^^
 
 The address space may consist of one or more disjoint regions. No region may span address zero (although one region may start at zero).
@@ -968,7 +968,7 @@ The stack must also conform to the following constraint at a public interface:
 The Frame Pointer
 ^^^^^^^^^^^^^^^^^
 
-Conforming code shall construct a linked list of stack-frames. Each frame shall link to the frame of its caller by means of a frame record of two 64-bit values on the stack (independent of the data model). The frame record for the innermost frame (belonging to the most recent routine invocation) shall be pointed to by the Frame Pointer register (FP). The lowest addressed double-word shall point to the previous frame record and the highest addressed double-word shall contain the value passed in LR on entry to the current function. If code uses the pointer signing extension to sign return addresses, the value in LR must be signed before storing it in the frame record. The end of the frame record chain is indicated by the address zero in the address for the previous frame. The location of the frame record within a stack frame is not specified.
+Conforming code shall construct a linked list of stack-frames. Each frame shall link to the frame of its caller by means of a frame record of two 64-bit values on the stack (independent of the data model). The frame record for the innermost frame (belonging to the most recent routine invocation) shall be pointed to by the frame pointer register (FP). The lowest addressed double-word shall point to the previous frame record and the highest addressed double-word shall contain the value passed in LR on entry to the current function. If code uses the pointer signing extension to sign return addresses, the value in LR must be signed before storing it in the frame record. The end of the frame record chain is indicated by the address zero in the address for the previous frame. The location of the frame record within a stack frame is not specified.
 
 .. note:: There will always be a short period during construction or destruction of each frame record during which the frame pointer will point to the caller’s record.
 
@@ -982,12 +982,12 @@ A platform shall mandate the minimum level of conformance with respect to the ma
 
 - It may elect not to maintain a frame chain and to use the frame pointer register as a general-purpose callee-saved register.
 
-Subroutine Calls
+Subroutine calls
 ----------------
 
 The A64 instruction set contains primitive subroutine call instructions, BL and BLR, which performs a branch-with-link operation. The effect of executing BL is to transfer the sequentially next value of the program counter—the return address—into the link register (LR) and the destination address into the program counter.  The effect of executing BLR is similar except that the new PC value is read from the specified register.
 
-Use of IP0 and IP1 by the Linker
+Use of IP0 and IP1 by the linker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The A64 branch instructions are unable to reach every destination in the address space, so it may be necessary for the linker to insert a veneer between a calling routine and a called subroutine. Veneers may also be needed to support dynamic linking. Any veneer inserted must preserve the contents of all registers except IP0, IP1 (r16, r17) and the condition code flags; a conforming program must assume that a veneer that alters IP0 and/or IP1 may be inserted at any branch instruction that is exposed to a relocation that supports long branches.
@@ -997,19 +997,19 @@ The A64 branch instructions are unable to reach every destination in the address
     R\_AARCH64\_CALL26, and R\_AARCH64\_JUMP26 are the ELF relocation types with this property.
 
 
-Parameter Passing
+Parameter passing
 -----------------
 
 The base standard provides for passing arguments in general-purpose registers (r0-r7), SIMD/floating-point registers (v0-v7), scalable vector registers (z0-z7, overlaid on v0-v7), scalable predicate registers (p0-p3), and on the stack. For subroutines that take a small number of small parameters, only registers are used.
 
-Variadic Subroutines
+Variadic subroutines
 ^^^^^^^^^^^^^^^^^^^^
 
-A Variadic subroutine is a routine that takes a variable number of parameters. The full parameter list is known by the caller, but the callee only knows a minimum number of arguments will be passed and will determine the additional arguments based on the values passed in other arguments. The two classes of arguments are known as Named arguments (these form the minimum set) and Anonymous arguments (these are the optional additional arguments).
+A variadic subroutine is a routine that takes a variable number of parameters. The full parameter list is known by the caller, but the callee only knows a minimum number of arguments will be passed and will determine the additional arguments based on the values passed in other arguments. The two classes of arguments are known as Named arguments (these form the minimum set) and Anonymous arguments (these are the optional additional arguments).
 
 In this standard a non-variadic subroutine can be considered to be identical to a variadic subroutine that takes no optional arguments.
 
-Parameter Passing Rules
+Parameter passing rules
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 Parameter passing is defined as a two-level conceptual model:
@@ -1018,7 +1018,7 @@ Parameter passing is defined as a two-level conceptual model:
 
 - The marshaling of machine types to produce the final parameter list.
 
-The mapping from a source language type onto a machine type is specific for each language and is described separately (the C and C++ language bindings are described in `Arm C and C++ Language Mappings`_). The result is an ordered list of arguments that are to be passed to the subroutine.
+The mapping from a source language type onto a machine type is specific for each language and is described separately (the C and C++ language bindings are described in `Arm C and C++ language mappings`_). The result is an ordered list of arguments that are to be passed to the subroutine.
 
 For a caller, sufficient stack space to hold stacked argument values is assumed to have been allocated prior to marshaling: in practice the amount of stack space required cannot be known until after the argument marshaling has been completed. A callee is permitted to modify any stack space used for receiving parameter values from the caller.
 
@@ -1099,13 +1099,13 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   | argument is assigned to a stack slot any unused padding bytes have unspecified value.                          |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is a Half-, Single-, Double- or Quad- precision Floating-point or      |
-  |                       | Short Vector Type and the NSRN is less than 8, then the argument is allocated to the   |
+  |                       | short vector type and the NSRN is less than 8, then the argument is allocated to the   |
   | C.1                   | least significant bits of register v[NSRN]. The NSRN is incremented by one. The        |
   |                       | argument has now been allocated.                                                       |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is an HFA or an HVA and there are sufficient unallocated SIMD and      |
   |                       | Floating-point registers (NSRN + number of members ≤ 8), then the argument is          |
-  | C.2                   | allocated to SIMD and Floating-point Registers (with one register per member of the    |
+  | C.2                   | allocated to SIMD and Floating-point registers (with one register per member of the    |
   |                       | HFA or HVA). The NSRN is incremented by the number of registers used. The argument has |
   |                       | now been allocated.                                                                    |
   +-----------------------+----------------------------------------------------------------------------------------+
@@ -1113,8 +1113,8 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   |                       | argument is rounded up to the nearest multiple of 8 bytes.                             |
   | C.3                   |                                                                                        |
   +-----------------------+----------------------------------------------------------------------------------------+
-  |                       | If the argument is an HFA, an HVA, a Quad-precision Floating-point or Short Vector     |
-  |                       | Type then the NSAA is rounded up to the next multiple of 8 if its natural              |
+  |                       | If the argument is an HFA, an HVA, a Quad-precision Floating-point or short vector     |
+  |                       | type then the NSAA is rounded up to the next multiple of 8 if its natural              |
   | C.4                   | alignment is ≤ 8 or the next multiple of 16 if its natural alignment is ≥ 16.          |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is a Half- or Single- precision Floating Point type, then the size of  |
@@ -1123,7 +1123,7 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   |                       | unspecified values.                                                                    |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is an HFA, an HVA, a Half-, Single-, Double- or Quad- precision        |
-  |                       | Floating-point or Short Vector Type, then the argument is copied to memory at the      |
+  |                       | Floating-point or short vector type, then the argument is copied to memory at the      |
   | C.6                   | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
   |                       | now been allocated.                                                                    |
   +-----------------------+----------------------------------------------------------------------------------------+
@@ -1203,7 +1203,7 @@ Several observations can be made:
 
 - Both before and after the layout of each argument, then NSAA will have a minimum alignment of 8.
 
-Result Return
+Result return
 -------------
 
 The manner in which a result is returned from a function is determined by the type of that result:
@@ -1214,7 +1214,7 @@ The manner in which a result is returned from a function is determined by the ty
 
      void func(T arg)
 
-  would require that arg be passed as a value in a register (or set of registers) according to the rules in `Parameter Passing`_, then the result is returned in the same registers as would be used for such an argument.
+  would require that arg be passed as a value in a register (or set of registers) according to the rules in `Parameter passing`_, then the result is returned in the same registers as would be used for such an argument.
 
 - Otherwise, the caller shall reserve a block of memory of sufficient size and alignment to hold the result. The address of the memory block shall be passed as an additional argument to the function in x8. The callee may modify the result memory block at any point during the execution of the subroutine (there is no requirement for the callee to preserve the value stored in x8).
 
@@ -1229,10 +1229,10 @@ Interworking between data model variants of AAPCS64 (although technically possib
 
    PageBreak
 
-The Standard Variants
+The standard variants
 =====================
 
-Half-precision Format Compatibility
+Half-precision format compatibility
 -----------------------------------
 
 The set of values that can be represented in Arm Alternative format differs from the set that can be represented in IEEE754-2008 format rendering code built to use either format incompatible with code that uses the other. Nevertheless, most code will make no use of either format and will therefore be compatible with both variants.
@@ -1240,26 +1240,26 @@ The set of values that can be represented in Arm Alternative format differs from
 sizeof(long), sizeof(wchar\_t), pointers
 ----------------------------------------
 
-See `Types Varying by Data Model`_.
+See `Types varying by data model`_.
 
 size\_t, ptrdiff\_t
 -------------------
 
-See `Arm C and C++ Language Mappings`_.
+See `Arm C and C++ language mappings`_.
 
 .. raw:: pdf
 
    PageBreak
 
-Arm C and C++ Language Mappings
+Arm C and C++ language mappings
 ===============================
 
 This section describes how Arm compilers map C language features onto the machine-level standard. To the extent that C++ is a superset of the C language it also describes the mapping of C++ language features.
 
-Data Types
+Data types
 ----------
 
-Arithmetic Types
+Arithmetic types
 ^^^^^^^^^^^^^^^^
 
 The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3`_:
@@ -1287,19 +1287,19 @@ The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``unsigned int``             | unsigned word                           |                                                                        |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``[signed] long``            | signed word or signed double-word       | See `Types Varying by Data Model`_                                     |
+  | ``[signed] long``            | signed word or signed double-word       | See `Types varying by data model`_                                     |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``unsigned long``            | unsigned word or unsigned double-word   | See `Types Varying by Data Model`_                                     |
+  | ``unsigned long``            | unsigned word or unsigned double-word   | See `Types varying by data model`_                                     |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``[signed] long long``       | signed double-word                      | C99 Only                                                               |
+  | ``[signed] long long``       | signed double-word                      | C99 only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``unsigned long long``       | unsigned double-word                    | C99 Only                                                               |
+  | ``unsigned long long``       | unsigned double-word                    | C99 only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``__int128``                 | signed quad-word                        | Arm extension (used for LDXP/STXP)                                     |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``__uint128``                | unsigned quad-word                      | Arm extension (used for LDXP/STXP)                                     |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``__fp16``                   | half precision (IEEE754-2008 format or  | Arm extension. See `Types Varying by Data Model`_                      |
+  | ``__fp16``                   | half precision (IEEE754-2008 format or  | Arm extension. See `Types varying by data model`_                      |
   |                              | Arm Alternative Format)                 |                                                                        |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``__bf16``                   | half precision Brain floating-point     | Arm extension.                                                         |
@@ -1311,49 +1311,49 @@ The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``long double``              | quad precision (IEEE 754-2008)          |                                                                        |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``_Decimal32``               | 32-bit decimal fp (IEEE 754-2008)       | C2x Only                                                               |
+  | ``_Decimal32``               | 32-bit decimal fp (IEEE 754-2008)       | C2x only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``_Decimal64``               | 64-bit decimal fp (IEEE 754-2008)       | C2x Only                                                               |
+  | ``_Decimal64``               | 64-bit decimal fp (IEEE 754-2008)       | C2x only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``_Decimal128``              | 128-bit decimal fp (IEEE 754-2008)      | C2x Only                                                               |
+  | ``_Decimal128``              | 128-bit decimal fp (IEEE 754-2008)      | C2x only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``float _Imaginary``         | single precision (IEEE 754)             | C99 Only                                                               |
+  | ``float _Imaginary``         | single precision (IEEE 754)             | C99 only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``double _Imaginary``        | double precision (IEEE 754)             | C99 Only                                                               |
+  | ``double _Imaginary``        | double precision (IEEE 754)             | C99 only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``long double _Imaginary``   | quad precision (IEEE 754-2008)          | C99 Only                                                               |
+  | ``long double _Imaginary``   | quad precision (IEEE 754-2008)          | C99 only                                                               |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``float _Complex``           | 2 single precision (IEEE 754)           | C99 Only. Layout is                                                    |
+  | ``float _Complex``           | 2 single precision (IEEE 754)           | C99 only. Layout is                                                    |
   |                              |                                         |                                                                        |
   |                              |                                         | .. code-block:: c                                                      |
   |                              |                                         |                                                                        |
   |                              |                                         |    struct {float re;                                                   |
   |                              |                                         |            float im;};                                                 |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``double _Complex``          | 2 double precision (IEEE 754)           | C99 Only. Layout is                                                    |
+  | ``double _Complex``          | 2 double precision (IEEE 754)           | C99 only. Layout is                                                    |
   |                              |                                         |                                                                        |
   |                              |                                         | .. code-block:: c                                                      |
   |                              |                                         |                                                                        |
   |                              |                                         |    struct {double re;                                                  |
   |                              |                                         |            double im;};                                                |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``long double _Complex``     | 2 quad precision (IEEE 754-2008)        | C99 Only. Layout is                                                    |
+  | ``long double _Complex``     | 2 quad precision (IEEE 754-2008)        | C99 only. Layout is                                                    |
   |                              |                                         |                                                                        |
   |                              |                                         | .. code-block:: c                                                      |
   |                              |                                         |                                                                        |
   |                              |                                         |    struct {long double re;                                             |
   |                              |                                         |            long double im;};                                           |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``_Bool/bool``               | unsigned byte                           | C99/C++ Only. False has value 0 and True has value 1.                  |
+  | ``_Bool/bool``               | unsigned byte                           | C99/C++ only. False has value 0 and True has value 1.                  |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``wchar_t``                  | unsigned halfword or unsigned word      | Built-in in C++, typedef in C, type is platform specific;              |
-  |                              |                                         | See `Types Varying by Data Model`_                                     |
+  |                              |                                         | See `Types varying by data model`_                                     |
   +------------------------------+-----------------------------------------+------------------------------------------------------------------------+
 
 A platform ABI may specify a different combination of primitive variants but we discourage this.
 
 
-Types Varying by Data Model
+Types varying by data model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The C/C++ arithmetic and pointer types whose machine type depends on the data model are shown in `Table 4`_, C/C++ type variants by data model.
@@ -1386,7 +1386,7 @@ A C++ reference type is implemented as a data pointer to the type.
   | ``T&``              | 32-bit data pointer                 | 64-bit data pointer                 | 64-bit data pointer    | C++ reference                |
   +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
 
-Enumerated Types
+Enumerated types
 ^^^^^^^^^^^^^^^^
 
 The type of the storage container for an enumerated type is a word (int or unsigned int) for all enumeration types. The container type shall be unsigned int unless that is unable to represent all the declared values in the enumerated type.
@@ -1396,7 +1396,7 @@ If the set of values in an enumerated type cannot be represented using either in
 The size and alignment of an enumeration type shall be the size and alignment of the container type. If a negative number is assigned to an unsigned container the behavior is undefined.
 
 
-Additional Types
+Additional types
 ^^^^^^^^^^^^^^^^
 
 Both C and C++ require that a system provide additional type definitions that are defined in terms of the base types as shown in `Table 5`_, Additional data types. Normally these types are defined by inclusion of the appropriate header file. However, in C++ the underlying type of size\_t can be exposed without the use of any header files simply by using ::operator new().
@@ -1429,7 +1429,7 @@ The definition of va\_list has implications for the internal implementation in t
   |                   |                        |                                                            |
   |    va_list        |    struct __va_list {  | A ``va_list`` may address any object in a parameter list.  |
   |                   |       void *__stack;   | In C++, ``__va_list`` is in namespace std.                 |
-  |                   |       void *__gr_top;  | See `APPENDIX Variable Argument Lists`_.                   |
+  |                   |       void *__gr_top;  | See `APPENDIX Variable argument lists`_.                   |
   |                   |       void *__vr_top;  |                                                            |
   |                   |       int   __gr_offs; |                                                            |
   |                   |       int   __vr_offs; |                                                            |
@@ -1437,7 +1437,7 @@ The definition of va\_list has implications for the internal implementation in t
   |                   |                        |                                                            |
   +-------------------+------------------------+------------------------------------------------------------+
 
-Volatile Data Types
+Volatile data types
 ^^^^^^^^^^^^^^^^^^^
 
 A data type declaration may be qualified with the volatile type qualifier. The compiler may not remove any access to a volatile data type unless it can prove that the code containing the access will never be executed; however, a compiler may ignore a volatile qualification of an automatic variable whose address is never taken unless the function calls setjmp(). A volatile qualification on a structure or union shall be interpreted as applying the qualification recursively to each of the fundamental data types of which it is composed. Access to a volatile-qualified fundamental data type must always be made by accessing the whole type.
@@ -1447,7 +1447,7 @@ The behavior of assigning to or from an entire structure or union that contains 
 The memory system underlying the processor may have a restricted bus width to some or all of memory. The only guarantee applying to volatile types in these circumstances are that each byte of the type shall be accessed  exactly once for each access mandated above, and that any bytes containing volatile data that lie outside the type shall not be accessed. Nevertheless, a compiler shall use an instruction that will access the type exactly.
 
 
-Structure, Union and Class Layout
+Structure, union and class layout
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Structures and unions are laid out according to the Fundamental Data Types of which they are composed (see `Composite Types`_). All members are laid out in declaration order. Additional rules applying to C++ non-POD class layout are described in `CPPABI64`_.
@@ -1610,7 +1610,7 @@ If the containers of two volatile bit-fields overlap then access to one bit-fiel
 
 If the container of a non-volatile bit-field overlaps a volatile bit-field then it is undefined whether access to the non-volatile field will cause the volatile field to be accessed.
 
-Argument Passing Conventions
+Argument passing conventions
 ----------------------------
 
 The argument list for a subroutine call is formed by taking the user arguments in the order in which they are specified.
@@ -1621,7 +1621,7 @@ The argument list for a subroutine call is formed by taking the user arguments i
 
 - The rules for passing Pure Scalable Types depend on whether the arguments are named. It is an error to pass such types to an unprototyped function.
 
-The argument list is then processed according to the standard rules for procedure calls (see `Parameter Passing`_) or the appropriate variant.
+The argument list is then processed according to the standard rules for procedure calls (see `Parameter passing`_) or the appropriate variant.
 
 .. raw:: pdf
 
@@ -1696,7 +1696,7 @@ The header file ``arm_neon.h`` also defines a number of intrinsic functions that
   | __Bfloat16x8\_t | bfloat16x8\_t     | half-precison Brain float| 8         |
   +-----------------+-------------------+--------------------------+-----------+
 
-APPENDIX Support for Scalable Vectors
+APPENDIX Support for Scalable vectors
 =====================================
 
 As an optional extension, the AArch64 architecture supports a number of
@@ -1760,7 +1760,7 @@ document.
   +---------------------+-----------------------+-------------------------------------------+----------------+
 
 
-APPENDIX C++ Mangling
+APPENDIX C++ mangling
 =====================
 
 For C++ mangling purposes the user-friendly names defined in `APPENDIX Support for Advanced SIMD Extensions`_ and `APPENDIX Support for Scalable Vectors`_ are treated as though the equivalent internal name was specified. Unless the platform ABI specifies otherwise, the types are treated as *vendor extended types*, prefixed by ``u``. For example:
@@ -1790,16 +1790,16 @@ The SVE tuple types are mangled using their ``arm_sve.h`` names
 
    PageBreak
 
-APPENDIX Variable Argument Lists
+APPENDIX Variable argument lists
 ================================
-Languages such as C and C++ permit routines that take a variable number of arguments (that is, the number of parameters is controlled by the caller rather than the callee). Furthermore, they may then pass some or even all   of these parameters as a block to further subroutines to process the list. If a routine shares any of its optional arguments with other routines then a parameter control block needs to be created as specified in `Arm C and C++ Language Mappings`_. The remainder of this appendix is informative.
+Languages such as C and C++ permit routines that take a variable number of arguments (that is, the number of parameters is controlled by the caller rather than the callee). Furthermore, they may then pass some or even all   of these parameters as a block to further subroutines to process the list. If a routine shares any of its optional arguments with other routines then a parameter control block needs to be created as specified in `Arm C and C++ language mappings`_. The remainder of this appendix is informative.
 
-Register Save Areas
+Register save areas
 -------------------
 
 The prologue of a function which accepts a variable argument list and which invokes the va\_start macro is expected to save the incoming argument registers to two register save areas within its own stack frame: one area to hold the 64-bit general registers xn-x7, the other to hold the 128-bit FP/SIMD registers vn-v7. Only parameter registers beyond those which hold the named parameters need be saved, and if a function is known never to accept parameters in registers of that class, then that register save area may be omitted altogether. In each area the registers are saved in ascending order. The memory format of FP/SIMD registers save area must be as if each register were saved using the integer str instruction for the entire (ie Q) register.
 
-The va\_list Type
+The va\_list type
 -----------------
 
 The va\_list type may refer to any parameter in a parameter list, which depending on its type and position in the argument list may be in one of three memory locations: the current function’s general register argument save area, its FP/SIMD register argument save area, or the calling function’s outgoing stack argument area.
@@ -1814,7 +1814,7 @@ The va\_list type may refer to any parameter in a parameter list, which dependin
         int vr_offs; // offset from  vr_top to next FP/SIMD register arg
     } va_list;
 
-The va\_start() Macro
+The va\_start() macro
 ---------------------
 
 The ``va_start`` macro shall initialize the fields of its va\_list argument as follows, where named\_gr represents the number of general registers known to hold named incoming arguments and named\_vr the number of FP/SIMD registers known to hold named incoming arguments.
@@ -1844,7 +1844,7 @@ Focussing on just the top of callee’s stack frame, the following figure illust
 
     The va\_list
 
-The va\_arg() Macro
+The va\_arg() macro
 -------------------
 
 The algorithm to implement the generic ``va_arg(ap,type)`` macro is then most easily described using a C-like "pseudocode", as follows:
