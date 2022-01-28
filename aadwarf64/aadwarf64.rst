@@ -179,12 +179,11 @@ The following support level definitions are used by the Arm ABI specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-Content relating to SVE and Pointer Authentication should be considered as
-having a **Beta** support level. This includes:
+Content relating to SVE should be considered as having a **Beta** support level.
+This includes:
 
 * DWARF register names marked as **Beta** in `DWARF register names`_
-* Call frame instructions (`Call frame instructions`_)
-* DWARF expression operations (`DWARF expression operations`_)
+* Recommended expression of the vector types (`Vector types`_)
 
 All other content in this document is at the **Release** quality level.
 
@@ -221,6 +220,9 @@ changes to the content of the document for that release.
   |        |                             | - AArch64 DWARF pointer signing        |
   |        |                             |   operations table columns switched    |
   |        |                             | - Add Thread ID register numbers.      |
+  +--------+-----------------------------+----------------------------------------+
+  | 2022Q1 | TBD                         | - Release of Pointer authentication.   |
+  |        |                             |                                        |
   +--------+-----------------------------+----------------------------------------+
 
 
@@ -372,7 +374,7 @@ integers.
    +----------------+--------------------------+----------------------------------------------------+
    | 33             | ELR_mode                 | The current mode exception link register           |
    +----------------+--------------------------+----------------------------------------------------+
-   | 34             | RA_SIGN_STATE (**Beta**) | Return address signed state pseudo-register        |
+   | 34             | RA_SIGN_STATE            | Return address signed state pseudo-register        |
    |                |                          | (`Note 8`_)                                        |
    +----------------+--------------------------+----------------------------------------------------+
    | 35             | TPIDRRO_ELO              | EL0 Read-Only Software Thread ID register          |
@@ -564,8 +566,8 @@ a CIE augmentation string.
 
 .. _Call frame instructions:
 
-Call frame instructions (**Beta**)
-----------------------------------
+Call frame instructions
+-----------------------
 
 This ABI defines one vendor call frame instruction
 ``DW_CFA_AARCH64_negate_ra_state``.
@@ -585,8 +587,8 @@ RA_SIGN_STATE pseudo-register. It does not take any operands.
 
 .. _DWARF expression operations:
 
-DWARF expression operations (**Beta**)
---------------------------------------
+DWARF expression operations
+---------------------------
 
 This ABI defines one vendor DWARF expression operation
 ``DW_OP_AARCH64_operation``.
@@ -646,6 +648,8 @@ salt, and the result is pushed to the stack.
     +-------------------------------------+---------+
     | Sign address with Generic key       | ``0x4`` |
     +-------------------------------------+---------+
+
+.. _Vector types:
 
 Vector types (**Beta**)
 -----------------------
