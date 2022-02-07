@@ -584,6 +584,10 @@ This ABI defines one vendor call frame instruction
 
 The ``DW_CFA_AARCH64_negate_ra_state`` operation negates bit[0] of the
 RA_SIGN_STATE pseudo-register. It does not take any operands.
+The ``DW_CFA_AARCH64_negate_ra_state`` must not be mixed with other DWARF
+Register Rule Instructions (GDWARF_, §6.4.2.3) on the RA_SIGN_STATE
+pseudo-register in one Common Information Entry (CIE) and Frame Descriptor
+Entry (FDE) program sequence.
 
 .. _DWARF expression operations:
 
