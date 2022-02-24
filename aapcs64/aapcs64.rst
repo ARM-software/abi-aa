@@ -269,8 +269,7 @@ This document refers to, or is referred to by, the following documents:
 Terms and abbreviations
 -----------------------
 
-This document uses the following abbreviations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This document uses the following abbreviations:
 
 A32
    The instruction set named Arm in the Armv7 architecture; A32 uses 32-bit
@@ -349,8 +348,7 @@ LP64
 LLP64
    Windows-like data model where int and long int are 32-bit, but long long int and pointer are 64-bit.
 
-This document uses the following terms
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This document uses the following terms:
 
 Routine, subroutine
    A fragment of program to which control can be transferred that, on completing its task, returns control to its caller at an instruction following the call. Routine is used for clarity where there are nested calls: a routine is the caller and a subroutine is the callee.
