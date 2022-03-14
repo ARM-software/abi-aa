@@ -49,5 +49,6 @@ for doc in "${docs[@]}"; do
                        -s ${CURR_DIR}/rst2pdf-abi.style \
                        --repeat-table-rows              \
                        --default-dpi=110                \
+                       -c                               \
                        -o ${OUTPUT_DIR}/${doc}.pdf )
 done
