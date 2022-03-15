@@ -749,7 +749,7 @@ following member may use the unallocated portion.  For the purposes of
 calculating the alignment of the aggregate the type of the member shall be
 the Fundamental Data Type upon which the bit-field is based. [#aapcs32-f4]_
 The layout of bit-fields within an aggregate is defined by the appropriate
-language binding.
+language binding (see `Arm C and C++ Language Mappings`_).
 
 Homogeneous Aggregates
 ^^^^^^^^^^^^^^^^^^^^^^

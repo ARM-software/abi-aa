@@ -703,7 +703,7 @@ Arrays
 Bit-fields subdivision
 ^^^^^^^^^^^^^^^^^^^^^^
 
-A member of an aggregate that is a Fundamental Data Type may be subdivided into bit-fields; if there are unused portions of such a member that are sufficient to start the following member at its Natural Alignment then the following member may use the unallocated portion. For the purposes of calculating the alignment of the aggregate the type of the member shall be the Fundamental Data Type upon which the bit-field is based [#aapcs64-f6]_. The layout of bit-fields within an aggregate is defined by the appropriate language binding.
+A member of an aggregate that is a Fundamental Data Type may be subdivided into bit-fields; if there are unused portions of such a member that are sufficient to start the following member at its Natural Alignment then the following member may use the unallocated portion. For the purposes of calculating the alignment of the aggregate the type of the member shall be the Fundamental Data Type upon which the bit-field is based [#aapcs64-f6]_. The layout of bit-fields within an aggregate is defined by the appropriate language binding (see `Arm C and C++ Language Mappings`_).
 
 Homogeneous Aggregates
 ^^^^^^^^^^^^^^^^^^^^^^
