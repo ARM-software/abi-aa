@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-git+git://github.com/rst2pdf/rst2pdf@d9bf8cd737c11cfc572c936173228c1103344fdf
+git+https://github.com/rst2pdf/rst2pdf@d9bf8cd737c11cfc572c936173228c1103344fdf
 rstcheck
 matplotlib
 svglib
