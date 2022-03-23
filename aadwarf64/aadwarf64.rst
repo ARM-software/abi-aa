@@ -179,7 +179,7 @@ The following support level definitions are used by the Arm ABI specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-Content relating to SVE should be considered as having a **Beta** support level.
+Content relating to SVE should be considered as having **Beta** support level.
 This includes:
 
 * DWARF register names marked as **Beta** in `DWARF register names`_
