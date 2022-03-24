@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2021, Arm Limited
+# Copyright (c) 2021-2022, Arm Limited
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -65,7 +65,6 @@ def main(root, year, quarter, date_of_issue):
     for subdir, dirs, files in os.walk(root):
         for file in files:
             ext = os.path.splitext(file)[-1].lower()
-            print("ext = `{0}`".format(ext))
             if ext in [".rst", ".py"]:
                 convert_file(os.path.join(subdir, file), year, quarter, date_of_issue)
 

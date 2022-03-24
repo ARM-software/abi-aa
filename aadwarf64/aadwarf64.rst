@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2010, 2013, 2018, 2020, 2021, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2010, 2013, 2018, 2020-2022, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2021Q3
-.. |date-of-issue| replace:: 1\ :sup:`st` November 2021
-.. |copyright-date| replace:: 2010, 2013, 2018, 2020, 2021
+.. |release| replace:: 2022Q1
+.. |date-of-issue| replace:: 01\ :sup:`st` April 2022
+.. |copyright-date| replace:: 2010, 2013, 2018, 2020-2022
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
@@ -209,7 +209,7 @@ changes to the content of the document for that release.
   +--------+-----------------------------+----------------------------------------+
   | 2019Q4 | 30\ :sup:`th` January 2020  | Minor layout changes.                  |
   +--------+-----------------------------+----------------------------------------+
-  | 2020Q2 |   1\ :sup:`st` June 2020    | Add requirements for unwinding MTE     |
+  | 2020Q2 | 1\ :sup:`st` June 2020      | Add requirements for unwinding MTE     |
   |        |                             | tagged stack. Describe DWARF           |
   |        |                             | representation of SVE vector types.    |
   +--------+-----------------------------+----------------------------------------+
@@ -221,8 +221,10 @@ changes to the content of the document for that release.
   |        |                             |   operations table columns switched    |
   |        |                             | - Add Thread ID register numbers.      |
   +--------+-----------------------------+----------------------------------------+
-  | 2022Q1 | TBD                         | - Release of Pointer authentication.   |
-  |        |                             |                                        |
+  | 2022Q1 | 1\ :sup:`st` April 2022     | - Release of Pointer authentication.   |
+  |        |                             | - In `Call frame instructions`_,       |
+  |        |                             |   document a limitation of             |
+  |        |                             |   DW_CFA_AARCH64_negate_ra_state.      |
   +--------+-----------------------------+----------------------------------------+
 
 
