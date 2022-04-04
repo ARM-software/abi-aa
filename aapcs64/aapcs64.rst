@@ -878,6 +878,7 @@ z0-z7 are used to pass scalable vector arguments to a subroutine, and to
 return scalable vector results from a function. If a subroutine takes
 at least one argument in scalable vector registers or scalable predicate
 registers, or if it is a function that returns results in such registers,
+or the function attribute aarch64_sve_vector_pcs is specified,
 it must ensure that the entire contents of z8-z23 are preserved across
 the call. In other cases it need only preserve the low 64 bits of z8-z15,
 as described in `SIMD and Floating-Point registers`_.
@@ -895,6 +896,7 @@ p0-p3 are used to pass scalable predicate arguments to a subroutine and
 to return scalable predicate results from a function. If a subroutine takes
 at least one argument in scalable vector registers or scalable predicate
 registers, or if it is a function that returns results in such registers,
+or the function attribute aarch64_sve_vector_pcs is specified,
 it must ensure that p4-p15 are preserved across the call. In other cases
 it need not preserve any scalable predicate register contents.
 
