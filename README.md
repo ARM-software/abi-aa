@@ -96,7 +96,12 @@ specification                       | latest on Github                          
 Semihosting for AArch32 and AArch64 |  [semihosting](semihosting/semihosting.rst) | [2019Q4](https://developer.arm.com/documentation/100863/latest)
 
 
-### License
+## Contributions
+
+Please find contribution guidelines in https://github.com/ARM-software/abi-aa/blob/main/CONTRIBUTING.md.
+
+
+## License
 
 All the ABI documents themselves are not dependent on any assets outside of their own directory and all have their own license file included in the directory. Currently all the ABI documents are licenced under the Creative Commons Attribution-ShareAlike 4.0 International License + grant of Patent License. Contributions to these files are accepted under the same license.
 
