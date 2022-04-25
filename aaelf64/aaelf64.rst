@@ -17,6 +17,7 @@
 .. _LSB: http://www.linuxbase.org/
 .. _SYM-VER: http://www.akkadia.org/drepper/symbol-versioning
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
+.. _MTEEXTENSIONS: https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support
 
 ELF for the Arm® 64-bit Architecture (AArch64)
 **********************************************
