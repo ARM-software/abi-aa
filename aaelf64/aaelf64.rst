@@ -284,7 +284,7 @@ This document refers to, or is referred to by, the following documents.
   | TLSDESC_                     | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf                                  | TLS Descriptors for Arm. Original proposal document         |
   +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
   | MTEEXTENSIONS_               | https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support | Linux Kernel MTE core dump format                           |
-  +------------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------+
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
 
 Terms and abbreviations
 -----------------------
