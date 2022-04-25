@@ -262,27 +262,29 @@ This document refers to, or is referred to by, the following documents.
 
 .. table::
 
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | Ref                          | External reference or URL                                   | Title                                                       |
-  +==============================+=============================================================+=============================================================+
-  | AAELF64                      | Source for this document                                    | ELF for the Arm 64-bit Architecture (AArch64).              |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | AAPCS64_                     | IHI 0055                                                    | Procedure Call Standard for the Arm 64-bit Architecture     |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | Addenda32_                   | IHI 0045                                                    | Addenda to, and Errata in, the ABI for the Arm Architecture |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | PAuthABIELF64_               | pauthabielf64                                               | PAuth Extension to ELF for the Arm 64-bit Architecture      |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | LSB_                         | http://www.linuxbase.org/                                   | Linux Standards Base                                        |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | SCO-ELF_                     | http://www.sco.com/developers/gabi/                         | System V Application Binary Interface – DRAFT               |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | LINUX_ABI_                   | https://github.com/hjl-tools/linux-abi/wiki                 | Linux Extensions to gABI                                    |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | SYM-VER_                     | http://people.redhat.com/drepper/symbol-versioning          | GNU Symbol Versioning                                       |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
-  | TLSDESC_                     | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf | TLS Descriptors for Arm. Original proposal document         |
-  +------------------------------+-------------------------------------------------------------+-------------------------------------------------------------+
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | Ref                          | External reference or URL                                                                    | Title                                                       |
+  +==============================+==============================================================================================+=============================================================+
+  | AAELF64                      | Source for this document                                                                     | ELF for the Arm 64-bit Architecture (AArch64).              |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | AAPCS64_                     | IHI 0055                                                                                     | Procedure Call Standard for the Arm 64-bit Architecture     |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | Addenda32_                   | IHI 0045                                                                                     | Addenda to, and Errata in, the ABI for the Arm Architecture |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | PAuthABIELF64_               | pauthabielf64                                                                                | PAuth Extension to ELF for the Arm 64-bit Architecture      |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | LSB_                         | http://www.linuxbase.org/                                                                    | Linux Standards Base                                        |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | SCO-ELF_                     | http://www.sco.com/developers/gabi/                                                          | System V Application Binary Interface – DRAFT               |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | LINUX_ABI_                   | https://github.com/hjl-tools/linux-abi/wiki                                                  | Linux Extensions to gABI                                    |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | SYM-VER_                     | http://people.redhat.com/drepper/symbol-versioning                                           | GNU Symbol Versioning                                       |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | TLSDESC_                     | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf                                  | TLS Descriptors for Arm. Original proposal document         |
+  +------------------------------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------+
+  | MTEEXTENSIONS_               | https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support | Linux Kernel MTE core dump format                           |
+  +------------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------+
 
 Terms and abbreviations
 -----------------------
@@ -1743,7 +1745,7 @@ A segment of type ``PT_AARCH64_ARCHEXT`` (if present) contains information descr
 
 ``PT_AARCH64_UNWIND`` (if present) describes the location of a program’s exception unwind tables.
 
-``PT_AARCH64_MEMTAG_MTE`` segments (if present) hold MTE memory tags for a particular memory range. The data is packed as 2 MTE tags per byte. There can be multiple ``PT_AARCH64_MEMTAG_MTE`` segments in a core file.
+``PT_AARCH64_MEMTAG_MTE`` segments (if present) hold MTE memory tags for a particular memory range. At present they are defined for core dump files of type ET_CORE. A description of the program header and contents can be found in [MTEEXTENSIONS_].
 
 p\_flags
   There are no AArch64-specific flags.
