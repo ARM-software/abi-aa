@@ -1725,15 +1725,15 @@ p\_type
 
 .. table:: Processor-specific segment types
 
-    +-------------------------+-------------+------------------------------------------------------+
-    | Name                    | p\_type     | Meaning                                              |
-    +=========================+=============+======================================================+
-    | PT\_AARCH64\_ARCHEXT    | 0x70000000  | Reserved for architecture compatibility information  |
-    +-------------------------+-------------+------------------------------------------------------+
-    | PT\_AARCH64\_UNWIND     | 0x70000001  | Reserved for exception unwinding tables              |
-    +-------------------------+-------------+------------------------------------------------------+
-    | PT\_AARCH64\_MEMTAG_MTE | 0x70000002  | Reserved for MTE memory tag data dumps in core files |
-    +-------------------------+-------------+------------------------------------------------------+
+    +--------------------------+-------------+------------------------------------------------------+
+    | Name                     | p\_type     | Meaning                                              |
+    +==========================+=============+======================================================+
+    | PT\_AARCH64\_ARCHEXT     | 0x70000000  | Reserved for architecture compatibility information  |
+    +--------------------------+-------------+------------------------------------------------------+
+    | PT\_AARCH64\_UNWIND      | 0x70000001  | Reserved for exception unwinding tables              |
+    +--------------------------+-------------+------------------------------------------------------+
+    | PT\_AARCH64\_MEMTAG\_MTE | 0x70000002  | Reserved for MTE memory tag data dumps in core files |
+    +--------------------------+-------------+------------------------------------------------------+
 
 A segment of type ``PT_AARCH64_ARCHEXT`` (if present) contains information describing the architecture capabilities required by the executable file. Not all platform ABIs require this segment; the Linux ABI does not. If the segment is present it must appear before segment of type ``PT_LOAD``.
 
