@@ -1609,6 +1609,10 @@ The dynamic relocations for those execution environments that support only a lim
   +------------+------------+-------------------------+------------------------+-------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                    | Operation              | Comment                                   |
   +============+============+=========================+========================+===========================================+
+  | 257        | \-         | R\_<CLS>\_ABS64         | S + A                  | See note below.                           |
+  +------------+------------+-------------------------+------------------------+-------------------------------------------+
+  | \-         | 1          | R\_<CLS>\_ABS32         | S + A                  | See note below.                           |
+  +------------+------------+-------------------------+------------------------+-------------------------------------------+
   | 1024       | 180        | R\_<CLS>\_COPY          |                        | See note below.                           |
   +------------+------------+-------------------------+------------------------+-------------------------------------------+
   | 1025       | 181        | R\_<CLS>\_GLOB\_DAT     | S + A                  | See note below                            |
@@ -1634,6 +1638,8 @@ The dynamic relocations for those execution environments that support only a lim
 
 
 With the exception of ``R_<CLS>_COPY`` all dynamic relocations require that the place being relocated is an 8-byte aligned 64-bit data location in ELF64 or a 4-byte aligned 32-bit data location in ELF32.
+
+``R_<CLS>_ABS64`` and ``R_<CLS>_ABS32`` may only appear in a well-formed executable or dynamic shared object in ELF64 or ELF32 respectively. Note that for their respective file format these relocations are both static and dynamic relocations.
 
 ``R_<CLS>_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to   cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of  bytes specified by its ``st_size`` field to the place. The address of the place is then used to pre-empt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
 
