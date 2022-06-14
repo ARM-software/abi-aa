@@ -1528,7 +1528,7 @@ If a call to a subroutine S `returns normally`_, the call is said to
 “commit a lazy save” *for that particular return* if all the following
 conditions are true:
 
-* ZA is dormant on entry ot S, which implies that `TPIDR2_EL0`_ has
+* ZA is dormant on entry to S, which implies that `TPIDR2_EL0`_ has
   a nonzero value (“BLK”) on entry to S.
 
 * On return from S, all the following conditions are true:
