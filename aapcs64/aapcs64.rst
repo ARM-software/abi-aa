@@ -1515,12 +1515,12 @@ other operations by using the following procedure:
   store slices in groups of 16 regardless of whether ``num_za_save_slices``
   is a multiple of 16.
 
+  The easiest way of doing this while following the requirements
+  for `reserved bytes in the TPIDR2 block`_ is to call ``__arm_tpidr2_save``;
+  see `SME support routines`_ for details.
+
 * Set TPIDR2_EL0 to null.  At this point ZA becomes active and its
   contents can be changed.  It also becomes possible to turn ZA off.
-
-The easiest way of doing this while following the requirements
-for `reserved bytes in the TPIDR2 block`_ is to call ``__arm_tpidr2_save``;
-see `SME support routines`_ for details.
 
 .. _`committed the lazy save`:
 
@@ -1611,20 +1611,8 @@ normally.
 A subroutine S is said to “comply with the lazy saving scheme” if
 every possible call to S complies with the lazy saving scheme.
 
-One trivial way for a subroutine S to satisfy this condition is to call
-``__arm_tpidr2_save`` on entry; see `SME support routines`_ for details.
-S could do this unconditionally or when TPIDR2_EL0 is nonnull.
-In this case, S would always commit any lazy save.
-
-Another trivial way for S to meet the requirement is to save the
-`live contents of ZA`_ on entry and restore them before returning.
-In this case, S would always preserve ZA.
-
-However, from a quality of implementation perspective, subroutines
-are encouraged not to take either extreme.  The intention of the
-scheme is that S should try to pick the more efficient of the two
-return states where it can.  The following observations might affect
-this choice:
+From a quality-of-implementation perspective, the following considerations
+might affect the choice between committing a lazy save and preserving ZA:
 
 * Keeping PSTATE.ZA set to 1 for a (subjectively) “long” time
   might increase the chances that higher exception levels will need
@@ -1642,8 +1630,8 @@ is encouraged to do the following:
 * Commit the lazy save if preserving ZA would require S to restore ZA.
   For example, this would be true if S directly changes PSTATE.ZA or ZA.
 
-* Clear PSTATE.ZA after a lazy save, unless S is about to use ZA for
-  something else.
+* Clear PSTATE.ZA soon after a lazy save, unless S is about to use ZA
+  for something else.
 
 * Rely on the lazy saving scheme for any calls that S makes.  For example,
   if S is simply a wrapper around a call to another subroutine S2 and if
@@ -1690,6 +1678,7 @@ it induces ``memset`` to modify ``BLK`` before ``memset`` has returned:
 
    __arm_tpidr2_block BLK = {};  // Zero initialize.
    BLK.za_save_buffer = …pointer to a buffer…;
+   BLK.num_za_save_slices = …current ZA_LIVE…;
    TPIDR2_EL0 = &BLK;
    memset(&BLK, 0, 16);          // Non-conforming
 
@@ -2121,10 +2110,8 @@ with the subroutine having the following properties:
       slices in groups of 16 regardless of whether ``num_za_save_slices``
       is a multiple of 16.
 
-    * The subroutine clears TPIDR2_EL0.
-
-Note that the subroutine does *not* change PSTATE.ZA.  If ZA was dormant
-on entry then it remains dormant on return.
+Note that the subroutine does *not* change TPIDR2_EL0 or PSTATE.ZA.
+If ZA was dormant on entry then it remains dormant on return.
 
 .. note::
 
@@ -2169,6 +2156,8 @@ with the subroutine having the following properties:
   * Otherwise, the subroutine behaves as if it did the following:
 
     * Call ``__arm_tpidr2_save``.
+
+    * Set TPIDR2_EL0 to null.
 
     * Set PSTATE.ZA to 0.
 
@@ -2252,6 +2241,7 @@ conforming way for S to flush any dormant ZA state before S uses ZA itself:
    if (TPIDR2_EL0) {
      // Commit the lazy save.
      __arm_tpidr2_save(SM);
+     TPIDR2_EL0 = nullptr;
    }
    // Set PSTATE.ZA to 1.
    smstart_za();
