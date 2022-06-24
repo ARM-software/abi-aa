@@ -38,5 +38,5 @@ declare -a docs=(
 )
 
 for doc in "${docs[@]}"; do
-    ( set -x; rstcheck --ignore-language=c,cpp --report=warning ${ABI_ROOT}/${doc}/${doc}.rst )
+    ( set -x; rstcheck --ignore-languages=c,cpp --report-level=warning ${ABI_ROOT}/${doc}/${doc}.rst )
 done
