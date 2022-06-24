@@ -698,7 +698,7 @@ along with the assumptions that the code model may make.
   combined span of text and data segments.
 
   5. The text segment maximum size is limited to 2GiB by
-  R_AARCH64_PLT32 relocations from .ehframe sections.
+  R_AARCH64_PLT32 relocations from ``.eh_frame`` sections.
 
   6. While designing the code models it was estimated that only 2.6%
   of load modules (executables and dynamic shared objects) have a max
