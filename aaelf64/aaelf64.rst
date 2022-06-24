@@ -1316,6 +1316,7 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
     - ``symbol`` is not a pre-emptable definition.
     - ``symbol`` is not of type ``STT_GNU_IFUNC``.
+    - ``symbol`` does not have a ``st_shndx`` of ``SHN_ABS`` or the output is not required to be position independent.
     - ``symbol`` is within range of the ``R_<CLS>_ADR_PREL_PG_HI21`` relocation.
     - The addend of both relocations is zero.
 
