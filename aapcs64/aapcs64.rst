@@ -1006,6 +1006,9 @@ The thread “has access” or “does not have access” to TPIDR2_EL0
 
 If the thread has access to SME then it must also have access to TPIDR2_EL0.
 
+The |__arm_sme_state|_ function provides a simple way of determining whether
+the current thread has access to SME or TPIDR2_EL0.
+
 TPIDR2_EL0
 ^^^^^^^^^^
 
@@ -1723,30 +1726,9 @@ on normal return” column describes a requirement on callees: callees
 must ensure that PSTATE.SM has a valid value before returning to their
 caller.
 
-.. _`processor state argument`:
-
-If a subroutine has a streaming-compatible interface, the first argument
-to the subroutine is an unsigned double-word, called ``current_state``
-for ease of reference.  This argument is passed in register X0.
-
-Bit 0 of the ``current_state`` argument holds the current value of
-PSTATE.SM.  The upper 63 bits must be zero in this revision of the AAPCS64
-but are reserved for future expansion.  More specifically:
-
-* When a subroutine S1 that has either a non-streaming interface or a
-  streaming interface calls a subroutine S2 that has a streaming-compatible
-  interface, S1 must set the upper 63 bits of the X0 argument to zero,
-
-* When a subroutine S1 that has a streaming-compatible interface
-  calls a subroutine S2 that has a streaming-compatible interface,
-  S1 must set the upper 63 bits of the X0 argument to the corresponding
-  bits of S1's ``current_state`` argument.
-
-  If S1 does not change PSTATE.SM then it can simply copy its
-  ``current_state`` argument to X0.
-
-A subroutine can therefore always determine the current value of PSTATE.SM
-without having to use SME instructions.
+If a subroutine has a streaming-compatible interface, it can call
+|__arm_sme_state|_ to determine whether the current thread has
+`access to SME`_ and, if so, what the current value of PSTATE.SM is.
 
 ZA interfaces
 ^^^^^^^^^^^^^
@@ -2052,6 +2034,15 @@ SME support routines
 Every platform that supports SME must provide the following runtime
 support routines:
 
+``__arm_sme_state``
+   Provides a safe way of detecting:
+
+   * whether the current thread has `access to SME`_;
+
+   * whether the current thread has `access to TPIDR2_EL0`_;
+
+   * the current values of TPIDR2_EL0, PSTATE.SM and PSTATE.ZA.
+
 ``__arm_tpidr2_save``
    Provides a safe way to `commit a lazy save`_
 
@@ -2060,6 +2051,58 @@ support routines:
 
 ``__arm_tpidr2_restore``
    Provides a simple way of restoring lazily-saved ZA data.
+
+``__arm_sme_state``
+^^^^^^^^^^^^^^^^^^^
+
+.. |__arm_sme_state| replace:: ``__arm_sme_state``
+
+**(Alpha)**
+
+Platforms that support SME must provide a function with the
+following properties:
+
+* The function is called ``__arm_sme_state``.
+
+* The function has a `private-ZA`_ `streaming-compatible interface`_ with
+  following properties:
+
+  * X2-X15, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+  * the function `preserves ZA`_.
+
+* The function does not take any arguments.
+
+* The function returns an `Aggregate`_ that contains two unsigned
+  double words.  It returns the first double word in X0 and the second
+  double word in X1.  The values of X0 and X1 are as follows:
+
+  * Bit 63 of X0 is set to one if and only if the current thread has
+    `access to SME`_.
+
+  * Bit 62 of X0 is set to one if and only if the current thread has
+    `access to TPIDR2_EL0`_.
+
+  * Bits 2 to 61 of X0 are zero for this revision of the AAPCS64, but are
+    reserved for future expansion.
+
+  * If the current thread has `access to SME`_:
+
+    * Bit 1 of X0 contains the value of PSTATE.ZA.
+
+    * Bit 0 of X0 contains the value of PSTATE.SM.
+
+    (This matches the bit assignments of the SVCR system register.)
+
+    If the current thread does not have access to SME, then bits 0 and 1
+    of X0 are zero.
+
+  * If the current thread has `access to TPIDR2_EL0`_, X1 contains the
+    current value of TPIDR2_EL0.  Otherwise, X1 is zero.
+
+* The only memory modified by the function (if any) is stack memory
+  below the incoming SP.
 
 ``__arm_tpidr2_save``
 ^^^^^^^^^^^^^^^^^^^^^
@@ -2078,11 +2121,7 @@ with the subroutine having the following properties:
   * Z0-Z31 are call-preserved.
   * P0-P15 are call-preserved.
 
-* The subroutine takes the following arguments:
-
-  current_state
-    the standard `processor state argument`_ for streaming-compatible
-    interfaces, passed in register X0
+* The subroutine does not take any arguments.
 
 * The subroutine does not return a value.
 
@@ -2140,11 +2179,7 @@ with the subroutine having the following properties:
   * Z0-Z31 are call-preserved.
   * P0-P15 are call-preserved.
 
-* The subroutine takes the following arguments:
-
-  current_state
-    the standard `processor state argument`_ for streaming-compatible
-    interfaces, passed in register X0
+* The subroutine does not take any arguments.
 
 * The subroutine does not return a value.
 
@@ -2178,15 +2213,11 @@ a lazy save, with the subroutine having the following properties:
   * Z0-Z31 are call-preserved.
   * P0-P15 are call-preserved.
 
-* The subroutine takes the following arguments:
-
-  current_state
-    the standard `processor state argument`_ for streaming-compatible
-    interfaces, passed in register X0
+* The subroutine takes the following argument:
 
   BLK
     a 64-bit data pointer that points to a `TPIDR2 block`_, passed in
-    register X1
+    register X0
 
 * The subroutine does not return a value.
 
@@ -2209,6 +2240,9 @@ a lazy save, with the subroutine having the following properties:
     can (at its option) restore from any other part of B as well.
     In particular, the subroutine can restore slices in groups of 16
     regardless of whether NS is a multiple of 16.
+
+* The only memory modified by the subroutine (if any) is stack memory
+  below the incoming SP.
 
 Pseudo-code examples
 ====================
@@ -2240,7 +2274,7 @@ conforming way for S to flush any dormant ZA state before S uses ZA itself:
    // __arm_tpidr2_save unconditionally.
    if (TPIDR2_EL0) {
      // Commit the lazy save.
-     __arm_tpidr2_save(SM);
+     __arm_tpidr2_save();
      TPIDR2_EL0 = nullptr;
    }
    // Set PSTATE.ZA to 1.
@@ -2266,7 +2300,7 @@ exception unwinders (see `Exceptions`_).
    //   TPIDR2_EL0 might or might not be null
 
    // Commit any lazy save and set PSTATE.ZA to 0.
-   __arm_za_disable(SM);
+   __arm_za_disable();
 
    // Current state:
    //   PSTATE.SM == SM
@@ -2310,7 +2344,7 @@ a subroutine S2, where:
      TPIDR2_EL0 = nullptr;
    } else {
      // Restore the saved ZA contents.
-     __arm_tpidr2_restore(1, &BLK);
+     __arm_tpidr2_restore(&BLK);
    }
 
    // Current state:
@@ -2351,7 +2385,7 @@ For example:
      TPIDR2_EL0 = nullptr;
    } else {
      // Restore the saved ZA contents.
-     __arm_tpidr2_restore(1, &BLK);
+     __arm_tpidr2_restore(&BLK);
    }
 
    // Current state:
@@ -2831,7 +2865,7 @@ way for S to retain ZA contents across an exception:
      // Set both PSTATE.SM and PSTATE.ZA to 1.
      smstart();
 
-     __arm_tpidr2_restore(1, &BLK);
+     __arm_tpidr2_restore(&BLK);
      …
    }
 
