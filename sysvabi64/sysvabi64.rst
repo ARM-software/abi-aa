@@ -14,7 +14,9 @@
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
 .. _GCABI: https://itanium-cxx-abi.github.io/cxx-abi/abi.html
-.. _LSB: https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html
+.. _HWCAP: https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html
+.. _LSB: https://refspecs.linuxfoundation.org/LSB_5.0.0/LSB-Core-generic/LSB-Core-generic/book1.html
+.. _SYM-VER: http://www.akkadia.org/drepper/symbol-versioning
 .. _SYSVABI: https://github.com/ARM-software/abi-aa/releases
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
 
@@ -191,6 +193,9 @@ Change History
  +============+==============================+=======================================================+
  | 00Alpha    | 1\ :sup:`st` November 2021   | Alpha release containing Code Model only              |
  +------------+------------------------------+-------------------------------------------------------+
+ | 01Alpha    | 14\ :sup:`th` July 2022      | Add Program Loading and Dynamic Linking section       |
+ +------------+------------------------------+-------------------------------------------------------+
+
 
 References
 ----------
@@ -199,21 +204,27 @@ This document refers to, or is referred to by, the following documents.
 
 .. table::
 
-  +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | Ref                          | External reference or URL                                   | Title                                                                       |
-  +==============================+=============================================================+=============================================================================+
-  | SYSVABI_                     | Source for this document                                    | System V Application Binary Interface (ABI) for the Arm 64-bit architecture |
-  +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | ARMARM_                      | DDI 0487                                                    | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile    |
-  +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | AAPCS64_                     | IHI 0055                                                    | Procedure Call Standard for the Arm 64-bit Architecture                     |
-  +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | AAELF64_                     | IHI 0056                                                    | ELF for the Arm 64-bit Architecture (AArch64).                              |
-  +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | CPPABI64_                    | IHI 0059                                                    | C++ ABI for the Arm 64-bit Architecture                                     |
-  +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | GCABI_                       | https://itanium-cxx-abi.github.io/cxx-abi/abi.html          | Generic C++ ABI                                                             |
-  +------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | Ref         | External reference or URL                                    | Title                                                                       |
+  +=============+==============================================================+=============================================================================+
+  | SYSVABI_    | Source for this document                                     | System V Application Binary Interface (ABI) for the Arm 64-bit architecture |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | ARMARM_     | DDI 0487                                                     | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile    |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | AAPCS64_    | IHI 0055                                                     | Procedure Call Standard for the Arm 64-bit Architecture                     |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | AAELF64_    | IHI 0056                                                     | ELF for the Arm 64-bit Architecture (AArch64).                              |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | CPPABI64_   | IHI 0059                                                     | C++ ABI for the Arm 64-bit Architecture                                     |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | GCABI_      | https://itanium-cxx-abi.github.io/cxx-abi/abi.html           | Generic C++ ABI                                                             |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | HWCAP_      | https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html | Linux Kernel HWCAPs interface                                               |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LSB_        | https://refspecs.linuxbase.org/lsb.shtml                     | Linux Standards Base Core Functional Area                                   |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SYM-VER_    | http://people.redhat.com/drepper/symbol-versioning           | GNU Symbol Versioning                                                       |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
 
 Terms and Abbreviations
 -----------------------
@@ -504,10 +515,10 @@ syntax is of the form ``#:<operator>:<symbol name>``
    ``#:got_lo12:src`` refers to the lower 12 bits of the
    address of the GOT slot for the symbol ``src``.
 
-   The symbol``__GLOBAL_OFFSET_TABLE__`` refers to the start of the
-   global offset table (GOT) in the ELF module. The assembler
-   instruction ``adrp xn, __GLOBAL_OFFSET_TABLE__`` finds the address of the 4KiB page
-   containing the start of the GOT.
+   The assembler instruction ``adrp xn, __GLOBAL_OFFSET_TABLE__``
+   finds the address of the 4KiB page containing the start of the
+   ``.got`` section. More details can be found in Global Offset Table
+   (GOT).
 
    ``#:gotpage_lo15:src`` is a 15-bit offset into the page containing
    the GOT entry for ``src``.
@@ -726,7 +737,7 @@ The convention for command-line option to select code model is
 ``-mcmodel=<model>`` where code model is one of ``tiny``, ``small``,
 ``medium`` or ``large``.
 
-The convention for command-line option to select position-independent
+The convention for command-line option to select position independent
 code is ``-fpic`` for pic ``-fPIC`` for PIC. When compiling for an
 executable ``-fpie`` and ``-fPIE`` have the same GOT size limitations
 as ``-fpic`` and ``-fPIC`` respectively.
@@ -870,10 +881,6 @@ PC-relative offset of +/- 4 GiB. Suitable for the small/medium code model.
 Get the address of a symbol from the GOT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The GOT is a linker generated table of addresses. Every address in the
-GOT is at least 8 byte aligned and the base of the GOT can be obtained
-by the linker defined ``__GLOBAL_OFFSET_TABLE__`` symbol.
-
 All of GOT is within 1 MiB. Suitable for the tiny code model.
 
 .. code-block:: asm
@@ -916,10 +923,639 @@ These follow the AAELF64_ base definition from Arm.
 
    PageBreak oneColumn
 
-Program Linking and Dynamic Linking
+Program Loading and Dynamic Linking
 ===================================
 
-Not available for this Alpha release.
+The system works on creating a program/process image by logically
+copying or mapping the program image from storage into a virtual
+memory segment. In most systems with demand paging, when the actual
+page is mapped into physical memory depends on the execution behaviour
+of the program and the working set that it requires for its correct
+execution. To minimize the number of such reads from the physical
+medium containing the program, executables and shared objects must
+have program segments whose file offsets and virtual addresses are
+congruent modulo the page size.
+
+Since the architecture supports a maximum page size of 64KiB the page
+size should be set to 64KiB for compatibility with systems that use
+64KiB pages. There are a number of optimizations that can be
+applied to save space.
+
+ * The first page of text contains the ELF header, program header
+   information and other information from the ELF file.
+
+ * The last page of text contains parts of the first page of data.
+
+ * The first data page has a copy of the last page of text.
+
+ * The last data page may contain file information not relevant to the
+   current process.
+
+The underlying operating system typically adjusts access permissions
+to these regions *as if* each segment were complete and
+separate. Typically the regions of the file holding the last page of
+the text segment and the first page of the data segment will be mapped
+twice at two different virtual addresses, one for mapping as code and
+the other for mapping as data.
+
+Shared objects are always built with a base virtual address of 0,
+while executables with an ELF ``e_type`` of ``ET_EXEC`` are built with
+a fixed virtual address. The underlying operating system maps shared
+objects in at different virtual addresses, utilizing the fact that the
+code and data addressing within such a shared object is position
+independent. The position independence relies on the principle that
+the distance between any two points within the image is identical at
+static link time and at run time.
+
+Program segments for executables built with a fixed virtual address
+have to be mapped identically to the virtual addresses used to create
+the executable file.
+
+Position independent executables are mapped in the same way as shared
+objects. They have an ELF ``e_type`` of ``ET_DYN``.
+
+Dynamic Section
+---------------
+
+The dynamic section entries allow information to be passed between the
+static linker and the dynamic linker. There are a number of entries
+that help locate various dynamic relocation tables and other aspects
+that are architecture independent.
+
+The AArch64 specific dynamic tags are defined in AAELF64_ Dynamic
+Section.
+
+Global Offset Table (GOT)
+-------------------------
+
+Position independent code cannot, in general, contain absolute (fixed)
+virtual addresses. Global offset tables hold absolute addresses in
+private data, thus making the addresses available without compromising
+the position independence and shareability of a program's text
+segment. A program references its global offset table using
+position independent addressing and extracts the absolute values from
+it, thereby redirecting position independent references to their
+actual locations.
+
+The global offset table (GOT) is created by the static linker in
+response to GOT generating relocations. See AAELF64_ Relocation
+operations for more information.
+
+AArch64 splits the global offset table (GOT) into two sections:
+
+ * ``.got.plt`` for code addresses accessed only from the Procedure Linkage
+   Table (PLT).
+
+ * ``.got`` all other addresses and offsets.
+
+Both the ``.got`` and ``.got.plt`` sections are aligned to a minimum
+of 8 bytes. They both contain 8-byte sized entries.
+
+If a program requires direct access to the absolute address of a
+symbol, that symbol will have a GOT entry. Because the executable and
+shared objects have their own independent GOTs, a symbol's address may
+appear in several tables. The dynamic linker processes all of the
+relocations in the ``.got`` section before giving control to any code
+in the process image, thus ensuring the absolute addresses are
+available during execution.
+
+By convention the ``.got`` section's first entry (number zero) is
+reserved to hold the address of the dynamic structure, referenced with
+the linker defined symbol ``_DYNAMIC``. Some dynamic linker's use this
+address or another reserved symbol to find its own dynamic structure
+without without having yet processed their own relocation entries. For
+AArch64 entries one and two in the ``.got`` are also reserved.
+
+For AArch64 the linker defined ``_GLOBAL_OFFSET_TABLE_`` symbol should
+be the address of the first global offset table entry in the ``.got``
+section.
+
+See `Sample code sequences for code models`_ for code model for
+examples of how to access the ``.got``.
+
+Function Addresses
+^^^^^^^^^^^^^^^^^^
+
+Direct function calls are those where the name of the called function
+is known at compile time. The PC-relative BL instruction may be used
+for all direct function calls, whether absolute or position
+independent.
+
+Indirect function calls are those where the address of the function is
+in a pointer. Appropriate code is used to load the value of the
+pointer into a register, as for other data, and then a BLR instruction
+is used.
+
+In statically linked code the address of a function is always its real
+address. However in dynamically linked environments references to the
+address of a function from an executable file and its shared objects
+might not resolve to the same value.
+
+References from within shared objects to a function address will
+normally be resolved by the dynamic linker to the virtual address of
+the function itself.
+
+References from within a non position independent executable file to a
+function address defined in a shared object will normally be resolved
+by the static linker to the address of the `Procedure Linkage Table`_
+(PLT) for that function within the executable file. If the address is
+in a writeable location the linker may use a dynamic relocation
+instead.
+
+When both shared objects and a non position independent executable use
+the address of a function both the shared library and the application
+must use the same address for the functions for address comparisons to
+work as expected. If the static linker uses a PLT entry for a function
+as the address for a function then it must place the address of the
+PLT for the function in the dynamic symbols table entry for the
+function. This will result in a dynamic symbol table entry with a
+section index of ``SHN_UNDEF``, a type ``STT_FUNC`` and a non-zero
+``st_value``. A reference to this symbol will be resolved by the
+dynamic linker to the address PLT for the function in the executable.
+
+The ``R_<CLS>_JUMP_SLOT`` relocations defined in AAELF64_ are
+associated with PLT entries. These entries are used for direct
+function calls rather than for references to function addresses. These
+relocations do not use the special symbol value described
+above. Otherwise a very tight endless loop would result.
+
+In a position independent executable all function addresses have
+dynamic relocations so no indirection via the PLT entry is necessary.
+
+Shared objects may implement direct function calls to non-pre-emptable
+symbols using the BL instruction. A symbol is not pre-emptable if:
+
+ * It has ``STB_LOCAL`` binding.
+
+ * It has a symbol visibility that is not ``STV_DEFAULT``.
+
+ * It has been given the ``local`` symbol version, defined in
+   SYM-VER_.
+
+All function calls to pre-emptable symbols must be indirected through
+the static linker created Procedure Linkage Table.
+
+Procedure Linkage Table
+-----------------------
+
+Much as the global offset table (GOT) redirects position independent
+address calculations to absolute locations, the Procedure Linkage
+Table (PLT) redirects position independent function calls to absolute
+locations. The static linker cannot resolve execution transfers (such
+as function calls) from one executable or shared object to
+another. Consequently, the static linker arranges to have the program
+transfer control to entries in the PLT. In the AArch64 architecture,
+PLTs reside in the shared text segment, but they in turn use addresses
+in the per-process global offset table section ``.got.plt``. The
+dynamic linker determines the destinations' absolute addresses and
+modifies the global offset table entry accordingly. The dynamic linker
+can thus redirect the entries without compromising the position
+independence and shareability of the program's text. Executable files
+and shared objects have their own separate procedure linkage
+tables. The same procedure linkage table format is used for both
+executables and shared objects.
+
+Following the steps below, the dynamic linker and the program
+cooperate to resolve symbolic references to functions through the
+procedure linkage table and the global offset table.
+
+ * When first creating the memory image of the program, the dynamic
+   linker sets the second and the third entries in the global offset
+   table to special values. The steps below explain more about these
+   values.
+
+ * Each shared object file in the process image has its own PLT, and
+   control transfers to a PLT entry only from within the same ELF
+   module.
+
+ * For illustration, assume the program calls ``name1``, which transfers
+   control to the Nth PLT entry in ``PLT[N]``.
+
+ * The ``PLT[N]`` entry loads the address of the GOT entry for
+   ``name1`` (``.got.plt[N]``) into register ``ip0``, and then loads
+   and jumps to the address held in that table entry using a ``BR``
+   instruction. Initially the GOT entry holds the address of the
+   ``PLT[0] entry``, the first entry in the PLT, not the real address
+   of ``name1``.
+
+ * Now the ``PLT[0]`` entry pushes the ``ip0`` and ``lr`` registers
+   onto the stack.  The dynamic linker will later use the stacked
+   value of ``ip0`` to compute a relocation index by subtracting the
+   base of the ``GOT`` The index will be used to select an entry from
+   the table of relocation entries addressed by the ``DT_JMPREL``
+   dynamic section entry. The designated relocation entry must have
+   type ``R_AARCH64_JUMP_SLOT``, and its offset will specify the
+   global offset table entry used by the branch instruction in
+   ``PLT[N]``, and also a symbol table index that references the
+   appropriate symbol, i.e. ``name1`` in this example.
+
+ * The ``PLT[0]`` entry then loads the adress of the third GOT entry
+   (``.got.plt[2]``) into ``ip0``, and the loads and jumps to the
+   address in the third table entry, which transfers control to the
+   dynamic linker.
+
+ * The value in ``ip0`` is used by the dynamic linker's entrypoint to
+   load the second GOT entry (``.got.plt[2]``) using ``[ip0,#-8]``,
+   which gives it one word of private information with which to
+   identify the calling module.
+
+ * The dynamic linker unwinds the stack, looks at the designated
+   relocation entry, finds the symbol's value, stores the actual
+   address of ``name1`` in ``.got.plt[N]`` , then transfers control to
+   the desired destination.  Subsequent executions of ``PLT[N]`` will
+   transfer control directly to ``name1``, without calling the dynamic
+   linker a second time. That is the ``BR`` instruction in ``PLT[N]``
+   will transfer to ``name1``, instead of ``PLT[0]``.
+
+The ``LD_BIND_NOW`` environment variable can change the dynamic linking
+behavior. If its value is non-null, the dynamic linker evaluates all
+procedure linkage table entries before transferring control to the
+program. That is, the dynamic linker processes relocation entries of
+type ``R_AARCH64_JUMP_SLOT`` during process initialization. Otherwise, the
+dynamic linker evaluates procedure linkage table entries lazily,
+delaying symbol resolution and relocation until the first call to a
+table entry.
+
+The ``PLT[0]`` entry calls the dynamic linker's entrypoint, stored in
+``.got.plt[2]``, with the following calling convention:
+
++---------------+-------------------------+
+| Location      |    Contents             |
++===============+=========================+
+| ``ip0``       |   ``&.got.plt[2]``      |
++---------------+-------------------------+
+| ``ip1``       | DL Resolver Entry point |
++---------------+-------------------------+
+| ``[sp, #0]``  |  ``&.got.plt[N]``       |
++---------------+-------------------------+
+| ``[sp, #8]``  | ``lr``                  |
++---------------+-------------------------+
+
+Sample PLT sequences
+^^^^^^^^^^^^^^^^^^^^
+
+The following section shows some examples of PLT sequences suitable
+for the small code model. There is an assumption that the ``.plt.got``
+section is within +- 4 GiB from the ``.plt`` section.
+
+In the code samples below the following relocation operations are used
+to describe the immediates:
+
+ - ``Page(expr)`` is the page address of the expression expr, defined
+   as (expr & ~0xFFF). (This applies even if the machine page size
+   supported by the platform has a different value.)
+
+ - ``G(expr)`` is the address of the GOT (``.got.plt``) entry for the
+   expression expr.
+
+ - ``GOTPLT`` is the address of ``.got.plt`` section.
+
+ - ``.got.plt[N]`` is the Nth entry of the ``.got.plt`` section.
+
+In combination:
+
+ - ``G(.plt.got[N]`` is the address of the Nth entry of the
+   ``.got.plt`` section.
+
+ - ``G(.plt.got[N]`` - ``GOTPLT`` is the offset from the base of the
+   .got.plt section to the entry in ``.plt.got[N]``.
+
+Standard
+~~~~~~~~
+
+This can be used on all Arm platforms when there are no additional
+security features enabled.
+
+PLT header ``.got.plt[0]``
+
+.. code-block:: asm
+
+    stp    x16, x30, [sp,#-16]!
+    adrp   x16, Page(G(.plt.got[2]))
+    ldr    x17, [x16, G(.plt.got[2]) - GOTPLT]
+    add    x16, x16, G(.plt.got[2]) - GOTPLT)
+    br     x17
+
+PLT entry ``.got.plt[N]``
+
+.. code-block:: asm
+
+    adrp x16, Page(G(.plt.got[N]))
+    ldr  x17, [x16, G(.plt.got[N]) - GOTPLT]
+    add  x16, x16, G(.plt.got[N]) - GOTPLT
+    br   x17
+
+BTI
+~~~
+
+An executable or shared library that supports BTI must have a ``bti
+c`` instruction at the start of any entry that might be called
+indirectly. This is always true for the lazy resolver in
+``.got.plt[0]``.
+
+The static linker must set the dynamic tag ``DT_AARCH64_BTI_PLT`` as
+defined in AAELF64_ when a BTI compliant PLT has been generated.
+
+PLT header ``.got.plt[0]``
+
+.. code-block:: asm
+
+    bti  c
+    stp  x16, x30, [sp,#-16]!
+    adrp x16, Page(G(.plt.got[2]))
+    ldr  x17, [x16, G(.plt.got[2]) - GOTPLT]
+    add  x16, x16, G(.plt.got[2]) - GOTPLT
+    br   x17
+
+PLT entry ``.got.plt[N]``
+
+.. code-block:: asm
+
+    bti  c
+    adrp x16, Page(G(.plt.got[N]))
+    ldr  x17, [x16, G(.plt.got[N]) - GOTPLT]
+    add  x16, x16, G(.plt.got[N]) - GOTPLT
+    br   x17
+
+PAC
+~~~
+
+The ``.got.plt`` entries can be signed by the dynamic linker and
+authenticated by the code in the PLT entry. Note that when these PLT
+sequences are used the dynamic linker must sign the entries in
+``.plt.got[N]``. On platforms that support `Relocation Read Only
+(RELRO)`_ the ``.got.plt`` can be made read-only after dynamic
+relocation, which already provides good protection.
+
+The static linker must set the dynamic tag ``DT_AARCH64_PAC_PLT`` as
+defined in AAELF64_ when signed .got.plt[N] entries are required.
+
+There is no change to the PLT header ``.got.plt[0]``
+
+PLT entry ``.got.plt[N]``
+
+.. code-block:: asm
+
+    adrp x16, Page(G(.plt.got[N]))
+    ldr  x17, [x16, G(.plt.got[N]) - GOTPLT]
+    add  x16, x16, G(.plt.got[N]) - GOTPLT
+    autia1716
+    br   x17
+
+The PAC PLT requires the dynamic linker to sign the entry for
+``.got.plt[N]`` with the address of ``.got.plt[N]`` as the modifier.
+
+PAC + BTI
+~~~~~~~~~
+
+This is a combination of the PAC and the BTI PLT entries. The static
+linker must set both ``DT_AARCH64_BTI_PLT`` and ``DT_AARCH64_PAC_PLT``
+when BTI compliant PLT entries requiring signed ``.got.plt[N]``
+entries are used.
+
+PLT header ``.got.plt[0]``
+
+.. code-block:: asm
+
+    bti  c
+    stp  x16, x30, [sp,#-16]!
+    adrp x16, Page(G(.plt.got[2]))
+    ldr  x17, [x16, G(.plt.got[2]) - GOTPLT]
+    add  x16, x16, G(.plt.got[2]) - GOTPLT
+    br   x17
+
+PLT entry ``.got.plt[N]``
+
+.. code-block:: asm
+
+    bti  c
+    adrp x16, Page(G(.plt.got[N]))
+    ldr  x17, [x16, G(.plt.got[N]) - GOTPLT]
+    add  x16, x16, G(.plt.got[N]) - GOTPLT
+    autia1716
+    br   x17
+
+GNU Indirect Functions
+----------------------
+
+A GNU Indirect Function (IFUNC) is a feature that permits a single
+implementation of a function to be chosen from multiple candidates,
+with the choice taken by an IFUNC resolver function.
+
+GNU Indirect Functions require static and dynamic linker support. They
+are known to be supported on GNU/Linux, Android and many of the BSD
+operating systems.
+
+GNU Indirect Functions are called via a PLT entry that loads the
+function address. The function address is chosen by an IFUNC resolver
+function.
+
+The source code interface to an IFUNC resolver is platform
+dependent. The GNU/Linux interface via the GNU C Library is documented
+below.
+
+GNU C Library IFUNC interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The GNU C Library (glibc) ``sys/ifunc.h`` header provides the
+necessary type definitions for defining IFUNC resolvers. The resolver
+is passed at least one, and at most 2 parameters dependent on the
+glibc IFUNC ABI version. A flag is set in the first parameter if a
+second parameter is available. The parameters provide access to the
+HWCAP_ flags.
+
+.. code-block:: c
+
+  /* A second argument is passed to the ifunc resolver.  */
+  #define _IFUNC_ARG_HWCAP        (1ULL << 62)
+
+  /* Function prototype for an IFUNC resolver.
+  ElfW(Addr) ifunc_resolver (uint64_t, const __ifunc_arg_t *);
+
+  /* Second argument to an ifunc resolver.  */
+  struct __ifunc_arg_t
+  {
+    unsigned long _size; /* Size of the struct, so it can grow.  */
+    unsigned long _hwcap;
+    unsigned long _hwcap2;
+  };
+
+  typedef struct __ifunc_arg_t __ifunc_arg_t;
+
+IFUNC resolver functions must have a type of ``STT_GNU_IFUNC``. With
+the GCC and Clang compilers an attribute can be used to achieve this.
+
+.. code-block:: c
+
+  /* Implementation alternative 1 */
+  static int implementation1(void) { ... }
+
+  /* Implementation alternative 2 */
+  static int implementation2(void) { ... }
+
+  /* Resolver function */
+  static void* resolver(uint64_t, const __ifunc_arg_t *) { ... }
+
+  /* make symbol ifunc type STT_GNU_IFUNC using resolver as the IFUNC resolver. */
+  int ifunc(void) __attribute__((ifunc("resolver")));
+
+The first ``uint64`` parameter is ``AT_HWCAP``. If the
+``_IFUNC_ARG_HWCAP`` flag is set the second parameter is present. The
+second parameter is a structure ``__ifunc_arg_t`` defined in
+``sys/ifunc.h`` it provides access to all of the flags in HWCAP_ via
+fields of the structure.
+
+The IFUNC resolver function returns the address of the function
+implementation.
+
+IFUNC resolvers may be run when the dynamic linker is resolving relocations.
+additional restrictions on what they can contain.
+
+ * IFUNC resolvers must not be compiled with security features like
+   stack-protection, which requires a guard variable to be
+   initialized. Or instrumentation like ASAN that requires a shadow
+   map to be set up.
+
+ * IFUNC resolvers must not have a symbol binding of ``STB_WEAK``.
+
+ * IFUNC resolvers that may be called via lazy-binding must be
+   asynchronous-signal safe and thread-safe as the resolver may be
+   called from a signal handler or multi-threaded process.
+
+The order of dynamic relocation resolution across an executable and
+all its shared libraries is dependent on the implementation details of
+the dynamic linker. To avoid relocation ordering problems causing
+crashes in cross platform software the following restrictions are
+recommended:
+
+ * IFUNC resolvers must not call a function that may require IFUNC
+   initialization. If the IFUNC initialization for the called function
+   has not occured then undefined behavior results.
+
+ * IFUNC resolvers must not call a function that requires a PLT
+   entry. If the address of the IFUNC is taken the dynamic relocation
+   will be in the ``.got`` so the resolver may be called prior to
+   relocation of the ``.got.plt`` entries. In a shared library or
+   position independent executable, transferring to control to the
+   address stored in an unrelocated ``.got.plt`` entry will result in
+   undefined behavior.
+
+ * IFUNC resolvers for a given function must be defined in the same
+   translation unit as the implementations of the function.
+
+IFUNC requirements for static linkers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Relocations to pre-emptable symbols of type ``STT_GNU_IFUNC`` are
+handled in the same way as symbols of type ``STT_FUNC``.
+
+Non pre-empatable symbols of type ``STT_GNU_FUNC`` require the
+creation of PLT entry that loads the value of:
+
+ * A ``.got`` entry for a non-branch relocation such as
+   ``R_AARCH64_ABS64``. The entry has an ``R_AARCH64_IRELATIVE``
+   dynamic relocation in ``.rela.dyn``.
+
+ * Either a ``.got`` or ``.got.plt`` entry or a for a branch
+   relocation such as ``R_AARCH64_CALL``. A ``R_AARCH64_IRELATIVE``
+   dynamic relocation is added to ``.rela.dyn`` or ``rela.plt``
+   respectively.
+
+Like ``R_AARCH64_RELATIVE`` the ``R_AARCH64_IRELATIVE`` relocation
+does not require a symbol.
+
+The static linker sets the initial contents of a ``.got`` or
+``.got.plt`` entry for a non pre-empatable IFUNC resolver to the
+address of the IFUNC resolver function.
+
+To make address equivalence of functions with IFUNC resolvers work, if
+the address of a non-preemptable ``STT_GNU_FUNC`` symbol is taken in a
+non-position independent executable. The static linker must use the
+address of the PLT for the address of the symbol. If the symbol is
+exported to the dynamic symbol table the ``st_value`` of the symbol
+must be set to the address of the PLT entry and the dynamic symbol
+table type must be set to ``STT_FUNC``.
+
+The ``.rela.dyn`` and ``rela.plt`` relocation entries for IFUNCs must
+be sorted after all non-IFUNCs. This means that for a given executable
+or shared-library the following ordering can be relied on:
+
+ * All non IFUNC ``.rela.dyn`` relocation entries will be resolved
+   before any IFUNC resolvers.
+
+ * ALL IFUNC resolvers with ``R_AARCH64_IRELATIVE`` relocations in
+   ``.rela.dyn`` will be run before the ``.rela.plt`` relocations are
+   resolved.
+
+ * All non IFUNC ``.rela.plt`` relocation entries will be resolved
+   before any IFUNC resolvers with ``R_AARCH64_IRELATIVE`` resolvers in
+   ``.rela.plt``.
+
+ * All IFUNC resolvers with ``R_AARCH64_IRELATIVE`` relocations in
+   ``.rela.plt`` will be run last.
+
+When static linking, the dynamic relocation section containing
+``R_AARCH64_IRELATIVE`` relocations are output as if dynamic
+linking. The static linker must define the symbols
+``__rela_iplt_start`` and ``__rela_iplt_end`` so that startup code can
+find and resolve the ``R_AARCH64_IRELATIVE`` relocations. These linker
+defined symbols should not be defined if there are any dynamic tags.
+
+IFUNC requirements for dynamic linkers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To resolve an ``R_AARCH64_IRELATIVE`` relocation the dynamic linker
+performs the calculation described in AAELF64_ Dynamic Relocations.
+
+Initialization and Termination Functions
+----------------------------------------
+
+The implementation is responsible for executing the initialization
+functions specified by ``DT_INIT`` , ``DT_INIT_ARRAY`` , and
+``DT_PREINIT_ARRAY`` entries in the executable file and shared object
+files for a process, and the termination (or finalization) functions
+specified by ``DT_FINI`` and ``DT_FINI_ARRAY``. The user program plays
+no further part in executing the initialization and termination
+functions specified by these dynamic tags
+
+Relocation Read Only (RELRO)
+----------------------------
+
+Several sections in an exectuable or shared-library are logically
+read-only but they require dynamic relocation which forces them to be
+writeable. Relocation Read Only (RELRO) is a GNU extension to ELF that
+permits a dynamic linker to remap the pages described by the RELRO
+program segment as read-only after relocation.
+
+The RELRO program segment is described by a program header with type
+``PT_GNU_RELRO``, defined in LSB_. The number of supported RELRO
+segments is a contract between the static and dynamic linker. The GNU
+C library only supports one RELRO segement per ELF file.
+
+RELRO sections in relocatable objects are identified by a combination
+of section flags and naming convention. Platforms may extend the
+definition given below.  RELRO sections must have at least the
+``SHF_WRITE`` and ``SHF_ALLOC`` flags. If at least one of the
+following conditions holds the section is considered RELRO:
+
+ * The section has the ``SHF_TLS`` flag.
+
+ * The section has type ``SHT_INIT_ARRAY``, ``SHT_FINI_ARRAY`` or
+   ``SHT_PREINIT_ARRAY``.
+
+ * The linker created ``.dynamic`` section.
+
+ * The linker created ``.got`` section.
+
+ * The linker created ``.got.plt`` section if the dynamic section
+   ``DT_FLAGS`` table entry contains ``DF_BIND_NOW``.
+
+ * The section in the output file has a name that matches one of
+   ``.data.rel.ro``, ``.bss.rel.ro``, ``.ctors``, ``.dtors``,
+   ``.jcr``, ``.eh_frame``, ``.fini_array``, ``.init_array``,
+   ``.preinit_array``.
+
+The size of the RELRO segment should be extended so that is a multiple of the page size.
 
 .. raw:: pdf
 
