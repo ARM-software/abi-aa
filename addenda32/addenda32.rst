@@ -1640,7 +1640,7 @@ formats:
 
 *  ULEB128: tag, ULEB128: value, 0.
 
-*  ULEB128: tag, NBTS: data.
+*  ULEB128: tag, NTBS: data.
 
 The following byte sequence records the intention to also be compatible with
 architecture version v6-M.
