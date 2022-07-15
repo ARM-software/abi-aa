@@ -998,6 +998,10 @@ The stack implementation is full-descending, so that for each thread T:
   by the half-open interval [T.SP, T.base). The active region is empty
   when T.SP is equal to T.base.
 
+* The inactive region of T's stack is the area of memory denoted
+  by the half-open interval [T.limit, T.SP). The inactive region is empty
+  when T.SP is equal to T.limit.
+
 The stack may have a fixed size or be dynamically extendable (by adjusting the stack-limit downwards).
 
 The rules for maintenance of the stack are divided into two parts: a set of constraints that must be observed at all times, and an additional constraint that must be observed at a public interface.
@@ -1008,16 +1012,15 @@ Universal stack constraints
 At all times during the execution of a thread T, the following basic
 constraints must hold for its stack S:
 
-- T.limit ≤ T.SP ≤ T.base. T's stack pointer must lie within the memory
-  occupied by S.
+- T.limit ≤ T.SP ≤ T.base. T's stack pointer must lie within the extent
+  of the memory occupied by S.
 
 - A conforming program must not access (for reading or writing) the
-  inactive region of S, denoted by the half-open interval [T.limit, T.SP).
-  This is true regardless of whether the access is performed by T or by
-  some other thread.
+  inactive region of S. This is true regardless of whether the access
+  is performed by T or by some other thread.
 
 - If MTE is enabled, then the tag stored in T.SP must match the tag set
-  on the inactive region of S, defined in the same way as above.
+  on the inactive region of S.
 
 Additionally, at any point at which memory is accessed via SP, the hardware requires that
 
