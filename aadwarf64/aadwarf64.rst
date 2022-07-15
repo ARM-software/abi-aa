@@ -226,6 +226,9 @@ changes to the content of the document for that release.
   |        |                             |   document a limitation of             |
   |        |                             |   DW_CFA_AARCH64_negate_ra_state.      |
   +--------+-----------------------------+----------------------------------------+
+  | TBD    | TBD                         | - Added `Changes in vector length`_ at |
+  |        |                             |   **Alpha** quality.                   |
+  +--------+-----------------------------+----------------------------------------+
 
 
 References
@@ -654,6 +657,43 @@ salt, and the result is pushed to the stack.
     +-------------------------------------+---------+
     | Sign address with Generic key       | ``0x4`` |
     +-------------------------------------+---------+
+
+.. _`Changes in vector length`:
+
+Changes in vector length (**Alpha**)
+------------------------------------
+
+In principle, the value of VG could change during the execution of a
+program. There are two main mechanisms by which this could happen:
+
+* The program might explicitly change the SVE vector length. It could
+  do this:
+
+  * directly, by modifying the appropriate system registers
+    (if it has sufficient permission)
+
+  * indirectly, such as by using an operating system call
+
+* The program might enter or leave SME streaming mode, such as by
+  using the SMSTART and SMSTOP instructions. This would have the
+  effect of changing VG on systems whose streaming vector length
+  is different from their non-streaming vector length.
+
+The following requirements apply to functions that might change VG
+in this way:
+
+* The function's executable code must save the old value of VG to some
+  location L before the operation that might change VG.
+
+* The contents of L must be recoverable by an unwinder. One simple
+  way of meeting this requirement is to make L be a location in the
+  function's stack frame.
+
+* The function's Frame Description Entry must describe the save of
+  VG to L.
+
+* The function's Frame Description Entry must describe whichever operation
+  restores the old vector length as restoring VG from L.
 
 .. _Vector types:
 
