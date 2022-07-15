@@ -695,6 +695,8 @@ The definitions are recursive; that is, each of the types may contain a Composit
    type i.e. before any alignment adjustment of the entire composite is
    applied
 
+.. _`aggregate`:
+
 Aggregates
 ^^^^^^^^^^
 
