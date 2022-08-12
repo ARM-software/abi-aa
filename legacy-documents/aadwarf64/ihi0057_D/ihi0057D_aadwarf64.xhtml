@@ -1,0 +1,881 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DWARF for the Arm® 64-bit Architecture (AArch64) — ABI
+2019Q4 documentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9"/>
+
+<meta name="keywords" content=""/></head>
+<body>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="dwarf-for-the-armreg-64-bit-architecture-aarch64">
+<h2>DWARF for the Arm® 64-bit Architecture (AArch64)<a href="index.html#dwarf-for-the-armreg-64-bit-architecture-aarch64"/></h2>
+<p>Document number: IHI 0057C, current through AArch64 ABI release
+2019Q4</p>
+<p>Date of Issue: 30<sup>th</sup> January 2020</p>
+
+<div>
+<div id="preamble">
+<h2>Preamble<a href="index.html#preamble"/></h2>
+<div>
+<div id="abstract">
+<h3>Abstract<a href="index.html#abstract"/></h3>
+<p>This document describes the use of the DWARF debug table format
+in the Application Binary Interface (ABI) for the Arm 64-bit
+architecture.</p>
+</div>
+</div>
+<div>
+<div id="keywords">
+<h3>Keywords<a href="index.html#keywords"/></h3>
+<p>DWARF, DWARF 3.0, use of DWARF format</p>
+</div>
+</div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it<a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it"/></h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/products/software-development-tools/specifications">https://developer.arm.com/products/software-development-tools/specifications</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <em>arm</em> dot
+<em>eabi</em> at <em>arm</em> dot <em>com</em>.</p>
+</div>
+</div>
+<div>
+<div id="licence">
+<h3>Licence<a href="index.html#licence"/></h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice<a href="index.html#non-confidential-proprietary-notice"/></h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © [2018] Arm Limited or its affiliates. All rights
+reserved.</p>
+<p>Arm Limited. Company 02557590 registered in England. 110
+Fulbourn Road, Cambridge, England CB1 9NJ. LES-PRE-20349</p>
+</div>
+</div>
+<div>
+<div id="contents">
+<h3>Contents<a href="index.html#contents"/></h3>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#dwarf-for-the-armreg-64-bit-architecture-aarch64" id="id7">DWARF for the Arm® 64-bit Architecture
+(AArch64)</a>
+<ul>
+<li><a href="index.html#preamble" id="id8">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id9">Abstract</a></li>
+<li><a href="index.html#keywords" id="id10">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id11">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id12">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id13">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id14">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id15">About this
+document</a>
+<ul>
+<li><a href="index.html#change-control" id="id16">Change
+control</a>
+<ul>
+<li><a href="index.html#current-status-and-anticipated-changes" id="id17">Current status and anticipated changes</a></li>
+<li><a href="index.html#change-history" id="id18">Change
+history</a></li>
+</ul>
+</li>
+<li><a href="index.html#references" id="id19">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id20">Terms
+and abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id21">Your licence to use this specification</a></li>
+</ul>
+</li>
+<li><a href="index.html#overview" id="id22">Overview</a></li>
+<li><a href="index.html#arm-specific-dwarf-definitions" id="id23">Arm-specific DWARF definitions</a>
+<ul>
+<li><a href="index.html#dwarf-register-names" id="id24">DWARF
+register names</a></li>
+<li><a href="index.html#canonical-frame-address" id="id25">Canonical frame address</a></li>
+<li><a href="index.html#common-information-entries" id="id26">Common information entries</a></li>
+<li><a href="index.html#call-frame-instructions-beta" id="id27">Call frame instructions (<strong>Beta</strong></a></li>
+<li><a href="index.html#dwarf-expression-operations-beta" id="id28">DWARF expression operations (<strong>Beta</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="about-this-document">
+<h2>About this document<a href="index.html#about-this-document"/></h2>
+<div>
+<div id="change-control">
+<h3>Change control<a href="index.html#change-control"/></h3>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current status and anticipated changes<a href="index.html#current-status-and-anticipated-changes"/></h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li><strong>Release</strong>Arm considers this specification to
+have enough implementations, which have received sufficient
+testing, to verify that it is correct. The details of these
+criteria are dependent on the scale and complexity of the change
+over previous versions: small, simple changes might only require
+one implementation, but more complex changes require multiple
+independent implementations, which have been rigorously tested for
+cross-compatibility. Arm anticipates that future changes to this
+specification will be limited to typographical corrections,
+clarifications and compatible extensions.</li>
+<li><strong>Beta</strong>Arm considers this specification to be
+complete, but existing implementations do not meet the requirements
+for confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li><strong>Alpha</strong>The content of this specification is a
+draft, and Arm considers the likelihood of future incompatible
+changes to be significant.</li>
+</ul>
+<p>Content relating to SVE and Pointer Authentication should be
+considered as having a <strong>Beta</strong> support level. This
+includes:</p>
+<ul>
+<li>DWARF register names marked as <strong>Beta</strong> in
+<a href="index.html">DWARF register names</a></li>
+<li>Call frame instructions (<a href="index.html">Call
+frame instructions (Beta)</a>)</li>
+<li>DWARF expression operations (<a href="index.html">DWARF expression operations
+(Beta)</a>)</li>
+</ul>
+<p>All other content in this document is at the
+<strong>Release</strong> quality level.</p>
+</div>
+</div>
+<div>
+<div id="change-history">
+<h4>Change history<a href="index.html#change-history"/></h4>
+<table>
+<colgroup>
+<col width="11%"/>
+<col width="50%"/>
+<col width="7%"/>
+<col width="32%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>00bet3</td>
+<td>16<sup>th</sup> December 2010</td>
+<td>MGD</td>
+<td>Beta release.</td>
+</tr>
+<tr>
+<td>1.0</td>
+<td>22<sup>nd</sup> May 2013</td>
+<td>RE</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>31<sup>st</sup> December 2018</td>
+<td>OS</td>
+<td>Add SVE and pointer authentication support.</td>
+</tr>
+<tr>
+<td>2019Q4</td>
+<td>30<sup>th</sup> January 2020</td>
+<td>TS</td>
+<td>Minor layout changes.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="references">
+<h3>References<a href="index.html#references"/></h3>
+<p>This document refers to, or is referred to by, the following
+documents.</p>
+<table>
+<colgroup>
+<col width="25%"/>
+<col width="31%"/>
+<col width="44%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>External reference or URL</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>AADWARF</td>
+<td> </td>
+<td>DWARF for the Arm 64-bit Architecture (AArch64).</td>
+</tr>
+<tr>
+<td><a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a></td>
+<td><a href="http://dwarfstd.org/Dwarf3Std.php">http://dwarfstd.org/Dwarf3Std.php</a></td>
+<td>DWARF 3.0, the generic debug table format.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and abbreviations<a href="index.html#terms-and-abbreviations"/></h3>
+<p>The ABI for the Arm 64-bit Architecture uses the following terms
+and abbreviations.</p>
+<ul>
+<li>A32The instruction set named Arm in the Armv7 architecture; A32
+uses 32-bit fixed-length instructions.</li>
+<li>A64The instruction set available when in AArch64 state.</li>
+<li>AAPCS64Procedure Call Standard for the Arm 64-bit Architecture
+(AArch64).</li>
+<li>AArch32The 32-bit general-purpose register width state of the
+Armv8 architecture, broadly compatible with the Armv7-A
+architecture.</li>
+<li>AArch64The 64-bit general-purpose register width state of the
+Armv8 architecture.</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+Linux ABI for the Arm Architecture.</li>
+<li>A particular aspect of the specifications to which
+independently produced relocatable files must conform in order to
+be statically linkable and executable. For example, the C++ ABI for
+the Arm Architecture, ELF for the Arm Architecture, ...</li>
+</ol>
+</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>Floating pointDepending on context floating point means or
+qualifies: (a) floating-point arithmetic conforming to IEEE 754
+2008; (b) the Armv8 floating point instruction set; (c) the
+register set shared by (b) and the Armv8 SIMD instruction set.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>PACPointer Authentication Code.</li>
+<li>PAUTHPointer Authentication Extension.</li>
+<li>SIMDSingle Instruction Multiple Data - A term denoting or
+qualifying: (a) processing several data items in parallel under the
+control of one instruction; (b) the Arm v8 SIMD instruction set:
+(c) the register set shared by (b) and the Armv8 floating point
+instruction set.</li>
+<li>SIMD and floating pointThe Arm architecture's SIMD and Floating
+Point architecture comprising the floating point instruction set,
+the SIMD instruction set and the register set shared by them.</li>
+<li>SVEScalable Vector Extension.</li>
+<li>T32The instruction set named Thumb in the Armv7 architecture;
+T32 uses 16-bit and 32-bit instructions.</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification<a href="index.html#your-licence-to-use-this-specification"/></h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="overview">
+<h2>Overview<a href="index.html#overview"/></h2>
+<p>The ABI for the Arm 64-bit architecture specifies the use of
+DWARF 3.0 format debugging data. For details of the base standard
+see <a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a>.</p>
+<p>The ABI for the Arm 64-bit architecture gives additional rules
+for how DWARF 3.0 should be used, and how it is extended in ways
+specific to the Arm 64-bit architecture. The following topics are
+covered in detail:</p>
+<ul>
+<li>The enumeration of DWARF register numbers for using in
+<code>.debug_frame</code> and <code>.debug_info</code> sections
+(<a href="index.html">DWARF register names</a>).</li>
+<li>The definition of <em>Canonical Frame Address</em> (CFA) used
+by this ABI (<a href="index.html">Canonical frame
+address</a>).</li>
+<li>The definition of <em>Common Information Entries</em> (CIE)
+used by this ABI (<a href="index.html">Common
+information entries</a>).</li>
+<li>The definition of <em>Call Frame Instructions</em> (CFI) used
+by this ABI (<a href="index.html">Call frame
+instructions (Beta)</a>).</li>
+<li>The definition of DWARF Expression Operations used by this ABI
+(<a href="index.html">DWARF expression operations
+(Beta)</a>).</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="arm-specific-dwarf-definitions">
+<h2>Arm-specific DWARF definitions<a href="index.html#arm-specific-dwarf-definitions"/></h2>
+<div>
+<div id="dwarf-register-names">
+<h3>DWARF register names<a href="index.html#dwarf-register-names"/></h3>
+<p><a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a>, 2.6.1,
+Register Name Operators, suggests that the mapping from a DWARF
+register name to a target register number should be defined by the
+ABI for the target architecture. DWARF register names are encoded
+as unsigned LEB128 integers.</p>
+<table id="id2">
+<caption>Table 4 Mapping from DWARF register numbers to Arm 64-bit
+architecture registers</caption>
+<colgroup>
+<col width="18%"/>
+<col width="30%"/>
+<col width="52%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>DWARF register number</th>
+<th>AArch64 register name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>0-30</td>
+<td>X0-X30</td>
+<td>64-bit general registers (<a href="index.html#aadwarf64-note3-1">Note
+1</a>)</td>
+</tr>
+<tr>
+<td>31</td>
+<td>SP</td>
+<td>64-bit stack pointer</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Reserved</td>
+<td>-</td>
+</tr>
+<tr>
+<td>33</td>
+<td>ELR_mode</td>
+<td>The current mode exception link register</td>
+</tr>
+<tr>
+<td>34</td>
+<td>RA_SIGN_STATE (<strong>Beta</strong>)</td>
+<td>Return address signed state pseudo-register (<a href="index.html#aadwarf64-note3-8">Note 8</a>)</td>
+</tr>
+<tr>
+<td>37-45</td>
+<td>Reserved</td>
+<td>-</td>
+</tr>
+<tr>
+<td>46</td>
+<td>VG (<strong>Beta</strong>)</td>
+<td>64-bit SVE vector granule pseudo-register (<a href="index.html#aadwarf64-note3-2">Note 2</a>, <a href="index.html#aadwarf64-note3-3">Note
+3</a>)</td>
+</tr>
+<tr>
+<td>47</td>
+<td>FFR (<strong>Beta</strong>)</td>
+<td>VG×8-bit SVE first fault register (<a href="index.html#aadwarf64-note3-4">Note 4</a>)</td>
+</tr>
+<tr>
+<td>48-63</td>
+<td>P0-P15 (<strong>Beta</strong>)</td>
+<td>VG×8-bit SVE predicate registers (<a href="index.html#aadwarf64-note3-4">Note 4</a>)</td>
+</tr>
+<tr>
+<td>64-95</td>
+<td>V0-V31</td>
+<td>128-bit FP/Advanced SIMD registers (<a href="index.html#aadwarf64-note3-5">Note 5</a>, <a href="index.html#aadwarf64-note3-7">Note
+7</a>)</td>
+</tr>
+<tr>
+<td>96-127</td>
+<td>Z0-Z31 (<strong>Beta</strong>)</td>
+<td>VG×64-bit SVE vector registers (<a href="index.html#aadwarf64-note3-6">Note 6</a>, <a href="index.html#aadwarf64-note3-7">Note
+7</a>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes</strong></p>
+<ol id="aadwarf64-note3-1">
+<li>The size of a general register is to be taken from context. For
+instance in a <code>.debug_info</code> section if the
+<code>DW_AT_location</code> attribute of a variable is
+<code>DW_OP_reg0</code> then the number of significant bits in the
+register is determined by the variable's <code>DW_AT_type</code>
+attribute. If no context is available (for example in
+<code>.debug_frame</code> or <code>.eh_frame</code> sections) then
+the register number refers to a 64-bit register.</li>
+</ol>
+<ol id="aadwarf64-note3-2">
+<li>The value of the SVE vector granule pseudo-register is an even
+integer in the range 2 to 32. The value of the register is the
+available size in bits of the SVE vector registers in the current
+call frame divided by 64.</li>
+</ol>
+<ol id="aadwarf64-note3-3">
+<li>The SVE vector granule pseudo-register enables the construction
+of DWARF expressions that require the use of the current vector
+length, such as the location of saved SVE predicate and vector
+registers on the stack using the DWARF stack frame operator
+<code>DW_CFA_expression</code>.</li>
+</ol>
+<ol id="aadwarf64-note3-4">
+<li>The available size of a SVE predicate register and the first
+fault register is VG×8-bits.</li>
+</ol>
+<ol id="aadwarf64-note3-5">
+<li>In a similar manner to the general register file the size of an
+FP/Advanced SIMD register is taken from some external context to
+the register number. If no context is available then only the least
+significant 64 bits of the register are referenced. In particular
+this means that the most significant part of a SIMD register is
+unrecoverable by frame unwinding.</li>
+</ol>
+<ol id="aadwarf64-note3-6">
+<li>The available size of the SVE vector registers is
+VG×64-bits.</li>
+</ol>
+<ol id="aadwarf64-note3-7">
+<li>
+<p>The architecture defines that the FP/Advanced SIMD
+registers (V registers) overlap with the SVE vector registers (Z
+registers). A given V register is mapped to the low 128-bits of the
+corresponding Z register.</p>
+<p>The DWARF call frame instructions do not explicitly specify the
+size of a register; this is implicit in the definition of the
+register. As a consequence the V registers and Z registers have
+been allocated separate DWARF register number ranges which have
+their own definition for the size of these registers.</p>
+<p>When searching the call frame information table for either a V
+register or a Z register a consumer must take into account the
+aliasing between the V and Z registers.</p>
+</li>
+</ol>
+<ol id="aadwarf64-note3-8">
+<li>The RA_SIGN_STATE pseudo-register records whether the return
+address has been signed with a PAC. This information can be used
+when unwinding. It is an unsigned integer with the same size as a
+general register. Only bit[0] is meaningful and is initialized to
+zero. A value of 0 indicates the return address has not been
+signed. A value of 1 indicates the return address has been
+signed.</li>
+</ol>
+</div>
+</div>
+<div>
+<div id="canonical-frame-address">
+<h3>Canonical frame address<a href="index.html#canonical-frame-address"/></h3>
+<p>The term Canonical Frame Address (CFA) is defined in <a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a>, 6.4, Call Frame
+Information.</p>
+<p>This ABI adopts the typical definition of CFA given there:</p>
+<div>
+<div>
+<div>
+<div>The CFA is the value of the stack pointer (sp) at the call
+site in the previous frame.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="common-information-entries">
+<h3>Common information entries<a href="index.html#common-information-entries"/></h3>
+<p>The DWARF virtual unwinding model is based, conceptually, on a
+tabular structure with one column for each target register
+(<a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a>, 6.4.1,
+Structure of Call Frame Information). A <code>.debug_frame</code>
+Common Information Entry (CIE) specifies the initial values (on
+entry to an associated function) of each register.</p>
+<p>The variability of execution environments conforming to the Arm
+architecture creates a problem for this model. A producer cannot
+reliably enumerate all the registers in the target. For example, an
+integer-only function might be included in one executable file for
+use in execution environments with floating-point and another for
+use in environments without. In effect, it must be acceptable for a
+producer not to initialize, in a CIE, registers it does not know
+about. In turn this generates an obligation on consuming debuggers
+to default missing initial values.</p>
+<p>This generates the following obligations on producers and
+consumers of CIEs:</p>
+<ol>
+<li>
+<p>Consumers must default the CIE initial value of
+any target register not mentioned explicitly in the CIE.</p>
+<ul>
+<li>
+<p>Callee-saved registers (and registers
+intentionally unused by the program, for example as a consequence
+of the procedure call standard) should be initialized as if by
+<code>DW_CFA_same_value</code>, other registers as if by
+<code>DW_CFA_undefined</code>.</p>
+<p>A debugger can use built-in knowledge of the procedure call
+standard or can deduce which registers are callee-saved by scanning
+all CIEs.</p>
+</li>
+<li>
+<p>The VG pseudo-register should be initialized as if
+by <code>DW_CFA_same_value</code>.</p>
+</li>
+<li>
+<p>The <code>RA_SIGN_STATE</code> pseudo-register
+should be initialized as described in <a href="index.html#aadwarf64-note3-8">Section 3.3</a>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>To allow consumers to reliably default the initial
+values of missing entries by scanning a program's CIEs, without
+recourse to built-in knowledge, producers must identify registers
+not preserved by callees, as follows:</p>
+<ul>
+<li>If a function uses any register from a particular hardware
+register class (e.g. Arm core registers), its associated CIE must
+initialize all the registers of that class that are not
+callee-saved to <code>DW_CFA_undefined</code>.</li>
+<li>If a function uses a callee-saved register R, its associated
+CIE must initialize R using one of the defined value methods (not
+<code>DW_CFA_undefined</code>).</li>
+</ul>
+<p>(As an optimization, a producer need not initialize registers it
+can prove cannot be used by any associated functions and their
+descendants. Although these are not callee-saved, they are not
+callee-used either.)</p>
+</li>
+</ol>
+<p>This ABI defines a single CIE augmentation character that may
+appear as part of a CIE augmentation string. This is the character
+'B', when present this indicates associated frames are using the B
+key for return address signing.</p>
+</div>
+</div>
+<div>
+<div id="call-frame-instructions-beta">
+<h3>Call frame instructions (<strong>Beta</strong><a href="index.html#call-frame-instructions-beta"/></h3>
+<p>This ABI defines one vendor call frame instruction
+<code>DW_CFA_AARCH64_negate_ra_state</code>.</p>
+<table id="id3">
+<caption>Table 5 AArch64 vendor CFA operations</caption>
+<colgroup>
+<col width="43%"/>
+<col width="16%"/>
+<col width="14%"/>
+<col width="13%"/>
+<col width="13%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Instruction</th>
+<th>High 2 bits</th>
+<th>Low 6 bits</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>DW_CFA_AARCH64_negate_ra_state</code></td>
+<td>0</td>
+<td><code>0x2D</code></td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>DW_CFA_AARCH64_negate_ra_state</code> operation
+negates bit[0] of the RA_SIGN_STATE pseudo-register. It does not
+take any operands.</p>
+</div>
+</div>
+<div>
+<div id="dwarf-expression-operations-beta">
+<h3>DWARF expression operations (<strong>Beta</strong><a href="index.html#dwarf-expression-operations-beta"/></h3>
+<p>This ABI defines one vendor DWARF expression operation
+<code>DW_OP_AARCH64_operation</code>.</p>
+<table id="id4">
+<caption>Table 6 AArch64 vendor DWARF expression
+operations</caption>
+<colgroup>
+<col width="74%"/>
+<col width="26%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Operation</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>DW_OP_AARCH64_operation</code></td>
+<td><code>0xea</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>DW_OP_AARCH64_operation</code> takes one mandatory
+operand encoded as an unsigned LEB128. Bits[6:0] of this value
+specify an AArch64 DWARF Expression sub-operation. The remaining
+operands and the action performed are as specified by the
+sub-operation. The <code>DW_OP_AARCH64_operation</code> allows this
+ABI to define operations specific to the Arm 64-bit architecture
+outside the encoding space of DWARF expression operations.</p>
+<table id="id5">
+<caption>Table 7 AArch64 DWARF expression sub-operations</caption>
+<colgroup>
+<col width="74%"/>
+<col width="26%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Sub-operation</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>DW_SUB_OP_AARCH64_sign</code></td>
+<td><code>0x00</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>DW_SUB_OP_AARCH64_sign</code> sub-operation takes a
+single operand encoded as an unsigned LEB128 operand. This value
+specifies a pointer key signing operation given in <a href="index.html">AArch64 DWARF pointer signing
+operations</a>. The top two stack stack entries are popped, the
+first is treated as an 8-byte address value to be signed and the
+second is treated as an 8-byte salt. The key signing operation is
+performed on the address value using the salt, and the result is
+pushed to the stack.</p>
+<div>
+<div>
+<div>
+<div>
+<table id="id6">
+<caption>Table 8 AArch64 DWARF pointer signing operations</caption>
+<colgroup>
+<col width="34%"/>
+<col width="66%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Code</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>0x0</code></td>
+<td>Sign Instruction address with Key A</td>
+</tr>
+<tr>
+<td><code>0x1</code></td>
+<td>Sign Instruction address with Key B</td>
+</tr>
+<tr>
+<td><code>0x2</code></td>
+<td>Sign data address with Key A</td>
+</tr>
+<tr>
+<td><code>0x3</code></td>
+<td>Sign data address with Key B</td>
+</tr>
+<tr>
+<td><code>0x4</code></td>
+<td>Sign address with Generic key</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+<div>
+
+</div>
+</body>
+</html>

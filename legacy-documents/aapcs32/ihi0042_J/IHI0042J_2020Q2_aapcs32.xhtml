@@ -1,0 +1,3251 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Procedure Call Standard for the Arm® Architecture — ABI
+2020Q2 documentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9"/>
+
+<meta name="keywords" content=""/></head>
+<body>
+<div>
+<div>
+<div>
+<div id="procedure-call-standard-for-the-armreg-architecture">
+<h2><a href="index.html#id20">Procedure Call Standard for the Arm®
+Architecture</a><a href="index.html#procedure-call-standard-for-the-armreg-architecture"/></h2>
+<p>Document number: IHI 0042J, current through ABI release
+2020Q2</p>
+<p>Date of Issue: 1<sup>st</sup> July 2020</p>
+
+<div id="preamble">
+<h2><a href="index.html#id21">Preamble</a><a href="index.html#preamble"/></h2>
+<div id="abstract">
+<h3><a href="index.html#id22">Abstract</a><a href="index.html#abstract"/></h3>
+<p>This document describes the Procedure Call Standard use by the
+Application Binary Interface (ABI) for the Arm architecture.</p>
+</div>
+<div id="keywords">
+<h3><a href="index.html#id23">Keywords</a><a href="index.html#keywords"/></h3>
+<p>Procedure call, function call, calling conventions, data
+layout</p>
+</div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3><a href="index.html#id24">How to find the latest release of this
+specification or report a defect in it</a><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it"/></h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/architectures/system-architectures/software-standards/abi">https://developer.arm.com/architectures/system-architectures/software-standards/abi</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <a href="mailto:arm.eabi%40arm.com">arm.eabi@arm.com</a>.</p>
+</div>
+<div id="licence">
+<h3><a href="index.html#id25">Licence</a><a href="index.html#licence"/></h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+<div id="non-confidential-proprietary-notice">
+<h3><a href="index.html#id26">Non-Confidential Proprietary Notice</a><a href="index.html#non-confidential-proprietary-notice"/></h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © 2010-2020 Arm Limited or its affiliates. All
+rights reserved.</p>
+<div>
+<div>Arm Limited. Company 02557590 registered in
+England.</div>
+<div>110 Fulbourn Road, Cambridge, England CB1
+9NJ.</div>
+<div>LES-PRE-20349</div>
+</div>
+</div>
+<div id="contents">
+<h3><a href="index.html#id27">Contents</a><a href="index.html#contents"/></h3>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#procedure-call-standard-for-the-armreg-architecture" id="id20">Procedure Call Standard for the Arm® Architecture</a>
+<ul>
+<li><a href="index.html#preamble" id="id21">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id22">Abstract</a></li>
+<li><a href="index.html#keywords" id="id23">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id24">How to find the latest release of this specification or
+report a defect in it</a></li>
+<li><a href="index.html#licence" id="id25">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id26">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id27">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id28">About This
+Document</a>
+<ul>
+<li><a href="index.html#change-control" id="id29">Change Control</a></li>
+<li><a href="index.html#references" id="id30">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id31">Terms and
+Abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id32">Your licence to use this specification</a></li>
+<li><a href="index.html#acknowledgements" id="id33">Acknowledgements</a></li>
+</ul>
+</li>
+<li><a href="index.html#scope" id="id34">Scope</a></li>
+<li><a href="index.html#introduction" id="id35">Introduction</a>
+<ul>
+<li><a href="index.html#design-goals" id="id36">Design Goals</a></li>
+<li><a href="index.html#conformance" id="id37">Conformance</a></li>
+</ul>
+</li>
+<li><a href="index.html#data-types-and-alignment" id="id38">Data Types and
+Alignment</a>
+<ul>
+<li><a href="index.html#fundamental-data-types" id="id39">Fundamental Data
+Types</a></li>
+<li><a href="index.html#endianness-and-byte-ordering" id="id40">Endianness
+and Byte Ordering</a></li>
+<li><a href="index.html#composite-types" id="id41">Composite Types</a></li>
+</ul>
+</li>
+<li><a href="index.html#the-base-procedure-call-standard" id="id42">The Base
+Procedure Call Standard</a>
+<ul>
+<li><a href="index.html#machine-registers" id="id43">Machine
+Registers</a></li>
+<li><a href="index.html#processes-memory-and-the-stack" id="id44">Processes,
+Memory and the Stack</a></li>
+<li><a href="index.html#subroutine-calls" id="id45">Subroutine Calls</a></li>
+<li><a href="index.html#result-return" id="id46">Result Return</a></li>
+<li><a href="index.html#parameter-passing" id="id47">Parameter
+Passing</a></li>
+<li><a href="index.html#interworking" id="id48">Interworking</a></li>
+</ul>
+</li>
+<li><a href="index.html#the-standard-variants" id="id49">The Standard
+Variants</a>
+<ul>
+<li><a href="index.html#vfp-and-simd-vector-register-arguments" id="id50">VFP
+and SIMD vector Register Arguments</a></li>
+<li><a href="index.html#arm-alternative-format-half-precision-floating-point-values" id="id51">Arm Alternative Format Half-precision Floating Point
+values</a></li>
+<li><a href="index.html#read-write-position-independence-rwpi" id="id52">Read-Write Position Independence (RWPI)</a></li>
+<li><a href="index.html#variant-compatibility" id="id53">Variant
+Compatibility</a></li>
+</ul>
+</li>
+<li><a href="index.html#arm-c-and-c-language-mappings" id="id54">Arm C and
+C++ Language Mappings</a>
+<ul>
+<li><a href="index.html#data-types" id="id55">Data Types</a></li>
+<li><a href="index.html#argument-passing-conventions" id="id56">Argument
+Passing Conventions</a></li>
+</ul>
+</li>
+<li><a href="index.html#appendix-support-for-advanced-simd-extensions-and-mve" id="id57">APPENDIX Support for Advanced SIMD Extensions and MVE</a>
+<ul>
+<li><a href="index.html#aapcs32-appendixa-1" id="id58">Introduction</a></li>
+<li><a href="index.html#simd-vector-data-types" id="id59">SIMD vector data
+types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="about-this-document">
+<h2><a href="index.html#id28">About This Document</a><a href="index.html#about-this-document"/></h2>
+<div id="change-control">
+<h3><a href="index.html#id29">Change Control</a><a href="index.html#change-control"/></h3>
+<div id="current-status-and-anticipated-changes">
+<h4>Current Status and Anticipated Changes<a href="index.html#current-status-and-anticipated-changes"/></h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<dl>
+<dt><strong>Release</strong></dt>
+<dd>Arm considers this specification to have enough
+implementations, which have received sufficient testing, to verify
+that it is correct. The details of these criteria are dependent on
+the scale and complexity of the change over previous versions:
+small, simple changes might only require one implementation, but
+more complex changes require multiple independent implementations,
+which have been rigorously tested for cross-compatibility. Arm
+anticipates that future changes to this specification will be
+limited to typographical corrections, clarifications and compatible
+extensions.</dd>
+<dt><strong>Beta</strong></dt>
+<dd>Arm considers this specification to be complete, but existing
+implementations do not meet the requirements for confidence in its
+release quality. Arm may need to make incompatible changes if
+issues emerge from its implementation.</dd>
+<dt><strong>Alpha</strong></dt>
+<dd>The content of this specification is a draft, and Arm considers
+the likelihood of future incompatible changes to be
+significant.</dd>
+</dl>
+<p>All content in this document is at the <strong>Release</strong>
+quality level.</p>
+</div>
+<div id="change-history">
+<h4>Change History<a href="index.html#change-history"/></h4>
+<table>
+<colgroup>
+<col width="10%"/>
+<col width="25%"/>
+<col width="5%"/>
+<col width="60%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>1.0</td>
+<td>30<sup>th</sup> October 2003</td>
+<td>LS</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>24<sup>th</sup> March 2005</td>
+<td>LS</td>
+<td>Second public release.</td>
+</tr>
+<tr>
+<td>2.01</td>
+<td>5<sup>th</sup> July 2005</td>
+<td>LS</td>
+<td>Added clarifying remark following <a href="index.html#aapcs32-table5"><span>Table 5</span></a> -
+word-sized enumeration contains are <code><span><span>int</span></span></code> if
+possible (<a href="index.html#aapcs32-section7-1-3"><span>Enumerated Types</span></a>)</td>
+</tr>
+<tr>
+<td>2.02</td>
+<td>4<sup>th</sup> August 2005</td>
+<td>RE</td>
+<td>Clarify that a callee may modify stack space used for incoming
+parameters.</td>
+</tr>
+<tr>
+<td>2.03</td>
+<td>7<sup>th</sup> October 2005</td>
+<td>LS</td>
+<td>Added notes concerning VFPv3 D16-D31 (<a href="index.html#aapcs32-section5-1-2-1"><span>VFP register
+usage conventions</span></a>); retracted requirement that plain
+bit-fields be unsigned by default (<a href="index.html#aapcs32-section7-1-7"><span>Bit-fields</span></a>)</td>
+</tr>
+<tr>
+<td>2.04</td>
+<td>4<sup>th</sup> May 2006</td>
+<td>RE</td>
+<td>Clarified when linking may insert veneers that corrupt r12 and
+the condition codes (<a href="index.html#aapcs32-section5-3-1-1"><span>Use of IP by the linker</span></a>).</td>
+</tr>
+<tr>
+<td>2.05</td>
+<td>19<sup>th</sup> January 2007</td>
+<td>RE</td>
+<td>Update for the Advanced SIMD Extension.</td>
+</tr>
+<tr>
+<td>2.06</td>
+<td>2<sup>nd</sup> October 2007</td>
+<td>RE</td>
+<td>Add support for half-precision floating point.</td>
+</tr>
+<tr>
+<td>A</td>
+<td>25<sup>th</sup> October 2007</td>
+<td>LS</td>
+<td>Document renumbered (formerly GENC-003534 v2.06).</td>
+</tr>
+<tr>
+<td>B</td>
+<td>2<sup>nd</sup> April 2008</td>
+<td>RE</td>
+<td>Simplify duplicated text relating to VFP calling and clarify
+that homogeneous aggregates of containerized vectors are limited to
+four members in calling convention (<a href="index.html#aapcs32-section6-1-2-1"><span>VFP
+co-processor register candidates</span></a>).</td>
+</tr>
+<tr>
+<td>C</td>
+<td>10<sup>th</sup> October 2008</td>
+<td>RE</td>
+<td>Clarify that __va_list is in namespace std. Specify containers
+for oversized enums. State truth values for _Bool/bool. Clarify
+some wording with respect to homogeneous aggregates and argument
+marshalling of VFP CPRCs.</td>
+</tr>
+<tr>
+<td>D</td>
+<td>16<sup>th</sup> October 2009</td>
+<td>LS</td>
+<td>Re-wrote <a href="index.html#aapcs32-section7-1-3"><span>Enumerated Types</span></a> to better reflect the
+intentions for enumerated types in ABI-complying interfaces.</td>
+</tr>
+<tr>
+<td>E 2.09</td>
+<td>30<sup>th</sup> November 2012</td>
+<td>AC</td>
+<td>Clarify that memory passed for a function result may be
+modified at any point during the function call (<a href="index.html#aapcs32-section5-4"><span>Result
+Return</span></a>). Changed the illustrative source name of the
+half-precision float type from __f16 to __fp16 to match [<a href="https://developer.arm.com/products/software-development-tools/compilers/arm-compiler-5/docs/101028/latest/1-preface">ACLE</a>]
+(<a href="index.html#aapcs32-section7-1-1"><span>Arithmetic Types</span></a>). Re-wrote <a href="index.html#aapcs32-appendixa"><span>APPENDIX Support for
+Advanced SIMD Extensions and MVE</span></a> to clarify requirements
+on Advanced SIMD types.</td>
+</tr>
+<tr>
+<td>F</td>
+<td>24<sup>th</sup> October 2015</td>
+<td>CR</td>
+<td><a href="index.html#aapcs32-appendixa-2"><span>SIMD
+vector data types</span></a>, corrected the element counts of
+poly16x4_t and poly16x8_t. Added [u]int64x1_t, [u]int64x2_t,
+poly64x2_t. Allow half-precision floating point types as function
+parameter and return types, by specifying how half-precision
+floating point types are passed and returned in registers <a href="index.html#aapcs32-section5-4"><span>Result
+Return</span></a>, <a href="index.html#aapcs32-section5-5"><span>Parameter Passing</span></a>, <a href="index.html#aapcs32-section6-1-1"><span>Mapping between
+registers and memory format</span></a>, <a href="index.html#aapcs32-section6-1-2-1"><span>VFP
+co-processor register candidates</span></a>). Added parameter
+passing rules for over-aligned types (<a href="index.html#aapcs32-section4-3"><span>Composite
+Types</span></a>, <a href="index.html#aapcs32-section5-5"><span>Parameter Passing</span></a>).</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>21<sup>st</sup> December 2018</td>
+<td>OS</td>
+<td>
+<p>In <a href="index.html#aapcs32-section7-1-7-5"><span>Volatile bit-fields - preserving number and width of
+container accesses</span></a>, relaxed the rules regarding accesses
+to volatile bitfield members to be compatible with the C/C++ memory
+model.</p>
+<p>In <a href="index.html#aapcs32-section5-2-1-3"><span>Stack probing</span></a>, relaxed the rules regarding
+stack accesses to permit stack probing.</p>
+<p>In <a href="index.html#aapcs32-section5-1-2-1"><span>VFP register usage conventions</span></a>, corrected
+the rules regarding the values of the IDC and IDE bits of the FPSCR
+register on a public interface.</p>
+</td>
+</tr>
+<tr>
+<td>2019Q4</td>
+<td>28<sup>th</sup> January 2020</td>
+<td>TS</td>
+<td>
+<p>Be more specific on the use of frame pointers and
+frame records. (<a href="index.html#aapcs32-section-frame-pointer"><span>The
+Frame Pointer</span></a>, <a href="index.html#aapcs32-section5-1"><span>Machine
+Registers</span></a>).</p>
+<p>Add description of half-precision Brain floating-point format
+(<a href="index.html#aapcs32-section4-1-1"><span>Half-precision Floating Point</span></a>, <a href="index.html#aapcs32-section6-2"><span>Arm Alternative
+Format Half-precision Floating Point values</span></a>, <a href="index.html#aapcs32-section7-1-1"><span>Arithmetic
+Types</span></a>).</p>
+<p>For clarity, renamed half-precision format
+'Alternative' to 'Arm Alternative' (<a href="index.html#aapcs32-section4-1-1"><span>Half-precision
+Floating Point</span></a>, <a href="index.html#aapcs32-section6-2"><span>Arm Alternative
+Format Half-precision Floating Point values</span></a>, <a href="index.html#aapcs32-section6-4-4"><span>Half-precision
+Format Compatibility</span></a>, <a href="index.html#aapcs32-table3"><span>Table 3, Mapping of C
+&amp; C++ built-in data types</span></a>).</p>
+</td>
+</tr>
+<tr>
+<td>2020Q2</td>
+<td>1<sup>st</sup> July 2020</td>
+<td>TS</td>
+<td>
+<p>Correct minus signs not rendering in sections
+<a href="index.html#aapcs32-section7-1-7-2"><span>Bit-field extraction expressions</span></a> and
+<a href="index.html#aapcs32-section7-1-7-3"><span>Over-sized bit-fields</span></a>.</p>
+<p>Clarify the AAPCS rules for volatile zero length
+bit-fields in section <a href="index.html#aapcs32-section7-1-7-5"><span>Volatile
+bit-fields - preserving number and width of container
+accesses</span></a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="references">
+<h3><a href="index.html#id30">References</a><a href="index.html#references"/></h3>
+<p>This document refers to, or is referred to by, the following
+documents.</p>
+<table>
+<colgroup>
+<col width="15%"/>
+<col width="66%"/>
+<col width="19%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>External URL</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><a href="index.html"><span>AAPCS</span></a></td>
+<td>This document</td>
+<td>Procedure Call Standard for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/documentation/ihi0044/latest"><span>
+AAELF</span></a></td>
+<td> </td>
+<td>ELF for the Arm Architecture</td>
+</tr>
+<tr>
+<td><span>BSABI</span></td>
+<td> </td>
+<td>ABI for the Arm Architecture (Base Standard)</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/documentation/ihi0041/latest"><span>
+CPPABI</span></a></td>
+<td> </td>
+<td>C++ ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td rowspan="2"><a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">
+ARMARM</a></td>
+<td>
+<p>Arm DDI 0100E, ISBN 0 201 737191</p>
+<p><a href="https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual">
+https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual</a></p>
+</td>
+<td>The Arm Architecture Reference Manual 2<sup>nd</sup> edition,
+edited by David Seal, published by Addison-Wessley.</td>
+</tr>
+<tr>
+<td>
+<p>Arm DDI 0406</p>
+<p><a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">
+https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition</a></p>
+</td>
+<td>Arm Architecture Reference Manual Arm v7-A and Arm v7-R
+edition</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/products/software-development-tools/compilers/arm-compiler-5/docs/101028/latest/1-preface">
+ACLE</a></td>
+<td>IHI 0053A</td>
+<td>Arm C Language Extensions</td>
+</tr>
+<tr>
+<td><a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a></td>
+<td><a href="http://itanium-cxx-abi.github.io/">http://itanium-cxx-abi.github.io/</a></td>
+<td>Generic C++ ABI</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="terms-and-abbreviations">
+<h3><a href="index.html#id31">Terms and Abbreviations</a><a href="index.html#terms-and-abbreviations"/></h3>
+<p>This document uses the following terms and abbreviations.</p>
+<dl>
+<dt id="term-abi">ABI</dt>
+<dd>
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+<cite>Linux ABI for the Arm Architecture</cite>.</li>
+<li>A particular aspect of the specifications to which
+independently produced relocatable files must conform in order to
+be statically linkable and executable. For example, the <a href="https://developer.arm.com/documentation/ihi0041/latest"><span>
+C++ ABI for the Arm Architecture</span></a>, the <a href="https://developer.arm.com/documentation/ihi0043/latest"><span>
+Run-time ABI for the Arm Architecture</span></a>, the <a href="https://developer.arm.com/documentation/ihi0039/latest"><span>
+C Library ABI for the Arm Architecture</span></a>.</li>
+</ol>
+</dd>
+<dt id="term-arm-based">Arm-based</dt>
+<dd>based on the Arm architecture</dd>
+<dt id="term-eabi">EABI</dt>
+<dd>An ABI suited to the needs of embedded (sometimes called
+<em>free standing</em>) applications.</dd>
+<dt id="term-pcs">PCS</dt>
+<dd>Procedure Call Standard.</dd>
+<dt id="term-aapcs">AAPCS</dt>
+<dd>Procedure Call Standard for the Arm Architecture (this
+standard).</dd>
+<dt id="term-apcs">APCS</dt>
+<dd>Arm Procedure Call Standard (obsolete).</dd>
+<dt id="term-tpcs">TPCS</dt>
+<dd>Thumb Procedure Call Standard (obsolete).</dd>
+<dt id="term-atpcs">ATPCS</dt>
+<dd>Arm-Thumb Procedure Call Standard (precursor to this
+standard).</dd>
+<dt id="term-pic-pid">PIC / PID</dt>
+<dd>Position-independent code, position-independent data.</dd>
+<dt id="term-routine-subroutine">Routine / subroutine</dt>
+<dd>A fragment of program to which control can be transferred that,
+on completing its task, returns control to its caller at an
+instruction following the call. <em>Routine</em> is
+used for clarity where there are nested calls: a routine is the
+<em>caller</em> and a subroutine is the <em>callee</em>.</dd>
+<dt id="term-procedure">Procedure</dt>
+<dd>A routine that returns no result value.</dd>
+<dt id="term-function">Function</dt>
+<dd>A routine that returns a result value.</dd>
+<dt id="term-activation-stack-call-frame-stack">Activation stack /
+call-frame stack</dt>
+<dd>The stack of routine activation records (call frames).</dd>
+<dt id="term-activation-record-call-frame">Activation record / call
+frame</dt>
+<dd>The memory used by a routine for saving registers and holding
+local variables (usually allocated on a stack, once per activation
+of the routine).</dd>
+<dt id="term-argument-parameter">Argument / Parameter</dt>
+<dd>The terms <em>argument</em> and
+concept:<cite>parameter</cite> are used interchangeably. They may
+denote a formal parameter of a routine given the value of the
+actual parameter when the routine is called, or an actual
+parameter, according to context.</dd>
+<dt id="term-externally-visible-interface">Externally visible
+[interface]</dt>
+<dd>[An interface] between separately compiled or separately
+assembled routines.</dd>
+<dt id="term-variadic-routine">Variadic routine</dt>
+<dd>A routine is variadic if the number of arguments it takes, and
+their type, is determined by the caller instead of the callee.</dd>
+<dt id="term-global-register">Global register</dt>
+<dd>A register whose value is neither saved nor destroyed by a
+subroutine. The value may be updated, but only in a manner defined
+by the execution environment.</dd>
+<dt id="term-program-state">Program state</dt>
+<dd>The state of the program's memory, including values in machine
+registers.</dd>
+<dt id="term-scratch-register-temporary-register">Scratch register
+/ temporary register</dt>
+<dd>A register used to hold an intermediate value during a
+calculation (usually, such values are not named in the program
+source and have a limited lifetime).</dd>
+<dt id="term-thumb-1">Thumb-1</dt>
+<dd>The variant of the Thumb instruction set introduced in Arm v4T
+and used in Arm v6-M and the Arm v8-M.Baseline variants of the
+architecture. It consists of instructions that are predominantly
+encoded with 16-bit opcodes.</dd>
+<dt id="term-thumb-2">Thumb-2</dt>
+<dd>The variant of the Thumb instruction set introduced in Arm
+v6T2. It consists of a mix of instructions encoded with 16- and
+32-bit</dd>
+<dt id="term-opcodes">opcodes.</dt>
+<dt id="term-variable-register-v-register">Variable register /
+v-register</dt>
+<dd>A register used to hold the value of a variable, usually one
+local to a routine, and often named in the source code.</dd>
+</dl>
+<p>More specific terminology is defined when it is first used.</p>
+</div>
+<div id="your-licence-to-use-this-specification">
+<span id="aapcs32-section1-4"/>
+<h3><a href="index.html#id32">Your licence to use this
+specification</a><a href="index.html#your-licence-to-use-this-specification"/></h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+<div id="acknowledgements">
+<h3><a href="index.html#id33">Acknowledgements</a><a href="index.html#acknowledgements"/></h3>
+<p>This specification has been developed with the active support of
+the following organizations. In alphabetical order: Arm,
+CodeSourcery, Intel, Metrowerks, Montavista, Nexus Electronics,
+PalmSource, Symbian, Texas Instruments, and Wind River.</p>
+</div>
+</div>
+<div id="scope"><span id="aapcs32-section2"/>
+<h2><a href="index.html#id34">Scope</a><a href="index.html#scope"/></h2>
+<p>The AAPCS defines how subroutines can be separately written,
+separately compiled, and separately assembled to work together. It
+describes a contract between a calling routine and a called routine
+that defines:</p>
+<ul>
+<li>Obligations on the caller to create a program state in which
+the called routine may start to execute.</li>
+<li>Obligations on the called routine to preserve the program state
+of the caller across the call.</li>
+<li>The rights of the called routine to alter the program state of
+its caller.</li>
+</ul>
+<p>This standard specifies the base for a family of <em>Procedure Call Standard (PCS)</em> variants generated by
+choices that reflect alternative priorities among:</p>
+<ul>
+<li>Code size.</li>
+<li>Performance.</li>
+<li>Functionality (for example, ease of debugging, run-time
+checking, support for shared libraries).</li>
+</ul>
+<p>Some aspects of each variant - for example the allowable use of
+R9 - are determined by the execution environment. Thus:</p>
+<ul>
+<li>It is possible for code complying strictly with the base
+standard to be PCS compatible with each of the variants.</li>
+<li>It is unusual for code complying with a variant to be
+compatible with code complying with any other variant.</li>
+<li>Code complying with a variant, or with the base standard, is
+not guaranteed to be compatible with an execution environment that
+requires those standards. An execution environment may make further
+demands beyond the scope of the procedure call standard.</li>
+</ul>
+<p>This standard is presented in four sections that, after an
+introduction, specify:</p>
+<ul>
+<li>The layout of data.</li>
+<li>Layout of the stack and calling between functions with public
+interfaces.</li>
+<li>Variations available for processor extensions, or when the
+execution environment restricts the addressing model.</li>
+<li>The C and C++ language bindings for plain data types.</li>
+</ul>
+<p>This specification does <em>not</em> standardize the
+representation of publicly visible C++-language entities that are
+not also C language entities (these are described in <a href="https://developer.arm.com/documentation/ihi0041/latest"><span>
+CPPABI</span></a>) and it places no requirements on the
+representation of language entities that are not visible across
+public interfaces.</p>
+</div>
+<div id="introduction"><span id="aapcs32-section3"/>
+<h2><a href="index.html#id35">Introduction</a><a href="index.html#introduction"/></h2>
+<p>The AAPCS embodies the fifth major revision of the APCS and
+third major revision of the TPCS. It forms part of the complete ABI
+specification for the Arm Architecture.</p>
+<div id="design-goals"><span id="aapcs32-section3-1"/>
+<h3><a href="index.html#id36">Design Goals</a><a href="index.html#design-goals"/></h3>
+<p>The goals of the AAPCS are to:</p>
+<ul>
+<li>Support Thumb-state and Arm-state equally.</li>
+<li>Support inter-working between Thumb-state and Arm-state.</li>
+<li>Support efficient execution on high-performance implementations
+of the Arm Architecture.</li>
+<li>Clearly distinguish between mandatory requirements and
+implementation discretion.</li>
+<li>Minimize the binary incompatibility with the ATPCS.</li>
+</ul>
+</div>
+<div id="conformance"><span id="aapcs32-section3-2"/>
+<h3><a href="index.html#id37">Conformance</a><a href="index.html#conformance"/></h3>
+<p>The AAPCS defines how separately compiled and separately
+assembled routines can work together. There is an <em>externally visible interface</em> between such routines.
+It is common that not all the externally visible interfaces to
+software are intended to be <em>publicly
+visible</em> or open to arbitrary use. In effect, there is a
+mismatch between the machine-level concept of external
+visibility—defined rigorously by an object code format—and a
+<em>higher level</em>, application-oriented concept
+of external visibility—which is system-specific or
+application-specific.</p>
+<p>Conformance to the AAPCS requires that<a href="index.html#aapcs32-f1" id="id2">[1]</a>:</p>
+<ul>
+<li>At all times, stack limits and basic stack alignment are
+observed (<a href="index.html#aapcs32-section5-2-1-1"><span>Universal stack constraints</span></a>).</li>
+<li>At each call where the control transfer instruction is subject
+to a BL-type relocation at static link time, rules on the use of IP
+are observed (<a href="index.html#aapcs32-section5-3-1-1"><span>Use of IP by the linker</span></a>).</li>
+<li>The routines of each publicly visible interface conform to the
+relevant procedure call standard variant.</li>
+<li>The data elements<a href="index.html#aapcs32-f2" id="id3">[2]</a> of each
+publicly visible interface conform to the data layout rules.</li>
+</ul>
+</div>
+</div>
+<div id="data-types-and-alignment"><span id="aapcs32-section4"/>
+<h2><a href="index.html#id38">Data Types and Alignment</a><a href="index.html#data-types-and-alignment"/></h2>
+<div id="fundamental-data-types"><span id="aapcs32-section4-1"/>
+<h3><a href="index.html#id39">Fundamental Data Types</a><a href="index.html#fundamental-data-types"/></h3>
+<p><a href="index.html#aapcs32-table1"><span>Table 1,
+Byte size and byte alignment of fundamental data types</span></a>
+shows the fundamental data types (Machine Types) of the machine. A
+NULL pointer is always represented by all-bits-zero.</p>
+<span id="aapcs32-table1"/>
+<table id="id11">
+<caption><span>Table 47</span> <span>Table 1, Byte size and byte alignment of fundamental
+data types</span><a href="index.html#id11"/></caption>
+<colgroup>
+<col width="17%"/>
+<col width="24%"/>
+<col width="8%"/>
+<col width="8%"/>
+<col width="43%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Type Class</th>
+<th>Machine Type</th>
+<th>Byte size</th>
+<th>Byte alignment</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td rowspan="8">Integral</td>
+<td>Unsigned byte</td>
+<td>1</td>
+<td>1</td>
+<td rowspan="2">Character</td>
+</tr>
+<tr>
+<td>Signed byte</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Unsigned half-word</td>
+<td>2</td>
+<td>2</td>
+<td rowspan="2"> </td>
+</tr>
+<tr>
+<td>Signed half-word</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Unsigned word</td>
+<td>4</td>
+<td>4</td>
+<td rowspan="2"> </td>
+</tr>
+<tr>
+<td>Signed word</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Unsigned double-word</td>
+<td>8</td>
+<td>8</td>
+<td rowspan="2"> </td>
+</tr>
+<tr>
+<td>Signed double-word</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td rowspan="3">Floating Point</td>
+<td>Half precision</td>
+<td>2</td>
+<td>2</td>
+<td>See <a href="index.html#aapcs32-section4-1-1"><span>Half-precision Floating Point</span></a>.</td>
+</tr>
+<tr>
+<td>Single precision (IEEE 754)</td>
+<td>4</td>
+<td>4</td>
+<td rowspan="2">The encoding of floating point numbers is described
+in [<a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">ARMARM</a>]
+chapter C2, <cite>VFP Programmer's Model</cite>, 2.1.1
+<cite>Single-precision format</cite>, and 2.1.2
+<cite>Double-precision format</cite>.</td>
+</tr>
+<tr>
+<td>Double precision (IEEE 754)</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td rowspan="2">Containterized vector</td>
+<td>64-bit vector</td>
+<td>8</td>
+<td>8</td>
+<td rowspan="2">See <a href="index.html#aapcs32-section4-1-2"><span>Containerized Vectors</span></a>.</td>
+</tr>
+<tr>
+<td>128-bit vector</td>
+<td>16</td>
+<td>8</td>
+</tr>
+<tr>
+<td rowspan="2">Pointer</td>
+<td>Data pointer</td>
+<td>4</td>
+<td>4</td>
+<td rowspan="2">
+<p>Pointer arithmetic should be unsigned.</p>
+<p>Bit 0 of a code pointer indicates the target
+instruction set type (0 Arm, 1 Thumb).</p>
+</td>
+</tr>
+<tr>
+<td>Code pointer</td>
+<td>4</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<div id="half-precision-floating-point"><span id="aapcs32-section4-1-1"/>
+<h4>Half-precision Floating Point<a href="index.html#half-precision-floating-point"/></h4>
+<p>Optional extensions to the Arm architecture provide hardware
+support for half-precision values. Three formats are currently
+supported:</p>
+<p>1 - half-precision format specified in IEEE754-2008</p>
+<p>2 - Arm Alternative format, which provides additional range but
+has no NaNs or Infinities.</p>
+<p>3 - Brain floating-point format, which provides a dynamic range
+similar to the 32-bit floating-point format, but with less
+precision.</p>
+<p>The first two formats are mutually exclusive. The base standard
+of the AAPCS specifies use of the IEEE754-2008 variant, and a
+procedure call variant that uses the Arm Alternative format is
+permitted.</p>
+</div>
+<div id="containerized-vectors"><span id="aapcs32-section4-1-2"/>
+<h4>Containerized Vectors<a href="index.html#containerized-vectors"/></h4>
+<p>The content of a containerized vector is opaque to most of the
+procedure call standard: the only defined aspect of its layout is
+the mapping between the memory format (the way a fundamental type
+is stored in memory) and different classes of register at a
+procedure call interface. If a language binding defines data types
+that map directly onto the containerized vectors it will define how
+this mapping is performed.</p>
+</div>
+</div>
+<div id="endianness-and-byte-ordering"><span id="aapcs32-section4-2"/>
+<h3><a href="index.html#id40">Endianness and Byte Ordering</a><a href="index.html#endianness-and-byte-ordering"/></h3>
+<p>From a software perspective, memory is an array of bytes, each
+of which is addressable.</p>
+<p>This ABI supports two views of memory implemented by the
+underlying hardware.</p>
+<ul>
+<li>In a little-endian view of memory the least significant byte of
+a data object is at the lowest byte address the data object
+occupies in memory.</li>
+<li>In a big-endian view of memory the least significant byte of a
+data object is at the highest byte address the data object occupies
+in memory.</li>
+</ul>
+<p>The least significant bit in an object is always designated as
+<em>bit 0</em>.</p>
+<p>The mapping of a word-sized data object to memory is shown in
+<a href="index.html#aapcs32-fig1"><span>Memory layout of
+big-endian data object</span></a> and <a href="index.html#aapcs32-fig2"><span>Memory layout of
+little-endian data object</span></a>. All objects are pure-endian,
+so the mappings may be scaled accordingly for larger or smaller
+objects <a href="index.html#aapcs32-f3" id="id4">[3]</a>.</p>
+<div class="documents-docsimg-container" id="id12"><span id="aapcs32-fig1"/><img alt="aapcs32-bigendian.png" src="aapcs32-bigendian.png"/>
+<p><span>Fig. 2</span>
+<span>Memory layout of big-endian data
+object</span></p>
+</div>
+<div class="documents-docsimg-container" id="id13"><span id="aapcs32-fig2"/><img alt="aapcs32-littleendian.png" src="aapcs32-littleendian.png"/>
+<p><span>Fig. 3</span>
+<span>Memory layout of little-endian data
+object</span></p>
+</div>
+</div>
+<div id="composite-types"><span id="aapcs32-section4-3"/>
+<h3><a href="index.html#id41">Composite Types</a><a href="index.html#composite-types"/></h3>
+<p>A <em>Composite Type</em> is a collection of one
+or more Fundamental Data Types that are handled as a single entity
+at the procedure call level. A Composite Type can be any of:</p>
+<ul>
+<li>An <em>aggregate</em>, where the members are
+laid out sequentially in memory</li>
+<li>A <em>union</em>, where each of the members has
+the same address</li>
+<li>An <em>array</em>, which is a repeated sequence
+of some other type (its base type).</li>
+</ul>
+<p>The definitions are recursive; that is, each of the types may
+contain a Composite Type as a member.</p>
+<ul>
+<li>The <em>member alignment</em> of an element of
+a composite type is the alignment of that member after the
+application of any language alignment modifiers to that member</li>
+<li>The <em>natural alignment</em> of a composite
+type is the maximum of each of the member alignments of the
+'top-level' members of the composite type i.e. before any alignment
+adjustment of the entire composite is applied</li>
+</ul>
+<div id="aggregates"><span id="aapcs32-section4-3-1"/>
+<h4>Aggregates<a href="index.html#aggregates"/></h4>
+<ul>
+<li>The alignment of an aggregate shall be the alignment of its
+most-aligned component.</li>
+<li>The size of an aggregate shall be the smallest multiple of its
+alignment that is sufficient to hold all of its members when they
+are laid out according to these rules.</li>
+</ul>
+</div>
+<div id="unions"><span id="aapcs32-section4-3-2"/>
+<h4>Unions<a href="index.html#unions"/></h4>
+<ul>
+<li>The alignment of a union shall be the alignment of its
+most-aligned component.</li>
+<li>The size of a union shall be the smallest multiple of its
+alignment that is sufficient to hold its largest member.</li>
+</ul>
+</div>
+<div id="arrays"><span id="aapcs32-section4-3-3"/>
+<h4>Arrays<a href="index.html#arrays"/></h4>
+<ul>
+<li>The alignment of an array shall be the alignment of its base
+type.</li>
+<li>The size of an array shall be the size of the base type
+multiplied by the number of elements in the array.</li>
+</ul>
+</div>
+<div id="bit-fields"><span id="aapcs32-section4-3-4"/>
+<h4>Bit-fields<a href="index.html#bit-fields"/></h4>
+<p>A member of an aggregate that is a Fundamental Data Type may be
+subdivided into bit-fields; if there are unused portions of such a
+member that are sufficient to start the following member at its
+natural alignment then the following member may use the unallocated
+portion. For the purposes of calculating the alignment of the
+aggregate the type of the member shall be the Fundamental Data Type
+upon which the bit-field is based. <a href="index.html#aapcs32-f4" id="id5">[4]</a> The layout of bit-fields within an aggregate is
+defined by the appropriate language binding.</p>
+</div>
+<div id="homogeneous-aggregates"><span id="aapcs32-section4-3-5"/>
+<h4>Homogeneous Aggregates<a href="index.html#homogeneous-aggregates"/></h4>
+<p>A Homogeneous Aggregate is a Composite Type where all of the
+Fundamental Data Types that compose the type are the same. The test
+for homogeneity is applied after data layout is completed and
+without regard to access control or other source language
+restrictions.</p>
+<p>An aggregate consisting of containerized vector types is treated
+as homogeneous if all the members are of the same size, even if the
+internal format of the containerized members are different. For
+example, a structure containing a vector of 8 bytes and a vector of
+4 half-words satisfies the requirements for a homogeneous
+aggregate.</p>
+<p>A Homogeneous Aggregate has a Base Type, which is the
+Fundamental Data Type of each <em>Element</em>. The
+overall size is the size of the Base Type multiplied by the number
+of Elements; its alignment will be the alignment of the Base
+Type.</p>
+</div>
+</div>
+</div>
+<div id="the-base-procedure-call-standard">
+<span id="aapcs32-section5"/>
+<h2><a href="index.html#id42">The Base Procedure Call Standard</a><a href="index.html#the-base-procedure-call-standard"/></h2>
+<p>The base standard defines a machine-level, core-registers-only
+calling standard common to the Arm and Thumb instruction sets. It
+should be used for systems where there is no floating-point
+hardware, or where a high degree of inter-working with Thumb code
+is required.</p>
+<div id="machine-registers"><span id="aapcs32-section5-1"/>
+<h3><a href="index.html#id43">Machine Registers</a><a href="index.html#machine-registers"/></h3>
+<p>The Arm architecture defines a core instruction set plus a
+number of additional instructions implemented by co-processors. The
+core instruction set can access the core registers and
+co-processors can provide additional registers which are available
+for specific operations.</p>
+<div id="core-registers"><span id="aapcs32-section5-1-1"/>
+<h4>Core registers<a href="index.html#core-registers"/></h4>
+<p>There are 16, 32-bit core (integer) registers visible to the Arm
+and Thumb instruction sets. These are labeled r0-r15 or R0-R15.
+Register names may appear in assembly language in either upper case
+or lower case. In this specification upper case is used when the
+register has a fixed role in the procedure call standard. <a href="index.html#aapcs32-table2"><span>Table 2, Core registers
+and AAPCS usage</span></a> summarizes the uses of the core
+registers in this standard. In addition to the core registers there
+is one status register (CPSR) that is available for use in
+conforming code.</p>
+<span id="aapcs32-table2"/>
+<table id="id14">
+<caption><span>Table 48</span> <span>Table 2, Core registers and AAPCS
+usage</span><a href="index.html#id14"/></caption>
+<colgroup>
+<col width="14%"/>
+<col width="13%"/>
+<col width="13%"/>
+<col width="59%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Register</th>
+<th>Synonym</th>
+<th>Special</th>
+<th>Role in the procedure call standard</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>r15</td>
+<td> </td>
+<td>PC</td>
+<td>The Program Counter.</td>
+</tr>
+<tr>
+<td>r14</td>
+<td> </td>
+<td>LR</td>
+<td>The Link Register.</td>
+</tr>
+<tr>
+<td>r13</td>
+<td> </td>
+<td>SP</td>
+<td>The Stack Pointer.</td>
+</tr>
+<tr>
+<td>r12</td>
+<td> </td>
+<td>IP</td>
+<td>The Intra-Procedure-call scratch register.</td>
+</tr>
+<tr>
+<td>r11</td>
+<td>v8</td>
+<td>FP</td>
+<td>Frame Pointer or Variable-register 8.</td>
+</tr>
+<tr>
+<td>r10</td>
+<td>v7</td>
+<td> </td>
+<td>Variable-register 7.</td>
+</tr>
+<tr>
+<td>r9</td>
+<td> </td>
+<td>
+<p>v6</p>
+<p>SB</p>
+<p>TR</p>
+</td>
+<td>
+<p>Platform register.</p>
+<p>The meaning of this register is defined by the
+platform standard.</p>
+</td>
+</tr>
+<tr>
+<td>r8</td>
+<td>v5</td>
+<td> </td>
+<td>Variable-register 5.</td>
+</tr>
+<tr>
+<td>r7</td>
+<td>v4</td>
+<td> </td>
+<td>Variable-register 4.</td>
+</tr>
+<tr>
+<td>r6</td>
+<td>v3</td>
+<td> </td>
+<td>Variable-register 3.</td>
+</tr>
+<tr>
+<td>r5</td>
+<td>v2</td>
+<td> </td>
+<td>Variable-register 2.</td>
+</tr>
+<tr>
+<td>r4</td>
+<td>v1</td>
+<td> </td>
+<td>Variable-register 1.</td>
+</tr>
+<tr>
+<td>r3</td>
+<td>a4</td>
+<td> </td>
+<td>Argument / scratch register 4.</td>
+</tr>
+<tr>
+<td>r2</td>
+<td>a3</td>
+<td> </td>
+<td>Argument / scratch register 3.</td>
+</tr>
+<tr>
+<td>r1</td>
+<td>a2</td>
+<td> </td>
+<td>Argument / result / scratch register 2.</td>
+</tr>
+<tr>
+<td>r0</td>
+<td>a1</td>
+<td> </td>
+<td>Argument / result / scratch register 1.</td>
+</tr>
+</tbody>
+</table>
+<p>The first four registers r0-r3 (a1-a4) are used to pass argument
+values into a subroutine and to return a result value from a
+function. They may also be used to hold intermediate values within
+a routine (but, in general, only <em>between</em> subroutine
+calls).</p>
+<p>Register r12 (IP) may be used by a linker as a scratch register
+between a routine and any subroutine it calls (for details, see
+<a href="index.html#aapcs32-section5-3-1-1"><span>Use of
+IP by the linker</span></a>). It can also be used within a routine
+to hold intermediate values between subroutine calls.</p>
+<p>In some variants r11 (FP) may be used as a frame pointer in
+order to chain frame activation records into a linked list.</p>
+<p>The role of register r9 is platform specific. A virtual platform
+may assign any role to this register and must document this usage.
+For example, it may designate it as the static base (SB) in a
+position-independent data model, or it may designate it as the
+thread register (TR) in an environment with thread-local storage.
+The usage of this register may require that the value held is
+persistent across all calls. A virtual platform that has no need
+for such a special register may designate r9 as an additional
+callee-saved variable register, v6.</p>
+<p>Typically, the registers r4-r8, r10 and r11 (v1-v5, v7 and v8)
+are used to hold the values of a routine's local variables. Of
+these, only v1-v4 can be used uniformly by the whole Thumb
+instruction set, but the AAPCS does not require that Thumb code
+only use those registers.</p>
+<p>A subroutine must preserve the contents of the registers r4-r8,
+r10, r11 and SP (and r9 in PCS variants that designate r9 as
+v6).</p>
+<p>In all variants of the procedure call standard, registers
+r12-r15 have special roles. In these roles they are labeled IP, SP,
+LR and PC.</p>
+<p>The CPSR is a global register with the following properties:</p>
+<ul>
+<li>The N, Z, C, V and Q bits (bits 27-31) and the GE[3:0] bits
+(bits 16-19) are undefined on entry to or return from a public
+interface. The Q and GE[3:0] bits may only be modified when
+executing on a processor where these features are present.</li>
+<li>On Arm Architecture 6, the E bit (bit 8) can be used in
+applications executing in little-endian mode, or in big-endian-8
+mode to temporarily change the endianness of data accesses to
+memory. An application must have a designated endianness and at
+entry to and return from any public interface the setting of the E
+bit must match the designated endianness of the application.</li>
+<li>The T bit (bit 5) and the J bit (bit 24) are the execution
+state bits. Only instructions designated for modifying these bits
+may change them.</li>
+<li>The A, I, F and M[4:0] bits (bits 0-7) are the privileged bits
+and may only be modified by applications designed to operate
+explicitly in a privileged mode.</li>
+<li>All other bits are reserved and must not be modified. It is not
+defined whether the bits read as zero or one, or whether they are
+preserved across a public interface.</li>
+</ul>
+<div id="handling-values-larger-than-32-bits">
+<span id="aapcs32-section5-1-1-1"/>
+<h5>Handling values larger than 32 bits<a href="index.html#handling-values-larger-than-32-bits"/></h5>
+<p>Fundamental types larger than 32 bits may be passed as
+parameters to, or returned as the result of, function calls. When
+these types are in core registers the following rules apply:</p>
+<ul>
+<li>A double-word sized type is passed in two consecutive registers
+(e.g., r0 and r1, or r2 and r3). The content of the registers is as
+if the value had been loaded from memory representation with a
+single <code><span>LDM</span></code> instruction.</li>
+<li>A 128-bit containerized vector is passed in four consecutive
+registers. The content of the registers is as if the value had been
+loaded from memory with a single <code><span>LDM</span></code> instruction.</li>
+</ul>
+</div>
+</div>
+<div id="co-processor-registers"><span id="aapcs32-section5-1-2"/>
+<h4>Co-processor Registers<a href="index.html#co-processor-registers"/></h4>
+<p>A machine's register set may be extended with additional
+registers that are accessed via instructions in the co-processor
+instruction space. To the extent that such registers are not used
+for passing arguments to and from subroutine calls the use of
+co-processor registers is compatible with the base standard. Each
+co-processor may provide an additional set of rules that govern the
+usage of its registers.</p>
+<div>
+<p>Note</p>
+<p>Even though co-processor registers are not used for
+passing arguments some elements of the run-time support for a
+language may require knowledge of all co-processors in use in an
+application in order to function correctly (for example,
+<code><span><span>setjmp</span></span><span><span>()</span></span></code> in C and
+exceptions in C++).</p>
+</div>
+<div id="vfp-register-usage-conventions"><span id="aapcs32-section5-1-2-1"/>
+<h5>VFP register usage conventions<a href="index.html#vfp-register-usage-conventions"/></h5>
+<p>The VFP-v2 co-processor has 32 single-precision registers,
+s0-s31, which may also be accessed as 16 double-precision
+registers, d0-d15 (with d0 overlapping s0, s1; d1 overlapping s2,
+s3; etc). In addition there are 3 or more system registers,
+depending on the implementation. VFP-v3 adds 16 more
+double-precision registers d16-d31, but there are no additional
+single-precision counterparts. The Advanced SIMD Extension and the
+M-profile vector Extension (MVE) use the VFP register set. The
+Advanced SIMD Extension uses the double-precision registers for
+64-bit vectors and further defines quad-word registers (with q0
+overlapping d0, d1; and q1 overlapping d2, d3; etc) for 128-bit
+vectors. MVE uses 128-bit vectors in the same quad-word
+registers.</p>
+<p>Registers s16-s31 (d8-d15, q4-q7) must be preserved across
+subroutine calls; registers s0-s15 (d0-d7, q0-q3) do not need to be
+preserved (and can be used for passing arguments or returning
+results in standard procedure-call variants). Registers d16-d31
+(q8-q15), if present, do not need to be preserved.</p>
+<p>The FPSCR and VPR registers are the only status registers that
+may be accessed by conforming code. FPSCR is a global register with
+the following properties:</p>
+<ul>
+<li>The condition code bits (28-31), the cumulative saturation (QC)
+bit (27) and the cumulative exception-status bits (0-4 and 7) are
+not preserved across a public interface.</li>
+<li>The exception-control bits (8-12 and 15), rounding mode bits
+(22-23) and flush-to-zero bits (24) may be modified by calls to
+specific support functions that affect the global state of the
+application.</li>
+<li>The length bits (16-18) must be 0b100 when using M-profile
+Vector Extension, 0b000 when using VFP vector mode and otherwise
+preserved across a public interface.</li>
+<li>The stride bits (20-21) must be zero on entry to and return
+from a public interface.</li>
+<li>All other bits are reserved and must not be modified. It is not
+defined whether the bits read as zero or one, or whether they are
+preserved across a public interface.</li>
+</ul>
+<p>VPR is a global register with the following properties:</p>
+<ul>
+<li>The VPT mask bits (16-23) must be zero on entry to and return
+from a public interface.</li>
+<li>The predication bits (0-15) are not preserved across a public
+interface.</li>
+<li>All other bits are reserved and must not be modified. It is not
+defined whether the bits read as zero or one, or whether they are
+preserved across a public interface.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="processes-memory-and-the-stack"><span id="aapcs32-section5-2"/>
+<h3><a href="index.html#id44">Processes, Memory and the Stack</a><a href="index.html#processes-memory-and-the-stack"/></h3>
+<p>The AAPCS applies to a <em>single thread of
+execution</em> or <em>process</em> (hereafter
+referred to as a process). A process has a <em>program state</em> defined by the underlying machine
+registers and the contents of the memory it can access. The memory
+a process can access, without causing a run-time fault, may vary
+during the execution of the process.</p>
+<p>The memory of a process can normally be classified into five
+categories:</p>
+<ul>
+<li>code (the program being executed), which must be readable, but
+need not be writable, by the process.</li>
+<li>read-only static data.</li>
+<li>writable static data.</li>
+<li>the heap.</li>
+<li>the stack.</li>
+</ul>
+<p>Writable static data may be further sub-divided into
+initialized, zero-initialized and uninitialized data. Except for
+the stack there is no requirement for each class of memory to
+occupy a single contiguous region of memory. A process must always
+have some code and a stack, but need not have any of the other
+categories of memory.</p>
+<p>The heap is an area (or areas) of memory that are managed by the
+process itself (for example, with the C <code><span><span>malloc</span></span></code> function). It
+is typically used for the creation of dynamic data objects.</p>
+<p>A conforming program must only execute instructions that are in
+areas of memory designated to contain code.</p>
+<div id="the-stack"><span id="aapcs32-section5-2-1"/>
+<h4>The Stack<a href="index.html#the-stack"/></h4>
+<p>The stack is a contiguous area of memory that may be used for
+storage of local variables and for passing additional arguments to
+subroutines when there are insufficient argument registers
+available.</p>
+<p>The stack implementation is <em>full-descending</em>, with the current extent of the
+stack held in the register SP (r13). The stack will, in general,
+have both a <em>base</em> and a <em>limit</em> though in practice an application may not be
+able to determine the value of either.</p>
+<p>The stack may have a fixed size or be dynamically extendable (by
+adjusting the stack-limit downwards).</p>
+<p>The rules for maintenance of the stack are divided into two
+parts: a set of constraints that must be observed at all times, and
+an additional constraint that must be observed at a public
+interface.</p>
+<div id="universal-stack-constraints"><span id="aapcs32-section5-2-1-1"/>
+<h5>Universal stack constraints<a href="index.html#universal-stack-constraints"/></h5>
+<p>At all times the following basic constraints must hold:</p>
+<ul>
+<li>Stack-limit &lt; SP &lt;= stack-base. The stack pointer must
+lie within the extent of the stack.</li>
+<li>SP mod 4 = 0. The stack must at all times be aligned to a word
+boundary.</li>
+<li>A process may only store data in the closed interval of the
+entire stack delimited by [SP, stack base - 1] (where SP is the
+value of register r13).</li>
+</ul>
+<div>
+<p>Note</p>
+<p>This implies that instructions of the following form can fail to
+satisfy the stack discipline constraints, even when <code><span>reg</span></code> points within the extent of the stack.</p>
+<div>
+<div>
+<pre>ldmxx    reg, {..., sp, ...}             // reg != sp
+</pre></div>
+</div>
+<p>If execution of the instruction is interrupted
+after sp has been loaded, the stack extent will not be restored, so
+restarting the instruction might violate the third constraint.</p>
+</div>
+</div>
+<div id="stack-constraints-at-a-public-interface">
+<span id="aapcs32-section5-2-1-2"/>
+<h5>Stack constraints at a public interface<a href="index.html#stack-constraints-at-a-public-interface"/></h5>
+<p>The stack must also conform to the following constraint at a
+public interface:</p>
+<ul>
+<li>SP mod 8 = 0. The stack must be double-word aligned.</li>
+</ul>
+</div>
+<div id="stack-probing"><span id="aapcs32-section5-2-1-3"/>
+<h5>Stack probing<a href="index.html#stack-probing"/></h5>
+<p>In order to ensure stack integrity a process may emit stack
+probes immediately prior to allocating additional stack space
+(moving SP from SP_old to SP_new). Stack probes must be in the
+region of [SP_new, SP_old - 1] and may be either read or write
+operations. The minimum interval for stack probing is defined by
+the target platform but must be a minimum of 4KBytes. No
+recoverable data can be saved below the currently allocated stack
+region.</p>
+</div>
+<div id="the-frame-pointer"><span id="aapcs32-section-frame-pointer"/>
+<h5>The Frame Pointer<a href="index.html#the-frame-pointer"/></h5>
+<p>A platform may require the construction of a list of stack
+frames describing the current call hierarchy in a program.</p>
+<p>Each frame shall link to the frame of its caller by means of a
+Frame Record of two 32-bit values on the stack. The frame record
+for the innermost frame (belonging to the most recent routine
+invocation) shall be pointed to by the Frame Pointer register (FP).
+The lowest addressed word shall point to the previous frame record
+and the highest addressed word shall contain the value passed in LR
+on entry to the current function. The end of the frame record chain
+is indicated by the address zero in the address for the previous
+frame. The location of the frame record within a stack frame is not
+specified. The frame pointer register must not be updated until the
+new frame record has been fully constructed.</p>
+<div>
+<p>Note</p>
+<p>There will always be a short period during
+construction or destruction of each frame record during which the
+frame pointer will point to the caller's record.</p>
+</div>
+<p>A platform shall mandate the minimum level of conformance with
+respect to the maintenance of frame records. The options are, in
+decreasing level of functionality:</p>
+<ul>
+<li>It may require the frame pointer to address a valid frame
+record at all times, except that small subroutines which do not
+modify the link register may elect not to create a frame
+record</li>
+<li>It may require the frame pointer to address a valid frame
+record at all times, except that any subroutine may elect not to
+create a frame record</li>
+<li>It may permit the frame pointer register to be used as a
+general-purpose callee-saved register, but provide a
+platform-specific mechanism for external agents to reliably locate
+the chain of frame records</li>
+<li>It may elect not to maintain a frame chain and to use the frame
+pointer register as a general-purpose callee-saved register.</li>
+</ul>
+<div>
+<p>Note</p>
+<p>Unlike the APCS and its variants, the same frame pointer
+register is used for both the Arm and Thumb ISAs (including the
+Thumb-1 variant), this ensures that the frame chain can be
+constructed even when generating code that interworks between both
+the Arm and Thumb instruction sets. It is expected that Thumb-1
+code will rarely, if ever, want to create stack frames - the choice
+of a high register therefore ensures that such code can conform
+minimally to the requirements of having a valid value stored in the
+frame pointer register without noticably reducing the number of
+registers available to normal code.</p>
+<p>The AAPCS does not specify where, within a
+function's stack frame record, the frame chain data structure
+resides. This permits implementors the freedom to use whatever
+location will result in the most efficient code needed to establish
+the frame chain record. As a result, even in Thumb-1, the overhead
+for establishing the frame will rarely exceed three additional
+instructions in the function entry sequence and two additional
+instructions in the return sequence.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="subroutine-calls"><span id="aapcs32-section5-3"/>
+<h3><a href="index.html#id45">Subroutine Calls</a><a href="index.html#subroutine-calls"/></h3>
+<p>Both the Arm and Thumb instruction sets contain a primitive
+subroutine call instruction, BL, which performs a branch-with-link
+operation. The effect of executing BL is to transfer the
+sequentially next value of the program counter— the <em>return</em> address —into the link register (LR) and the
+destination address into the program counter (PC). Bit 0 of the
+link register will be set to 1 if the BL instruction was executed
+from Thumb state, and to 0 if executed from Arm state. The result
+is to transfer control to the destination address, passing the
+return address in LR as an additional parameter to the called
+subroutine.</p>
+<p>Control is returned to the instruction following the BL when the
+return address is loaded back into the PC (see <a href="index.html#aapcs32-section5-6"><span>Interworking</span></a>).</p>
+<p>A subroutine call can be synthesized by any instruction sequence
+that has the effect:</p>
+<div>
+<div>
+<pre>   LR[31:1] &lt;== return address
+   LR[0]    &lt;== code type at return address (0 Arm, 1 Thumb)
+   PC       &lt;== subroutine address
+   ...
+return address:
+</pre></div>
+</div>
+<p>For example, in Arm-state, to call a subroutine addressed by r4
+with control returning to the following instruction, do</p>
+<div>
+<div>
+<pre><span>MOV</span>  <span>LR</span><span>,</span> <span>PC</span>
+<span>BX</span>   <span>r4</span>
+<span>...</span>
+</pre></div>
+</div>
+<div>
+<p>Note</p>
+<p>The equivalent sequence will not work from Thumb
+state because the instruction that sets LR does not copy the
+Thumb-state bit to LR[0].</p>
+</div>
+<p>In Arm Architecture v5 both Arm and Thumb state provide a BLX
+instruction that will call a subroutine addressed by a register and
+correctly sets the return address to the sequentially next value of
+the program counter.</p>
+<div id="use-of-ip-by-the-linker"><span id="aapcs32-section5-3-1-1"/>
+<h4>Use of IP by the linker<a href="index.html#use-of-ip-by-the-linker"/></h4>
+<p>Both the Arm- and Thumb-state BL instructions are unable to
+address the full 32-bit address space, so it may be necessary for
+the linker to insert a veneer between the calling routine and the
+called subroutine. Veneers may also be needed to support Arm-Thumb
+inter-working or dynamic linking. Any veneer inserted must preserve
+the contents of all registers except IP (r12) and the condition
+code flags; a conforming program must assume that a veneer that
+alters IP may be inserted at any branch instruction that is exposed
+to a relocation that supports inter-working or long branches.</p>
+<div>
+<p>Note</p>
+<p><code><span>R_ARM_CALL</span></code>, <code><span>R_ARM_JUMP24</span></code>, <code><span>R_ARM_PC24</span></code>, <code><span>R_ARM_THM_CALL</span></code>, <code><span>R_ARM_THM_JUMP24</span></code> and <code><span>R_ARM_THM_JUMP19</span></code> are examples of the ELF
+relocation types with this property. See [<a href="https://developer.arm.com/documentation/ihi0044/latest"><span>AAELF</span></a>]
+for full details.</p>
+</div>
+</div>
+</div>
+<div id="result-return"><span id="aapcs32-section5-4"/>
+<h3><a href="index.html#id46">Result Return</a><a href="index.html#result-return"/></h3>
+<p>The manner in which a result is returned from a function is
+determined by the type of that result.</p>
+<p>For the base standard:</p>
+<ul>
+<li>A Half-precision Floating Point Type is returned in the least
+significant 16 bits of r0.</li>
+<li>A Fundamental Data Type that is smaller than 4 bytes is zero-
+or sign-extended to a word and returned in r0.</li>
+<li>A word-sized Fundamental Data Type (e.g., <code><span><span>int</span></span></code>,
+<code><span><span>float</span></span></code>) is
+returned in r0.</li>
+<li>A double-word sized Fundamental Data Type (e.g., <code><span><span>long</span></span> <span><span>long</span></span></code>,
+<code><span><span>double</span></span></code> and
+64-bit containerized vectors) is returned in r0 and r1.</li>
+<li>A 128-bit containerized vector is returned in r0-r3.</li>
+<li>A Composite Type not larger than 4 bytes is returned in r0. The
+format is as if the result had been stored in memory at a
+word-aligned address and then loaded into r0 with an LDR
+instruction. Any bits in r0 that lie outside the bounds of the
+result have unspecified values.</li>
+<li>A Composite Type larger than 4 bytes, or whose size cannot be
+determined statically by both caller and callee, is stored in
+memory at an address passed as an extra argument when the function
+was called (<a href="index.html#aapcs32-section5-5"><span>Parameter Passing</span></a>, <a href="index.html#aapcs32-rulea-4"><span>rule A.4</span></a>).
+The memory to be used for the result may be modified at any point
+during the function call.</li>
+</ul>
+</div>
+<div id="parameter-passing"><span id="aapcs32-section5-5"/>
+<h3><a href="index.html#id47">Parameter Passing</a><a href="index.html#parameter-passing"/></h3>
+<p>The base standard provides for passing arguments in core
+registers (r0-r3) and on the stack. For subroutines that take a
+small number of parameters, only registers are used, greatly
+reducing the overhead of a call.</p>
+<p>Parameter passing is defined as a two-level conceptual model</p>
+<ul>
+<li>A mapping from a source language argument onto a machine
+type</li>
+<li>The marshalling of machine types to produce the final parameter
+list</li>
+</ul>
+<p>The mapping from the source language onto the machine type is
+specific for each language and is described separately (the C and
+C++ language bindings are described in <a href="index.html#aapcs32-section7"><span>Arm C and C++
+Language Mappings</span></a>). The result is an ordered list of
+arguments that are to be passed to the subroutine.</p>
+<p>In the following description there are assumed to be a number of
+co-processors available for passing and receiving arguments. The
+co-processor registers are divided into different classes. An
+argument may be a candidate for at most one co-processor register
+class. An argument that is suitable for allocation to a
+co-processor register is known as a Co-processor Register Candidate
+(CPRC).</p>
+<p>In the base standard there are no arguments that are candidates
+for a co-processor register class.</p>
+<p>A variadic function is always marshaled as for the base
+standard.</p>
+<p>For a caller, sufficient stack space to hold stacked arguments
+is assumed to have been allocated prior to marshaling: in practice
+the amount of stack space required cannot be known until after the
+argument marshalling has been completed. A callee can modify any
+stack space used for receiving parameter values from the
+caller.</p>
+<p>When a Composite Type argument is assigned to core registers
+(either fully or partially), the behavior is as if the argument had
+been stored to memory at a word-aligned (4-byte) address and then
+loaded into consecutive registers using a suitable load-multiple
+instruction.</p>
+<p>Stage A -- Initialization</p>
+<p>This stage is performed exactly once, before processing of the
+arguments commences.</p>
+<table>
+<colgroup>
+<col width="15%"/>
+<col width="85%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td>
+<p id="aapcs32-rulea-1">A.1</p>
+</td>
+<td>The Next Core Register Number (NCRN) is set to r0.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulea-2-cp"><em>A.2.cp</em></p>
+</td>
+<td><em>Co-processor argument register initialization is
+performed.</em></td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulea-3">A.3</p>
+</td>
+<td>The next stacked argument address (NSAA) is set to the current
+stack-pointer value (SP).</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulea-4">A.4</p>
+</td>
+<td>If the subroutine is a function that returns a result in
+memory, then the address for the result is placed in r0 and the
+NCRN is set to r1.</td>
+</tr>
+</tbody>
+</table>
+<p>Stage B - Pre-padding and extension of
+arguments</p>
+<p>For each argument in the list the first matching rule from the
+following list is applied.</p>
+<table>
+<colgroup>
+<col width="15%"/>
+<col width="85%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td>
+<p id="aapcs32-ruleb-1">B.1</p>
+</td>
+<td>If the argument is a Composite Type whose size cannot be
+statically determined by both the caller and callee, the argument
+is copied to memory and the argument is replaced by a pointer to
+the copy.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-ruleb-2">B.2</p>
+</td>
+<td>If the argument is an integral Fundamental Data Type that is
+smaller than a word, then it is zero- or sign-extended to a full
+word and its size is set to 4 bytes. If the argument is a
+Half-precision Floating Point Type its size is set to 4 bytes as if
+it had been copied to the least significant bits of a 32-bit
+register and the remaining bits filled with unspecified
+values.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-ruleb-3-cp"><em>B.3.cp</em></p>
+</td>
+<td><em>If the argument is a CPRC then any preparation rules for
+that co-processor register class are applied.</em></td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-ruleb-4">B.4</p>
+</td>
+<td>If the argument is a Composite Type whose size is not a
+multiple of 4 bytes, then its size is rounded up to the nearest
+multiple of 4.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-ruleb-5">B.5</p>
+</td>
+<td>
+<p>If the argument is an alignment adjusted type its
+value is passed as a copy of the actual value. The copy will have
+an alignment defined as follows.</p>
+<ul>
+<li>For a Fundamental Data Type, the alignment is the natural
+alignment of that type, after any promotions.</li>
+<li>For a Composite Type, the alignment of the copy will have
+4-byte alignment if its natural alignment is &lt;= 4 and 8-byte
+alignment if its natural alignment is &gt;= 8</li>
+</ul>
+<p>The alignment of the copy is used for applying
+marshaling rules.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Stage C - Assignment of arguments to registers
+and stack</p>
+<p>For each argument in the list the following rules are applied in
+turn until the argument has been allocated.</p>
+<table>
+<colgroup>
+<col width="15%"/>
+<col width="85%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td>
+<p id="aapcs32-rulec-1-cp"><em>C.1.cp</em></p>
+</td>
+<td><em>If the argument is a CPRC and there are sufficient
+unallocated co-processor registers of the appropriate class, the
+argument is allocated to co-processor registers.</em></td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulec-2-cp"><em>C.2.cp</em></p>
+</td>
+<td><em>If the argument is a CPRC then any co-processor registers
+in that class that are unallocated are marked as unavailable. The
+NSAA is adjusted upwards until it is correctly aligned for the
+argument and the argument is copied to the memory at the adjusted
+NSAA. The NSAA is further incremented by the size of the argument.
+The argument has now been allocated.</em></td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulec-3">C.3</p>
+</td>
+<td>If the argument requires double-word alignment (8-byte), the
+NCRN is rounded up to the next even register number.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulec-4">C.4</p>
+</td>
+<td>If the size in words of the argument is not more than r4 minus
+NCRN, the argument is copied into core registers, starting at the
+NCRN. The NCRN is incremented by the number of registers used.
+Successive registers hold the parts of the argument they would hold
+if its value were loaded into those registers from memory using an
+LDM instruction. The argument has now been allocated.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulec-5">C.5</p>
+</td>
+<td>If the NCRN is less than r4 and the NSAA is equal to the SP,
+the argument is split between core registers and the stack. The
+first part of the argument is copied into the core registers
+starting at the NCRN up to and including r3. The remainder of the
+argument is copied onto the stack, starting at the NSAA. The NCRN
+is set to r4 and the NSAA is incremented by the size of the
+argument minus the amount passed in registers. The argument has now
+been allocated.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulec-6">C.6</p>
+</td>
+<td>The NCRN is set to r4.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulec-7">C.7</p>
+</td>
+<td>If the argument required double-word alignment (8-byte), then
+the NSAA is rounded up to the next double-word address.</td>
+</tr>
+<tr>
+<td>
+<p id="aapcs32-rulec-8">C.8</p>
+</td>
+<td>The argument is copied to memory at the NSAA. The NSAA is
+incremented by the size of the argument.</td>
+</tr>
+</tbody>
+</table>
+<p>It should be noted that the above algorithm makes provision for
+languages other than C and C++ in that it provides for passing
+arrays by value and for passing arguments of dynamic size. The
+rules are defined in a way that allows the caller to be always able
+to statically determine the amount of stack space that must be
+allocated for arguments that are not passed in registers, even if
+the function is variadic.</p>
+<p>Several further observations can also be made:</p>
+<ul>
+<li>The initial stack slot address is the value of the stack
+pointer that will be passed to the subroutine. It may therefore be
+necessary to run through the above algorithm twice during
+compilation, once to determine the amount of stack space required
+for arguments and a second time to assign final stack slot
+addresses.</li>
+<li>A double-word aligned type will always start in an
+even-numbered core register, or at a double-word aligned address on
+the stack even if it is not the first member of an aggregate.</li>
+<li>Arguments are allocated first to registers and only excess
+arguments are placed on the stack.</li>
+<li>Arguments that are Fundamental Data Types can either be
+entirely in registers or entirely on the stack.</li>
+<li>At most one argument can be split between registers and memory
+according to <a href="index.html#aapcs32-rulec-5"><span>rule C.5</span></a>.</li>
+<li>CPRCs may be allocated to co-processor registers or the stack -
+they may never be allocated to core registers.</li>
+<li>Since an argument may be a candidate for at most one class of
+co-processor register, then the rules for multiple co-processors
+(should they be present) may be applied in any order without
+affecting the behavior.</li>
+<li>An argument may only be split between core registers and the
+stack if all preceding CPRCs have been allocated to co-processor
+registers.</li>
+</ul>
+</div>
+<div id="interworking"><span id="aapcs32-section5-6"/>
+<h3><a href="index.html#id48">Interworking</a><a href="index.html#interworking"/></h3>
+<p>The AAPCS requires that all sub-routine call and return
+sequences support inter-working between Arm and Thumb states. The
+implications on compiling for various Arm Architectures are as
+follows.</p>
+<p>Arm v5 and Arm v6</p>
+<p>Calls via function pointers should use one of the following, as
+appropriate:</p>
+<div>
+<div>
+<pre><span>blx</span>   <span>Rm</span>    <span>; For normal sub-routine calls</span>
+</pre></div>
+</div>
+<div>
+<div>
+<pre><span>bx</span>    <span>Rm</span>    <span>; For tail calls</span>
+</pre></div>
+</div>
+<p>Calls to functions that use <code><span>bl&lt;cond&gt;</span></code>, <code><span>b</span></code>, or <code><span>b&lt;cond&gt;</span></code> will need a linker-generated
+veneer if a state change is required, so it may sometimes be more
+efficient to use a sequence that permits use of an unconditional
+<code><span>bl</span></code> instruction.</p>
+<p>Return sequences may use load-multiple operations that directly
+load the PC or a suitable <code><span>bx</span></code> instruction.</p>
+<p>The following traditional return must not be used if
+inter-working might be required.</p>
+<div>
+<div>
+<pre><span>mov</span>   <span>pc</span><span>,</span> <span>Rm</span>
+</pre></div>
+</div>
+<p>Arm v4T</p>
+<p>In addition to the constraints for Arm v5, the following
+additional restrictions apply to Arm v4T.</p>
+<p>Calls using <code><span>bl</span></code> that involve a state change also require a
+linker-generated stub.</p>
+<p>Calls via function pointers must use a sequence equivalent to
+the Arm-state code</p>
+<div>
+<div>
+<pre><span>mov</span>   <span>lr</span><span>,</span> <span>pc</span>
+<span>bx</span>    <span>Rm</span>
+</pre></div>
+</div>
+<p>However, this sequence does not work for Thumb state, so usually
+a <code><span>bl</span></code> to a veneer that does the <code><span>bx</span></code> instruction must be used.</p>
+<p>Return sequences must restore any saved registers and then use a
+<code><span>bx</span></code> instruction to return to the caller.</p>
+<p>Arm v4</p>
+<p>The Arm v4 Architecture supports neither Thumb state nor the
+<code><span>bx</span></code> instruction, therefore it is not strictly
+compatible with the AAPCS.</p>
+<p>It is recommended that code for Arm v4 be compiled using Arm v4T
+inter-working sequences but with all <code><span>bx</span></code> instructions subject to relocation by an
+<code><span>R_ARM_V4BX</span></code> relocation [<a href="https://developer.arm.com/documentation/ihi0044/latest"><span>AAELF</span></a>].
+A linker linking for Arm V4 can then change all instances of:</p>
+<div>
+<div>
+<pre><span>bx</span>    <span>Rm</span>
+</pre></div>
+</div>
+<p>Into:</p>
+<div>
+<div>
+<pre><span>mov</span>   <span>pc</span><span>,</span> <span>Rm</span>
+</pre></div>
+</div>
+<p>But relocatable files remain compatible with this standard.</p>
+</div>
+</div>
+<div id="the-standard-variants"><span id="aapcs32-section6"/>
+<h2><a href="index.html#id49">The Standard Variants</a><a href="index.html#the-standard-variants"/></h2>
+<p>This section applies only to non-variadic functions. For a
+variadic function the base standard is always used both for
+argument passing and result return.</p>
+<div id="vfp-and-simd-vector-register-arguments">
+<span id="aapcs32-section6-1"/>
+<h3><a href="index.html#id50">VFP and SIMD vector Register
+Arguments</a><a href="index.html#vfp-and-simd-vector-register-arguments"/></h3>
+<p>This variant alters the manner in which floating-point values
+are passed between a subroutine and its caller and allows
+significantly better performance when a VFP co-processor, the
+Advanced SIMD Extension or the M-profile Vector Extension is
+present.</p>
+<div id="mapping-between-registers-and-memory-format"><span id="aapcs32-section6-1-1"/>
+<h4>Mapping between registers and memory format<a href="index.html#mapping-between-registers-and-memory-format"/></h4>
+<p>Values passed across a procedure call interface in VFP registers
+are laid out as follows:</p>
+<ul>
+<li>A half precision floating point type is passed as if it were
+loaded from its memory format into the least significant 16 bits of
+a single precision register.</li>
+<li>A single precision floating point type is passed as if it were
+loaded from its memory format into a single precision register with
+<code><span>VLDR</span></code>.</li>
+<li>A double precision floating point type is passed as if it were
+loaded from its memory format into a double precision register with
+<code><span>VLDR</span></code>.</li>
+<li>A 64-bit containerized vector type is passed as if it were
+loaded from its memory format into a 64-bit vector register
+(D<em>n</em>) with <code><span>VLDR</span></code>.</li>
+<li>A 128-bit containerized vector type is passed as if it were
+loaded from its memory format into a 128-bit vector register
+(Q<em>n</em>) with a single <code><span>VLDM</span></code> of the two component 64-bit vector
+registers (for example, <code><span>VLDM</span> <span>r0,{d2,d3}</span></code> would
+load q1).</li>
+</ul>
+</div>
+<div id="procedure-calling"><span id="aapcs32-section6-1-2"/>
+<h4>Procedure Calling<a href="index.html#procedure-calling"/></h4>
+<p>The set of call saved registers is the same as for the base
+standard (<a href="index.html#aapcs32-section5-1-2-1"><span>VFP register usage conventions</span></a>).</p>
+<div id="vfp-co-processor-register-candidates">
+<span id="aapcs32-section6-1-2-1"/>
+<h5>VFP co-processor register candidates<a href="index.html#vfp-co-processor-register-candidates"/></h5>
+<p>For the VFP the following argument types are VFP CPRCs.</p>
+<ul>
+<li>A half-precision floating-point type.</li>
+<li>A single-precision floating-point type.</li>
+<li>A double-precision floating-point type.</li>
+<li>A 64-bit or 128-bit containerized vector type.</li>
+<li>A Homogeneous Aggregate with a Base Type of a single- or
+double-precision floating-point type with one to four
+Elements.</li>
+<li>A Homogeneous Aggregate with a Base Type of 64-bit
+containerized vectors with one to four Elements.</li>
+<li>A Homogeneous Aggregate with a Base Type of 128-bit
+containerized vectors with one to four Elements.</li>
+</ul>
+<div>
+<p>Note</p>
+<p>There are no VFP CPRCs in a variadic procedure.</p>
+</div>
+</div>
+<div id="aapcs32-section6-1-2-2"><span id="id6"/>
+<h5>Result return<a href="index.html#aapcs32-section6-1-2-2"/></h5>
+<p>Any result whose type would satisfy the conditions for a VFP
+CPRC is returned in the appropriate number of consecutive VFP
+registers starting with the lowest numbered register (s0, d0,
+q0).</p>
+<p>All other types are returned as for the base standard.</p>
+</div>
+<div id="aapcs32-section6-1-2-3"><span id="id7"/>
+<h5>Parameter passing<a href="index.html#aapcs32-section6-1-2-3"/></h5>
+<p>There is one VFP co-processor register class using registers
+s0-s15 (d0-d7) for passing arguments.</p>
+<p>The following co-processor rules are defined for the VFP:</p>
+<table>
+<colgroup>
+<col width="15%"/>
+<col width="85%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td>A.2.vfp</td>
+<td>The floating point argument registers are marked as
+unallocated.</td>
+</tr>
+<tr>
+<td>B.3.vfp</td>
+<td>Nothing to do.</td>
+</tr>
+<tr>
+<td>C.1.vfp</td>
+<td>If the argument is a VFP CPRC and there are sufficient
+consecutive VFP registers of the appropriate type unallocated then
+the argument is allocated to the lowest-numbered sequence of such
+registers.</td>
+</tr>
+<tr>
+<td>C.2.vfp</td>
+<td>If the argument is a VFP CPRC then any VFP registers that are
+unallocated are marked as unavailable. The NSAA is adjusted upwards
+until it is correctly aligned for the argument and the argument is
+copied to the stack at the adjusted NSAA. The NSAA is further
+incremented by the size of the argument. The argument has now been
+allocated.</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the rules require the 'back-filling' of unused
+co-processor registers that are skipped by the alignment
+constraints of earlier arguments. The back-filling continues only
+so long as no VFP CPRC has been allocated to a slot on the
+stack.</p>
+</div>
+</div>
+</div>
+<div id="arm-alternative-format-half-precision-floating-point-values">
+<span id="aapcs32-section6-2"/>
+<h3><a href="index.html#id51">Arm Alternative Format Half-precision Floating
+Point values</a><a href="index.html#arm-alternative-format-half-precision-floating-point-values"/></h3>
+<p>Code may be compiled to use the Arm Alternative format
+Half-precision values. The rules for passing and returning values
+will either use the Base Standard rules or the VFP and SIMD vector
+register rules.</p>
+</div>
+<div id="read-write-position-independence-rwpi">
+<span id="aapcs32-section6-3"/>
+<h3><a href="index.html#id52">Read-Write Position Independence
+(RWPI)</a><a href="index.html#read-write-position-independence-rwpi"/></h3>
+<p>Code compiled or assembled for execution environments that
+require read-write position independence (for example, the single
+address-space DLL-like model) use a static base to address writable
+data. Core register r9 is renamed as SB and used to hold the static
+base address: consequently this register may not be used for
+holding other values at any time <a href="index.html#aapcs32-f5" id="id8">[5]</a>.</p>
+</div>
+<div id="variant-compatibility"><span id="aapcs32-section6-4"/>
+<h3><a href="index.html#id53">Variant Compatibility</a><a href="index.html#variant-compatibility"/></h3>
+<p>The variants described in <a href="index.html#aapcs32-section6"><span>The Standard
+Variants</span></a> can produce code that is incompatible with the
+base standard. Nevertheless, there still exist subsets of code that
+may be compatible across more than one variant. This section
+describes the theoretical levels of compatibility between the
+variants; however, whether a tool-chain must accept compatible
+objects compiled to different base standards, or correctly reject
+incompatible objects, is implementation defined.</p>
+<div id="vfp-and-base-standard-compatibility">
+<span id="aapcs32-section6-4-1"/>
+<h4>VFP and Base Standard Compatibility<a href="index.html#vfp-and-base-standard-compatibility"/></h4>
+<p>Code compiled for the VFP calling standard is compatible with
+the base standard (and vice-versa) if no floating-point or
+containerized vector arguments or results are used, or if the only
+routines that pass or return such values are variadic routines.</p>
+</div>
+<div id="rwpi-and-base-standard-compatibility">
+<span id="aapcs32-section6-4-2"/>
+<h4>RWPI and Base Standard Compatibility<a href="index.html#rwpi-and-base-standard-compatibility"/></h4>
+<p>Code compiled for the base standard is compatible with the RWPI
+calling standard if it makes no use of register r9. However, a
+platform ABI may restrict further the subset of code that is
+usefully compatible.</p>
+</div>
+<div id="vfp-and-rwpi-standard-compatibility">
+<span id="aapcs32-section6-4-3"/>
+<h4>VFP and RWPI Standard Compatibility<a href="index.html#vfp-and-rwpi-standard-compatibility"/></h4>
+<p>The VFP calling variant and RWPI addressing variant may be
+combined to create a third major variant. The appropriate
+combination of the rules described above will determine whether
+code is compatible.</p>
+</div>
+<div id="half-precision-format-compatibility">
+<span id="aapcs32-section6-4-4"/>
+<h4>Half-precision Format Compatibility<a href="index.html#half-precision-format-compatibility"/></h4>
+<p>The set of values that can be represented in Arm Alternative
+format differs from the set that can be represented in IEEE754-2008
+format rendering code built to use either format incompatible with
+code that uses the other. However, most code will make no use of
+either format and will therefore be compatible with both
+variants.</p>
+</div>
+</div>
+</div>
+<div id="arm-c-and-c-language-mappings"><span id="aapcs32-section7"/>
+<h2><a href="index.html#id54">Arm C and C++ Language Mappings</a><a href="index.html#arm-c-and-c-language-mappings"/></h2>
+<p>This section describes how Arm compilers map C language features
+onto the machine-level standard. To the extent that C++ is a
+superset of the C language it also describes the mapping of C++
+language features.</p>
+<div id="data-types"><span id="aapcs32-section7-1"/>
+<h3><a href="index.html#id55">Data Types</a><a href="index.html#data-types"/></h3>
+<div id="arithmetic-types"><span id="aapcs32-section7-1-1"/>
+<h4>Arithmetic Types<a href="index.html#arithmetic-types"/></h4>
+<p>The mapping of C arithmetic types to Fundamental Data Types is
+shown in <a href="index.html#aapcs32-table3"><span>Table
+3, Mapping of C &amp; C++ built-in data types</span></a>.</p>
+<span id="aapcs32-table3"/>
+<table id="id15">
+<caption><span>Table 49</span> <span>Table 3, Mapping of C &amp; C++ built-in data
+types</span><a href="index.html#id15"/></caption>
+<colgroup>
+<col width="32%"/>
+<col width="34%"/>
+<col width="35%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>C/C++ Type</th>
+<th>Machine Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code><span><span>
+char</span></span></code></td>
+<td>unsigned byte</td>
+<td><code><span>LDRB</span></code>
+is unsigned</td>
+</tr>
+<tr>
+<td><code><span><span>
+unsigned</span></span> <span><span>char</span></span></code></td>
+<td>unsigned byte</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+signed</span></span> <span><span>char</span></span></code></td>
+<td>signed byte</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+[</span></span><span><span>signed</span></span><span><span>]</span></span> <span><span>short</span></span></code></td>
+<td>signed halfword</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+unsigned</span></span> <span><span>short</span></span></code></td>
+<td>unsigned halfword</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+[</span></span><span><span>signed</span></span><span><span>]</span></span> <span><span>int</span></span></code></td>
+<td>signed word</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+unsigned</span></span> <span><span>int</span></span></code></td>
+<td>unsigned word</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+[</span></span><span><span>signed</span></span><span><span>]</span></span> <span><span>long</span></span></code></td>
+<td>signed word</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+unsigned</span></span> <span><span>long</span></span></code></td>
+<td>unsigned word</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+[</span></span><span><span>signed</span></span><span><span>]</span></span> <span><span>long</span></span> <span><span>long</span></span></code></td>
+<td>signed double-word</td>
+<td>C99 Only</td>
+</tr>
+<tr>
+<td><code><span><span>
+unsigned</span></span> <span><span>long</span></span> <span><span>long</span></span></code></td>
+<td>unsigned double-word</td>
+<td>C99 Only</td>
+</tr>
+<tr>
+<td><code><span><span>
+__fp16</span></span></code></td>
+<td>half precision (IEEE754-2008 or Arm Alternative)</td>
+<td>Arm extension documented in [<a href="https://developer.arm.com/products/software-development-tools/compilers/arm-compiler-5/docs/101028/latest/1-preface">ACLE</a>].
+In a variadic function call this will be passed as a
+double-precision value.</td>
+</tr>
+<tr>
+<td><code><span><span>
+__bf16</span></span></code></td>
+<td>half precision Brain floating-point format</td>
+<td>Arm extension documented in [<a href="https://developer.arm.com/products/software-development-tools/compilers/arm-compiler-5/docs/101028/latest/1-preface">ACLE</a>].</td>
+</tr>
+<tr>
+<td><code><span><span>
+float</span></span></code></td>
+<td>single precision (IEEE 754)</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+double</span></span></code></td>
+<td>double precision (IEEE 754)</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+long</span></span> <span><span>double</span></span></code></td>
+<td>double precision (IEEE 754)</td>
+<td> </td>
+</tr>
+<tr>
+<td><code><span><span>
+float</span></span> <span><span>_Imaginary</span></span></code></td>
+<td>single precision (IEEE 754)</td>
+<td>C99 Only</td>
+</tr>
+<tr>
+<td><code><span><span>
+double</span></span> <span><span>_Imaginary</span></span></code></td>
+<td>double precision (IEEE 754)</td>
+<td>C99 Only</td>
+</tr>
+<tr>
+<td><code><span><span>
+long</span></span> <span><span>double</span></span> <span><span>_Imaginary</span></span></code></td>
+<td>double precision (IEEE 754)</td>
+<td>C99 Only</td>
+</tr>
+<tr>
+<td><code><span><span>
+float</span></span> <span><span>_Complex</span></span></code></td>
+<td>2 single precision (IEEE 754)</td>
+<td>
+<p>C99 Only. Layout is</p>
+<div>
+<div>
+<pre><span>struct</span> <span>{</span> <span>float</span> <span>re</span><span>;</span>
+         <span>float</span> <span>im</span><span>;</span> <span>};</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code><span><span>
+double</span></span> <span><span>_Complex</span></span></code></td>
+<td>2 double precision (IEEE 754)</td>
+<td>
+<p>C99 Only. Layout is</p>
+<div>
+<div>
+<pre><span>struct</span> <span>{</span> <span>double</span> <span>re</span><span>;</span>
+         <span>double</span> <span>im</span><span>;</span> <span>};</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code><span><span>
+long</span></span> <span><span>double</span></span> <span><span>_Complex</span></span></code></td>
+<td>2 double precision (IEEE 754)</td>
+<td>
+<p>C99 Only. Layout is</p>
+<div>
+<div>
+<pre><span>struct</span> <span>{</span> <span>long</span> <span>double</span> <span>re</span><span>;</span>
+         <span>long</span> <span>double</span> <span>im</span><span>;</span> <span>};</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code><span><span>
+_Bool</span></span><span><span>/</span></span><span><span>bool</span></span></code></td>
+<td>unsigned byte</td>
+<td>C99/C++ Only. False has value 0 and True has value 1.</td>
+</tr>
+<tr>
+<td><code><span><span>
+wchar_t</span></span></code></td>
+<td>see text</td>
+<td>built-in in C++, typedef in C, type is platform specific</td>
+</tr>
+</tbody>
+</table>
+<p>The preferred type of <code><span><span>wchar_t</span></span></code> is
+<code><span><span>unsigned</span></span>
+<span><span>int</span></span></code>. However, a virtual platform may
+elect to use <code><span><span>unsigned</span></span>
+<span><span>short</span></span></code> instead. A platform standard must
+document its choice.</p>
+</div>
+<div id="pointer-types"><span id="aapcs32-section7-1-2"/>
+<h4>Pointer Types<a href="index.html#pointer-types"/></h4>
+<p>The container types for pointer types are shown in <a href="index.html#aapcs32-table4"><span>Table 4, Pointer and
+reference types</span></a>. A C++ reference type is implemented as
+a pointer to the type.</p>
+<span id="aapcs32-table4"/>
+<table id="id16">
+<caption><span>Table 50</span> <span>Table 4, Pointer and reference types</span><a href="index.html#id16"/></caption>
+<colgroup>
+<col width="26%"/>
+<col width="25%"/>
+<col width="49%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Pointer Type</th>
+<th>Machine Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code><span><span>
+T</span></span><span><span>*</span></span></code></td>
+<td>data pointer</td>
+<td>any data type <code><span>T</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+T</span></span> <span><span/></span><span><span>*</span></span><span><span>F</span></span><span><span>)()</span></span></code></td>
+<td>code pointer</td>
+<td>any function type <code><span>F</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+T</span></span><span><span>&amp;</span></span></code></td>
+<td>data pointer</td>
+<td>C++ reference</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="enumerated-types"><span id="aapcs32-section7-1-3"/>
+<h4>Enumerated Types<a href="index.html#enumerated-types"/></h4>
+<p>This ABI delegates a choice of representation of enumerated
+types to a platform ABI (whether defined by a standard or by custom
+and practice) or to an interface contract if there is no defined
+platform ABI.</p>
+<p>The two permitted ABI variants are:</p>
+<ul>
+<li>An enumerated type normally occupies a word (<code><span><span>int</span></span></code> or
+<code><span><span>unsigned</span></span>
+<span><span>int</span></span></code>). If a word cannot represent all of
+its enumerated values the type occupies a double word (<code><span><span>long</span></span> <span><span>long</span></span></code> or
+<code><span><span>unsigned</span></span>
+<span><span>long</span></span>
+<span><span>long</span></span></code>).</li>
+<li>The type of the storage container for an enumerated type is the
+smallest integer type that can contain all of its enumerated
+values.</li>
+</ul>
+<p>When both the signed and unsigned versions of an integer type
+can represent all values, this ABI recommends that the unsigned
+type should be preferred (in line with common practice).</p>
+<p>Discussion</p>
+<p>The definition of enumerated types in the C and C++ language
+standards does not define a binary interface and leaves open the
+following questions.</p>
+<ul>
+<li>Does the container for an enumerated type have a fixed size (as
+expected in most OS environments) or is the size no larger than
+needed to hold the values of the enumeration (as expected by most
+embedded users)?</li>
+<li>What happens when a (strictly, non-conforming) enumerated value
+(e.g. MAXINT+1) overflows a fixed-size (e.g. <code><span><span>int</span></span></code>)
+container?</li>
+<li>Is a value of enumerated type (after any conversion required by
+C/C++) signed or unsigned?</li>
+</ul>
+<p>In relation to the last question the C and C++ language
+standards state:</p>
+<ul>
+<li><strong>[C]</strong> Each enumerated type shall be compatible
+with an integer type. The choice of type is implementation-defined,
+but <em>shall be capable of representing the values of all the
+members of the enumeration</em>.</li>
+<li><strong>[C++]</strong> An enumerated type is
+<strong>not</strong> an integral type but ... An rvalue of...
+enumeration type (7.2) can be converted to an rvalue of the first
+of the following types that can represent all the values of its
+underlying type: <code><span><span>int</span></span></code>,
+<code><span><span>unsigned</span></span>
+<span><span>int</span></span></code>, <code><span><span>long</span></span></code>, or
+<code><span><span>unsigned</span></span>
+<span><span>long</span></span></code>.</li>
+</ul>
+<p>Under this ABI, these statements allow a header file that
+describes the interface to a portable binary package to force its
+clients, in a portable, strictly-conforming manner, to adopt a
+32-bit signed (<code><span><span>int</span></span></code>/<code><span><span>long</span></span></code>)
+representation of values of enumerated type (by defining a negative
+enumerator, a positive one, and ensuring the range of enumerators
+spans more than 16 bits but not more than 32).</p>
+<p>Otherwise, a common interpretation of the binary representation
+must be established by appealing to a platform ABI or a separate
+interface contract.</p>
+</div>
+<div id="additional-types"><span id="aapcs32-section7-1-4"/>
+<h4>Additional Types<a href="index.html#additional-types"/></h4>
+<p>Both C and C++ require that a system provide additional type
+definitions that are defined in terms of the base types. Normally
+these types are defined by inclusion of the appropriate header
+file. However, in C++ the underlying type of <code><span><span>size_t</span></span></code> can be
+exposed without the use of any header files simply by using
+<code><span><span>
+::</span></span><span><span>operator</span></span> <span><span>new</span></span><span><span>()</span></span></code>, and the definition of <code><span><span>va_list</span></span></code> has
+implications for the internal implementation in the compiler. An
+AAPCS conforming object must use the definitions shown in <a href="index.html#aapcs32-table5"><span>Table 5, Additional
+data types</span></a>.</p>
+<span id="aapcs32-table5"/>
+<table id="id17">
+<caption><span>Table 51</span> <span>Table 5, Additional data types</span><a href="index.html#id17"/></caption>
+<colgroup>
+<col width="19%"/>
+<col width="23%"/>
+<col width="58%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td>Typedef</td>
+<td>Base type</td>
+<td>Notes</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<pre><span>size_t</span>
+</pre></div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<pre><span>unsigned</span> <span>int</span>
+</pre></div>
+</div>
+</td>
+<td>For consistent C++ mangling of <code><span><span>::</span></span><span><span>operator</span></span> <span><span>new</span></span><span><span>()</span></span></code></td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<pre><span>va_list</span>
+</pre></div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<pre><span>struct</span> <span>__va_list</span> <span>{</span>
+  <span>void</span> <span>*</span><span>__ap</span><span>;</span>
+<span>}</span>
+</pre></div>
+</div>
+</td>
+<td>A <code><span><span>va_list</span></span></code> may
+address any object in a parameter list. Consequently, the first
+object addressed may only have word alignment (all objects are at
+least word aligned), but any double-word aligned object will appear
+at the correct double-word alignment in memory. In C++,
+<code><span><span>__va_list</span></span></code> is in
+namespace <code><span><span>std</span></span></code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="volatile-data-types"><span id="aapcs32-section7-1-5"/>
+<h4>Volatile Data Types<a href="index.html#volatile-data-types"/></h4>
+<p>A data type declaration may be qualified with the <code><span><span>volatile</span></span></code> type
+qualifier. The compiler may not remove any access to a volatile
+data type unless it can prove that the code containing the access
+will never be executed; however, a compiler may ignore a volatile
+qualification of an automatic variable whose address is never taken
+unless the function calls <code><span><span>setjmp</span></span><span><span>()</span></span></code>. A volatile
+qualification on a structure or union shall be interpreted as
+applying the qualification recursively to each of the fundamental
+data types of which it is composed. Access to a volatile-qualified
+fundamental data type must always be made by accessing the whole
+type.</p>
+<p>The behavior of assigning to or from an entire structure or
+union that contains volatile-qualified members is undefined.
+Likewise, the behavior is undefined if a cast is used to change
+either the qualification or the size of the type.</p>
+<p>Not all Arm architectures provide for access to types of all
+widths; for example, prior to Arm Architecture 4 there were no
+instructions to access a 16-bit quantity, and similar issues apply
+to accessing 64-bit quantities. Further, the memory system
+underlying the processor may have a restricted bus width to some or
+all of memory. The only guarantee applying to volatile types in
+these circumstances are that each byte of the type shall be
+accessed exactly once for each access mandated above, and that any
+bytes containing volatile data that lie outside the type shall not
+be accessed. Nevertheless, if the compiler has an instruction
+available that will access the type exactly it should use it in
+preference to smaller or larger accesses.</p>
+</div>
+<div id="structure-union-and-class-layout">
+<span id="aapcs32-section7-1-6"/>
+<h4>Structure, Union and Class Layout<a href="index.html#structure-union-and-class-layout"/></h4>
+<p>Structures and unions are laid out according to the Fundamental
+Data Types of which they are composed (see <a href="index.html#aapcs32-section4-3"><span>Composite
+Types</span></a>). All members are laid out in declaration order.
+Additional rules applying to C++ non-POD class layout are described
+in [<a href="https://developer.arm.com/documentation/ihi0041/latest"><span>CPPABI</span></a>]
+and [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>].</p>
+</div>
+<div id="aapcs32-section7-1-7"><span id="id9"/>
+<h4>Bit-fields<a href="index.html#aapcs32-section7-1-7"/></h4>
+<p>A bit-field may have any integral type (including enumerated and
+bool types).</p>
+<p>A sequence of bit-fields is laid out in the order declared using
+the rules below.</p>
+<p>For each bit-field, the type of its container is:</p>
+<ul>
+<li>Its declared type if its size is no larger than the size of its
+declared type.</li>
+<li>The largest integral type no larger than its size if its size
+is larger than the size of its declared type (see <a href="index.html#aapcs32-section7-1-7-3"><span>Over-sized
+bit-fields</span></a>).</li>
+</ul>
+<p>The container type contributes to the alignment of the
+containing aggregate in the same way a plain (not bit-field) member
+of that type would, without exception for zero-sized or anonymous
+bit-fields.</p>
+<div>
+<p>Note</p>
+<p>The C++ standard states that an anonymous bit-field
+is not a member, so it is unclear whether or not an anonymous
+bit-field of non-zero size should contribute to an aggregate's
+alignment. Under this ABI it does.</p>
+</div>
+<p>The content of each bit-field is contained by exactly one
+instance of its container type.</p>
+<p>Initially, we define the layout of fields that are no bigger
+than their container types.</p>
+<div id="bit-fields-no-larger-than-their-container"><span id="aapcs32-section7-1-7-1"/>
+<h5>Bit-fields no larger than their container<a href="index.html#bit-fields-no-larger-than-their-container"/></h5>
+<p>Let <code><span>F</span></code> be a bit-field whose address we wish to
+determine. We define the container address, <code><span>CA(F)</span></code>, to be the byte address</p>
+<div>
+<div>
+<pre><span>CA</span><span/><span>F</span><span/> <span>=</span> <span>&amp;</span><span/><span>container</span><span/><span>F</span><span>));</span>
+</pre></div>
+</div>
+<p>This address will always be at the natural alignment of the
+container type, that is</p>
+<div>
+<div>
+<pre><span>CA</span><span/><span>F</span><span/> <span>%</span> <span>sizeof</span><span/><span>container</span><span/><span>F</span><span>))</span> <span>==</span> <span>0.</span>
+</pre></div>
+</div>
+<p>The bit-offset of <code><span>F</span></code> within the container, <code><span>K(F)</span></code>, is defined in an endian-dependent
+manner:</p>
+<ul>
+<li>For big-endian data types <code><span>K(F)</span></code> is the offset from the most significant
+bit of the container to the most significant bit of the
+bit-field.</li>
+<li>For little-endian data types <code><span>K(F)</span></code> is the offset from the least significant
+bit of the container to the least significant bit of the
+bit-field.</li>
+</ul>
+<p>A bit-field can be extracted by loading its container, shifting
+and masking by amounts that depend on the byte order, <code><span>K(F)</span></code>, the container size, and the field width,
+then sign extending if needed.</p>
+<p>The bit-address of <code><span>F</span></code>, <code><span>BA(F)</span></code>, can now be defined as</p>
+<div>
+<div>
+<pre><span>BA</span><span/><span>F</span><span/> <span>=</span> <span>CA</span><span/><span>F</span><span/> <span>*</span> <span>8</span> <span>+</span> <span>K</span><span/><span>F</span><span/>
+</pre></div>
+</div>
+<p>For a bit address <code><span>BA</span></code> falling in a container of width <code><span>C</span></code> and alignment <code><span>A</span></code> (
+<code><span>C</span></code>) (both expressed in bits), define the
+unallocated container bits (<code><span>UCB</span></code>) to be</p>
+<div>
+<div>
+<pre><span>UCB</span><span/><span>BA</span><span>,</span> <span>C</span><span>,</span> <span>A</span><span/> <span>=</span> <span>C</span> <span>-</span> <span/><span>BA</span> <span>%</span> <span>A</span><span/>
+</pre></div>
+</div>
+<p>We further define the truncation function</p>
+<p><code>TRUNCATE(X,Y) = Y *</code> </p><div class="documents-docsimg-container"><img alt="\lfloor" src="bcd4da85204d96b081e2c8553650f6f00cc3e250.png"/></div><code>X/Y</code><div class="documents-docsimg-container"><img alt="\rfloor" src="2d381fcb37a07751b1bf433a01b4636618b38377.png"/></div>
+<p>That is, the largest integral multiple of <code><span>Y</span></code> that is no larger than <code><span>X</span></code>.</p>
+<p>We can now define the next container bit address (<code><span>NCBA</span></code>) which will be used when there is
+insufficient space in the current container to hold the next
+bit-field as</p>
+<div>
+<div>
+<pre><span>NCBA</span><span/><span>BA</span><span>,</span> <span>A</span><span/> <span>=</span> <span>TRUNCATE</span><span/><span>BA</span> <span>+</span> <span>A</span> <span>-</span> <span>1</span><span>,</span> <span>A</span><span/>
+</pre></div>
+</div>
+<p>At each stage in the laying out of a sequence of bit-fields
+there is:</p>
+<ul>
+<li>A current bit address (<code><span>CBA</span></code>)</li>
+<li>A container size, <code><span>C</span></code>, and alignment, <code><span>A</span></code>, determined by the type of the field about to
+be laid out (8, 16, 32, ...)</li>
+<li>A field width, <code><span>W</span></code> (<div class="documents-docsimg-container"><img src="671cf21691fd6f03157bda736f8d4910c1261519.png" alt="\le"/></div>
+<code><span>C</span></code>).</li>
+</ul>
+<p>For each bit-field, <code><span>F</span></code>, in declaration order the layout is
+determined by</p>
+<ol>
+<li>If the field width, <code><span>W</span></code>, is zero, set <code><span>CBA</span> <span>=</span> <span>NCBA(CBA,</span> <span>A)</span></code></li>
+<li>If <code><span>W</span>
+<span>&gt;</span> <span>UCB(CBA,</span>
+<span>C,</span> <span>A)</span></code>, set
+<code><span>CBA</span> <span>=</span> <span>NCBA(CBA,</span> <span>A)</span></code></li>
+<li>Assign <code><span>BA(F)</span> <span>=</span> <span>CBA</span></code></li>
+<li>Set <code><span>CBA</span> <span>=</span> <span>CBA</span> <span>+</span> <span>W</span></code>.</li>
+</ol>
+<div>
+<p>Note</p>
+<p>The AAPCS does not allow exported interfaces to
+contain packed structures or bit-fields. However a scheme for
+laying out packed bit-fields can be achieved by reducing the
+alignment, <code><span>A</span></code>, in the above rules to below that of the
+natural container type. ARMCC uses an alignment of <code><span>A=8</span></code> in these cases, but GCC uses an alignment
+of <code><span>A=1</span></code>.</p>
+</div>
+</div>
+<div id="bit-field-extraction-expressions">
+<span id="aapcs32-section7-1-7-2"/>
+<h5>Bit-field extraction expressions<a href="index.html#bit-field-extraction-expressions"/></h5>
+<p>To access a field, <code><span>F</span></code>, of width <code><span>W</span></code> and container width <code><span>C</span></code> at the bit-address <code><span>BA(F)</span></code>:</p>
+<ul>
+<li>Load the (naturally aligned) container at byte address
+<code><span>TRUNCATE(BA(F),</span> <span>C)</span>
+<span>/</span> <span>8</span></code> into a
+register <code><span>R</span></code> (or two registers if the container is
+64-bits)</li>
+<li>Set <code><span>Q</span>
+<span>=</span> <span>MAX(32,</span>
+<span>C)</span></code></li>
+<li>Little-endian, set <code><span>R</span>
+<span>=</span> <span>(R</span> <span>&lt;&lt;</span> <span>((Q</span> <span>-</span> <span>W)</span> <span>-</span> <span>(BA</span> <span>MOD</span> <span>C)))</span> <span>&gt;&gt;</span> <span>(Q</span> <span>-</span> <span>W)</span></code>.</li>
+<li>Big-endian, set <code><span>R</span>
+<span>=</span> <span>(R</span> <span>&lt;&lt;</span> <span>(BA</span> <span>MOD</span> <span>C))</span> <span>&gt;&gt;</span> <span>(Q</span> <span>-</span> <span>W)</span></code>.</li>
+</ul>
+<p>The long long bit-fields use shifting operations on 64-bit
+quantities; it may often be the case that these expressions can be
+simplified to use operations on a single 32-bit quantity (but see
+<a href="index.html#aapcs32-section7-1-7-5"><span>Volatile bit-fields - preserving number and width of
+container accesses</span></a>).</p>
+</div>
+<div id="over-sized-bit-fields"><span id="aapcs32-section7-1-7-3"/>
+<h5>Over-sized bit-fields<a href="index.html#over-sized-bit-fields"/></h5>
+<p>C++ permits the width specification of a bit-field to exceed the
+container size and the rules for allocation are given in [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>].
+Using the notation described above, the allocation of an over-sized
+bit-field of width <code><span>W</span></code>, for a container of width <code><span>C</span></code> and alignment <code><span>A</span></code> is achieved by:</p>
+<ul>
+<li>Selecting a new container width <code><span>C'</span></code> which is the width of the fundamental
+integer data type with the largest size less than or equal to
+<code><span>W</span></code>. The alignment of this container will be
+<code><span>A'</span></code>. Note that <code><span>C'</span>
+<span>&gt;=</span> <span>C</span></code>
+and <code><span>A'</span> <span>&gt;=</span> <span>A</span></code>.</li>
+<li>If <code><span>C'</span> <span>&gt;</span> <span>UCB(CBA,</span> <span>C',</span> <span>A')</span></code> setting <code><span>CBA</span>
+<span>=</span> <span>NCBA(CBA,</span>
+<span>A')</span></code>. This ensures that the
+bit-field will be placed at the start of the next container
+type.</li>
+<li>Allocating a normal (undersized) bit-field using the values
+(<code><span>C</span></code>, <code><span>C'</span></code>, <code><span>A'</span></code>) for (<code><span>W</span></code>, <code><span>C</span></code>, <code><span>A</span></code>).</li>
+<li>Setting <code><span>CBA</span>
+<span>=</span> <span>CBA</span>
+<span>+</span> <span>W</span> <span>-</span> <span>C</span></code>.</li>
+</ul>
+<div>
+<p>Note</p>
+<p>Although standard C++ does not have a <code><span><span>long</span></span> <span><span>long</span></span></code> data
+type, this is a common extension to the language. To avoid the
+presence of this type changing the layout of oversized bit-fields
+the above rules are described in terms of the fundamental machine
+types (<a href="index.html#aapcs32-section4-1"><span>Fundamental Data Types</span></a>) where a 64-bit
+integer data type always exists.</p>
+</div>
+<p>An oversized bit-field can be accessed simply by accessing its
+container type.</p>
+</div>
+<div id="combining-bit-field-and-non-bit-field-members"><span id="aapcs32-section7-1-7-4"/>
+<h5>Combining bit-field and non-bit-field members<a href="index.html#combining-bit-field-and-non-bit-field-members"/></h5>
+<p>A bit-field container may overlap a non-bit-field member. For
+the purposes of determining the layout of bit-field members the
+<code><span>CBA</span></code> will be the address of the first
+unallocated bit after the preceding non-bit-field type.</p>
+<div>
+<p>Note</p>
+<p>Any tail-padding added to a structure that
+immediately precedes a bit-field member is part of the structure
+and must be taken into account when determining the <code><span>CBA</span></code>.</p>
+</div>
+<p>When a non-bit-field member follows a bit-field it is placed at
+the lowest acceptable address following the allocated
+bit-field.</p>
+<div>
+<p>Note</p>
+<p>When laying out fundamental data types it is
+possible to consider them all to be bit-fields with a width equal
+to the container size. The rules in <a href="index.html#aapcs32-section7-1-7-1"><span>Bit-fields no
+larger than their container</span></a> can then be applied to
+determine the precise address within a structure.</p>
+</div>
+</div>
+<div id="volatile-bit-fields-preserving-number-and-width-of-container-accesses">
+<span id="aapcs32-section7-1-7-5"/>
+<h5>Volatile bit-fields - preserving number and width of container
+accesses<a href="index.html#volatile-bit-fields-preserving-number-and-width-of-container-accesses"/></h5>
+<p>When a volatile bit-field is read, and its container does not
+overlap with any non-bit-field member or any zero length bit-field
+member, its container must be read exactly once using the access
+width appropriate to the type of the container.</p>
+<p>When a volatile bit-field is written, and its container does not
+overlap with any non-bit-field member or any zero length bit-field
+member, its container must be read exactly once and written exactly
+once using the access width appropriate to the type of the
+container. The two accesses are not atomic.</p>
+<div>
+<p>Note</p>
+<p>This ABI does not place any restrictions on the
+access widths of bit-fields where the container overlaps with a
+non-bit-field member or where the container overlaps with any zero
+length bit-field placed between two other bit-fields. This is
+because the C/C++ memory model defines these as being separate
+memory locations, which can be accessed by two threads
+simultaneously. For this reason, compilers must be permitted to use
+a narrower memory access width (including splitting the access into
+multiple instructions) to avoid writing to a different memory
+location. For example, in <code><span><span>struct</span></span> <span><span>S</span></span> <span><span>{</span></span> <span><span>int</span></span> <span>a</span><span><span>:</span></span><span><span>24</span></span><span><span>;</span></span> <span><span>char</span></span> <span><span>b</span></span><span><span>;</span></span> <span><span>};</span></span></code> a write to <code><span>a</span></code> must not also write to the location occupied
+by <code><span>b</span></code>, this requires at least two memory accesses
+in all current Arm architectures. In the same way, in <code><span><span>struct</span></span> <span><span>S</span></span> <span><span>{</span></span> <span><span>int</span></span> <span>a</span><span><span>:</span></span><span><span>24</span></span><span><span>;</span></span> <span><span>int</span></span><span><span>:</span></span><span><span>0</span></span><span><span>;</span></span> <span><span>int</span></span> <span>b</span><span><span>:</span></span><span><span>8</span></span><span><span>;</span></span> <span><span>};</span></span></code>, writes to <code><span>a</span></code> or <code><span>b</span></code> must not overwrite each other.</p>
+</div>
+<p>Multiple accesses to the same volatile bit-field, or to
+additional volatile bit-fields within the same container may not be
+merged. For example, an increment of a volatile bit-field must
+always be implemented as two reads and a write.</p>
+<div>
+<p>Note</p>
+<p>Note the volatile access rules apply even when the
+width and alignment of the bit-field imply that the access could be
+achieved more efficiently using a narrower type. For a write
+operation the read must always occur even if the entire contents of
+the container will be replaced.</p>
+</div>
+<p>If the containers of two volatile bit-fields overlap then access
+to one bit-field will cause an access to the other. For example, in
+<code><span><span>struct</span></span> <span><span>S</span></span> <span><span>{</span></span><span><span>volatile</span></span> <span><span>int</span></span> <span>a</span><span><span>:</span></span><span><span>8</span></span><span><span>;</span></span> <span><span>volatile</span></span> <span><span>char</span></span> <span>b</span><span><span>:</span></span><span><span>2</span></span><span><span>};</span></span></code> an access to <code><span>a</span></code> will also cause an access to <code><span>b</span></code>, but not vice-versa.</p>
+<p>If the container of a non-volatile bit-field overlaps a volatile
+bit-field then it is undefined whether access to the non-volatile
+field will cause the volatile field to be accessed.</p>
+</div>
+</div>
+</div>
+<div id="argument-passing-conventions"><span id="aapcs32-section7-2"/>
+<h3><a href="index.html#id56">Argument Passing Conventions</a><a href="index.html#argument-passing-conventions"/></h3>
+<p>The argument list for a subroutine call is formed by taking the
+user arguments in the order in which they are specified.</p>
+<ul>
+<li>For C, each argument is formed from the value specified in the
+source code, except that an array is passed by passing the address
+of its first element.</li>
+<li>For C++, an implicit <code><span><span>this</span></span></code> parameter is
+passed as an extra argument that immediately precedes the first
+user argument. Other rules for marshalling C++ arguments are
+described in <a href="https://developer.arm.com/documentation/ihi0041/latest"><span>
+CPPABI</span></a>.</li>
+<li>For variadic functions, <code><span><span>float</span></span></code>
+arguments that match the ellipsis (...) are converted to type
+<code><span><span>double</span></span></code>.</li>
+</ul>
+<p>The argument list is then processed according to the standard
+rules for procedure calls (see <a href="index.html#aapcs32-section5-5"><span>Parameter
+Passing</span></a>) or the appropriate variant.</p>
+</div>
+</div>
+<div id="appendix-support-for-advanced-simd-extensions-and-mve"><span id="aapcs32-appendixa"/>
+<h2><a href="index.html#id57">APPENDIX Support for Advanced SIMD Extensions
+and MVE</a><a href="index.html#appendix-support-for-advanced-simd-extensions-and-mve"/></h2>
+<div id="aapcs32-appendixa-1"><span id="id10"/>
+<h3><a href="index.html#id58">Introduction</a><a href="index.html#aapcs32-appendixa-1"/></h3>
+<p>The Advanced SIMD and M-profile Vector Extension to the Arm
+architecture add support for processing short vectors. Because the
+C and C++ languages do not provide standard types to represent
+these vectors, access to them is provided by a vendor extension.
+The status of this appendix is normative in respect of public
+binary interfaces, i.e. the calling convention and name mangling of
+functions which use these types. In other respects it is
+informative.</p>
+</div>
+<div id="simd-vector-data-types"><span id="aapcs32-appendixa-2"/>
+<h3><a href="index.html#id59">SIMD vector data types</a><a href="index.html#simd-vector-data-types"/></h3>
+<p>Access to the SIMD vector data types is obtained by including
+either of the two following header files: <code><span>arm_neon.h</span></code>, <code><span>arm_mve.h</span></code>. These headers provide the following
+features:</p>
+<ul>
+<li>They provide a set of user-level type names that map onto short
+vector types</li>
+<li>They provide prototypes for intrinsic functions that map onto
+the Advanced SIMD and M-profile Vector Extension(MVE) intruction
+sets respectively.</li>
+</ul>
+<div>
+<p>Note</p>
+<p>The intrinsic functions are beyond the scope of
+this specification. Details of the usage of the user-level types
+(e.g. initialization, and automatic conversions) are also beyond
+the scope of this specification. For further details see [<a href="https://developer.arm.com/products/software-development-tools/compilers/arm-compiler-5/docs/101028/latest/1-preface">ACLE</a>].</p>
+</div>
+<div>
+<p>Note</p>
+<p>The user-level types are listed in <a href="index.html#aapcs32-table6"><span>Table 6: Advanced SIMD
+Extension only vector data types using 64-bit containerized
+vectors</span></a> and <a href="index.html#aapcs32-table7"><span>Table 7: SIMD vector data types using 128-bit
+containerized vectors</span></a>. The types have 64-bit alignment
+and map directly onto the containerized vector fundamental data
+types. The memory format of the containerized vector is defined as
+loading the specified registers from an array of the Base Type
+using the Fill Operation and then storing that value to memory
+using a single <code><span>VSTM</span></code> of the loaded 64-bit (D) registers.</p>
+<p>MVE only allows 128-bit vector types and it uses unsigned
+integer vectors to represent polynomials.</p>
+<p>The tables also list equivalent structure types to
+be used for name mangling. Whether these types are actually defined
+by an implementation is unspecified.</p>
+</div>
+<span id="aapcs32-table6"/>
+<table id="id18">
+<caption><span>Table 52</span> <span>Table 6: Advanced SIMD Extension only vector data
+types using 64-bit containerized vectors</span><a href="index.html#id18"/></caption>
+<colgroup>
+<col width="17%"/>
+<col width="32%"/>
+<col width="9%"/>
+<col width="17%"/>
+<col width="25%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>User type name</th>
+<th>Equivalent type name for mangling</th>
+<th>Elements</th>
+<th>Base type</th>
+<th>Fill operation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code><span><span>
+int8x8_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_int8_t</span></span></code></td>
+<td>8</td>
+<td>signed byte</td>
+<td><code><span>VLD1.8</span> 
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+int16x4_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_int16_t</span></span></code></td>
+<td>4</td>
+<td>signed half-word</td>
+<td><code><span>VLD1.16</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+int32x2_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_int32_t</span></span></code></td>
+<td>2</td>
+<td>signed word</td>
+<td><code><span>VLD1.32</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+int64x1_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_int64_t</span></span></code></td>
+<td>1</td>
+<td>signed double-word</td>
+<td><code><span>VLD1.64</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+uint8x8_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_uint8_t</span></span></code></td>
+<td>8</td>
+<td>unsigned byte</td>
+<td><code><span>VLD1.8</span> 
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+uint16x4_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_uint16_t</span></span></code></td>
+<td>4</td>
+<td>unsigned half-word</td>
+<td><code><span>VLD1.16</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+uint32x2_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_uint32_t</span></span></code></td>
+<td>2</td>
+<td>unsigned word</td>
+<td><code><span>VLD1.32</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+uint64x1_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_uint64_t</span></span></code></td>
+<td>1</td>
+<td>unsigned double-word</td>
+<td><code><span>VLD1.64</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+float16x4_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_float16_t</span></span></code></td>
+<td>4</td>
+<td>half-precision float</td>
+<td><code><span>VLD1.16</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+float32x2_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_float32_t</span></span></code></td>
+<td>2</td>
+<td>single-precision float</td>
+<td><code><span>VLD1.32</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+poly8x8_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_poly8_t</span></span></code></td>
+<td>8</td>
+<td>8-bit polynomial over GF(2)</td>
+<td><code><span>VLD1.8</span> 
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+poly16x4_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd64_poly16_t</span></span></code></td>
+<td>4</td>
+<td>16-bit polynomial over GF(2)</td>
+<td><code><span>VLD1.16</span>
+<span>{Dn},</span> <span>[Rn]</span></code></td>
+</tr>
+</tbody>
+</table>
+<span id="aapcs32-table7"/>
+<table id="id19">
+<caption><span>Table 53</span> <span>Table 7: SIMD vector data types using 128-bit
+containerized vectors</span><a href="index.html#id19"/></caption>
+<colgroup>
+<col width="17%"/>
+<col width="32%"/>
+<col width="9%"/>
+<col width="17%"/>
+<col width="25%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>User type name</th>
+<th>Equivalent type name for mangling</th>
+<th>Elements</th>
+<th>Base type</th>
+<th>Fill operation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code><span><span>
+int8x16_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_int8_t</span></span></code></td>
+<td>16</td>
+<td>signed byte</td>
+<td><code><span>VLD1.8</span> 
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+int16x8_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_int16_t</span></span></code></td>
+<td>8</td>
+<td>signed half-word</td>
+<td><code><span>VLD1.16</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+int32x4_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_int32_t</span></span></code></td>
+<td>4</td>
+<td>signed word</td>
+<td><code><span>VLD1.32</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+int64x2_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_int64_t</span></span></code></td>
+<td>2</td>
+<td>signed double-word</td>
+<td><code><span>VLD1.64</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+uint8x16_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_uint8_t</span></span></code></td>
+<td>16</td>
+<td>unsigned byte</td>
+<td><code><span>VLD1.8</span> 
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+uint16x8_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_uint16_t</span></span></code></td>
+<td>8</td>
+<td>unsigned half-word</td>
+<td><code><span>VLD1.16</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+uint32x4_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_uint32_t</span></span></code></td>
+<td>4</td>
+<td>unsigned word</td>
+<td><code><span>VLD1.32</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+uint64x2_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_uint64_t</span></span></code></td>
+<td>2</td>
+<td>unsigned double-word</td>
+<td><code><span>VLD1.64</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+float32x4_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_float32_t</span></span></code></td>
+<td>4</td>
+<td>single-precision float</td>
+<td><code><span>VLD1.32</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+poly8x16_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_poly8_t</span></span></code></td>
+<td>16</td>
+<td>8-bit polynomial over GF(2)</td>
+<td><code><span>VLD1.8</span> 
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+poly16x8_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_poly16_t</span></span></code></td>
+<td>8</td>
+<td>16-bit polynomial over GF(2)</td>
+<td><code><span>VLD1.16</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+<tr>
+<td><code><span><span>
+poly64x2_t</span></span></code></td>
+<td><code><span><span>
+struct</span></span> <span><span>__simd128_poly64_t</span></span></code></td>
+<td>2</td>
+<td>64-bit polynomial over GF(2)</td>
+<td><code><span>VLD1.64</span>
+<span>{Qn},</span> <span>[Rn]</span></code></td>
+</tr>
+</tbody>
+</table>
+<div id="c-mangling"><span id="aapcs32-appendixa-2-1"/>
+<h4>C++ Mangling<a href="index.html#c-mangling"/></h4>
+<p>For C++ the mangled name for parameters is as though the
+equivalent type name was used. For example,</p>
+<div>
+<div>
+<pre><span>void</span> <span>f</span><span/><span>int8x8_t</span><span/>
+</pre></div>
+</div>
+<p>is mangled as</p>
+<div>
+<div>
+<pre><span>_Z1f15__simd64_int8_t</span>
+</pre></div>
+</div>
+<p>Footnotes</p>
+<table id="aapcs32-f1">
+<colgroup>
+<col/>
+<col/></colgroup>
+<tbody valign="top">
+<tr>
+<td><a href="index.html#id2">[1]</a></td>
+<td>
+<p>This definition of conformance gives maximum
+freedom to implementers. For example, if it is known that both
+sides of an externally visible interface will be compiled by the
+same compiler, and that the interface will not be publicly visible,
+the AAPCS permits the use of private arrangements across the
+interface such as using additional argument registers or passing
+data in non-standard formats. Stack invariants must, nevertheless,
+be preserved because an AAPCS-conforming routine elsewhere in the
+call chain might otherwise fail. Rules for use of IP must be obeyed
+or a static linker might generate a non-functioning executable
+program.</p>
+<p>Conformance at a publicly visible interface does
+not depend on what happens behind that interface. Thus, for
+example, a tree of non-public, non-conforming calls can conform
+because the root of the tree offers a publicly visible, conforming
+interface and the other constraints are satisfied.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<table id="aapcs32-f2">
+<colgroup>
+<col/>
+<col/></colgroup>
+<tbody valign="top">
+<tr>
+<td><a href="index.html#id3">[2]</a></td>
+<td><em>Data elements</em> include: parameters to
+routines named in the interface, static data named in the
+interface, and all data addressed by pointer values passed across
+the interface.</td>
+</tr>
+</tbody>
+</table>
+<table id="aapcs32-f3">
+<colgroup>
+<col/>
+<col/></colgroup>
+<tbody valign="top">
+<tr>
+<td><a href="index.html#id4">[3]</a></td>
+<td>The underlying hardware may not directly support a pure-endian
+view of data objects that are not naturally aligned.</td>
+</tr>
+</tbody>
+</table>
+<table id="aapcs32-f4">
+<colgroup>
+<col/>
+<col/></colgroup>
+<tbody valign="top">
+<tr>
+<td><a href="index.html#id5">[4]</a></td>
+<td>The intent is to permit the C construct <code><span><span>struct</span></span> <span><span>{</span></span><span><span>int</span></span> <span>a</span><span><span>:</span></span><span><span>8</span></span><span><span>;</span></span> <span><span>char</span></span> <span><span>b</span></span><span><span>[</span></span><span><span>7</span></span><span><span>];}</span></span></code> to have size 8 and alignment 4.</td>
+</tr>
+</tbody>
+</table>
+<table id="aapcs32-f5">
+<colgroup>
+<col/>
+<col/></colgroup>
+<tbody valign="top">
+<tr>
+<td><a href="index.html#id8">[5]</a></td>
+<td>Although not mandated by this standard, compilers usually
+formulate the address of a static datum by loading the offset of
+the datum from SB, and adding SB to it. Usually, the offset is a
+32-bit value loaded PC-relative from a literal pool. Usually, the
+literal value is subject to R_ARM_SBREL32-type relocation at static
+link time. The offset of a datum from SB is clearly a property of
+the layout of an executable, which is fixed at static link time. It
+does not depend on where the data is loaded, which is captured by
+the value of SB at run time.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div/>
+</div>
+
+</body>
+</html>

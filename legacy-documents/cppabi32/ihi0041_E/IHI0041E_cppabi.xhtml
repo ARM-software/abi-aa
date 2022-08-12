@@ -1,0 +1,2520 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>C++ ABI for the Arm® Architecture — ABI 2018Q4
+documentation</title>
+
+<meta name="keywords" content=""/></head>
+<body>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="c-abi-for-the-arm-architecture">
+<h2>C++ ABI for the Arm<sup>®</sup> Architecture</h2>
+<p>Document number: IHI 0041EF current through ABI release
+2018Q4</p>
+<p>Date of Issue: 21<sup>st</sup> December 2018</p>
+
+<div>
+<div>
+<div>
+<div id="preamble">
+<h2>Preamble</h2>
+<div>
+<div>
+<div>
+<div id="abstract">
+<h3>Abstract</h3>
+<p>This document describes the C++ Application Binary Interface for
+the Arm architecture.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="keywords">
+<h3>Keywords</h3>
+<p>C++ ABI, generic C++ ABI, exception handling ABI</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it</h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/products/software-development-tools/specifications">https://developer.arm.com/products/software-development-tools/specifications</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <em>arm</em> dot
+<em>eabi</em> at <em>arm</em> dot <em>com</em>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="licence">
+<h3>Licence</h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice</h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © [2018] Arm Limited or its affiliates. All rights
+reserved.</p>
+<p>Arm Limited. Company 02557590 registered in England. 110
+Fulbourn Road, Cambridge, England CB1 9NJ. LES-PRE-20349</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="contents">
+<h3>Contents</h3>
+<div>
+<div>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#c-abi-for-the-arm-architecture" id="id19">C++ ABI for the Arm® Architecture</a>
+<ul>
+<li><a href="index.html#preamble" id="id20">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id21">Abstract</a></li>
+<li><a href="index.html#keywords" id="id22">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id23">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id24">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id25">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id26">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id27">About this
+document</a>
+<ul>
+<li><a href="index.html#change-control" id="id28">Change
+control</a></li>
+<li><a href="index.html#references" id="id29">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id30">Terms
+and abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id31">Your licence to use this specification</a></li>
+<li><a href="index.html#acknowledgements" id="id32">Acknowledgements</a></li>
+</ul>
+</li>
+<li><a href="index.html#overview" id="id33">Overview</a>
+<ul>
+<li><a href="index.html#the-generic-c-abi" id="id34">The Generic
+C++ ABI</a></li>
+<li><a href="index.html#the-exception-handling-abi-for-the-arm-architecture" id="id35">The Exception handling ABI for the Arm
+architecture</a></li>
+<li><a href="index.html#the-exception-handling-components-example-implementation" id="id36">The exception handling components example
+implementation</a></li>
+</ul>
+</li>
+<li><a href="index.html#the-c-abi-supplement" id="id37">The C++
+ABI supplement</a>
+<ul>
+<li><a href="index.html#summary-of-differences-from-and-additions-to-the-generic-c-abi" id="id38">Summary of differences from and additions to
+the generic C++ ABI</a></li>
+<li><a href="index.html#differences-in-detail" id="id39">Differences in detail</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="about-this-document">
+<h2>About this document</h2>
+<div>
+<div>
+<div>
+<div id="change-control">
+<h3>Change control</h3>
+<div>
+<div>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current status and anticipated changes</h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li>ReleaseArm considers this specification to have enough
+implementations, which have received sufficient testing, to verify
+that it is correct. The details of these criteria are dependent on
+the scale and complexity of the change over previous versions:
+small, simple changes might only require one implementation, but
+more complex changes require multiple independent implementations,
+which have been rigorously tested for cross-compatibility. Arm
+anticipates that future changes to this specification will be
+limited to typographical corrections, clarifications and compatible
+extensions.</li>
+<li>BetaArm considers this specification to be complete, but
+existing implementations do not meet the requirements for
+confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li>AlphaThe content of this specification is a draft, and Arm
+considers the likelihood of future incompatible changes to be
+significant.</li>
+</ul>
+<p>All content in this document is at the "Release" quality
+level.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="change-history">
+<h4>Change history</h4>
+<table>
+<colgroup>
+<col width="11%"/>
+<col width="26%"/>
+<col width="8%"/>
+<col width="55%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>1.0</td>
+<td>30<sup>th</sup> October 2003</td>
+<td>LS</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>24<sup>th</sup> March 2005</td>
+<td>LS</td>
+<td>Second public release.</td>
+</tr>
+<tr>
+<td>2.01</td>
+<td>4<sup>th</sup> July 2005</td>
+<td>LS</td>
+<td>Fixed defect in <a href="index.html">Static object
+construction and destruction</a> - .init_array sections must be
+writable, but compiled <em>as if</em> read-only.</td>
+</tr>
+<tr>
+<td>2.02</td>
+<td>5<sup>th</sup> January 2006</td>
+<td>LS</td>
+<td>In <a href="index.html">Inter-DLL visibility
+rules for C++ ABI-defined symbols</a>, forbid the export of
+entities declared in unnamed namespaces.</td>
+</tr>
+<tr>
+<td>2.03</td>
+<td>3<sup>rd</sup> May 2006</td>
+<td>LS</td>
+<td>In <a href="index.html">Code example for
+__aeabi_atexit</a>, <a href="index.html">Static
+object destruction</a>, and __aeabi_atexit, clarified the use of
+__aeabi_atexit().</td>
+</tr>
+<tr>
+<td>/ A</td>
+<td>25<sup>th</sup> October 2007</td>
+<td>LS</td>
+<td>In <a href="index.html">Summary of differences from
+and additions to the generic C++ ABI</a>, specified the name
+mangling (GC++ABI 5.1.5) for the 16-bit FP type added to [AAPCS] in
+ABI r2.06. Updated the base standard for C++ to ISO/IEC
+14882:<em>2003</em>. Added an Arm-specific rule for the ELF binding
+of guard variable symbols (<a href="index.html">ELF
+binding of static data guard variable symbols</a>). Document
+renumbered (formerly GENC-003540 v2.04).</td>
+</tr>
+<tr>
+<td>B</td>
+<td>10<sup>th</sup> October 2008</td>
+<td>LS</td>
+<td>In <a href="index.html">Summary of differences from
+and additions to the generic C++ ABI</a>, removed the Arm-specified
+mangling for 16-bit FP types added in r2.06 now that the [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>]
+defines it to be <code>Dh;</code> noted the mangling of
+<code>std::va_list</code> resulting from its definition in
+[<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>].</td>
+</tr>
+<tr>
+<td>C</td>
+<td>5<sup>th</sup> October 2009</td>
+<td>LS</td>
+<td>In <a href="index.html">Library helper
+functions</a>, corrected typos in/ wording of the justification for
+defining __aeabi_vec_delete3 but not __aeabi_vec_delete2; in the
+definition of <code>__aeabi_vec_ctor_nocookie_nodtor</code>,
+corrected the order of <em>size</em> and <em>count</em> parameters
+to <code>__aeabi_vec_ctor_cookie_nodtor()</code>. In <a href="index.html">Inter-DLL visibility rules for C++
+ABI-defined symbols</a>, corrected broken class export syntax;
+corrected comments about entities declared in unnamed namespaces
+and those derived from them.</td>
+</tr>
+<tr>
+<td>r2.09</td>
+<td>30<sup>th</sup> November 2012</td>
+<td>AC</td>
+<td>In <a href="index.html">Summary of differences from
+and additions to the generic C++ ABI</a>, clarified handling of
+empty classes.</td>
+</tr>
+<tr>
+<td>r2.10</td>
+<td>24<sup>th</sup> November 2015</td>
+<td>CR</td>
+<td>In <a href="index.html">Summary of differences from
+and additions to the generic C++ ABI</a>, again clarified handling
+of empty classes.</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>21<sup>st</sup> December 2018</td>
+<td>OS</td>
+<td>Minor typographical fixes, updated links.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="references">
+<h3>References</h3>
+<p>This document refers to, or is referred to by, the following
+documents.</p>
+<table>
+<colgroup>
+<col width="17%"/>
+<col width="35%"/>
+<col width="48%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>URL or other reference</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a></td>
+<td> </td>
+<td>Procedure Call Standard for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0036/latest">BSABI</a></td>
+<td> </td>
+<td>ABI for the Arm Architecture (Base Standard)</td>
+</tr>
+<tr>
+<td>CPPABI</td>
+<td><em>This document</em></td>
+<td>C++ ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a></td>
+<td> </td>
+<td>Exception Handling ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td>EHEGI</td>
+<td> </td>
+<td>Exception handling components, example implementations</td>
+</tr>
+<tr>
+<td><a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a></td>
+<td><a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">http://itanium-cxx-abi.github.io/cxx-abi/abi.html</a></td>
+<td>Itanium C++ ABI ($Revision: 1.71 $) (Although called
+<em>Itanium C++ ABI</em>, it is very generic).</td>
+</tr>
+<tr>
+<td><a href="http://www.sco.com/developers/gabi/">GELF</a></td>
+<td><a href="http://www.sco.com/developers/gabi/">http://www.sco.com/developers/gabi/</a>
+...</td>
+<td>Generic ELF, 17th December 2003 draft.</td>
+</tr>
+<tr>
+<td>ISO C++</td>
+<td>ISO/IEC 14882:2003 (14882:1988 with <em>Technical
+Corrigendum</em>)</td>
+<td>International Standard ISO/IEC 14882:2003 - Programming
+languages C++</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and abbreviations</h3>
+<p>The <em>ABI for the Arm Architecture</em> uses the following
+terms and abbreviations.</p>
+<ul>
+<li>AAPCSProcedure Call Standard for the Arm Architecture.</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+<cite>Linux ABI for the Arm Architecture</cite>.</li>
+<li>particular aspect of the specifications to which independently
+produced relocatable files must conform in order to be statically
+linkable and executable. For example, the C++ ABI for the Arm
+Architecture, the <a href="https://developer.arm.com/docs/ihi0043/latest">Run-time ABI for
+the Arm Architecture</a>, the <a href="https://developer.arm.com/docs/ihi0039/latest">Library ABI for the
+Arm Architecture</a>.</li>
+</ol>
+</li>
+<li>AEABI(Embedded) ABI for the Arm architecture (this ABI...)</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>core registersThe general purpose registers visible in the Arm
+architecture's programmer's model, typically r0-r12, SP, LR, PC,
+and CPSR.</li>
+<li>EABIAn ABI suited to the needs of embedded, and deeply embedded
+(sometimes called free standing), applications.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>VFPThe Arm architecture's Floating Point architecture and
+instruction set. In this ABI, this abbreviation includes all
+floating point variants regardless of whether or not vector (V)
+mode is supported.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification</h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="acknowledgements">
+<h3>Acknowledgements</h3>
+<p>This specification has been developed with the active support of
+the following organizations. In alphabetical order: Arm,
+CodeSourcery, Intel, Metrowerks, Montavista, Nexus Electronics,
+PalmSource, Symbian, Texas Instruments, and Wind River.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="overview">
+<h2>Overview</h2>
+<p>The C++ ABI for the Arm architecture (CPPABI) comprises four
+sub-components.</p>
+<ul>
+<li>The generic C++ ABI, summarized in <a href="index.html">The Generic C++ ABI</a>, is the referenced
+base standard for this component.</li>
+<li>The <em>C++ ABI supplement</em> in <a href="index.html">Summary of differences from and additions to
+the generic C++ ABI</a> details Arm-specific additions to and
+deviations from the generic standard.</li>
+<li>The separately documented <em>Exception Handling ABI for the
+Arm Architecture</em> [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>],
+summarized in <a href="index.html">The Exception handling
+ABI for the Arm architecture</a>, describes the
+language-independent and C++-specific aspects of exception
+handling.</li>
+<li>The example implementations of the exception handling
+components [EHEGI], summarized in <a href="index.html">The exception handling components example
+implementation</a>, include:</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>language independent unwinder.</li>
+<li>A C++ semantics module.</li>
+<li>Arm-specific C++ unwinding personality routines.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The generic C++ ABI is implicitly an SVr4-based standard, and
+takes an SVr4 position on symbol visibility and vague linkage. The
+<em>C++ ABI supplement</em> in <a href="index.html">The C++
+ABI supplement</a> details extensions for DLL-based
+environments.</p>
+<div>
+<div>
+<div>
+<div id="the-generic-c-abi">
+<h3>The Generic C++ ABI</h3>
+<p>The generic C++ ABI [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>]
+(originally developed for SVr4 on Itanium) specifies:</p>
+<ul>
+<li>The layout of C++ non-POD class types in terms of the layout of
+POD types (specified for <em>this</em> ABI by the <em>Procedure
+Call Standard for the Arm Architecture</em> [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]).</li>
+<li>How class types requiring copy construction are passed as
+parameters and results.</li>
+<li>The content of run-time type information (RTTI).</li>
+<li>Necessary APIs for object construction and destruction.</li>
+<li>How names with linkage are mangled (name mangling).</li>
+</ul>
+<p>The generic C++ ABI refers to a separate Itanium-specific
+specification of exception handling. When the generic C++ ABI is
+used as a component of <em>this</em> ABI, corresponding reference
+must be made to the <em>Exception Handling ABI for the Arm
+Architecture</em> [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>] and
+<a href="index.html">The Exception handling ABI for the
+Arm architecture</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-exception-handling-abi-for-the-arm-architecture">
+<h3>The Exception handling ABI for the Arm architecture</h3>
+<p>In common with the Itanium exception handling ABI, the
+<em>Exception handling ABI for the Arm architecture</em> [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>]
+specifies table-based unwinding that separates language-independent
+unwinding from language specific aspects. The specification
+describes:</p>
+<ul>
+<li>The <em>base class</em> format and meaning of the tables
+understood by the language-independent exception handling system,
+and their representation in relocatable files. The
+language-independent exception handler only uses fields from the
+base class.</li>
+<li><em>derived table class</em> used by Arm tools that efficiently
+encodes stack-unwinding instructions and compactly represents the
+data needed for handling C++ exceptions.</li>
+<li>The interface between the language independent exception
+handling system and the <em>personality routines</em> specific to a
+particular implementation for a particular language. Personality
+routines interpret the language-specific, derived class tables.
+Conceptually (though not literally, for reasons of implementation
+convenience and run-time efficiency), personality routines are
+member functions of the derived class.</li>
+<li>The interfaces between the (C++) language exception handling
+semantics module and:</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>The language-independent exception handling system.</li>
+<li>The personality routines.</li>
+<li>The (C++) application code (effectively the interface
+underlying <em>throw</em>).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The EHABI contains a significant amount of commentary to aid and
+support independent implementation of:</p>
+<ul>
+<li>Personality routines.</li>
+<li>The language-specific exception handling semantics module.</li>
+<li>Language-independent exception handling.</li>
+</ul>
+<p>This commentary does not provide, and is not intended to
+provide, complete specifications of independent implementations,
+but it does give a rationale for the interfaces to, and among,
+these components.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-exception-handling-components-example-implementation">
+<h3>The exception handling components example implementation</h3>
+<p>The exception handling components example implementation (EHEGI)
+comprises the following files.</p>
+<ul>
+<li><strong>cppsemantics.cpp</strong> is a module that implements
+the semantics of C++ exception handling. It uses the
+language-independent unwinder (unwinder.c), and is used by the
+Arm-specific personality routines (unwind_pr.[ch]).</li>
+<li><strong>cxxabi.h</strong> describes the generic C++ ABI
+(<a href="index.html">The Generic C++ ABI</a>).</li>
+<li><strong>Licence.txt</strong> describes your licence to use the
+exception handling example implementation.</li>
+<li><strong>unwind_env.h</strong> is a header that describes the
+build and execution environments of the exception handling
+components. This header must be edited if the exception handling
+components are to be built with non-Arm compilers. This header
+#includes cxxabi.h.</li>
+<li><strong>unwind_pr.c</strong> implements the three Arm-specific
+personality routines described in the <em>Exception Handling ABI
+for the Arm Architecture</em>.</li>
+<li><strong>unwinder.c</strong> is an implementation of the
+language-independent unwinder.</li>
+<li><strong>unwinder.h</strong> describes the interface to the
+language-independent unwinder, as described in the <em>Exception
+Handling ABI for the Arm Architecture</em>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-c-abi-supplement">
+<h2>The C++ ABI supplement</h2>
+<div>
+<div>
+<div>
+<div id="summary-of-differences-from-and-additions-to-the-generic-c-abi">
+<h3>Summary of differences from and additions to the generic C++
+ABI</h3>
+<p>This section summarizes the differences between the <em>C++ ABI
+for the Arm architecture</em> and the generic C++ ABI. Section
+numbers in captions refer to the generic C++ ABI specification.
+Larger differences are detailed in subsections of <a href="index.html">Differences in detail</a>.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>Limits</strong></p>
+<p>The offset of a non-virtual base sub-object in the full object
+containing it must fit into a 24-bit signed integer (because of
+RTTI implementation). This implies a practical limit of
+2<sup>23</sup> bytes on the size of a class sub-object.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>POD Data Types</strong></p>
+<p>The GC++ABI defines the way in which empty class types are laid
+out. For the purposes of parameter passing in [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>], a
+parameter whose type is an empty class shall be treated as if its
+type were an aggregate with a single member of type unsigned
+byte.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>Of course, the single member has undefined
+content.</p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>GC++ABI</strong> <a href="index.html"/> <strong>Member Pointers</strong></p>
+<p>The pointer to member function representation differs from that
+used by Itanium. See <a href="index.html">Representation of pointer to member
+function</a>.</p>
+<p><strong>GC++ABI</strong> <a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html#array-cookies"/>
+<strong>Array operator new cookies</strong></p>
+<p>Array cookies, when present, are always 8 bytes long and contain
+both element size and element count (in that order). See <a href="index.html">Array construction and
+destruction</a>.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>Initialization guard variables</strong></p>
+<p>Static initialization guard variables are 4 bytes long not 8,
+and there is a different protocol for using them which allows a
+guard variable to implement a semaphore when used as the target of
+Arm SWP or LDREX and STREX instructions. See <a href="index.html">Guard variables and the one-time
+construction API</a>.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>Run-Time Type Information (RTTI), General</strong></p>
+<p>The target platform ABI specifies whether address equality is
+required for type_info objects that describe the same type. (The
+ABI-defined symbol names for type_info objects and their names
+match the pattern _ZT{I,S}*). A C++ system that supports a platform
+must follow the platform's specification. The GC++ABI gives the
+correct specification for SVr4-based platforms such as Linux.</p>
+<p>C++ system must provide implementations of
+<code>std::type_info::operator==</code>,
+<code>std::type_info::operator!=</code>, and <code>(const
+std::type_info&amp;)::before</code> appropriate to the target
+platform.</p>
+<p>These std::type_info functions should not be inline by default,
+as doing so makes the relocatable file platform-specific. A C++
+system must provide an option or default (Q-o-I) to force them out
+of line.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/> <strong>Constructor return values</strong></p>
+<p>This ABI requires C1 and C2 constructors to return <em>this</em>
+(instead of being void functions) so that a C3 constructor can tail
+call the C1 constructor and the C1 constructor can tail call
+C2.</p>
+<p>Similarly, we require D2 and D1 to return <em>this</em> so that
+D0 need not save and restore <em>this</em> and D1 can tail call D2
+(if there are no virtual bases). D0 is still a void function.</p>
+<p>We do not require thunks to virtual destructors to return
+<em>this</em>. Such a thunk would have to adjust the destructor's
+result, preventing it from tail calling the destructor, and
+nullifying any possible saving.</p>
+<p>Consequently, only non-virtual calls of D1 and D2 destructors
+can be relied on to return <em>this</em>.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>One-time construction API</strong></p>
+<p>The type of parameters to __cxa_guard_acquire,
+__cxa_guard_release and __cxa_guard_abort is 'int*' (not
+'__int64_t*'), and use of fields in the guard variable differs. See
+<a href="index.html">Guard variables and the one-time
+construction API</a>.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>Controlling Object Construction Order</strong></p>
+<p>#pragma priority is not supported. See <a href="index.html">Top-level static object construction</a>
+for details of how global object construction is coordinated.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/> <strong>Runtime API</strong></p>
+<p>This ABI defines __aeabi_atexit (<a href="index.html">Code example for __aeabi_atexit</a> and
+__aeabi_atexit), for use in place of __cxa_atexit.</p>
+<p>It is forbidden for user code to call __cxa_atexit or
+__aeabi_atexit directly, or for any call to __aeabi_atexit (other
+than ones from the implementations of the atexit library functions)
+to be executed more than once (<a href="index.html">Static object destruction</a>).</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>Demangler API</strong></p>
+<p>The demangler is not provided as a library.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>Static Data (new in ABI r2.06)</strong></p>
+<p>If a static datum and its guard variable are emitted in the same
+COMDAT group, the ELF binding [<a href="http://www.sco.com/developers/gabi/">GELF</a>] for both symbols
+must be STB_GLOBAL, not STB_WEAK as specified in [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>].
+<a href="index.html">ELF binding of static data guard
+variable symbols</a> justifies this requirement.</p>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>Virtual Tables and the key function</strong></p>
+<p>compiler selects the key function for a class T when it has read
+the entire translation unit containing the definition of T. The key
+function is the textually first, non-inline, non-pure, virtual,
+member function of T.</p>
+<p>An inline member is not a key function even if it is the first
+declared inline at the completion of the class definition.</p>
+<p>(In contrast, the GC++ABI <a href="index.html"/>
+defines the key function to be the textually first, non-inline,
+non-pure, virtual function identified at completion of the class
+definition).</p>
+<p>In the following example, the key function is T::f.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>  struct T {
+  inline virtual void a();      // inline
+         virtual void b();      // might be defined inline later...
+         virtual void c() { }   // implicitly inline
+         virtual void d() = 0;  // pure
+                 void e();      // not virtual...
+         virtual void f(), g();
+  };
+  inline void T::b() { }          // but b is defined to be inline
+// End of translation unit... The key function is 'T::f'; GC++ABI chooses T::b;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><strong>GC++ABI</strong> <a href="index.html"/>
+<strong>Unwind Table Location</strong></p>
+<p>See <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section4">The
+top-level exception handling architecture</a> of <em>Exception
+Handling ABI for the Arm Architecture</em> [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>].</p>
+<p><strong>(No section in the generic C++ ABI - a library nothrow
+new function must not examine its 2</strong><sup>nd</sup>
+<strong>argument)</strong></p>
+<p>Library versions of the following functions <em>must not</em>
+examine their second argument.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>::operator new(std::size_t, const std::nothrow_t&amp;)
+::operator new[](std::size_t, const std::nothrow_t&amp;)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>(The second argument conveys no useful information other than
+through its presence or absence, which is manifest in the mangling
+of the name of the function. This ABI therefore allows code
+generators to use a potentially invalid second argument - for
+example, whatever value happens to be in R1 - at a point of
+call).</p>
+<p><strong>(No section in the generic C++ ABI - library placement
+new functions must be inline)</strong></p>
+<p>We require the library placement allocation functions (18.4.1.3
+of ISO C++) to be inline with these definitions:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>inline void *operator new(std::size_t, void* __ptr) throw() { return __ptr; }
+inline void *operator new[](std::size_t, void* __ptr) throw() { return __ptr; }
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>We do not require the library placement deallocation functions
+to be inline:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void operator delete(void*, void*) throw();
+void operator delete[](void*, void*) throw();
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>(They can only be called via exceptions thrown by failing
+constructors or directly by user code).</p>
+<p><strong>(No section in the generic C++ ABI, but would
+be</strong> <a href="index.html"/>
+<strong>POD data types)</strong></p>
+<p>Pointers to extern "C++" functions and pointers to extern "C"
+functions are interchangeable if the function types are otherwise
+identical.</p>
+<p>In order to be used by the library helper functions described
+below, implementations of constructor and destructor functions
+(complete, sub-object, and allocating) must have a type compatible
+with:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern "C" void* (*)(void* /* , other argument types if any */);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Deleting destructors must have a type compatible with:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern "C" void (*)(void*);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><strong>(No section in the generic C++ ABI, but would
+be</strong> <a href="index.html"/>
+<strong>Controlling Object Construction Order)</strong></p>
+<p>Global object construction and destruction are managed in a
+simplified way under this ABI (see <a href="index.html">Static object construction and
+destruction</a>).</p>
+<p><strong>(No section in the generic C++ ABI - DLL symbol
+visibility and linkage issues)</strong></p>
+<p><a href="index.html">Inter-DLL symbol visibility and
+linkage</a> discusses inter-DLL symbol visibility and linkage
+issues.</p>
+<p><strong>(No section in the generic C++ ABI - Namespace and
+mangling for the va_list type) (new in r2.07)</strong></p>
+<p>The type __va_list is in namespace std. The type name of va_list
+therefore mangles to St9__va_list.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="differences-in-detail">
+<h3>Differences in detail</h3>
+<div>
+<div>
+<div>
+<div id="representation-of-pointer-to-member-function">
+<h4>Representation of pointer to member function</h4>
+<p>The generic C++ ABI [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>]
+specifies that a pointer to member function is a pair of words
+&lt;<em>ptr</em>, <em>adj</em>&gt;. The least significant bit of
+<em>ptr</em> discriminates between (0) the address of a non-virtual
+member function and (1) the offset in the class's virtual table of
+the address of a virtual function.</p>
+<p>This encoding cannot work for the Arm-Thumb instruction set
+where code addresses use all 32 bits of <em>ptr</em>.</p>
+<p>This ABI specifies that <em>adj</em> contains twice the
+<em>this</em> adjustment, plus 1 if the member function is virtual.
+The least significant bit of <em>adj</em> then makes exactly the
+same discrimination as the least significant bit of <em>ptr</em>
+does for Itanium.</p>
+<p>pointer to member function is NULL when <em>ptr</em> = 0
+<em>and</em> the least significant bit of <em>adj</em> is zero.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="array-construction-and-destruction">
+<h4>Array construction and destruction</h4>
+<div>
+<div>
+<div>
+<div id="array-cookies">
+<h5>Array cookies</h5>
+<p>An array cookie is used for heap-allocated arrays of objects
+with class type where the class has a destructor or the class's
+<em>usual (array) deallocation function</em> [ISO C++ 3.7.3.2] has
+two arguments, i.e. <code>T::operator delete(void*,
+std::size_t)</code>. Nonetheless, an array cookie is not used if
+<code>::operator new[](std::size_t, void*)</code> is used for the
+allocation as the user is then responsible for the deallocation and
+the associated bookkeeping.</p>
+<p>When a cookie is needed this ABI always specifies the same
+cookie type:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>struct array_cookie {
+    std::size_t element_size; // element_size != 0
+    std::size_t element_count;
+};
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>This is different than the generic C++ ABI which uses a variable
+sized cookie depending on the alignment of element type of the
+array being allocated.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>Although it's not a particularly useful property,
+this cookie is usable as a generic C++ cookie when the generic C++
+cookie size is 8 bytes.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Both the element size and element count are recorded in the
+cookie. For example, in the following the element size would be
+sizeof(S) = 8 and the element count would be 3 * 5 = 15.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>struct S { int a[2]; };
+typedef SA S[3];
+S* s = new SA[5];
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>The element size can never legally be zero. Finding
+a zero element size at delete [ ] time indicates heap
+corruption.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="array-cookie-alignment">
+<h5>Array cookie alignment</h5>
+<p>The array cookie is allocated at an 8-byte aligned address
+immediately preceding the user's array. Since the cookie size is 8
+bytes the user's array is also 8-byte aligned.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="library-helper-functions">
+<h5>Library helper functions</h5>
+<p>The generic C++ ABI contains some helper functions for array
+construction and destruction:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>__cxa_vec_new     __cxa_vec_new2
+__cxa_vec_new3    __cxa_vec_ctor
+__cxa_vec_dtor    __cxa_vec_cleanup
+__cxa_vec_delete  __cxa_vec_delete2
+__cxa_vec_delete3 __cxa_vec_cctor
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Compilers are not required to use these helper functions but
+runtime libraries must supply them and they must work with the
+always 8-byte cookies. These functions take pointers to
+constructors or destructors. Since constructors and destructors
+conforming to this ABI return <em>this</em> (<a href="index.html">Summary of differences from and additions to
+the generic C++ ABI</a>, 3.1.5 <em>Constructor return values</em>,
+above) the return types of these parameters are void* instead of
+void.</p>
+<p>The generic C++ ABI gives __cxa_vec_ctor and __cxa_vec_cctor a
+void return type. This ABI specifies void* instead. The value
+returned is the same as the first parameter - a pointer to the
+array being constructed. We do not change the return type for
+__cxa_vec_dtor because we provide __aeabi_vec_dtor which has the
+additional advantage of not taking a padding_size parameter.</p>
+<p>In addition, we define the following new helpers which can be
+called more efficiently.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>__aeabi_vec_ctor_nocookie_nodtor
+__aeabi_vec_ctor_cookie_nodtor
+__aeabi_vec_cctor_nocookie_nodtor
+__aeabi_vec_new_cookie_noctor
+__aeabi_vec_new_nocookie
+__aeabi_vec_new_cookie_nodtor
+__aeabi_vec_new_cookie
+__aeabi_vec_dtor
+__aeabi_vec_dtor_cookie
+__aeabi_vec_delete
+__aeabi_vec_delete3
+__aeabi_vec_delete3_nodtor
+__aeabi_atexit
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Again, compilers are not required to use these functions but
+runtime libraries must supply them.</p>
+<p>__aeabi_vec_dtor effectively makes __cxa_vec_dtor obsolete.</p>
+<p>Compilers are encouraged to use the __aeabi_vec_dtor instead of
+__cxa_vec_dtor and __aeabi_vec_delete instead of __cxa_vec_delete.
+Run-time environments are encouraged to expect this, perhaps
+implementing __cxa_vec_delete in terms of __aeabi_vec_delete
+instead of the other way around.</p>
+<p>We define __aeabi_vec_delete3 but not a corresponding
+__aeabi_vec_delete2. Using that would be less efficient than using
+__aeabi_vec_dtor and calling the <code>T1::operator delete[]</code>
+directly. See note 3 on page 18, below.</p>
+<p>__cxa_vec_ctor still has uses not covered by
+__aeabi_vec_ctor_nocookie_nodtor and
+__aeabi_vec_ctor_cookie_nodtor.</p>
+<p>Additional helpers for array construction (i.e. new T[n],
+__aeabi_vec_new_*) may be added in future releases of this ABI.</p>
+<p>Definitions of the __aeabi_* functions are given below in terms
+of example implementations. It is not required to implement them
+this way.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#include &lt;cstddef&gt;  // for ::std::size_t
+#include &lt;cxxabi.h&gt; // for __cxa_*
+
+namespace __aeabiv1 {
+  using ::std::size_t;
+
+  // Note: Only the __aeabi_* names are exported.
+  // array_cookie, cookie_size, cookie_of, etc. are presented for exposition only.
+  // They are not expected to be available to users, but implementers may find them useful.
+
+  struct array_cookie {
+      size_t element_size; // element_size != 0
+      size_t element_count;
+  };
+  // The struct array_cookie fields and the arguments element_size and element_count
+  // are ordered for convenient use of LDRD/STRD on architecture 5TE and above.
+
+  const size_t cookie_size = sizeof(array_cookie);
+
+  // cookie_of() takes a pointer to the user array and returns a reference to the cookie.
+
+  inline array_cookie&amp; cookie_of(void* user_array)
+  {
+    return reinterpret_cast&lt;array_cookie*&gt;(user_array)[-1];
+  }
+  // element_size_of() takes a pointer to the user array and returns a reference to the
+  // element_size field of the cookie.
+
+  inline size_t&amp; element_size_of(void* user_array)
+  {
+    return cookie_of(user_array).element_size;
+  }
+  // element_count_of() takes a pointer to the user array and returns a reference to the
+  // element_count field of the cookie.
+
+  inline size_t&amp; element_count_of(void* user_array)
+  {
+    return cookie_of(user_array).element_count;
+  }
+  // user_array_of() takes a pointer to the cookie and returns a pointer to the user array.
+
+  inline void* user_array_of(array_cookie* cookie_address)
+  {
+    return cookie_address + 1;
+  }
+  extern "C" void* __aeabi_vec_ctor_nocookie_nodtor(
+          void* user_array,
+          void* (*constructor)(void*),
+          size_t element_size, size_t  element_count)
+  { // The meaning of this function is given by the following model implementation...
+    // Note: AEABI mandates that __cxa_vec_ctor return its first argument
+    return __cxa_vec_ctor(user_array, element_count, element_size, constructor, NULL);
+  }
+  // __aeabi_vec_ctor_cookie_nodtor is like __aeabi_vec_ctor_nocookie_nodtor but sets
+  // cookie fields and returns user_array. The parameters are arranged to make STRD
+  // usable.  Does nothing and returns NULL if cookie is NULL.
+
+  extern "C" void* __aeabi_vec_ctor_cookie_nodtor(
+          array_cookie* cookie,
+          void*(*constructor)(void*),
+          size_t element_size, size_t element_count)
+  { // The meaning of this function is given by the following model implementation...
+    if (cookie == NULL){ return NULL; }
+    else
+    {
+      cookie-&gt;element_size = element_size;  cookie-&gt;element_count = element_count;
+      return __aeabi_vec_ctor_nocookie_nodtor(
+              user_array_of(cookie), constructor, element_size, element_count);
+    }
+  }
+  extern "C" void* __aeabi_vec_cctor_nocookie_nodtor(
+          void* user_array_dest,
+          void* user_array_src,
+          size_t element_size, size_t element_count,
+          void* (*copy_constructor)(void*, void*))
+  { // The meaning of this function is given by the following model implementation...
+    // Note: AEABI mandates that __cxa_vec_cctor return its first argument
+    return __cxa_vec_cctor(user_array_dest, user_array_src,
+            element_count, element_size, copy_constructor, NULL);
+  }
+  extern "C" void* __aeabi_vec_new_cookie_noctor(size_t element_size, size_t element_count)
+  { // The meaning of this function is given by the following model implementation...
+    array_cookie* cookie =
+        reinterpret_cast&lt;array_cookie*&gt;
+            (::operator new[](element_count * element_size + cookie_size));
+    cookie-&gt;element_size = element_size; cookie-&gt;element_count = element_count;
+    return user_array_of(cookie);
+  }
+  extern "C" void* __aeabi_vec_new_nocookie(
+          size_t  element_size, size_t  element_count,
+          void* (*constructor)(void*))
+  { // The meaning of this function is given by the following model implementation...
+    return __cxa_vec_new(element_count, element_size, 0, constructor, NULL);
+  }
+  extern "C" void* __aeabi_vec_new_cookie_nodtor(
+          size_t  element_size, size_t  element_count,
+          void* (*constructor)(void*))
+  { // The meaning of this function is given by the following model implementation...
+    return __cxa_vec_new(element_count, element_size, cookie_size, constructor, NULL);
+  }
+  extern "C" void* __aeabi_vec_new_cookie(
+          size_t  element_size, size_t  element_count,
+          void* (*constructor)(void*),
+          void* (*destructor)(void*))
+  { // The meaning of this function is given by the following model implementation...
+    return __cxa_vec_new(element_count, element_size, cookie_size, constructor, destructor);
+  }
+  // __aeabi_vec_dtor is like __cxa_vec_dtor but has its parameters reordered and returns
+  // a pointer to the cookie (assuming user_array has one).
+  // Unlike __cxa_vec_dtor, destructor must not be NULL.
+  // user_array must not be NULL.
+
+  extern "C" void* __aeabi_vec_dtor(
+          void* user_array,
+          void* (*destructor)(void*),
+          size_t element_size, size_t element_count)
+  { // The meaning of this function is given by the following model implementation...
+    __cxa_vec_dtor(user_array, element_count, element_size, destructor);
+    return &amp;cookie_of(user_array);
+  }
+  // __aeabi_vec_dtor_cookie is only used on arrays that have cookies.
+  // __aeabi_vec_dtor is like __cxa_vec_dtor but returns a pointer to the cookie.
+  // That is, it takes a pointer to the user array, calls the given destructor on
+  // each element (from highest index down to zero) and returns a pointer to the cookie.
+  // Does nothing and returns NULL if cookie is NULL.
+  // Unlike __cxa_vec_dtor, destructor must not be NULL.
+  //  Exceptions are handled as in __cxa_vec_dtor.
+  // __aeabi_vec_dtor_cookie must not change the element count in the cookie.
+  // (But it may corrupt the element size if desired.)
+
+  extern "C" void* __aeabi_vec_dtor_cookie(void* user_array, void* (*destructor)(void*))
+  { // The meaning of this function is given by the following model implementation...
+    // like:
+    //   __cxa_vec_dtor(user_array, element_count_of(user_array),
+    //                  element_size_of(user_array), destructor);
+    return user_array == NULL ? NULL :
+            __aeabi_vec_dtor(user_array, destructor,
+                             element_size_of(user_array), element_count_of(user_array));
+  }
+  extern "C" void __aeabi_vec_delete(void* user_array, void* (*destructor)(void*))
+  { // The meaning of this function is given by the following model implementation...
+    // like:  __cxa_vec_delete(user_array, element_size_of(user_array),
+    //                         cookie_size, destructor);
+    try {
+      ::operator delete[](__aeabi_vec_dtor_cookie(user_array, destructor));
+    } catch (...) {
+      if (user_array != NULL) {
+        ::operator delete[](&amp;cookie_of(user_array));
+      }
+      throw;
+    }
+  }
+  extern "C" void __aeabi_vec_delete3(
+          void* user_array, void* (*destructor)(void*), void (*dealloc)(void*, size_t))
+  { // The meaning of this function is given by the following model implementation...
+    // like:  __cxa_vec_delete3(user_array, element_size_of(user_array),
+    //                          cookie_size, destructor, decalloc);
+    if (user_array != NULL) {
+        size_t size =
+            element_size_of(user_array) * element_count_of(user_array) + cookie_size;
+      void *array_cookie;
+      try {
+        array_cookie = __aeabi_vec_dtor_cookie(user_array, destructor);
+      } catch (...) {
+        try {
+          (*dealloc)(&amp;cookie_of(user_array), size);
+        } catch (...) {
+           std::terminate();
+        }
+        throw;
+      }
+      (*dealloc)(array_cookie, size);
+    }
+  }
+  extern "C" void __aeabi_vec_delete3_nodtor(
+          void* user_array, void (*dealloc)(void*, size_t))
+  { // The meaning of this function is given by the following model implementation...
+    // like:  __cxa_vec_delete3(user_array, element_size_of(user_array),
+    //                          cookie_size, 0, decalloc);
+    if (user_array != NULL) {
+        size_t size =
+            element_size_of(user_array) * element_count_of(user_array) + cookie_size;
+      (*dealloc)(&amp;cookie_of(user_array), size);
+    }
+  }
+  extern "C" int  __aeabi_atexit(void* object, void (*destroyer)(void*), void* dso_handle)
+  { // atexit(f) should call __aeabi_atexit (NULL, f, NULL)
+    // The meaning of this function is given by the following model implementation...
+    return __cxa_atexit(destroyer, object, dso_handle);           // 0 ==&gt; OK; non-0 ==&gt; failed
+  }
+} // namespace __aeabiv1
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="code-examples-for-the-delete-expression">
+<h5>Code examples for the delete expression</h5>
+<p>Section 5.3.5 of the ISO C++ standard discusses the delete
+expression.</p>
+<p>The code needed to implement <code>delete [] p</code> is
+tabulated in <a href="index.html">Implementation of delete []
+p</a>, below. It depends on:</p>
+<ul>
+<li>The static element type of p (referred to as T below),</li>
+<li>Which <code>operator delete []</code> is being used for this
+de-allocation: either <code>::operator delete(void*)</code> or
+<code>T1::operator delete(void*)</code>, where T1 is T or a base
+class of T.</li>
+<li>Whether a cookie is needed for arrays of T (see <a href="index.html">Array cookies</a>).</li>
+<li><em>Has dtor</em>, which means T is a class type with a
+non-trivial destructor [ISO C++ 12.4]. In cases where there is no
+cookie there must be no dtor.</li>
+</ul>
+<table id="id18">
+<caption>Implementation of delete [] p</caption>
+<colgroup>
+<col width="21%"/>
+<col width="14%"/>
+<col width="12%"/>
+<col width="45%"/>
+<col width="8%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th><code>operator delete []</code></th>
+<th>Needs cookie</th>
+<th><em>Has dtor</em></th>
+<th>Implementation of <code>delete [] p / ::delete []
+p</code></th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>::operator delete[](void*)</td>
+<td>N</td>
+<td>-</td>
+<td><code>::operator delete[](p)</code></td>
+<td> </td>
+</tr>
+<tr>
+<td rowspan="2">::operator delete[](void*)</td>
+<td rowspan="2">Y</td>
+<td>N</td>
+<td><code>::operator delete[](&amp;cookie_of(p))</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>Y</td>
+<td><code>__aeabi_vec_delete(p, &amp;T::~T{D1})</code></td>
+<td> </td>
+</tr>
+<tr>
+<td rowspan="2">T1::operator delete[] (void*)</td>
+<td rowspan="2">Y</td>
+<td>N</td>
+<td><code>T1::operator delete[](&amp;cookie_of(p))</code></td>
+<td> </td>
+</tr>
+<tr>
+<td>Y</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div><code>T1::operator delete[]</code></div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div><code>(__aeabi_vec_dtor_cookie(p,
+&amp;T::~T{D1}))</code></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td> </td>
+</tr>
+<tr>
+<td rowspan="2">T1::operator delete[] (void*, std::size_t)</td>
+<td rowspan="2">Y</td>
+<td>N</td>
+<td><code>__aeabi_vec_delete3_nodtor(p, &amp;T1::operator
+delete[])</code></td>
+<td>3</td>
+</tr>
+<tr>
+<td>Y</td>
+<td><code>__aeabi_vec_delete3(p, &amp;T::~T{D1}, &amp;T1::operator
+delete[])</code></td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<ol>
+<li>
+<p>Other operator delete[]s, such as. operator
+delete[](void*, const std::nothrow&amp;) or operator
+delete[](void*, void*), can be called explicitly by a user, but can
+only be called implicitly when a new array expression throws an
+exception during allocation or construction.</p>
+</li>
+<li>
+<p>This is an unusual case that can only be reached
+by using <code>::delete[]</code>, for example:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>struct T { static void operator delete(void*, std::size_t); } *p;
+::delete[] p;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p><code>__aeabi_vec_delete3_nodtor(p,
+&amp;T1::operator delete[])</code> could also be done this way:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>T1::operator delete[](&amp;cookie_of(p), sizeof(T)*element_count_of(p))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p><code>__aeabi_vec_delete3(p, &amp;T::~T{D1},
+&amp;T1::operator delete[])</code> could also be done this way:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>T1::operator delete[]
+    (__aeabi_vec_dtor_cookie(p, &amp;T::~T{D1}), sizeof(T)*element_count_of(p))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="code-example-for-aeabi-atexit">
+<h5>Code example for __aeabi_atexit</h5>
+<p>Because constructors conforming to this ABI return
+<em>this</em>, construction of a top-level static object and the
+registration of its destructor can be done as:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>__aeabi_atexit(T::T{C1}(&amp;t), &amp;T::~T{D1}, &amp;__dso_handle);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>This saves an instruction compared with calling __cxa_atexit
+directly, and allows a smart linker to calculate how much space to
+allocate statically to registering top-level object destructions
+(<a href="index.html">Static object
+destruction</a>).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="guard-variables-and-the-one-time-construction-api">
+<h4>Guard variables and the one-time construction API</h4>
+<div>
+<div>
+<div>
+<div id="guard-variables">
+<h5>Guard variables</h5>
+<p>To support the potential use of initialization guard variables
+as semaphores that are the target of Arm SWP and LDREX/STREX
+synchronizing instructions we define a static initialization guard
+variable to be a 4-byte aligned, 4-byte word with the following
+inline access protocol.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#define INITIALIZED 1
+// inline guard test...
+if ((obj_guard &amp; INITIALIZED)!= INITIALIZED) {
+    // TST obj_guard, #1; BNE already_initialized
+    if (__cxa_guard_acquire(&amp;obj_guard)) {
+        ...
+}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Usually, a guard variable should be allocated in the same data
+section as the object whose construction it guards.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="one-time-construction-api">
+<h5>One-time construction API</h5>
+<div>
+<div>
+<div>
+<div>
+<div><code>extern "C" int __cxa_guard_acquire(int
+*guard_object);</code></div>
+</div>
+</div>
+</div>
+</div>
+<p>If the guarded object has not yet been initialized, this
+function returns 1. Otherwise it returns 0.</p>
+<p>If it returns 1, a semaphore might have been claimed and
+associated with <em>guard_object</em>, and either
+__cxa_guard_release or __cxa_guard_abort must be called with the
+same argument to release the semaphore.</p>
+<div>
+<div>
+<div>
+<div>
+<div><code>extern "C" void __cxa_guard_release(int
+*guard_object);</code></div>
+</div>
+</div>
+</div>
+</div>
+<p>This function is called on completing the initialization of the
+guarded object. It sets the least significant bit of
+<em>guard_object</em> (allowing subsequent inline checks to
+succeed) and releases any semaphore associated with it.</p>
+<div>
+<div>
+<div>
+<div>
+<div><code>extern "C" void __cxa_guard_abort(int
+*guard_object);</code></div>
+</div>
+</div>
+</div>
+</div>
+<p>This function is called if any part of the initialization of the
+guarded object terminates by throwing an exception. It releases any
+semaphore associated with <em>guard_object</em>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="static-object-construction-and-destruction">
+<h4>Static object construction and destruction</h4>
+<div>
+<div>
+<div>
+<div id="top-level-static-object-construction">
+<h5>Top-level static object construction</h5>
+<p>The compiler is responsible for sequencing the construction of
+top-level static objects defined in a translation unit in
+accordance with the requirements of the C++ standard. The run-time
+environment (helper-function library) sequences the initialization
+of one translation unit after another. The global <em>constructor
+vector</em> provides the interface between these agents as
+follows.</p>
+<ul>
+<li>
+<p>Each translation unit provides a fragment of the
+constructor vector in an ELF section called .init_array of type
+SHT_INIT_ARRAY (=0xE) and section flags SHF_ALLOC + SHF_WRITE.</p>
+</li>
+<li>
+<p>Each element of the vector contains the address of
+a function of type extern "C" void (* const)(void) that, when
+called, performs part or all of the global object construction for
+the translation unit. Producers must treat .init_array sections
+<em>as if</em> they were read-only.</p>
+<p>The appropriate entry for an element referring to, say,
+__sti_<em>file</em> that constructs the global static objects in
+<em>file</em>cpp, is 0 relocated by R_ARM_
+TARGET1(__sti_<em>file</em>). Usually, R_ARM_ TARGET1 is
+interpreted by a static linker as R_ARM_ABS32 (for details, see the
+[Note] below).</p>
+</li>
+<li>
+<p>Run-time support code iterates through the global
+constructor vector in increasing address order calling each
+identified initialization function in order. This ABI does not
+specify a way to control the order in which translation units are
+initialized.</p>
+</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>In some execution environments, constructor vector
+entries contain self-relative references, which cost an additional
+ADD in the library code that traverses the vector, but save dynamic
+relocations, giving a smaller executable size and faster start-up
+when an executable must be dynamically linked and relocated. In
+these environments, a static linker interprets R_ARM_TARGET1 as
+R_ARM_REL32 rather than as R_ARM_ABS32. In some execution
+environments, constructor vector entries will be allocated to a
+read-only execution segment.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="static-object-destruction">
+<h5>Static object destruction</h5>
+<p>The sequencing of static object destruction in C++ requires
+destructions to be registered dynamically in the order of object
+construction (<a href="index.html">Code example for
+__aeabi_atexit</a>), correctly interleaved with any calls to the
+<em>atexit</em> library function(s).</p>
+<p>This ABI requires static object destruction to be registered by
+calling __aeabi_atexit (<a href="index.html">Code
+example for __aeabi_atexit</a> and [__aeabi_atexit]).</p>
+<p>Implementations of the generic C++ ABI helper function
+__cxa_atexit usually allocate elements of the list of static
+objects to be destroyed dynamically, but some execution
+environments require static allocation. To support allocating this
+list statically, compilers must ensure that:</p>
+<ul>
+<li>Static object destructions are registered using __aeabi_atexit,
+<em>not</em> __cxa_atexit.</li>
+<li>Each call to __aeabi_atexit registers the destruction of the
+data objects constructed by the calling code. (Thus each static
+call will be executed at most once, and table-driven registration
+of several destructions by a single static call to __aeabi_atexit
+is forbidden).</li>
+</ul>
+<p>The maximum number of destructions that can be registered by a
+relocatable file is then the number of sites calling
+__aeabi_atexit. A smart linker can count the number of sites and
+allocate space for the list accordingly.</p>
+<p>The maximum number of calls to __aeabi_atexit on behalf of the
+<em>atexit</em> library functions is bounded by the implementation
+definition. The C++ standard requires at least 32 calls to be
+supported.</p>
+<p>It is Q-o-I whether a linker and matching run-time library can
+allocate the list statically. So is the behaviour if the library
+calls __aeabi_atexit (e.g. on behalf of <em>atexit</em>) more times
+than a static allocation supports.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="inter-dll-symbol-visibility-and-linkage">
+<h4>Inter-DLL symbol visibility and linkage</h4>
+<p>Strictly, only subsection <a href="index.html">Inter-DLL visibility rules for C++
+ABI-defined symbols</a> of this section contributes to this ABI.
+Subsections <a href="index.html">Background</a>,
+<a href="index.html">Symbol visibility, DLL export,
+and DLL import</a>, <a href="index.html">Symbol
+visibility for C++ entities</a>, <a href="index.html">Vague linkage</a>, and <a href="index.html">One definition rule considerations in
+the absence of dynamic vague linkage</a> give background,
+terminology, and rationale, but do not form part of this
+standard.</p>
+<div>
+<div>
+<div>
+<div id="background">
+<h5>Background</h5>
+<p>An SVr4 (Unix or Linux) dynamic shared object (DSO) is best
+thought of as a library, rather than a module with a controlled
+interface. By default, every global symbol defined in a DSO is
+visible to its clients. When a program is linked dynamically with a
+DSO, the linkage semantics are the same as when it is linked
+statically with the corresponding static library. (We ignore here
+DSOs loaded dynamically by dlopen(), for which there is no static
+counterpart). In this environment the C++ ABI need not be aware of
+the existence of DSOs, and, indeed, the generic C++ ABI hardly
+mentions them.</p>
+<p>In contrast, a dynamic link library (DLL) is much more a module
+with a controlled interface. Historically, the visibility of
+symbols between DLLs has been controlled explicitly using import
+and export directives to the static linker or source code
+annotations such as the __declspec(dllexport) and
+__declspec(dllimport) familiar to Microsoft Windows developers. By
+default, global symbols defined in a DLL are invisible outside of
+it.</p>
+<p>In C, there is a one to one correspondence between source
+entities with external linkage and global symbols. There are no
+implicit global symbols other than compiler helper functions. It
+is, therefore, tractable to control visibility explicitly (using a
+variety of Q-o-I mechanisms).</p>
+<p>In C++ there are several implicit entities associated with
+classes (v-tables, RTTI, etc) that have corresponding C++
+ABI-specified global symbols, but there is no simple, universally
+accepted model of controlling their visibility between DLLs. This
+ABI specifies a simple binary interface that promotes
+inter-operation between independently compiled relocatable files
+while remaining faithful to the DLL-based expectation of explicit
+visibility control.</p>
+<p>further complication is that, at the time of writing, not all
+DLL-based execution environments encompassed by the <em>ABI for the
+Arm Architecture</em> are capable of resolving vague linkage
+(<a href="index.html">Vague linkage</a>) dynamically.
+This means that they cannot always provide a single address for
+entities required to have a single definition (<a href="index.html">One definition rule considerations in
+the absence of dynamic vague linkage</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbol-visibility-dll-export-and-dll-import">
+<h5>Symbol visibility, DLL export, and DLL import</h5>
+<p>At the binary interface, the scope of an ELF global symbol is
+restricted by giving it a non default visibility attribute.
+Specifically, STV_HIDDEN restricts the visibility of a symbol to
+the executable file that defines it.</p>
+<p>In effect, STV_DEFAULT implements DLL export and STV_HIDDEN
+implements DLL no export.</p>
+<p>The source annotation denoting export is Q-o-I, but we expect
+<code>__declspecl([no]dllexport)</code> to be widely used.</p>
+<p id="exporting">Exporting a function that can be inlined should
+force the creation and export of an out-of-line copy of it. (See
+also [<a href="index.html#importing">Importing</a>]..., below).</p>
+<p>When compiling for an SVr4-based environment, symbols with
+global binding should have default visibility by default (unless
+source annotation or tool options dictate otherwise). The C++ ABI
+does not change this.</p>
+<p>When compiling for a DLL-based environment, we start from the
+position that symbols with global binding should have STV_HIDDEN
+visibility by default (unless source annotation or tool options
+dictate otherwise). This C++ ABI modifies this starting point as
+described in <a href="index.html">Inter-DLL
+visibility rules for C++ ABI-defined symbols</a>.</p>
+<p>In some DLL models, addressing an imported datum requires an
+additional level of indirection compared with addressing a locally
+defined one. In these models, DLL import makes a compile-time
+distinction between a reference to a datum exported by some other
+DLL and one defined by this DLL.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>Under the SVr4 DSO model, all global symbols are
+addressed indirectly, whether imported or not, so no source
+annotation is needed. This supports pre-emption of any DSO
+definition at dynamic link time and allows vague linkage to be
+implemented dynamically.</p>
+</div>
+</div>
+</div>
+</div>
+<p>The source annotation denoting import is Q-o-I, but we expect
+<code>__declspecl([no]dllimport)</code> to be widely used.</p>
+<p>It is Q-o-I whether importing a definition also exports it,
+whether exporting a reference also imports it, and how these
+annotations interact with compiler steering options. Nevertheless,
+in ELF, restricting the visibility of an undefined symbol restricts
+the visibility of a definition that matches it at static link
+time.</p>
+<p id="importing">Importing a function that can be inlined should
+suppress the creation of an out-of-line copy of it, the imported
+reference being used instead. (See also [<a href="index.html#exporting">Exporting</a>]..., above).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbol-visibility-for-c-entities">
+<h5>Symbol visibility for C++ entities</h5>
+<p>Many C++ entities with linkage map one to one via C++
+ABI-defined name mangling [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>] to
+corresponding ELF symbols with global binding. Examples include
+many data objects and class member functions. In principle, the
+export of these entities can be controlled explicitly by source
+annotation, just as in C.</p>
+<p>Some C++ ABI-defined global symbols are associated uniquely with
+an entity of the above sort. Examples include static data local to
+a function that might be inlined and the initialization guard
+variables associated with it. In these cases, symbol visibility
+must follow that of the export controlled C++ entity (here, the
+function itself).</p>
+<p>Remaining C++ ABI-defined global symbols relate to class
+impedimenta - virtual tables and RTTI. Under the generic C++ ABI
+they are the global symbols _ZT{V,T,I,S}<em>type</em>, where
+<em>type</em> is a mangled class name.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="vague-linkage">
+<h5>Vague linkage</h5>
+<p>Some C++ entities (including class impedimenta, out of line
+copies of inline functions, and the static data and string literals
+belonging to them) can have <em>vague linkage.</em></p>
+<p>Entities with vague linkage are defined in many relocatable
+files linked to form an executable file. Duplication is avoided
+using COMDAT groups [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>],
+so there is at most one definition in a DLL, DSO, or executable
+file.</p>
+<p>To ensure a single definition program wide requires pre-emption
+of all but one definition at dynamic link time. In turn this
+requires that references to a DLL-local definition can be relocated
+at dynamic link time.</p>
+<p>Class impedimenta and some other class entities have vague
+linkage unless the class has a <em>key function</em>. The
+translation unit containing the definition of the key function
+provides a unique point of definition for the impedimenta.
+Otherwise, definitions must be emitted wherever they are used.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="inter-dll-visibility-rules-for-c-abi-defined-symbols">
+<h5>Inter-DLL visibility rules for C++ ABI-defined symbols</h5>
+<p>For terminology, please refer to <a href="index.html">Symbol visibility, DLL export, and DLL
+import</a>, <a href="index.html">Symbol visibility
+for C++ entities</a>, and <a href="index.html">Vague
+linkage</a>.</p>
+<p>Among C++ entities with linkage, only classes are exported by
+default (in the absence of Q-o-I source annotations and compiler
+options). No ELF symbol directly represents a class.</p>
+<p>If a C++ ABI-defined global (CAG) symbol Y names an entity
+associated with a C++ function or data object X:</p>
+<ul>
+<li>must be exported if, and only if, X is exported.</li>
+<li>Y must be addressed as imported if X is addressed as
+imported.</li>
+</ul>
+<p>If a CAG symbol Y names one of the impedimenta associated with
+an exported class X:</p>
+<ul>
+<li>If X has a <em>key function</em> K:</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>Y is exported from the DLL containing the translation unit that
+defines K.</li>
+<li>Y is addressed as imported in every other DLL containing a
+translation unit that refers to X and uses Y.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Otherwise, if X has no <em>key function</em>:</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>Y is both exported from, and addressed as imported in, each DLL
+that refers to X and uses Y [1].</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Strictly, as far as this ABI is concerned, the control of export
+is Q-o-I. However, to foster inter-operation between compilers we
+require that:</p>
+<ul>
+<li>A class should be exported unless explicitly tagged otherwise
+(e.g. by class __delcspec(nodllexport) X...).</li>
+<li>A member of an implicitly exported class should be exported
+only if explicitly tagged as such (e.g. by __delcspec(dllexport)
+C::f(...) {...}).</li>
+<li>If a class is <em>explicitly</em> exported (e.g. by
+__delcspec(dllexport) class X ... ) and no class member is
+explicitly exported then all class members should be exported.</li>
+<li>These rules apply to each class individually. Explicitly
+exporting a class X does not implicitly export any base class of X,
+or any class derived from X.</li>
+</ul>
+<p>Some names, despite formally having external linkage, are not
+usable outside the translation unit in which they are declared.
+Names to which this applies</p>
+<ul>
+<li>Are declared in unnamed namespaces.</li>
+<li>Have external C++ linkage but <em>not</em> <code>extern
+"C"</code> linkage.</li>
+</ul>
+<p>Whether such names have local or global binding is Q-o-I but
+they must not have dynamic linkage.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="one-definition-rule-considerations-in-the-absence-of-dynamic-vague-linkage">
+<h5>One definition rule considerations in the absence of dynamic
+vague linkage</h5>
+<p>The last rule given in the first half of <a href="index.html">Inter-DLL visibility rules for C++
+ABI-defined symbols</a> ("[Otherwise], ...") ensures that a
+DLL-based system capable of resolving vague linkage dynamically can
+give unique (within the program) addresses to the impedimenta
+associated with a class that has no key function.</p>
+<p>As observed in <a href="index.html">Vague
+linkage</a>, other C++ entities suffer from vague linkage, but,
+ultimately, these are all functions, or associated with functions.
+If a system cannot resolve vague linkage dynamically, a few simple
+rules that can be backed by compiler warnings will serve to alert
+programmers to most potential problems with multiple
+definitions.</p>
+<p>For example, a compiler might warn of the following in relation
+to a function with vague linkage.</p>
+<ul>
+<li>Taking its address (it will yield different results in
+different DLLs).</li>
+<li>Using function local static data (they will be different data
+in different DLLs).</li>
+<li>Taking the address of a string literal, or passing a string
+literal to other than a library function (the literal will have a
+different address in different DLLs, and this might matter if the
+address rather than the value is stored).</li>
+</ul>
+<p>In short, it is feasible and reasonable for a system to avoid
+these problems through its programming standards.</p>
+<p>However, usage of the class impedimenta cannot be regulated
+through programming conventions, so we need different rules for
+them. Specifically, we must drop the requirement that one
+definition should mean one address. This appears to have no
+consequence for virtual tables (symbols matching
+_ZT{V,T}<em>type</em>), as nothing seems to depend on the address
+of a virtual table being unique, but it matters for RTTI (symbols
+matching _ZT{I,S}<em>type</em>).</p>
+<p>This runs contrary to <a href="index.html"/>
+of [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>]
+which states:</p>
+<ul>
+<li>It is intended that two type_info pointers point to equivalent
+type descriptions if and only if the pointers are equal. An
+implementation must satisfy this constraint, e.g. by using symbol
+preemption, COMDAT sections, or other mechanisms.</li>
+</ul>
+<p>Fortunately, we can ignore this requirement without violating
+the C++ standard provided that:</p>
+<ul>
+<li>
+<p>type_info::operator== and type_info::operator!=
+compare the strings returned by type_info::name(), not just the
+pointers to the RTTI objects and their names.</p>
+</li>
+<li>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>No reliance is placed on the address returned by
+type_info::name().</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>(That is, t1.name() != t2.name() does not imply
+that t1 != t2).</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+</ul>
+<p>The first condition effectively requires that these operators
+(and type_info::before()) must be called out of line, and that the
+execution environment must provide appropriate implementations of
+them. A relocatable file built this way is oblivious to whether or
+not RTTI objects have unique addresses.</p>
+<p>Finally we need to revisit the last rule of <a href="index.html">Inter-DLL visibility rules for C++
+ABI-defined symbols</a> ("[Otherwise], ..."). It states:</p>
+<ul>
+<li>If X is exported but has no key function, Y is both exported
+from, and addressed as imported in, each DLL that refers to X and
+uses Y.</li>
+</ul>
+<p>For any Y for which the execution environment waives the one
+address rule, these requirements are pointless. The exported Y will
+never be used, and because the system cannot resolve vague linkage
+dynamically, there is no need to address the entity named by Y as
+imported.</p>
+<p>Import potentially affects code generation, so this involves a
+compile time decision. However, we can note that a system that
+imports indirectly - using an extra indirection to access imported
+data - can in principle resolve vague linkage dynamically, while
+one that does not in general cannot. (But note that SVr4
+applications do precisely this by using copy relocations and a
+local copy of the data that pre-empts any DSO copy). So, in
+practice, code generation is unlikely to be changed unless a system
+capable of resolving vague linkage dynamically chooses not to do so
+for class impedimenta, or unless code is generated differently for
+applications and DLLs.</p>
+<p>Export does not affect code generation directly - merely the
+visibility of symbols and, hence, the efficiency of export tables.
+So it is desirable to drop the export requirement in environments
+that waive the one address rule. Doing this at compile time
+restricts the portability of the relocatable file. However it is
+easy to do the restriction at static link time, as follows.</p>
+<ul>
+<li>For any global symbol Y whose name matches
+_ZT{V,T,S,I}<em>type</em>, if Y is defined in a section belonging
+to a COMDAT group, reduce Y's visibility to STV_HIDDEN.</li>
+</ul>
+<p>(If Y names an entity whose linkage is not vague, it will not be
+defined in a COMDAT group).</p>
+<p>Whether implemented at compile time or link time, support by
+tool chains is Q-o-I.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="elf-binding-of-static-data-guard-variable-symbols">
+<h4>ELF binding of static data guard variable symbols</h4>
+<p>The generic C++ standard [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>]
+states at the end of <a href="index.html"/>:</p>
+<div>
+<div>
+<div>
+<div>
+<div><em>Some objects with static storage duration have associated
+guard variables used to ensure that they are initialized only once
+(see 3.3.2). If the object is emitted using a COMDAT group, the
+guard variable must be too. It is suggested that it be emitted in
+the same COMDAT group as the associated data object, but it may be
+emitted in its own COMDAT group, identified by its name. In either
+case, it must be weak.</em></div>
+</div>
+</div>
+</div>
+</div>
+<p>In effect the generic standard permits a producer to generate
+one of two alternative structures. Either:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>COMDAT Group (Variable Name) {
+    Defines Variable Name           // ELF binding STB_GLOBAL, mangled name
+    Defines Guard Variable Name     // ELF binding STB_WEAK, mangled name ...
+}                                   // (... this ABI requires STB_GLOBAL binding)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Or:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>COMDAT Group (Variable Name) {
+    Defines Variable Name           // ELF binding STB_GLOBAL, mangled name
+}
++
+COMDAT Group (Guard Variable Name) {
+    Defines Guard Variable Name     // ELF binding STB_WEAK, mangled name
+}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>link step involving multiple groups of the first kind causes no
+difficulties. A linker must retain only one copy of the group and
+there will be one definition of <em>Variable Name</em> and one weak
+definition of <em>Guard Variable Name</em>.</p>
+<p>A link step involving pairs of groups of the second kind also
+causes no difficulties. A linker must retain one copy of each group
+so there will be one definition of <em>Variable Name</em> and one
+weak definition of <em>Guard Variable Name</em>.</p>
+<p>A link step involving a group of the first kind and a pair of
+groups of the second kind generates two sub-cases.</p>
+<ul>
+<li>If the linker discards the group that defines two symbols there
+is no problem.</li>
+<li>If the linker retains the group that defines both <em>Variable
+Name</em> and <em>Guard Variable Name</em> it must nonetheless
+retain the group called <em>Guard Variable Name</em>. There are now
+two definitions of <em>Guard Variable Name</em> with ELF binding
+STB_WEAK.</li>
+</ul>
+<p>In this second case there is no problem provided the linker
+picks one of the definitions.</p>
+<p>Unfortunately, [<a href="http://www.sco.com/developers/gabi/">GELF</a>] does not specify
+how linkers must process multiple weak definitions when there is no
+non-weak definition to override them. If a linker faults duplicate
+weak definitions there will be a functional failure.</p>
+<p>This ABI requires the ELF binding of <em>Guard Variable
+Name</em> in the first structure to be STB_GLOBAL.</p>
+<p>The rules codified in [<a href="http://www.sco.com/developers/gabi/">GELF</a>] then make all three
+linking scenarios well defined and it becomes possible to link the
+output of compilers such as armcc that choose the first structure
+with the output of those such as gcc that choose the second without
+relying on linker behavior that the generic ELF standard leaves
+unspecified.</p>
+<table id="id17">
+<colgroup>
+<col/>
+<col/></colgroup>
+<tbody valign="top">
+<tr>
+<td>[1]</td>
+<td>See <a href="index.html">One definition rule
+considerations in the absence of dynamic vague linkage</a> for a
+discussion of this rule and possible optimizations of it.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

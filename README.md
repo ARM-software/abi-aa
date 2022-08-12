@@ -13,12 +13,20 @@ released documents.
 
 ## Releases
 
-The latest ABI releases are being made available only here on Github: https://github.com/ARM-software/abi-aa/releases
+The latest ABI releases are being made available only here on Github:
+https://github.com/ARM-software/abi-aa/releases and are licensed under the
+Creative Commons Attribution-ShareAlike 4.0 International License + grant of
+Patent License.
 
 If there is no entry in the change history table for a release, there are no
 changes to the content of the document for that release.
 
-For the last specifications released on developer.arm.com, see the links to the individual documents in the *Document locations* section below.
+Previous versions of the documents were released under a proprietary license on
+developer.arm.com. These are now hosted in this repo, and are to be found under
+the legacy documents folder. They follow the same folder naming scheme as the
+main document folders.
+
+See the links to the individual documents in the *Document locations* section below.
 
 
 ## Defect reports
@@ -34,66 +42,66 @@ an email to arm.eabi@arm.com.
 
 ## Document locations
 
-See the below tables for the status of the various ABI specifications. A dash represents that the document isn't available either on Github or on the Arm-hosted developer site.
+See the tables below for the status of the various ABI specifications. A dash represents that the document isn't available either as a Github release or as a legacy release.
 
 ### ABI for the Arm 32-bit Architecture
 
-specification                                                      | latest on Github                        | last on developer site
+specification                                                      | latest                                  | last legacy release
 ---                                                                | ---                                     | ---
-Application Binary Interface for the Arm architecture introduction | [bsabi32](bsabi32/bsabi32.rst)          | [2019Q4](https://developer.arm.com/documentation/ihi0036/latest)
-Procedure Call Standard for the Arm Architecture                   | [aapcs32](aapcs32/aapcs32.rst)          | [2020Q2](https://developer.arm.com/documentation/ihi0042/latest)
-ELF for the Arm Architecture                                       | [aaelf32](aaelf32/aaelf32.rst)          | [2019Q1](https://developer.arm.com/documentation/ihi0044/latest)
-DWARF for the Arm Architecture                                     | [aadwarf32](aadwarf32/aadwarf32.rst)    | [2018Q4](https://developer.arm.com/documentation/ihi0040/latest)
-Base Platform ABI for the Arm Architecture                         | [bpabi32](bpabi32/bpabi32.rst)          | [2018Q4](https://developer.arm.com/documentation/ihi0037/latest)
-C++ ABI for the Arm Architecture                                   | [cppabi32](cppabi32/cppabi32.rst)       | [2019Q4](https://developer.arm.com/documentation/ihi0041/latest)
-Exception Handling ABI for the Arm Architecture                    | [ehabi32](ehabi32/ehabi32.rst)          | [2018Q4](https://developer.arm.com/documentation/ihi0038/latest)
-Run-time ABI for the Arm Architecture                              | [rtabi32](rtabi32/rtabi32.rst)          | [2018Q4](https://developer.arm.com/documentation/ihi0043/latest)
-C Library for the Arm Architecture                                 | [clibabi32](clibabi32/clibabi32.rst)    | [2018Q4](https://developer.arm.com/documentation/ihi0039/latest)
+Application Binary Interface for the Arm architecture introduction | [bsabi32](bsabi32/bsabi32.rst)          | [2019Q4](legacy-documents/bsabi32/ihi0036_D/ihi0036D_bsabi.pdf)
+Procedure Call Standard for the Arm Architecture                   | [aapcs32](aapcs32/aapcs32.rst)          | [2020Q2](legacy-documents/aapcs32/ihi0042_J/IHI0042J_2020Q2_aapcs32.pdf)
+ELF for the Arm Architecture                                       | [aaelf32](aaelf32/aaelf32.rst)          | [2019Q1](legacy-documents/aaelf32/ihi0044_H/IHI0044G_aaelf.pdf)
+DWARF for the Arm Architecture                                     | [aadwarf32](aadwarf32/aadwarf32.rst)    | [2018Q4](legacy-documents/aadwarf32/ihi0040_C/IHI0040C_aadwarf.html)
+Base Platform ABI for the Arm Architecture                         | [bpabi32](bpabi32/bpabi32.rst)          | [2018Q4](legacy-documents/bpabi32/ihi0037_D/IHI0037D_bpabi.html)
+C++ ABI for the Arm Architecture                                   | [cppabi32](cppabi32/cppabi32.rst)       | [2019Q4](legacy-documents/cppabi32/ihi0041_G/IHI0041G_cppabi32.pdf)
+Exception Handling ABI for the Arm Architecture                    | [ehabi32](ehabi32/ehabi32.rst)          | [2018Q4](legacy-documents/ehabi32/ihi0038_C/IHI0038B_ehabi.html)
+Run-time ABI for the Arm Architecture                              | [rtabi32](rtabi32/rtabi32.rst)          | [2018Q4](legacy-documents/rtabi32/ihi0043_E/IHI0043D_rtabi.html)
+C Library for the Arm Architecture                                 | [clibabi32](clibabi32/clibabi32.rst)    | [2018Q4](legacy-documents/oclibabi32/ihi0039_E/IHI0039E_clibabi.html)
 Support for Debugging Overlaid Programs                            | [dbgovl32](dbgovl32/dbgovl32.rst)       | [2018Q4](https://developer.arm.com/documentation/ihi0049/latest)
-Addenda to, and Errata in, the ABI for the ARM Architecture        | [addenda32](addenda32/addenda32.rst)    | [2019Q1](https://developer.arm.com/documentation/ihi0045/latest)
-ABI Advisory Note - SP 8-byte alignment                            | [advnote132](advnote132/advnote132.rst) | [2018Q4](https://developer.arm.com/documentation/ihi0046/latest)
+Addenda to, and Errata in, the ABI for the ARM Architecture        | [addenda32](addenda32/addenda32.rst)    | [2019Q1](legacy-documents/addenda32/ihi0045_H/IHI0045H_ABI_addenda.html)
+ABI Advisory Note - SP 8-byte alignment                            | [advnote132](advnote132/advnote132.rst) | [2018Q4](legacy-documents/advnote132/ihi0046_C/IHI0046C_ABI_Advisory_1.html)
 
 
 ### ABI for the Arm 64-bit Architecture
 
-specification                                                      | latest on Github                     | last on developer site
+specification                                                      | latest                               | last legacy release
 ---                                                                | ---                                  | ---
-Procedure Call Standard for the Arm 64-bit Architecture            | [aapcs64](aapcs64/aapcs64.rst)       | [2018Q4](https://developer.arm.com/documentation/ihi0055/latest)
-ELF for the Arm 64-bit Architecture                                | [aaelf64](aaelf64/aaelf64.rst)       | [2020Q2](https://developer.arm.com/documentation/ihi0056/latest)
-DWARF for the Arm 64-bit Architecture                              | [aadwarf64](aadwarf64/aadwarf64.rst) | [2020Q2](https://developer.arm.com/documentation/ihi0057/latest)
-C++ ABI for the Arm 64-bit Architecture                            | [cppabi64](cppabi64/cppabi64.rst)    | [2020Q2](https://developer.arm.com/documentation/ihi0059/latest)
-Vector Function ABI for the Arm 64-bit Architecture                | [vfabia64](vfabia64/vfabia64.rst)    | [2019Q2](https://developer.arm.com/documentation/101129/latest)
+Procedure Call Standard for the Arm 64-bit Architecture            | [aapcs64](aapcs64/aapcs64.rst)       | [2018Q4](legacy-documents/aapcs64/ihi0055_D/IHI0055D_aapcs64.html)
+ELF for the Arm 64-bit Architecture                                | [aaelf64](aaelf64/aaelf64.rst)       | [2020Q2](legacy-documents/aaelf64/ihi0056_G/IHI0056G_2020Q2_aaelf64.pdf)
+DWARF for the Arm 64-bit Architecture                              | [aadwarf64](aadwarf64/aadwarf64.rst) | [2020Q2](legacy-documents/aadwarf64/ihi0057_E/IHI0057_E_2020Q2_aadwarf64.pdf)
+C++ ABI for the Arm 64-bit Architecture                            | [cppabi64](cppabi64/cppabi64.rst)    | [2020Q2](legacy-documents/cppabi64/ihi0059_E/IHI0059E_2020Q2_cppabi64.pdf)
+Vector Function ABI for the Arm 64-bit Architecture                | [vfabia64](vfabia64/vfabia64.rst)    | [2019Q2](legacy-documents/vfabia64/101129_1920/101129_1920_01_en.pdf)
 
 
 ### ABI for the Arm 64-bit Architecture with SVE support
 
-specification                                                                                                                 | latest on Github                                   | last on developer site
+specification                                                                                                                 | latest                                             | last legacy release
 ---                                                                                                                           | ---                                                | ---
-Procedure Call Standard for the Arm 64-bit Architecture with SVE support                                                      | content merged with [aapcs64](aapcs64/aapcs64.rst) | [2019Q2](https://developer.arm.com/documentation/101129/latest)
-DWARF for the Arm 64-bit Architecture with SVE support                                                                        | content merged with [aadwarf64](aadwarf64/aawarf64.rst) | [SVEdwf 00bet1](https://developer.arm.com/documentation/100985/latest)
-Vector Function ABI for the Arm 64-bit Architecture (identical to document in *ABI for the Arm 64-bit Architecture* section)  |  [vfabia64](vfabia64/vfabia64.rst) | [2019Q2](https://developer.arm.com/documentation/101129/latest)
+Procedure Call Standard for the Arm 64-bit Architecture with SVE support                                                      | content merged with [aapcs64](aapcs64/aapcs64.rst) | [SVEpcs 00bet1](legacy-documents/aapcs64-sve/100986_0000/abi_sve_aapcs64_100986_0000_00_en.pdf)
+DWARF for the Arm 64-bit Architecture with SVE support                                                                        | content merged with [aadwarf64](aadwarf64/aawarf64.rst) | [SVEdwf 00bet1](legacy-documents/aadwarf64-sve/100985_0000/abi_sve_aadwarf_100985_0000_00_en.pdf)
+Vector Function ABI for the Arm 64-bit Architecture (identical to document in *ABI for the Arm 64-bit Architecture* section)  |  [vfabia64](vfabia64/vfabia64.rst) | [2019Q2](legacy-documents/vfabia64/101129_1920/101129_1920_01_en.pdf)
 
 ### PAuth ABI Extension
 
-specification                                               | latest on Github                  | last on developer site
+specification                                               | latest                            | last legacy document
 ---                                                         | ---                               | ---
 PAuth ABI Extension to ELF for the Arm 64-bit Architecture  | [pauthabielf64](pauthabielf64/pauthabielf64.rst) | -
 
 
 ### Morello Extension
 
-specification                                                                     | latest on Github                                             | last on developer site
+specification                                                                     | latest                                                       | last legacy release
 ---                                                                               | ---                                                          | ---
-Morello Extension to the Procedure Call Standard for the Arm 64-bit Architecture  | [aapcs64-morello](aapcs64-morello/aapcs64-morello.rst)       | [2020Q3](https://developer.arm.com/documentation/102205/latest)
-Morello Extension to ELF for the Arm 64-bit Architecture                          | [aaelf64-morello](aaelf64-morello/aaelf64-morello.rst)       | [2020Q3](https://developer.arm.com/documentation/102072/latest)
-Morello Extension to DWARF for the Arm 64-bit Architecture                        | [aadwarf64-morello](aadwarf64-morello/aadwarf64-morello.rst) | [2020Q3](https://developer.arm.com/documentation/102215/latest)
+Morello Extension to the Procedure Call Standard for the Arm 64-bit Architecture  | [aapcs64-morello](aapcs64-morello/aapcs64-morello.rst)       | [2020Q3](legacy-documents/aapcs64-morello/102205_0001/102205_aapcs-morello_final.pdf)
+Morello Extension to ELF for the Arm 64-bit Architecture                          | [aaelf64-morello](aaelf64-morello/aaelf64-morello.rst)       | [2020Q3](legacy-documents/aaelf64-morello/102072_0001/102072_aaelf64-morello_final.pdf)
+Morello Extension to DWARF for the Arm 64-bit Architecture                        | [aadwarf64-morello](aadwarf64-morello/aadwarf64-morello.rst) | [2020Q3](legacy-documents/aadwarf64-morello/102215_0001/102215_aadwarf64-morello_final.pdf)
 
 
 ### Miscellaneous material
 
-specification                       | latest on Github                            | last on developer site
+specification                       | latest                                      | last legacy release
 ---                                 | ---                                         | ---
-Semihosting for AArch32 and AArch64 |  [semihosting](semihosting/semihosting.rst) | [2019Q4](https://developer.arm.com/documentation/100863/latest)
+Semihosting for AArch32 and AArch64 |  [semihosting](semihosting/semihosting.rst) | [2019Q4](legacy-documents/semihosting/100863_0300/semihosting.pdf)
 
 
 ## Contributions
@@ -103,6 +111,8 @@ Please find contribution guidelines in https://github.com/ARM-software/abi-aa/bl
 
 ## License
 
-All the ABI documents themselves are not dependent on any assets outside of their own directory and all have their own license file included in the directory. Currently all the ABI documents are licenced under the Creative Commons Attribution-ShareAlike 4.0 International License + grant of Patent License. Contributions to these files are accepted under the same license.
+The ABI document sources themselves are not dependent on any assets outside of their own directory and all have their own license file included in the directory. The ABI documents are currently licensed under the Creative Commons Attribution-ShareAlike 4.0 International License + grant of Patent License. Contributions to these files are accepted under the same license.
 
-The files in the sub-directories of the `tools` directory are provided under the Apache 2.0 license. Contributions to these files are accepted under the same license.
+All the ABI documents in the `legacy-specifications' folder are licensed under an Arm proprietary license. These predate the new license of the current versions of the documents. The license is contained within the documents themselves, so for more information, consult the individual documents.
+
+The files in the sub-directories of the tools directory are provided under the Apache 2.0 license. Contributions to these files are accepted under the same license.

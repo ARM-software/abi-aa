@@ -1,0 +1,6248 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ELF for the Arm ® Architecture — ABI 2018Q4
+documentation</title>
+
+<meta name="keywords" content=""/></head>
+<body>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="elf-for-the-arm-reg-architecture">
+<h2>ELF for the Arm ® Architecture</h2>
+<p>Document number: IHI 0044G, current through ABI release
+2018Q4</p>
+<p>Date of Issue: 21<sup>st</sup> December 2018</p>
+
+<div>
+<div>
+<div>
+<div id="preamble">
+<h2>Preamble</h2>
+<div>
+<div>
+<div>
+<div id="abstract">
+<h3>Abstract</h3>
+<p>This document describes the processor-specific definitions for
+ELF for the Application Binary Interface (ABI) for the Arm
+architecture.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="keywords">
+<h3>Keywords</h3>
+<p>Object files, file formats, linking, EABI, ELF</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it</h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/products/software-development-tools/specifications">https://developer.arm.com/products/software-development-tools/specifications</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <em>arm</em> dot
+<em>eabi</em> at <em>arm</em> dot <em>com</em>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="licence">
+<h3>Licence</h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice</h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © [2018] Arm Limited or its affiliates. All rights
+reserved.</p>
+<p>Arm Limited. Company 02557590 registered in England. 110
+Fulbourn Road, Cambridge, England CB1 9NJ. LES-PRE-20349</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="contents">
+<h3>Contents</h3>
+<div>
+<div>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#elf-for-the-arm-reg-architecture" id="id14">ELF for the Arm ® Architecture</a>
+<ul>
+<li><a href="index.html#preamble" id="id15">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id16">Abstract</a></li>
+<li><a href="index.html#keywords" id="id17">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id18">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id19">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id20">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id21">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id22">About This
+Document</a>
+<ul>
+<li><a href="index.html#change-control" id="id23">Change
+control</a></li>
+<li><a href="index.html#references" id="id24">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id25">Terms
+and abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id26">Your licence to use this specification</a></li>
+<li><a href="index.html#acknowledgements" id="id27">Acknowledgements</a></li>
+</ul>
+</li>
+<li><a href="index.html#scope" id="id28">Scope</a></li>
+<li><a href="index.html#platform-standards" id="id29">Platform
+Standards</a>
+<ul>
+<li><a href="index.html#base-platform-abi-bpabi" id="id30">Base
+Platform ABI (BPABI)</a></li>
+</ul>
+</li>
+<li><a href="index.html#object-files" id="id31">Object Files</a>
+<ul>
+<li><a href="index.html#introduction" id="id32">Introduction</a></li>
+<li><a href="index.html#elf-header" id="id33">ELF Header</a></li>
+<li><a href="index.html#sections" id="id34">Sections</a></li>
+<li><a href="index.html#string-table" id="id35">String
+Table</a></li>
+<li><a href="index.html#symbol-table" id="id36">Symbol
+Table</a></li>
+<li><a href="index.html#relocation" id="id37">Relocation</a></li>
+</ul>
+</li>
+<li><a href="index.html#program-loading-and-dynamic-linking" id="id38">Program Loading and Dynamic Linking</a>
+<ul>
+<li><a href="index.html#aaelf32-section5-1" id="id39">Introduction</a></li>
+<li><a href="index.html#program-header" id="id40">Program
+Header</a></li>
+<li><a href="index.html#program-loading" id="id41">Program
+Loading</a></li>
+<li><a href="index.html#dynamic-linking" id="id42">Dynamic
+Linking</a></li>
+<li><a href="index.html#post-link-processing" id="id43">Post-Link
+Processing</a></li>
+</ul>
+</li>
+<li><a href="index.html#appendix-specimen-code-for-plt-sequences" id="id44">APPENDIX Specimen Code for PLT Sequences</a>
+<ul>
+<li><a href="index.html#dll-like-single-address-space-plt-linkage" id="id45">DLL-like, single address space, PLT linkage</a></li>
+<li><a href="index.html#dll-like-multiple-virtual-address-space-plt-linkage" id="id46">DLL-like, multiple virtual address space, PLT
+linkage</a></li>
+<li><a href="index.html#svr4-dso-like-plt-linkage" id="id47">SVr4
+DSO-like PLT linkage</a></li>
+<li><a href="index.html#svr4-executable-like-plt-linkage" id="id48">SVr4 executable-like PLT linkage</a></li>
+</ul>
+</li>
+<li><a href="index.html#conventions-for-symbols-containing" id="id49">CONVENTIONS FOR SYMBOLS CONTAINING $</a>
+<ul>
+<li><a href="index.html#base-length-and-limit-symbols" id="id50">Base, Length and Limit symbols</a></li>
+<li><a href="index.html#sub-class-and-super-class-symbols" id="id51">Sub-class and Super-class Symbols</a></li>
+<li><a href="index.html#symbols-for-veneering-and-interworking-stubs" id="id52">Symbols for Veneering and Interworking
+Stubs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="about-this-document">
+<h2>About This Document</h2>
+<div>
+<div>
+<div>
+<div id="change-control">
+<h3>Change control</h3>
+<div>
+<div>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current status and anticipated changes</h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li>ReleaseArm considers this specification to have enough
+implementations, which have received sufficient testing, to verify
+that it is correct. The details of these criteria are dependent on
+the scale and complexity of the change over previous versions:
+small, simple changes might only require one implementation, but
+more complex changes require multiple independent implementations,
+which have been rigorously tested for cross-compatibility. Arm
+anticipates that future changes to this specification will be
+limited to typographical corrections, clarifications and compatible
+extensions.</li>
+<li>BetaArm considers this specification to be complete, but
+existing implementations do not meet the requirements for
+confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li>AlphaThe content of this specification is a draft, and Arm
+considers the likelihood of future incompatible changes to be
+significant.</li>
+</ul>
+<p>All content in this document is at the "Release" quality
+level.</p>
+<p>This document supersedes Arm ELF, Document Number SWS ESPC 0003
+B-02.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="change-history">
+<h4>Change history</h4>
+<table>
+<colgroup>
+<col width="10%"/>
+<col width="29%"/>
+<col width="6%"/>
+<col width="56%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>1.0</td>
+<td>24th March 2005</td>
+<td>RE</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>1.01</td>
+<td>5th July 2005</td>
+<td>LS</td>
+<td>Defined in <a href="index.html">Section Types</a>,
+<a href="index.html">Special Sections</a>
+SHT_ARM_PREEMPTMAP; corrected the erroneous value of
+SHT_ARM_ATTRIBUTES.</td>
+</tr>
+<tr>
+<td>1.02</td>
+<td>6th January 2006</td>
+<td>RE</td>
+<td>Minor correction to definition of e_entry (<a href="index.html">ELF Header</a>). Clarified restrictions on
+local symbol removal in relocatable files (<a href="index.html">Symbol names</a>). Clarified the definition
+of R_ARM_RELATIVE when S = 0 (<a href="index.html">Dynamic relocations</a>). Added material
+describing architecture compatibility for executable files
+(<a href="index.html">Platform architecture
+compatibility data</a>).</td>
+</tr>
+<tr>
+<td>1.03</td>
+<td>5th May 2006</td>
+<td>RE</td>
+<td>Clarified that bit[0] of [e_entry] controls the instruction set
+selection on entry. Added rules governing SHF_MERGE optimizations
+(<a href="index.html">Merging of objects in sections
+with SHF_MERGE</a>). Added material describing initial addends for
+REL-type relocations (<a href="index.html">Addends and
+PC-bias compensation</a>).</td>
+</tr>
+<tr>
+<td>1.04</td>
+<td>25th January 2007</td>
+<td>RE</td>
+<td>In <a href="index.html">Relocation</a> corrected the
+definition of R_ARM_ALU_(PC|SB)_Gn_NC, R_ARM_THM_PC8,
+R_ARM_THM_PC12, and R_ARM_THM_ALU_PREL_11_0. Added a table of
+32-bit thumb relocations. In <a href="index.html">Relocation types</a> and <a href="index.html">Relocations for thread-local storage</a>,
+added new relocations to support an experimental Linux TLS
+addressing model In <a href="index.html">Platform
+architecture compatibility data</a> reduced the field masked by
+PT_ARM_ARCHEXT_ARCHMSK to 8 bits (no current value exceeds 4
+bits).</td>
+</tr>
+<tr>
+<td>1.05</td>
+<td>25th September 2007</td>
+<td>RE</td>
+<td>Correct definition of Pa in <a href="index.html">Relocation types</a> (the bit-mask was
+incorrect). Corrected spelling of TLS relocations in <a href="index.html">Relocations for thread-local
+storage</a>.</td>
+</tr>
+<tr>
+<td>A</td>
+<td>25th October 2007</td>
+<td>LS</td>
+<td>Document renumbered (formerly GENC-003538 v1.05).</td>
+</tr>
+<tr>
+<td>B</td>
+<td>2nd April 2008</td>
+<td>RE</td>
+<td>Corrected error in <a href="index.html">Table 4-14</a>
+where instructions for R_ARM_THM_PC12 and R_ARM_THM_ALU_PREL_11_0
+had been transposed.</td>
+</tr>
+<tr>
+<td>C</td>
+<td>10th October 2008</td>
+<td>
+<p>RE</p>
+<p>LS</p>
+</td>
+<td>In <a href="index.html">Static Arm
+relocations</a>, specified which relocations are permitted to
+generate veneers corrupting ip. In <a href="index.html">Dynamic relocations</a> specified the
+meaning of dynamic meaning of dynamic relocations relocations
+R_ARM_TLS_DTPMOD32 and R_ARM_TLS_TPOFF32 when the symbol is NULL.
+Reserved vendor-specific section numbers and names to the [<a href="https://developer.arm.com/docs/ihi0049/latest">DBGOVL</a>] ABI
+extension. Clarified use of the symbol by R_ARM_V4BX.</td>
+</tr>
+<tr>
+<td>D</td>
+<td>28th October 2009</td>
+<td>LS</td>
+<td>Added <a href="http://infocenter.arm.com/">http://infocenter.arm.com/</a>
+references to the recently published [<a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">ARMARM</a>]
+and the [<a href="https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual">ARMv5ARM</a>];
+in <a href="index.html">Static Thumb32 relocations</a>
+cross-referenced permitted veneer-generation. In <a href="index.html">Static Thumb16 relocations</a>, <a href="index.html">Table 4-13, Static Thumb-16 Relocations</a>,
+extended R_ARM_THM_PC8 to ADR as well as LDR(literal). Updated and
+tidied <a href="index.html">Platform architecture
+compatibility data</a> and added <a href="index.html">Platform architecture compatibility data
+(ABI format)</a> as a proposal for recording executable file
+attributes.</td>
+</tr>
+<tr>
+<td>E</td>
+<td>30th November 2012</td>
+<td>AC</td>
+<td>In <a href="index.html">ELF Header</a> <a href="index.html#aaelf32-table4-2">Table 4-2</a>, added ELF header e_flags to
+indicate floating point PCS conformance and a mask for legacy bits.
+In <a href="index.html">Relocation</a>, standardized
+instruction descriptions to use Arm ARM terminology. In <a href="index.html">Addends and PC-bias compensation</a>,
+clarified initial addend formulation for MOVW/MOVT and
+R_ARM_THM_PC8. In <a href="index.html">Relocation
+types</a> <a href="index.html">Table 4-9</a>, reserved
+relocation 140 for a specific future use. In <a href="index.html">Static Arm relocations</a>, <a href="index.html">Table 4-12</a>, added entries for MOVW and
+MOVT; in subsection Call and Jump Relocations: grouped
+R_ARM_THM_CALL with the other Thumb relocations, and in the final
+paragraph changed the behaviour of jump relocations to unresolved
+weak references to be implementation-defined rather than undefined.
+In <a href="index.html">Static Arm relocations</a>,
+<a href="index.html">Table 4-13</a>, added Overflow column.
+In <a href="index.html">Static Thumb32
+relocations</a>, <a href="index.html">Table 4-14</a>,
+corrected Result Mask for R_ARM_THM_PC12; added <a href="index.html">Table 4-15</a> Thumb relocation actions by
+instruction type; corrected final paragraph to clarify the
+cross-reference to call and jump relocations. In <a href="index.html">Relocation types</a>, <a href="index.html">Static Thumb32 relocations</a>, <a href="index.html">Proxy generating relocations</a>, added
+R_ARM_THM_GOT_BREL12. In <a href="index.html">Dynamic
+relocations</a>, <a href="index.html#aaelf32-table4-18">Table 4-18</a>,
+clarified the wording for R_ARM_RELATIVE. In <a href="index.html">Platform architecture compatibility data
+(ABI format)</a>, corrected off-by-one error in size of array.</td>
+</tr>
+<tr>
+<td>F</td>
+<td>24th November 2015</td>
+<td>CR</td>
+<td><a href="index.html">Relocation types</a>,
+<a href="index.html">Table 4-9</a>, Changed the subdivisions
+within the reserved/unallocated relocation space (136-255).
+Renumbered R_ARM_IRELATIVE from 140 to 160 (the number agreed with
+stakeholders; publication as 140 was incorrect). In <a href="index.html">Static Arm relocations</a> <a href="index.html">Table 4-11</a>, removed incorrect overflow
+check on R_ARM_MOVT_ABS, R_ARM_MOVT_PREL and R_ARM_MOVT_BREL.
+Clarified in <a href="index.html">Relocation types</a>
+that relocation expression values are computed mod 2^32. In
+<a href="index.html">Relocation</a>, added
+R_ARM_THM_ALU_ABS_Gn[_NC] relocations. In <a href="index.html">Section Attribute Flags</a>, added
+SHF_ARM_NOREAD processor specific section attribute flag.</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>21st December 2018</td>
+<td>OS</td>
+<td>
+<p>In <a href="index.html">Section
+Attribute Flags</a>, renamed SHF_ARM_NOREAD to SHF_ARM_PURECODE,
+relaxed definition.</p>
+<p>In <a href="index.html">Private relocations</a>,
+expanded private relocation space to 32 relocations, and clarified
+relationship with EI_OSABI.</p>
+<p>In <a href="index.html">ELF
+Identification</a>, added EI_OSABI value for
+ELFOSABI_ARM_FDPIC.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="references">
+<h3>References</h3>
+<p>This document refers to, or is referred to by, the documents
+listed in the following table.</p>
+<table>
+<colgroup>
+<col width="26%"/>
+<col width="57%"/>
+<col width="17%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>External URL</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a></td>
+<td> </td>
+<td>Procedure Call Standard for the Arm Architecture</td>
+</tr>
+<tr>
+<td>AAELF</td>
+<td>This document</td>
+<td>ELF for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0036/latest">BSABI</a></td>
+<td> </td>
+<td>ABI for the Arm Architecture (Base Standard)</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a></td>
+<td> </td>
+<td>Exception Handling ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0045/latest">ADDENDA</a></td>
+<td> </td>
+<td>Addenda to, and errata in, the ABI for the Arm
+Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0049/latest">DBGOVL</a></td>
+<td> </td>
+<td>Support for Debugging Overlaid Programs</td>
+</tr>
+<tr>
+<td rowspan="2"><a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">
+ARMARM</a></td>
+<td><a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">
+https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition</a></td>
+<td>Arm DDI 0406: Arm Architecture Reference Manual Arm v7-A and
+Arm v7-R edition</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/products/architecture/m-profile/docs/ddi0403/e/armv7-m-architecture-reference-manual">
+https://developer.arm.com/products/architecture/m-profile/docs/ddi0403/e/armv7-m-architecture-reference-manual</a></td>
+<td>Arm DDI 0403C: Armv7-M Architecture Reference Manual</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual">
+ARMv5ARM</a></td>
+<td><a href="https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual">
+https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual</a></td>
+<td>Arm DDI 0100I: Armv5 Architecture Reference Manual</td>
+</tr>
+<tr>
+<td><a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a></td>
+<td><a href="http://dwarfstd.org/Dwarf3Std.php">http://dwarfstd.org/Dwarf3Std.php</a></td>
+<td>DWARF 3.0, the generic debug table format</td>
+</tr>
+<tr>
+<td><a href="http://refspecs.linuxfoundation.org/lsb.shtml">LSB</a></td>
+<td><a href="http://refspecs.linuxfoundation.org/lsb.shtml">http://refspecs.linuxfoundation.org/lsb.shtml</a></td>
+<td>Linux Standards Base</td>
+</tr>
+<tr>
+<td><a href="http://www.sco.com/developers/gabi/">SCO-ELF</a></td>
+<td><a href="http://www.sco.com/developers/gabi/2003-12-17/contents.html">http://www.sco.com/developers/gabi/2003-12-17/contents.html</a></td>
+<td>System V Application Binary Interface - DRAFT - 17 December
+2003</td>
+</tr>
+<tr>
+<td><a href="http://www.akkadia.org/drepper/symbol-versioning">SYM-VER</a></td>
+<td><a href="http://www.akkadia.org/drepper/symbol-versioning">http://www.akkadia.org/drepper/symbol-versioning</a></td>
+<td>GNU Symbol Versioning</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mickael-guene/fdpic_doc">FDPIC</a></td>
+<td><a href="https://github.com/mickael-guene/fdpic_doc">https://github.com/mickael-guene/fdpic_doc</a></td>
+<td>FDPIC ABI</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and abbreviations</h3>
+<p>The ABI for the Arm Architecture uses the following terms and
+abbreviations.</p>
+<ul>
+<li>AAPCSProcedure Call Standard for the Arm Architecture</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+Linux ABI for the Arm Architecture.</li>
+<li>particular aspect of the specifications to which independently
+produced relocatable files must conform in order to be statically
+linkable and executable. For example, the C++ ABI for the Arm
+Architecture, the Run-time ABI for the Arm Architecture, the C
+Library ABI for the Arm Architecture.</li>
+</ol>
+</li>
+<li>AEABI(Embedded) ABI for the Arm architecture (this ABI...)</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>core registersThe general purpose registers visible in the Arm
+architecture's programmer's model, typically r0-r12, SP, LR, PC,
+and CPSR.</li>
+<li>EABIAn ABI suited to the needs of embedded, and deeply embedded
+(sometimes called free standing), applications.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>VFPThe Arm architecture's Floating Point architecture and
+instruction set. In this ABI, this abbreviation includes all
+floating point variants regardless of whether or not vector (V)
+mode is supported.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification</h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="acknowledgements">
+<h3>Acknowledgements</h3>
+<p>This specification has been developed with the active support of
+the following organizations. In alphabetical order: Arm,
+CodeSourcery, Intel, Metrowerks, Montavista, Nexus Electronics,
+PalmSource, Symbian, Texas Instruments, and Wind River.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="scope">
+<h2>Scope</h2>
+<p>This specification provides the processor-specific definitions
+required by ELF [<a href="http://www.sco.com/developers/gabi/">SCO-ELF</a>] for Arm based
+systems.</p>
+<p>The ELF specification is part of the larger System V ABI
+specification where it forms chapters 4 and 5. However, the
+specification can be used in isolation as a generic object and
+executable format.</p>
+<p><a href="index.html">Platform Standards</a> of this
+document covers ELF related matters that are platform specific.
+Most of this material is related to the Base Platform ABI.</p>
+<p><a href="index.html">Object Files</a> and <a href="index.html">Program Loading and Dynamic Linking</a> of this
+document are structured to correspond to chapters 4 and 5 of the
+ELF specification. Specifically:</p>
+<ul>
+<li><a href="index.html">Object Files</a> covers object
+files and relocations</li>
+<li><a href="index.html">Program Loading and Dynamic
+Linking</a> covers program loading and dynamic linking.</li>
+</ul>
+<p>There are several drafts of the ELF specification on the SCO web
+site. This specification is based on the December 2003 draft, which
+was the most recent stable draft at the time this specification was
+developed.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="platform-standards">
+<h2>Platform Standards</h2>
+<div>
+<div>
+<div>
+<div id="base-platform-abi-bpabi">
+<h3>Base Platform ABI (BPABI)</h3>
+<p>The BPABI is an abstract platform standard. Platforms conforming
+to the BPABI can generally share a common toolchain with minimal
+post-processing requirements.</p>
+<div>
+<div>
+<div>
+<div id="symbol-versioning">
+<h4>Symbol Versioning</h4>
+<p>The BPABI uses the GNU-extended Solaris symbol versioning
+mechanism [<a href="http://www.akkadia.org/drepper/symbol-versioning">SYM-VER</a>].</p>
+<p>Concrete data structure descriptions can be found in
+<code>/usr/include/sys/link.h</code> (Solaris),
+<code>/usr/include/elf.h</code> (Linux), in the Linux base
+specifications [<a href="http://refspecs.linuxfoundation.org/lsb.shtml">LSB</a>], and in
+Drepper's paper [<a href="http://www.akkadia.org/drepper/symbol-versioning">SYM-VER</a>].
+Drepper provides more detail than the summary here.</p>
+<p>An object or executable file using symbol versioning shall set
+the <code>EI_OSABI</code> field in the ELF header to
+<code>ELFOSABI_ARM_AEABI</code> or some other appropriate
+operating-system specific value.</p>
+<div>
+<div>
+<div>
+<div id="symbol-versioning-sections">
+<h5>Symbol versioning sections</h5>
+<p>Symbol versioning adds three sections to an executable file
+(under the SVr4 ABI these are included in the RO program segment).
+Each section can be located via a <code>DT_xxx</code> entry in the
+file's dynamic section.</p>
+<ul>
+<li>
+<p>The version definitions section. This section
+defines:</p>
+<ul>
+<li>The symbol versions associated with symbols exported from this
+executable file.</li>
+<li>The version of the file itself.</li>
+</ul>
+</li>
+<li>
+<p>The version section.</p>
+<p>This section extends the dynamic symbol table with an extra
+Elf32_Half field for each symbol. The N<sup>th</sup> entry gives
+the index in the virtual table of versions (described below) of the
+version associated with the N<sup>th</sup> symbol.</p>
+</li>
+<li>
+<p>The versions needed section.</p>
+<p>This section describes the versions referred to by symbols not
+defined in this executable file. Each entry names a DSO and points
+to a list of versions needed from it. In effect this represents
+<code>FROM DSO IMPORT Ver1, Ver2, ...</code>. This section provides
+a record of the symbol bindings used by the static linker when the
+executable file was created.</p>
+</li>
+</ul>
+<p>In standard ELF style, both the version definitions section and
+the versions needed section identify (via the <code>sh_link</code>
+field in their section headers) a string table section (often
+<code>.dynstr</code>) containing the textual values they refer
+to.</p>
+<p>The (virtual) table of versions</p>
+<p>When an executable file uses symbol versioning there is also a
+virtual table of versions. This is not represented in the file
+(there is no corresponding file component). It contains a row for
+each distinct version defined by, and needed by, this file.</p>
+<p>Each version defined, and each version needed, by this file
+carries its row index in this virtual table, so the table can be
+constructed on demand. Indexes 2, 3, 4, and so on, are local to
+this file. Indexes 0 and 1 have predefined global meanings, as do
+indexes with the top bit (0x8000) set.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="locating-symbol-versioning-sections">
+<h5>Locating symbol versioning sections</h5>
+<p>The version definition section can be located via keys in the
+dynamic section, as follows.</p>
+<table>
+<colgroup>
+<col width="80%"/>
+<col width="20%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td><code>DT_VERDEF    
+(0x6FFFFFFC)</code></td>
+<td>address</td>
+</tr>
+<tr>
+<td><code>DT_VERDEFNUM  (0x6FFFFFFD)</code></td>
+<td>count</td>
+</tr>
+</tbody>
+</table>
+<p>This key pair identifies the head and length, of a list of
+version definitions exported from this executable file. The list is
+not contiguous - each member points to its successor.</p>
+<p>The versions needed section can be located via keys in the
+dynamic section, as follows.</p>
+<table>
+<colgroup>
+<col width="80%"/>
+<col width="20%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td><code>DT_VERNEED    
+(0x6FFFFFFE)</code></td>
+<td>address</td>
+</tr>
+<tr>
+<td><code>DT_VERNEEDNUM  (0x6FFFFFFF)</code></td>
+<td>count</td>
+</tr>
+</tbody>
+</table>
+<p>This key pair identifies the head and length of a list of needed
+versions. Each list member identifies a DSO imported from, and
+points to a sub-list of versions used by symbols imported from that
+DSO at the time this executable file was created by the static
+linker. Neither list need be contiguous - each member points to its
+successor.</p>
+<p>The version section can be located via a key in the dynamic
+section, as follows.</p>
+<table>
+<colgroup>
+<col width="78%"/>
+<col width="22%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td><code>DT_VERSYM (0x6FFFFFF0)</code></td>
+<td>address</td>
+</tr>
+</tbody>
+</table>
+<p>The version section adds a field to each dynamic symbol that
+identifies the version of that symbol's definition, or the version
+of that symbol needed to satisfy that reference. The number of
+entries must be same as the number of entries in the dynamic symbol
+table identified by <code>DT_SYMTAB</code> and <code>DT_HASH</code>
+(and by the Arm-specific tag <code>DT_ARM_SYMTABSZ</code>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="version-definition-section">
+<h5>Version definition section</h5>
+<p>The version definition section has the name
+<code>.XXX_verdef</code> and the section type
+<code>SHT_XXX_verdef</code> (the names vary but the section type -
+<code>0x6FFFFFFD</code> - is the same for Solaris and Linux). Its
+<code>sh_link</code> field identifies the string table section
+(often <code>.dynstr</code>) it refers to.</p>
+<p>The version definition section defines a set of versions
+exported from this file and the successor relationships among
+them.</p>
+<p>Each version has a textual name, and two versions are the same
+if their names compare equal. Textual names are represented by
+offsets into the associated string table section. Names that must
+be processed during dynamic linking are also hashed using the
+standard ELF hash function [<a href="http://www.sco.com/developers/gabi/">SCO-ELF</a>].</p>
+<p>Each version definition is linked to the next version definition
+via it vd_next field which contains the byte offset from the start
+of this version definition to the start of the next one. Zero marks
+the end of the list.</p>
+<p>Each symbol exported from this shared object refers, via an
+index in the version section, to one of these version definitions.
+If bit 15 of the index is set, the symbol is hidden from static
+binding because it has an old version.</p>
+<p>During static linking against this shared object, an undefined
+symbol can only match an identically named <code>STB_GLOBAL</code>
+definition which refers to one of these version definitions via an
+index with bit 15 clear.</p>
+<p>Each top-level version definition links via its
+<code>vd_aux</code> field to a list of version names. Each link
+contains the byte offset between the start of the structure
+containing it and the start of the structure linked to. Zero marks
+the end of the list. The first member of the list names the latest
+version, hashed in the version definition's <code>vd_hash</code>
+field. Subsequent members name predecessor versions, but these are
+irrelevant to both static and dynamic linking.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbol-version-section">
+<h5>Symbol version section</h5>
+<p>The symbol version section has the name <code>.XXX_versym</code>
+and the section type <code>SHT_XXX_versym</code> (the names vary
+but the section type - <code>0x6FFFFFFF</code> - is the same for
+Solaris and Linux).</p>
+<p>The symbol version section is a table of ELF32_Half values. The
+N<sup>th</sup> entry in the section corresponds to the
+N<sup>th</sup> symbol in the dynamic symbol table.</p>
+<ul>
+<li>if the symbol is local to this executable file.</li>
+<li>1 if the symbol is undefined and unbound (to be bound
+dynamically), or if the symbol is defined and names the version of
+the executable file (usually a shared object) itself.</li>
+<li>The index (&gt; 1) of the corresponding version definition, or
+version needed, in the virtual table of versions (described in
+<a href="index.html">Symbol versioning
+sections</a>).</li>
+</ul>
+<p>This is the same value as is stored in the <code>vd_ndx</code>
+field of a version definition structure and the
+<code>vna_other</code> field of a version needed auxiliary
+structure.</p>
+<p>Bit 15 of the index is set to denote that this is an old version
+of the symbol. Such symbols are not used during static binding, but
+may be linked to during dynamic linking.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="versions-needed-section">
+<h5>Versions needed section</h5>
+<p>The versions needed section has the name
+<code>.XXX_verneed</code> and the section type
+<code>SHT_XXX_verneed</code> (the names vary but the section type -
+<code>0x6FFFFFFE</code> - is the same for Solaris and Linux). Its
+<code>sh_link</code> field identifies the string table section
+(often <code>.dynstr</code>) it refers to.</p>
+<p>The versions needed section contains a list of needed DSOs, and
+the symbol versions needed from them.</p>
+<p>Within each version needed structure, the <code>vn_file</code>
+field is the offset in the associated string section of the
+<code>SONAME</code> of the needed DSO, and the <code>vn_next</code>
+field contains the byte offset from the start of this version
+needed structure to the start of its successor.</p>
+<p>Each version needed structure links to a sub-list of needed
+versions via a byte offset to the start of the first member in its
+<code>vn_aux field</code>. In effect this represents <code>FROM DSO
+IMPORT Ver1, Ver2, ...</code></p>
+<p>Each version needed auxiliary structure contains its index in
+the virtual table of versions in its <code>vna_other</code> field.
+The <code>vna_name</code> field contains the offset in the
+associated string table of the name of the required version.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbol-pre-emption-in-dlls">
+<h4>Symbol Pre-emption in DLLs</h4>
+<p>Under SVr4, symbol pre-emption occurs at dynamic link time,
+controlled by the dynamic linker, so there is nothing to encode in
+a DSO.</p>
+<p>In the DLL-creating tool flow, pre-emption happens off line and
+must be recorded in a BPABI executable file in a form that can be
+conveniently processed by a post linker. If there is to be any
+pre-emption when a process is created, what to do must be recorded
+in the platform executable produced by the post linker.</p>
+<div>
+<div>
+<div>
+<div id="pre-emption-map-format">
+<h5>Pre-emption Map Format</h5>
+<p>Static preemption data is recorded in a special section in the
+object file. The map is recorded in the dynamic section with the
+tag <code>DT_ARM_PREEMPTMAP</code>, which contains the virtual
+address of the map.</p>
+<p>In the section view, the pre-emption map special section is
+called <code>.ARM.preemptmap</code>. It has type
+<code>SHT_ARM_PREEMPTMAP</code>. In common with other sections that
+refer to a string table, its <code>sh_link</code> field contains
+the section index of an associated string table.</p>
+<p>The map contains a sequence of entries of the form:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Elf32_Word count                      // Count of pre-empted definitions following
+Elf32_Word symbol-name                // Offset in the associated string table
+Elf32_Word pre-empting-DLL            // Offset in the associated string table
+Elf32_Word pre-empted-DLL             // Offset in the associated string table
+...                                   //
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The map is terminated by a count of zero.</p>
+<p>If <code>count</code> is non-zero, the next two words identify
+the name of the symbol being pre-empted and the name
+(<code>SONAME</code>) of the executable file providing the
+pre-empting definition. This structure is followed by
+<code>count</code> words each of which identifies the
+<code>SONAME</code> of an executable file whose definition of
+<code>symbol-name</code> is pre-empted.</p>
+<p><code>Symbol-name</code> is the offset in the associated string
+table section of a NUL-terminated byte string (NTBS) that names a
+symbol defined in a dynamic symbol table. This value must not be
+0.</p>
+<p>Each of <code>pre-empting-DLL</code> and
+<code>pre-empted-DLL</code> is an offset in the associated string
+table section of an NTBS naming a DLL. The name used is the shared
+object name (<code>SONAME</code>) cited by <code>DT_NEEDED</code>
+dynamic tags. The root executable file does not have a
+<code>SONAME</code>, so its name is encoded as 0.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="plt-sequences-and-usage-models">
+<h4>PLT Sequences and Usage Models</h4>
+<div>
+<div>
+<div>
+<div id="symbols-for-which-a-plt-entry-must-be-generated">
+<h5>Symbols for which a PLT entry must be generated</h5>
+<p>PLT entry implements a long-branch to a destination outside of
+this executable file. In general, the static linker knows only the
+name of the destination. It does not know its address or
+instruction-set state. Such a location is called an imported
+location or imported symbol.</p>
+<p>Some targets (specifically SVr4-based DSOs) also require
+functions exported from an executable file to have PLT entries. In
+effect, exported functions are treated as if they were imported, so
+that their definitions can be overridden (pre-empted) at dynamic
+link time.</p>
+<p>A linker must generate a PLT entry for each candidate symbol
+cited by a BL-class relocation directive.</p>
+<ul>
+<li>For an SVr4-based DSO, each <code>STB_GLOBAL</code> symbol with
+<code>STV_DEFAULT</code> visibility is a candidate.</li>
+<li>For all other platforms conforming to this ABI, only
+non-<code>WEAK</code>, not hidden (by <code>STV_HIDDEN</code>),
+undefined, <code>STB_GLOBAL</code> symbols are candidates.</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>When targeting DLL-based and bare platforms,
+relocations that cite <code>WEAK</code> undefined symbols must be
+performed by the static linker using the appropriate NULL value of
+the relocation. No <code>WEAK</code> undefined symbols are copied
+to the dynamic symbol table. <code>WEAK</code> definitions may be
+copied to the dynamic table, but it is Q-o-I whether a dynamic
+linker will take any account of the <code>WEAK</code> attribute. In
+contrast, SVr4-based platforms process <code>WEAK</code> at dynamic
+link time.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="overview-of-plt-entry-code-generation">
+<h5>Overview of PLT entry code generation</h5>
+<p>A PLT entry must be able to branch any distance to either
+instruction-set state. The span and state are fixed when the
+executable is linked dynamically. A PLT entry must therefore end
+with code similar to the following.</p>
+<table>
+<colgroup>
+<col width="57%"/>
+<col width="43%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Arm V5 and later</th>
+<th>Arm V4T</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>LDR pc, Somewhere</code></td>
+<td>
+<p><code>LDR ip, Somewhere</code></p>
+<p><code>BX  ip</code></p>
+</td>
+</tr>
+<tr>
+<td colspan="2"><code>Somewhere: DCD Destination</code></td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>There is no merit in making the final step
+PC-relative. A location must be written at dynamic link time and at
+that time the target address must be known [even if dynamic linking
+is performed off line]. Similarly, it is generally pointless trying
+to construct a PLT entry entirely in 16-bit Thumb instructions.
+Even with the overhead of an inline Thumb-to-Arm state change, an
+Arm-state entry is usually smaller and always faster.</p>
+</div>
+</div>
+</div>
+</div>
+<p>The table below summarizes the code generation variants a static
+linker must support. PLT refers to the read-only component of the
+veneer and PLTGOT to the corresponding writable function
+pointer.</p>
+<p id="aaelf32-table3-1">Table 3-1, PLT code
+generation options</p>
+<table>
+<colgroup>
+<col width="33%"/>
+<col width="33%"/>
+<col width="34%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Platform family</th>
+<th>Neither ROM replaceable nor free of dynamic
+relocations</th>
+<th>ROM replaceable, or PLT is free of dynamic
+relocations</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>DLL-like, single address space (Palm OS-like)</td>
+<td>
+<p>PLT code loads a function pointer from the PLT,
+for example:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>      LDR pc, LX,
+LX    DCD R_ARM_GLOB_DAT(X)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>PLT code loads the PLTGOT entry SB-relative (<a href="index.html">DLL-like, single address space, PLT
+linkage</a>)</td>
+</tr>
+<tr>
+<td>DLL-like, multiple virtual address spaces (Symbian
+OS-like)</td>
+<td>PLT code loads a function pointer from the PLT (code and
+dynamic relocation as shown above).</td>
+<td>PLT code loads the PLTGOT entry via an address constant in the
+PLT (<a href="index.html">DLL-like, multiple virtual
+address space, PLT linkage</a>)</td>
+</tr>
+<tr>
+<td>SVr4-like (Linux-like)</td>
+<td>Not applicable, but as above if it were.</td>
+<td>PLT code loads the PLTGOT entry PC-relative (<a href="index.html">SVr4 DSO-like PLT linkage</a>).</td>
+</tr>
+</tbody>
+</table>
+<p>Following subsections present specimen Arm code sequences
+appropriate to the right hand column. In each case simplification
+to the direct (no PLTGOT) case is shown in the left hand
+column.</p>
+<p>Note also that:</p>
+<ul>
+<li>In each case we assume Arm architecture V5 or later, and omit
+the 4-byte Thumb-to-Arm prelude that is needed to support
+Thumb-state callers.</li>
+<li>Under Arm architecture V4T, in the two DLL cases shown in the
+first column above, the final <code>LDR pc, ...</code>, can be
+replaced by <code>LDR ip, ...; BX ip</code>.</li>
+<li>In the case of SVr4 linkage there is an additional constraint
+to support incremental dynamic linking, namely that <code>ip</code>
+must address the corresponding PLTGOT entry. This constraint is
+most easily met under architecture V4T by requiring DSOs to be
+entered in Arm state (but more complex solutions are
+possible).</li>
+<li>Other platforms are free to impose the same constraint if they
+support incremental dynamic linking.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="plt-relocation">
+<h5>PLT relocation</h5>
+<p>post linker may need to distinguish PLTGOT-generating
+relocations from GOT-generating ones.</p>
+<p>If the static linker were generating a relocatable ELF file it
+would naturally generate the PLT into its own section
+(<code>.plt</code>, say), subject to relocations from a
+corresponding relocation section (<code>.rel.plt</code> say). No
+other GOT-generating relocations can occur in
+<code>.rel.plt</code>, so that section would contain all the
+PLTGOT-generating relocations. By the usual collation rules of
+static linking, in a subsequent executable file-producing link step
+those relocations would end up in a contiguous sub-range of the
+dynamic relocation section.</p>
+<p>The ELF standard requires that the GOT-generating relocations of
+the PLT are emitted into a contiguous sub-range of the dynamic
+relocation section. That sub-range is denoted by the standard tags
+<code>DT_JMPREL</code> and <code>DT_PLTRELSZ</code>. The type of
+relocations (<code>REL</code> or <code>RELA</code>) is stored in
+the <code>DT_PLTREL</code> tag.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="object-files">
+<h2>Object Files</h2>
+<div>
+<div>
+<div>
+<div id="introduction">
+<h3>Introduction</h3>
+<div>
+<div>
+<div>
+<div id="registered-vendor-names">
+<h4>Registered Vendor Names</h4>
+<p>Various symbols and names may require a vendor-specific name to
+avoid the potential for name-space conflicts. The list of currently
+registered vendors and their preferred short-hand name is given in
+<a href="index.html">Table 4-1, Registered Vendors</a>.
+Tools developers not listed are requested to co-ordinate with Arm
+to avoid the potential for conflicts.</p>
+<table id="id3">
+<caption>Registered Vendors</caption>
+<colgroup>
+<col width="20%"/>
+<col width="80%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Vendor</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>ADI</code></td>
+<td>Analog Devices</td>
+</tr>
+<tr>
+<td><code>acle</code></td>
+<td>Reserved for use by Arm C Language Extensions.</td>
+</tr>
+<tr>
+<td><code>aeabi</code></td>
+<td>Reserved to the ABI for the Arm Architecture (EABI
+pseudo-vendor)</td>
+</tr>
+<tr>
+<td><code>Anon</code><em>Xyz</em>
+<code>anon</code><em>Xyz</em></td>
+<td>Reserved to private experiments by the Xyz vendor. Guaranteed
+not to clash with any registered vendor name.</td>
+</tr>
+<tr>
+<td><code>ARM</code></td>
+<td>Arm Ltd (Note: the company, not the processor).</td>
+</tr>
+<tr>
+<td><code>cxa</code></td>
+<td>C++ ABI pseudo-vendor</td>
+</tr>
+<tr>
+<td><code>FSL</code></td>
+<td>Freescale Semiconductor Inc.</td>
+</tr>
+<tr>
+<td><code>GHS</code></td>
+<td>Green Hills Systems</td>
+</tr>
+<tr>
+<td><code>gnu</code></td>
+<td>GNU compilers and tools (Free Software Foundation)</td>
+</tr>
+<tr>
+<td><code>iar</code></td>
+<td>IAR Systems</td>
+</tr>
+<tr>
+<td><code>icc</code></td>
+<td>ImageCraft Creations Inc (<em>ImageCraft C Compiler</em>)</td>
+</tr>
+<tr>
+<td><code>intel</code></td>
+<td>Intel Corporation</td>
+</tr>
+<tr>
+<td><code>ixs</code></td>
+<td>Intel Xscale</td>
+</tr>
+<tr>
+<td><code>llvm</code></td>
+<td>The LLVM/Clang projects</td>
+</tr>
+<tr>
+<td><code>PSI</code></td>
+<td>PalmSource Inc.</td>
+</tr>
+<tr>
+<td><code>RAL</code></td>
+<td>Rowley Associates Ltd</td>
+</tr>
+<tr>
+<td><code>SEGGER</code></td>
+<td>SEGGER Microcontroller GmbH</td>
+</tr>
+<tr>
+<td><code>somn</code></td>
+<td>SOMNIUM Technologies Limited.</td>
+</tr>
+<tr>
+<td><code>TASKING</code></td>
+<td>Altium Ltd.</td>
+</tr>
+<tr>
+<td><code>TI</code></td>
+<td>TI Inc.</td>
+</tr>
+<tr>
+<td><code>tls</code></td>
+<td>Reserved for use in thread-local storage routines.</td>
+</tr>
+<tr>
+<td><code>WRS</code></td>
+<td>Wind River Systems.</td>
+</tr>
+</tbody>
+</table>
+<p>To register a vendor prefix with Arm, please E-mail your request
+to arm.eabi at arm.com.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="elf-header">
+<h3>ELF Header</h3>
+<p>The ELF header provides a number of fields that assist in
+interpretation of the file. Most of these are specified in the base
+standard. The following fields have Arm-specific meanings.</p>
+<ul>
+<li>e_typeThere are currently no Arm-specific object file types.
+All values between <code>ET_LOPROC</code> and
+<code>ET_HIPROC</code> are reserved to future revisions of this
+specification.</li>
+<li>e_machineAn object file conforming to this specification must
+have the value <code>EM_ARM</code> (40, 0x28).</li>
+<li>e_entry
+<p>The value stored in this field is treated like any
+other code pointer. Specifically, if bit[0] is 0b1 then the entry
+point contains Thumb code; while bit[1:0] = 0b00 implies that the
+entry point contains Arm code. The combination bit[1:0] = 0b10 is
+reserved.</p>
+<p>The base ELF specification requires this field to be zero if an
+application does not have an entry point. Nonetheless, some
+applications may require an entry point of zero (for example, via
+the reset vector).</p>
+<p>platform standard may specify that an executable
+file always has an entry point, in which case e_entry specifies
+that entry point, even if zero.</p>
+</li>
+<li>e_flagsThe processor-specific flags are shown in <a href="index.html#aaelf32-table4-2">Table 4-2, Arm-specific e_flags</a>.
+Unallocated bits, and bits allocated in previous versions of this
+specification, are reserved to future revisions of this
+specification.</li>
+</ul>
+<p id="aaelf32-table4-2">Table 4-2, Arm-specific
+e_flags</p>
+<table>
+<colgroup>
+<col width="35%"/>
+<col width="65%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td>Value</td>
+<td>Meaning</td>
+</tr>
+<tr>
+<td><code>EF_ARM_ABIMASK</code> (0xFF000000) (current version is
+0x05000000)</td>
+<td>This masks an 8-bit version number, the version of the ABI to
+which this ELF file conforms. This ABI is version 5. A value of 0
+denotes unknown conformance.</td>
+</tr>
+<tr>
+<td><code>EF_ARM_BE8</code> (0x00800000)</td>
+<td>The ELF file contains BE-8 code, suitable for execution on an
+Arm Architecture v6 processor. This flag must only be set on an
+executable file.</td>
+</tr>
+<tr>
+<td><code>EF_ARM_GCCMASK</code> (0x00400FFF)</td>
+<td>Legacy code (ABI version 4 and earlier) generated by
+gcc-arm-xxx might use these bits.</td>
+</tr>
+<tr>
+<td><code>EF_ARM_ABI_FLOAT_HARD</code> (0x00000400) (ABI version 5
+and later)</td>
+<td>
+<p>Set in executable file headers (e_type = ET_EXEC
+or ET_DYN) to note that the executable file was built to conform to
+the hardware floating-point procedure-call standard.</p>
+<p>Compatible with legacy (pre version 5) gcc use as
+EF_ARM_VFP_FLOAT.</p>
+</td>
+</tr>
+<tr>
+<td><code>EF_ARM_ABI_FLOAT_SOFT</code> (0x00000200) (ABI version 5
+and later)</td>
+<td>
+<p>Set in executable file headers (e_type = ET_EXEC
+or ET_DYN) to note explicitly that the executable file was built to
+conform to the software floating-point procedure-call standard (the
+base standard). If both EF_ARM_ABI_FLOAT_XXXX bits are clear,
+conformance to the base procedure-call standard is implied.</p>
+<p>Compatible with legacy (pre version 5) gcc use as
+EF_ARM_SOFT_FLOAT.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div id="elf-identification">
+<h4>ELF Identification</h4>
+<p>The 16-byte ELF identification (<code>e_ident</code>) provides
+information on how to interpret the file itself. The following
+values shall be used on Arm systems</p>
+<ul>
+<li>EI_CLASSAn Arm ELF file shall contain <code>ELFCLASS32</code>
+objects.</li>
+<li>EI_DATAThis field may be either <code>ELFDATA2LSB</code> or
+<code>ELFDATA2MSB</code>. The choice will be governed by the
+default data order in the execution environment. On an Architecture
+v6 processor operating in BE8 mode all instructions are in
+little-endian format. An executable image suitable for operation in
+this mode will have <code>EF_ARM_BE8</code> set in the
+<code>e_flags</code> field.</li>
+<li>EI_OSABIThis field shall be zero unless the file uses objects
+that have flags which have OS-specific meanings (for example, it
+makes use of a section index in the range <code>SHN_LOOS</code>
+through <code>SHN_HIOS</code>). Processor-specific values for this
+field are defined in <a href="index.html">Table 4-3
+Arm-specific EI_OSABI values</a>.</li>
+</ul>
+<table id="id4">
+<caption>Table 4-3 Arm-specific EI_OSABI values</caption>
+<colgroup>
+<col width="23%"/>
+<col width="77%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>ELFOSABI_ARM_AEABI (64)</td>
+<td>The object contains symbol versioning extensions as described
+in <a href="index.html">Symbol Versioning</a>.</td>
+</tr>
+<tr>
+<td>ELFOSABI_ARM_FDPIC (65)</td>
+<td>The object uses relocations in the private range, with
+semantics defined by [<a href="https://github.com/mickael-guene/fdpic_doc">FDPIC</a>].</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="sections">
+<h3>Sections</h3>
+<div>
+<div>
+<div>
+<div id="special-section-indexes">
+<h4>Special Section Indexes</h4>
+<p>There are no processor-specific special section indexes defined.
+All processor-specific values are reserved to future revisions of
+this specification.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="section-types">
+<h4>Section Types</h4>
+<p>The defined processor-specific section types are listed in
+<a href="index.html">Table 4-4, Processor specific section
+types</a>. All other processor-specific values are reserved to
+future revisions of this specification.</p>
+<table id="id5">
+<caption>Table 4-4, Processor specific section types</caption>
+<colgroup>
+<col width="34%"/>
+<col width="21%"/>
+<col width="45%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>SHT_ARM_EXIDX</code></td>
+<td><code>0x70000001</code></td>
+<td>Exception Index table</td>
+</tr>
+<tr>
+<td><code>SHT_ARM_PREEMPTMAP</code></td>
+<td><code>0x70000002</code></td>
+<td>BPABI DLL dynamic linking pre-emption map</td>
+</tr>
+<tr>
+<td><code>SHT_ARM_ATTRIBUTES</code></td>
+<td><code>0x70000003</code></td>
+<td>Object file compatibility attributes</td>
+</tr>
+<tr>
+<td><code>SHT_ARM_DEBUGOVERLAY</code></td>
+<td><code>0x70000004</code></td>
+<td rowspan="2">See [<a href="https://developer.arm.com/docs/ihi0049/latest">DBGOVL</a>] for
+details.</td>
+</tr>
+<tr>
+<td><code>SHT_ARM_OVERLAYSECTION</code></td>
+<td><code>0x70000005</code></td>
+</tr>
+</tbody>
+</table>
+<p>Pointers in sections of types <code>SHT_INIT_ARRAY</code>,
+<code>SHT_PREINIT_ARRAY</code> and <code>SHT_FINI_ARRAY</code>
+shall be expressed either as absolute values or relative to the
+address of the pointer; the choice is platform defined. In object
+files the relocation type <code>R_ARM_TARGET1</code> may be used to
+indicate this target-specific relocation processing.</p>
+<p><code>SHT_ARM_EXIDX</code> marks a section containing index
+information for exception unwinding. See EHABI for details.</p>
+<p><code>SHT_ARM_PREEMPTMAP</code> marks a section containing a
+BPABI DLL dynamic linking pre-emption map. See <a href="index.html">Pre-emption Map Format</a>.</p>
+<p><code>SHT_ARM_ATTRIBUTES</code> marks a section containing
+object compatibility attributes. See <a href="index.html">Build Attributes</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="section-attribute-flags">
+<h4>Section Attribute Flags</h4>
+<p>The defined processor-specific section attribute flags are
+listed in <a href="index.html">Table 4-5, Processor specific
+section attribute flags</a>. All other processor-specific values
+are reserved to future revisions of this specification.</p>
+<table id="id6">
+<caption>Table 4-5, Processor specific section attribute
+flags</caption>
+<colgroup>
+<col width="16%"/>
+<col width="10%"/>
+<col width="74%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>SHF_ARM_PURECODE</td>
+<td>0x20000000</td>
+<td>The contents of this section contains only program instructions
+and no program data</td>
+</tr>
+</tbody>
+</table>
+<p>If any section contained by a segment does not have the
+SHF_ARM_PURECODE section flag set, the PF_R segment flag must be
+set in the program header for the segment. If all sections
+contained by a segment have the SHF_ARM_PURECODE section flag, a
+linker may optionally clear the PF_R segment flag in the program
+header of the segment, to signal to the runtime that the program
+does not rely on being able to read that segment.</p>
+<div>
+<div>
+<div>
+<div id="merging-of-objects-in-sections-with-shf-merge">
+<h5>Merging of objects in sections with SHF_MERGE</h5>
+<p>In a section with the SHF_MERGE flag set, duplicate used objects
+may be merged and unused objects may be removed. An object is used
+if:</p>
+<ul>
+<li>relocation directive addresses the object via the section
+symbol with a suitable addend to point to the object.</li>
+<li>A relocation directive addresses a symbol within the section.
+The used object is the one addressed by the symbol irrespective of
+the addend used.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="special-sections">
+<h4>Special Sections</h4>
+<p><a href="index.html#aaelf32-table4-6">Table 4-6, Arm special sections</a>
+lists the special sections defined by this ABI.</p>
+<p id="aaelf32-table4-6">Table 4 6, Arm special
+sections</p>
+<table>
+<colgroup>
+<col width="23%"/>
+<col width="28%"/>
+<col width="13%"/>
+<col width="37%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th colspan="2">Attributes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>.ARM.exidx*</td>
+<td>SHT_ARM_EXIDX</td>
+<td colspan="2">SHF_ALLOC + SHF_LINK_ORDER</td>
+</tr>
+<tr>
+<td>.ARM.extab*</td>
+<td>SHT_PROGBITS</td>
+<td colspan="2">SHF_ALLOC</td>
+</tr>
+<tr>
+<td>.ARM.preemptmap</td>
+<td>SHT_ARM_PREEMPTMAP</td>
+<td colspan="2">SHF_ALLOC</td>
+</tr>
+<tr>
+<td>.ARM.attributes</td>
+<td>SHT_ARM_ATTRIBUTES</td>
+<td colspan="2">none</td>
+</tr>
+<tr>
+<td>.ARM.debug_overlay</td>
+<td>SHT_ARM_DEBUGOVERLAY</td>
+<td colspan="2">none</td>
+</tr>
+<tr>
+<td>.ARM.overlay_table</td>
+<td>SHT_ARM_OVERLAYSECTION</td>
+<td colspan="2">See [<a href="https://developer.arm.com/docs/ihi0049/latest">DBGOVL</a>] for
+details</td>
+</tr>
+</tbody>
+</table>
+<p>Names beginning <code>.ARM.exidx</code> name sections containing
+index entries for section unwinding. Names beginning
+<code>.ARM.extab</code> name sections containing exception
+unwinding information. See [EHABI] for details.</p>
+<p><code>.ARM.preemptmap</code> names a section that contains a
+BPABI DLL dynamic linking pre-emption map. See <a href="index.html">Pre-emption Map Format</a>.</p>
+<p><code>.ARM.attributes</code> names a section that contains build
+attributes. See <a href="index.html">Build
+Attributes</a>.</p>
+<p><code>.ARM.debug_overlay</code> and
+<code>.ARM.overlay_table</code> name sections used by the Debugging
+Overlaid Programs ABI extension described in [DBGOVL].</p>
+<p>Additional special sections may be required by some platforms
+standards.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="section-alignment">
+<h4>Section Alignment</h4>
+<p>There is no minimum alignment required for a section. However,
+sections containing thumb code must be at least 16-bit aligned and
+sections containing Arm code must be at least 32-bit aligned.</p>
+<p>Platform standards may set a limit on the maximum alignment that
+they can guarantee (normally the page size).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="build-attributes">
+<h4>Build Attributes</h4>
+<p>Build attributes are encoded in a section of type
+<code>SHT_ARM_ATTRIBUTES</code>, and name
+<code>.ARM.attributes</code>.</p>
+<p>The content of the section is a stream of bytes. Numbers other
+than subsection sizes are encoded numbers using unsigned LEB128
+encoding (ULEB128), DWARF-3 style [<a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a>].</p>
+<p>Attributes are divided into sub-sections. Each subsection is
+prefixed by the name of the vendor. There is one subsection that is
+defined by the "aeabi" pseudo-vendor and contains general
+information about compatibility of the object file. Attributes
+defined in vendor-specific sections are private to the vendor. In a
+conforming object file the information recorded in a
+vendor-specific section may be safely ignored if it is not
+understood.</p>
+<p>Most build attributes naturally apply to a whole translation
+unit; however, others might apply more naturally to a section or to
+a function (symbol of type <code>STT_FUNC</code>). To permit
+precise description of attributes the syntax permits three
+granularities of translation at which an attribute can be
+expressed.</p>
+<p>section inherits the attributes of the file of which it is a
+component. A symbol definition inherits the attributes of the
+section in which it is defined. Attributes that cannot apply to the
+smaller entity are not inherited.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>Attributes that naturally apply to a translation unit may,
+nonetheless, end up applying to a section if sections from distinct
+relocatable files are combined into a single relocatable file by
+"partial linking". Similar exceptions may occur at the function
+level through use of #pragma and other Q-o-I tool chain
+behavior.</p>
+<p>Explicit per-section and per-symbol data should be
+generated only when it cannot be implied by this inheritance. Being
+explicit is more verbose, and the explicit options are intended to
+capture exceptions.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="syntactic-structure">
+<h5>Syntactic structure</h5>
+<p>The overall syntactic structure of an attributes section is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>&lt;format-version&gt;
+[ &lt;section-length&gt; "vendor-name"
+      [ &lt;file-tag&gt; &lt;size&gt; &lt;attribute&gt;*
+      | &lt;section-tag&gt; &lt;size&gt; &lt;section-number&gt;* 0 &lt;attribute&gt;*
+      | &lt;symbol-tag&gt; &lt;size&gt; &lt;symbol-number&gt;* 0 &lt;attribute&gt;*
+      ]+
+]*
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><em>Format-version</em> describes the format of the following
+data. It is a single byte (not ULEB128). This is version 'A'
+(0x41). This field exists to permit future incompatible changes in
+format.</p>
+<p><em>Section-length</em> is a 4-byte unsigned integer in the byte
+order of the ELF file. It contains the length of the
+vendor-specific data, including the length field itself, the vendor
+name string and its terminating NUL byte, and the following
+attribute data. That is, it is the offset from the start of this
+vendor subsection to the start of the next vendor subsection.</p>
+<p><em>Vendor-name</em> is a NUL-terminated byte string in the
+style of a C string. Vendor names begining "Anon" or "anon" are
+reserved to unregistered private use.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>In general, a <code>.ARM.attributes</code> section
+in a relocatable file will contain a vendor subsection from the
+"aeabi" pseudo vendor and, optionally, one from the generating tool
+chain (e.g. "Arm", "gnu", "WRS", etc) as listed in <a href="index.html">Registered Vendor Names</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<p>It is required that:</p>
+<ul>
+<li>Attributes that record facts about the compatibility of this
+relocatable file with other relocatable files are recorded in the
+public "aeabi" subsection.</li>
+<li>Attributes meaningful only to the producer are recorded in the
+private vendor subsection. These must not affect compatibility
+between relocatable files unless that is recorded in the "aeabi"
+subsection using generic compatibility tags.</li>
+<li>Generic compatibility tags must record a "safe" approximation.
+A tool chain may record more precise information that only that
+tool chain comprehends.</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>The intent is that a "foreign" tool chain should
+not mistakenly link incompatible binary files. The consequence is
+that a foreign tool chain might sometimes refuse to link files that
+could be safely linked, because their incompatibility has been
+crudely approximated.</p>
+</div>
+</div>
+</div>
+</div>
+<p>There are no constraints on the order or number of vendor
+subsections. A consumer can collect the public ("aeabi") attributes
+in a single pass over the section, then all of its private data in
+a second pass.</p>
+<p>vendor-attributes subsection may contain any number of
+sub-subsections. Each records attributes relating to:</p>
+<ul>
+<li>The whole relocatable file. These sub-subsections contain just
+a list of attributes.</li>
+<li>A set of sections within the relocatable file. These
+sub-subsections contain a list of section numbers followed by a
+list of attributes.</li>
+<li>A set of (defined) symbols in the relocatable file. These
+sub-subsections contain a list of symbol numbers followed by a list
+of attributes.</li>
+</ul>
+<p>A sub-subsection starts with a tag that identifies the type of
+the sub-subsection (file, section, or symbol), followed by a 4-byte
+unsigned integer size in the byte-order of the ELF file. The size
+is the total size of the sub-subsection including the tag, the size
+itself, and the sub-subsection content.</p>
+<p>Both section indexes and defined symbol indexes are non-zero, so
+a NUL byte ends a string and a list of indexes.</p>
+<p>There are no constraints on the order or number of
+sub-subsections in a vendor subsection. A consumer that needs the
+data in inheritance order can obtain the file attributes, the
+section-related attributes, and the symbol-related attributes, by
+making three passes over the subsection.</p>
+<p>A public attribute is encoded as a tag (non zero,
+ULEB128-encoded followed by a value. A public value is either an
+enumeration constant (ULEB128-encoded) or a NUL-terminated
+string.</p>
+<p>Some examples of tags and their argument sorts include:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_CPU_raw_name &lt;string&gt;  -- 0x04, "ML692000"
+Tag_CPU_name     &lt;string&gt;  -- 0x05, "Arm946E-S"
+Tag_PCS_R9_use   &lt;uleb128&gt; -- 0x0E, 0x01 (R9 used as SB)
+Tag_PCS_config   &lt;uleb128&gt; -- 0x0D, 0x03 (Linux DSO [/fpic] configuration)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="top-level-structure-tags">
+<h5>Top level structure tags</h5>
+<p>The following tags are defined globally:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_File, (=1), uleb128:byte-size
+Tag_Section, (=2), uleb128:byte-size
+Tag_Symbol, (=3), uleb128:byte-size
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="string-table">
+<h3>String Table</h3>
+<p>There are no processor-specific extensions to the string
+table.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbol-table">
+<h3>Symbol Table</h3>
+<p>There are no processor-specific symbol types or symbol bindings.
+All processor-specific values are reserved to future revisions of
+this specification.</p>
+<div>
+<div>
+<div>
+<div id="weak-symbols">
+<h4>Weak Symbols</h4>
+<p>There are two forms of weak symbol:</p>
+<ul>
+<li>A weak reference — This is denoted by <code>st_shndx=SHN_UNDEF,
+ELF32_ST_BIND()=STB_WEAK</code>.</li>
+<li>A weak definition — This is denoted by
+<code>st_shndx!=SHN_UNDEF, ELF32_ST_BIND()=STB_WEAK</code>.</li>
+</ul>
+<div>
+<div>
+<div>
+<div id="weak-references">
+<h5>Weak References</h5>
+<p>Libraries are not searched to resolve weak references. It is not
+an error for a weak reference to remain unsatisfied.</p>
+<p>During linking, the value of an undefined weak reference is:</p>
+<ul>
+<li>Zero if the relocation type is absolute</li>
+<li>The address of the place if the relocation type is
+pc-relative</li>
+<li>The nominal base address if the relocation type is
+base-relative.</li>
+</ul>
+<p>See <a href="index.html">Relocation</a> for further
+details.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="weak-definitions">
+<h5>Weak Definitions</h5>
+<p>weak definition does not change the rules by which object files
+are selected from libraries. However, if a link set contains both a
+weak definition and a non-weak definition, the non-weak definition
+will always be used.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbol-types">
+<h4>Symbol Types</h4>
+<p>All code symbols exported from an object file (symbols with
+binding <code>STB_GLOBAL</code>) shall have type
+<code>STT_FUNC</code>.</p>
+<p>All extern data objects shall have type <code>STT_OBJECT</code>.
+No <code>STB_GLOBAL</code> data symbol shall have type
+<code>STT_FUNC</code>.</p>
+<p>The type of an undefined symbol shall be <code>STT_NOTYPE</code>
+or the type of its expected definition.</p>
+<p>The type of any other symbol defined in an executable section
+can be <code>STT_NOTYPE</code>. The linker is only required to
+provide interworking support for symbols of type
+<code>STT_FUNC</code> (interworking for untyped symbols must be
+encoded directly in the object file).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbol-values">
+<h4>Symbol Values</h4>
+<p>In addition to the normal rules for symbol values the following
+rules shall also apply to symbols of type
+<code>STT_FUNC</code>:</p>
+<ul>
+<li>If the symbol addresses an Arm instruction, its value is the
+address of the instruction (in a relocatable object, the offset of
+the instruction from the start of the section containing it).</li>
+<li>If the symbol addresses a Thumb instruction, its value is the
+address of the instruction with bit zero set (in a relocatable
+object, the section offset with bit zero set).</li>
+<li>For the purposes of relocation the value used shall be the
+address of the instruction (<code>st_value &amp; ~1</code>).</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>This allows a linker to distinguish Arm and Thumb
+code symbols without having to refer to the map. An Arm symbol will
+always have an even value, while a Thumb symbol will always have an
+odd value. However, a linker should strip the discriminating bit
+from the value before using it for relocation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbol-names">
+<h4>Symbol names</h4>
+<p>A symbol that names a C or assembly language entity should have
+the name of that entity. For example, a C function called
+<code>calculate</code> generates a symbol called
+<code>calculate</code> (not <code>_calculate</code>).</p>
+<p>Symbol names are case sensitive and are matched exactly by
+linkers.</p>
+<p>Any symbol with binding <code>STB_LOCAL</code> may be removed
+from an object and replaced with an offset from another symbol in
+the same section under the following conditions:</p>
+<ul>
+<li>The original symbol and replacement symbol are not of type
+STT_FUNC, or both symbols are of type STT_FUNC and describe code of
+the same execution type (either both Arm or both Thumb).</li>
+<li>All relocations referring to the symbol can accommodate the
+adjustment in the addend field (it is permitted to convert a
+<code>REL</code> type relocation to a <code>RELA</code> type
+relocation).</li>
+<li>The symbol is not described by the debug information.</li>
+<li>The symbol is not a mapping symbol.</li>
+<li>The resulting object, or image, is not required to preserve
+accurate symbol information to permit decompilation or other
+post-linking optimization techniques.</li>
+<li>If the symbol labels an object in a section with the SHF_MERGE
+flag set, the relocation using symbol may be changed to use the
+section symbol only if the initial addend of the relocation is
+zero.</li>
+</ul>
+<p>No tool is required to perform the above transformations; an
+object consumer must be prepared to do this itself if it might find
+the additional symbols confusing.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>Multiple conventions exist for the names of
+compiler temporary symbols (for example, ARMCC uses
+<code>Lxxx.yyy</code>, while GNU uses <code>.Lxxx</code>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="reserved-symbol-names">
+<h5>Reserved symbol names</h5>
+<p>The following symbols are reserved to this and future revisions
+of this specification:</p>
+<ul>
+<li>Local symbols (STB_LOCAL) beginning with '$'</li>
+<li>Global symbols (STB_GLOBAL, STB_WEAK) beginning with '__aeabi_'
+(double '_' at start).</li>
+<li>Global symbols (STB_GLOBAL, STB_WEAK) ending with any of
+'$$base', '$$length' or '$$limit'</li>
+<li>Symbols matching the pattern
+${Ven|other}${AA|AT|TA|TT}${I|L|S}[$PI]$$symbol</li>
+<li>Local symbols (STB_LOCAL) beginning with 'Lib$Request$$' or
+'BuildAttributes$$'</li>
+<li>Symbols beginning with '$Sub$$' or '$Super$$'</li>
+</ul>
+<p>Note that global symbols beginning with '__vendor_' (double '_'
+at start), where vendor is listed in <a href="index.html">Registered Vendor Names</a>, Registered
+Vendor Names, are reserved to the named vendor for the purpose of
+providing vendor-specific tool-chain support functions.</p>
+<p>Conventions for reserved symbols for which support is not
+required by this ABI are described in APPENDIX A, Conventions for
+Symbols containing $.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="mapping-symbols">
+<h4>Mapping symbols</h4>
+<p>section of an ELF file can contain a mixture of Arm code, Thumb
+code and data.</p>
+<p>There are inline transitions between code and data at literal
+pool boundaries. There can also be inline transitions between Arm
+code and Thumb code, for example in Arm-Thumb inter-working
+veneers.</p>
+<p>Linkers, and potentially other tools, need to map images
+correctly (for example, to support byte swapping to produce a BE-8
+image from a BE-32 object file). To support this, a number of
+symbols, termed mapping symbols appear in the symbol table to
+denote the start of a sequence of bytes of the appropriate type.
+All mapping symbols have type STT_NOTYPE and binding STB_LOCAL. The
+st_size field is unused and must be zero.</p>
+<p>The mapping symbols are defined in <a href="index.html#aaelf32-table4-7">Table 4-7, Mapping symbols</a>. It is an error
+for a relocation to reference a mapping symbol. Two forms of
+mapping symbol are supported:</p>
+<ul>
+<li>a short form, that uses a dollar character and a single letter
+denoting the class. This form can be used when an object producer
+creates mapping symbols automatically, and minimizes symbol table
+space * a longer form, where the short form is extended with a
+period and then any sequence of characters that are legal for a
+symbol. This form can be used when assembler files have to be
+annotated manually and the assembler does not support multiple
+definitions of symbols.</li>
+</ul>
+<p id="aaelf32-table4-7">Table 4-7, Mapping
+symbols</p>
+<table>
+<colgroup>
+<col width="19%"/>
+<col width="81%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>$a</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>$a.&lt;any...&gt;</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>Start of a sequence of Arm instructions</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>$d</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>$d.&lt;any...&gt;</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>Start of a sequence of data items (for example, a literal
+pool)</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>$t</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>$t.&lt;any...&gt;</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>Start of a sequence of Thumb instructions</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div id="section-relative-mapping-symbols">
+<h5>Section-relative mapping symbols</h5>
+<p>Mapping symbols defined in a section define a sequence of
+half-open address intervals that cover the address range of the
+section. Each interval starts at the address defined by the mapping
+symbol, and continues up to, but not including, the address defined
+by the next (in address order) mapping symbol or the end of the
+section. A section must have a mapping symbol defined at the
+beginning of the section; however, if the section contains only
+data then the mapping symbol may be omitted.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="absolute-mapping-symbols">
+<h5>Absolute mapping symbols</h5>
+<p>Mapping symbols are no-longer required for the absolute section.
+The equivalent information is now conveyed by the type of the
+absolute symbol.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="relocation">
+<h3>Relocation</h3>
+<p>Relocation information is used by linkers in order to bind
+symbols and addresses that could not be determined when the initial
+object was generated. In these descriptions, references in the
+style LDR(1) refer to the Armv5 Architecture Reference Manual
+[Armv5 ARM] while those in the style LDR(immediate, Thumb) give the
+corresponding reference to the Arm Architecture Reference Manual
+Arm v7-A and Arm v7-R edition [<a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">ARMARM</a>].</p>
+<div>
+<div>
+<div>
+<div id="relocation-codes">
+<h4>Relocation codes</h4>
+<p>The relocation codes for Arm are divided into four
+categories:</p>
+<ul>
+<li>Mandatory relocations that must be supported by all static
+linkers</li>
+<li>Platform-specific relocations that are required for specific
+virtual platforms</li>
+<li>Private relocations that are guaranteed never to be allocated
+in future revisions of this specification, but which must never be
+used in portable object files.</li>
+<li>Unallocated relocations that are reserved for use in future
+revisions of this specification.</li>
+</ul>
+<div>
+<div>
+<div>
+<div id="addends-and-pc-bias-compensation">
+<h5>Addends and PC-bias compensation</h5>
+<p>binary file may use REL or RELA relocations or a mixture of the
+two (but multiple relocations for the same address must use only
+one type). If the relocation is pc-relative then compensation for
+the PC bias (the PC value is 8 bytes ahead of the executing
+instruction in Arm state and 4 bytes in Thumb state) must be
+encoded in the relocation by the object producer.</p>
+<p>Unless specified otherwise, the initial addend for REL type
+relocations is formed according to the following rules.</p>
+<ul>
+<li>If the place is subject to a data-type relocation, the initial
+value in the place is sign-extended to 32 bits.</li>
+<li>If the place contains an instruction, the immediate field for
+the instruction is extracted from it and used as the initial
+addend. If the instruction is a SUB, or an LDR/STR type instruction
+with the 'up' bit clear, then the initial addend is formed by
+negating the unsigned immediate value encoded in the
+instruction.</li>
+</ul>
+<p>Some examples are shown in <a href="index.html#aaelf32-table4-8">Table
+4-8, Examples of REL format initial addends</a>.</p>
+<p id="aaelf32-table4-8">Table 4-8, Examples of REL
+format initial addends</p>
+<table>
+<colgroup>
+<col width="30%"/>
+<col width="27%"/>
+<col width="26%"/>
+<col width="17%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Instruction</th>
+<th>Relocation</th>
+<th>Encoding</th>
+<th>Initial Addend</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>SUB  R0, R1, #1020</code></td>
+<td><code>R_ARM_ALU_PC_G0</code></td>
+<td><code>0xe2410fff</code></td>
+<td><code>-1020</code></td>
+</tr>
+<tr>
+<td><code>LDR  R0, [R2, #16]</code></td>
+<td><code>R_ARM_LDR_PC_G2</code></td>
+<td><code>0xe59f0010</code></td>
+<td><code>16</code></td>
+</tr>
+<tr>
+<td><code>BL   .</code></td>
+<td><code>R_ARM_THM_CALL</code></td>
+<td><code>0xf7ff, 0xfffe</code></td>
+<td><code>-4</code></td>
+</tr>
+<tr>
+<td><code>DCB  0xf0</code></td>
+<td><code>R_ARM_ABS8</code></td>
+<td><code>0xf0</code></td>
+<td><code>-16</code></td>
+</tr>
+</tbody>
+</table>
+<p>If the initial addend cannot be encoded in the space available
+then a RELA format relocation must be used.</p>
+<p>There are three special cases for forming the initial addend of
+REL-type relocations where the immediate field cannot normally hold
+small signed integers:</p>
+<ul>
+<li>For relocations processing MOVW and MOVT instructions (in both
+Arm and Thumb state), the initial addend is formed by interpreting
+the 16-bit literal field of the instruction as a 16-bit signed
+value in the range -32768 &lt;= A &lt; 32768. The interpretation is
+the same whether the relocated place contains a MOVW instruction or
+a MOVT instruction.</li>
+<li>For R_ARM_THM_JUMP6 the initial addend is formed by the formula
+(((imm + 4) &amp; 0x7f) - 4), where imm is the concatenation of
+bit[9]:bit[7:3]:'0' from the Thumb CBZ or CBNZ instruction being
+relocated.</li>
+<li>For R_ARM_THM_PC8 the initial addend is formed by the formula
+(((imm + 4) &amp; 0x3ff) - 4), where imm is the 32-bit value
+encoded in the 8-bit place, as defined in the LDR(3)/LDR(literal)
+Thumb instructions section of the [<a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">ARMARM</a>].</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="relocation-types">
+<h5>Relocation types</h5>
+<p><a href="index.html">Table 4-9, Relocation codes</a>
+lists the relocation codes for Arm. The table shows:</p>
+<ul>
+<li>The code which is stored in the ELF32_R_TYPE component of the
+r_info field.</li>
+<li>The mnemonic name for the relocation.</li>
+<li>The type of the relocation. This field substantially divides
+the relocations into Static and Dynamic relocations. Static
+relocations are processed by a static linker; they are normally
+either fully resolved or used to produce dynamic relocations for
+processing by a post-linking step or a dynamic loader. A well
+formed image will have no static relocations after static linking
+is complete, so a post-linker or dynamic loader will normally only
+have to deal with dynamic relocations. This field is also used to
+describe deprecated, obsolete, private and unallocated relocation
+codes. Deprecated codes should not be generated by fully conforming
+toolchains; however it is recognized that there may be substantial
+existing code that makes use of these forms, so it is expected that
+a linker may well be required to handle them at this time. Obsolete
+codes should not be used, and it is believed that there is little
+or no common use of these values. All unallocated codes are
+reserved for future allocation.</li>
+<li>The class of the relocation describes the type of place being
+relocated: these are Data, Arm, Thumb16 and Thumb32 (32-bit
+long-format instructions). A special class of Miscellaneous is used
+when the operation is not a simple mathematical expression.</li>
+<li>The operation field describes how the symbol and addend are
+processed by the relocation code. It does not describe how the
+addend is formed (for a REL type relocation), what overflow
+checking is done, or how the value is written back into the place:
+this information is given in subsequent sections. In all cases,
+relocation expression values are computed mod 2^32.</li>
+</ul>
+<p>The following nomenclature is used for the operation:</p>
+<ul>
+<li>(when used on its own) is the address of the symbol.</li>
+<li>A is the addend for the relocation.</li>
+<li>P is the address of the place being relocated (derived from
+r_offset).</li>
+<li>Pa is the adjusted address of the place being relocated,
+defined as (P &amp; 0xFFFFFFFC).</li>
+<li>T is 1 if the target symbol S has type STT_FUNC and the symbol
+addresses a Thumb instruction; it is 0 otherwise.</li>
+<li>B(S) is the addressing origin of the output segment defining
+the symbol S. The origin is not required to be the base address of
+the segment. This value must always be word-aligned.</li>
+<li>GOT_ORG is the addressing origin of the Global Offset Table
+(the indirection table for imported data addresses). This value
+must always be word-aligned. See <a href="index.html">Proxy generating relocations</a>.</li>
+<li>GOT(S) is the address of the GOT entry for the symbol S.</li>
+</ul>
+<table id="id7">
+<caption>Table 4-9, Relocation codes</caption>
+<colgroup>
+<col width="8%"/>
+<col width="31%"/>
+<col width="11%"/>
+<col width="14%"/>
+<col width="36%"/></colgroup>
+<tbody valign="top">
+<tr>
+<td>Code</td>
+<td>Name</td>
+<td>Type</td>
+<td>Class</td>
+<td>Operation</td>
+</tr>
+<tr>
+<td>0</td>
+<td><code>R_ARM_NONE</code></td>
+<td>Static</td>
+<td>Miscellaneous</td>
+<td> </td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>R_ARM_PC24</code></td>
+<td>Deprecated</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>R_ARM_ABS32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>(S + A) | T</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>R_ARM_REL32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>((S + A) | T) | - P</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>R_ARM_LDR_PC_G0</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>+ A - P</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>R_ARM_ABS16</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>R_ARM_ABS12</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>R_ARM_THM_ABS5</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>R_ARM_ABS8</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>R_ARM_SBREL32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>R_ARM_THM_CALL</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>R_ARM_THM_PC8</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>S + A - Pa</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>R_ARM_BREL_ADJ</code></td>
+<td>Dynamic</td>
+<td>Data</td>
+<td><code>ΔB(S) + A</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>R_ARM_TLS_DESC</code></td>
+<td>Dynamic</td>
+<td>Data</td>
+<td> </td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>R_ARM_THM_SWI8</code></td>
+<td>Obsolete</td>
+<td colspan="2" rowspan="3">Encodings reserved for future Dynamic
+relocations</td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>R_ARM_XPC25</code></td>
+<td>Obsolete</td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>R_ARM_THM_XPC22</code></td>
+<td>Obsolete</td>
+</tr>
+<tr>
+<td>17</td>
+<td><code>R_ARM_TLS_DTPMOD32</code></td>
+<td>Dynamic</td>
+<td>Data</td>
+<td><code>Module[S]</code></td>
+</tr>
+<tr>
+<td>18</td>
+<td><code>R_ARM_TLS_DTPOFF32</code></td>
+<td>Dynamic</td>
+<td>Data</td>
+<td><code>S + A - TLS</code></td>
+</tr>
+<tr>
+<td>19</td>
+<td><code>R_ARM_TLS_TPOFF32</code></td>
+<td>Dynamic</td>
+<td>Data</td>
+<td><code>S + A - tp</code></td>
+</tr>
+<tr>
+<td>20</td>
+<td><code>R_ARM_COPY</code></td>
+<td>Dynamic</td>
+<td>Miscellaneous</td>
+<td> </td>
+</tr>
+<tr>
+<td>21</td>
+<td><code>R_ARM_GLOB_DAT</code></td>
+<td>Dynamic</td>
+<td>Data</td>
+<td><code>(S + A) | T</code></td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>R_ARM_JUMP_SLOT</code></td>
+<td>Dynamic</td>
+<td>Data</td>
+<td><code>(S + A) | T</code></td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>R_ARM_RELATIVE</code></td>
+<td>Dynamic</td>
+<td>Data</td>
+<td><code>B(S) + A</code> [Note: see <a href="index.html#aaelf32-table4-18">Table 4-18</a>]</td>
+</tr>
+<tr>
+<td>24</td>
+<td><code>R_ARM_GOTOFF32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>((S + A) | T) - GOT_ORG</code></td>
+</tr>
+<tr>
+<td>25</td>
+<td><code>R_ARM_BASE_PREL</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>B(S) + A - P</code></td>
+</tr>
+<tr>
+<td>26</td>
+<td><code>R_ARM_GOT_BREL</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>GOT(S) + A - GOT_ORG</code></td>
+</tr>
+<tr>
+<td>27</td>
+<td><code>R_ARM_PLT32</code></td>
+<td>Deprecated</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>28</td>
+<td><code>R_ARM_CALL</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>29</td>
+<td><code>R_ARM_JUMP24</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>30</td>
+<td><code>R_ARM_THM_JUMP24</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>31</td>
+<td><code>R_ARM_BASE_ABS</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>B(S) + A</code></td>
+</tr>
+<tr>
+<td>32</td>
+<td><code>R_ARM_ALU_PCREL_7_0</code></td>
+<td>Obsolete</td>
+<td colspan="2" rowspan="3">Note - Legacy (Arm ELF B02) names have
+been retained for these obsolete relocations.</td>
+</tr>
+<tr>
+<td>33</td>
+<td><code>R_ARM_ALU_PCREL_15_8</code></td>
+<td>Obsolete</td>
+</tr>
+<tr>
+<td>34</td>
+<td><code>R_ARM_ALU_PCREL_23_15</code></td>
+<td>Obsolete</td>
+</tr>
+<tr>
+<td>35</td>
+<td><code>R_ARM_LDR_SBREL_11_0_NC</code></td>
+<td>Deprecated</td>
+<td>Arm</td>
+<td><code>+ A - B(S)</code></td>
+</tr>
+<tr>
+<td>36</td>
+<td><code>R_ARM_ALU_SBREL_19_12_NC</code></td>
+<td>Deprecated</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>37</td>
+<td><code>R_ARM_ALU_SBREL_27_20_CK</code></td>
+<td>Deprecated</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>38</td>
+<td><code>R_ARM_TARGET1</code></td>
+<td>Static</td>
+<td>Miscellaneous</td>
+<td><code>(S + A) | T</code> or <code>((S + | A) | T) -
+P</code></td>
+</tr>
+<tr>
+<td>39</td>
+<td><code>R_ARM_SBREL31</code></td>
+<td>Deprecated</td>
+<td>Data</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>R_ARM_V4BX</code></td>
+<td>Static</td>
+<td>Miscellaneous</td>
+<td> </td>
+</tr>
+<tr>
+<td>41</td>
+<td><code>R_ARM_TARGET2</code></td>
+<td>Static</td>
+<td>Miscellaneous</td>
+<td> </td>
+</tr>
+<tr>
+<td>42</td>
+<td><code>R_ARM_PREL31</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>43</td>
+<td><code>R_ARM_MOVW_ABS_NC</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>(S + A) | T</code></td>
+</tr>
+<tr>
+<td>44</td>
+<td><code>R_ARM_MOVT_ABS</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>45</td>
+<td><code>R_ARM_MOVW_PREL_NC</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>46</td>
+<td><code>R_ARM_MOVT_PREL</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>47</td>
+<td><code>R_ARM_THM_MOVW_ABS_NC</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>(S + A) | T</code></td>
+</tr>
+<tr>
+<td>48</td>
+<td><code>R_ARM_THM_MOVT_ABS</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>49</td>
+<td><code>R_ARM_THM_MOVW_PREL_NC</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>50</td>
+<td><code>R_ARM_THM_MOVT_PREL</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>51</td>
+<td><code>R_ARM_THM_JUMP19</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>52</td>
+<td><code>R_ARM_THM_JUMP6</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>53</td>
+<td><code>R_ARM_THM_ALU_PREL_11_0</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>((S + A) | T) - Pa</code></td>
+</tr>
+<tr>
+<td>54</td>
+<td><code>R_ARM_THM_PC12</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>S + A - Pa</code></td>
+</tr>
+<tr>
+<td>55</td>
+<td><code>R_ARM_ABS32_NOI</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>56</td>
+<td><code>R_ARM_REL32_NOI</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>57</td>
+<td><code>R_ARM_ALU_PC_G0_NC</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>58</td>
+<td><code>R_ARM_ALU_PC_G0</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>59</td>
+<td><code>R_ARM_ALU_PC_G1_NC</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>60</td>
+<td><code>R_ARM_ALU_PC_G1</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>61</td>
+<td><code>R_ARM_ALU_PC_G2</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - P</code></td>
+</tr>
+<tr>
+<td>62</td>
+<td><code>R_ARM_LDR_PC_G1</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>63</td>
+<td><code>R_ARM_LDR_PC_G2</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>64</td>
+<td><code>R_ARM_LDRS_PC_G0</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>65</td>
+<td><code>R_ARM_LDRS_PC_G1</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>66</td>
+<td><code>R_ARM_LDRS_PC_G2</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>67</td>
+<td><code>R_ARM_LDC_PC_G0</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>68</td>
+<td><code>R_ARM_LDC_PC_G1</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>69</td>
+<td><code>R_ARM_LDC_PC_G2</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>70</td>
+<td><code>R_ARM_ALU_SB_G0_NC</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>71</td>
+<td><code>R_ARM_ALU_SB_G0</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>72</td>
+<td><code>R_ARM_ALU_SB_G1_NC</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>73</td>
+<td><code>R_ARM_ALU_SB_G1</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>74</td>
+<td><code>R_ARM_ALU_SB_G2</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>75</td>
+<td><code>R_ARM_LDR_SB_G0</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>76</td>
+<td><code>R_ARM_LDR_SB_G1</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>77</td>
+<td><code>R_ARM_LDR_SB_G2</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>78</td>
+<td><code>R_ARM_LDRS_SB_G0</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>79</td>
+<td><code>R_ARM_LDRS_SB_G1</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>80</td>
+<td><code>R_ARM_LDRS_SB_G2</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>81</td>
+<td><code>R_ARM_LDC_SB_G0</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>82</td>
+<td><code>R_ARM_LDC_SB_G1</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>83</td>
+<td><code>R_ARM_LDC_SB_G2</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>84</td>
+<td><code>R_ARM_MOVW_BREL_NC</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>85</td>
+<td><code>R_ARM_MOVT_BREL</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>86</td>
+<td><code>R_ARM_MOVW_BREL</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>87</td>
+<td><code>R_ARM_THM_MOVW_BREL_NC</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>88</td>
+<td><code>R_ARM_THM_MOVT_BREL</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>S + A - B(S)</code></td>
+</tr>
+<tr>
+<td>89</td>
+<td><code>R_ARM_THM_MOVW_BREL</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>((S + A) | T) - B(S)</code></td>
+</tr>
+<tr>
+<td>90</td>
+<td><code>R_ARM_TLS_GOTDESC</code></td>
+<td>Static</td>
+<td>Data</td>
+<td> </td>
+</tr>
+<tr>
+<td>91</td>
+<td><code>R_ARM_TLS_CALL</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td> </td>
+</tr>
+<tr>
+<td>92</td>
+<td><code>R_ARM_TLS_DESCSEQ</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td>TLS relaxation</td>
+</tr>
+<tr>
+<td>93</td>
+<td><code>R_ARM_THM_TLS_CALL</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td> </td>
+</tr>
+<tr>
+<td>94</td>
+<td><code>R_ARM_PLT32_ABS</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>PLT(S) + A</code></td>
+</tr>
+<tr>
+<td>95</td>
+<td><code>R_ARM_GOT_ABS</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>GOT(S) + A</code></td>
+</tr>
+<tr>
+<td>96</td>
+<td><code>R_ARM_GOT_PREL</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>GOT(S) + A - P</code></td>
+</tr>
+<tr>
+<td>97</td>
+<td><code>R_ARM_GOT_BREL12</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>GOT(S) + A - GOT_ORG</code></td>
+</tr>
+<tr>
+<td>98</td>
+<td><code>R_ARM_GOTOFF12</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - GOT_ORG</code></td>
+</tr>
+<tr>
+<td>99</td>
+<td><code>R_ARM_GOTRELAX</code></td>
+<td>Static</td>
+<td>Miscellaneous</td>
+<td> </td>
+</tr>
+<tr>
+<td>100</td>
+<td><code>R_ARM_GNU_VTENTRY</code></td>
+<td>Deprecated</td>
+<td>Data</td>
+<td><code>???</code></td>
+</tr>
+<tr>
+<td>101</td>
+<td><code>R_ARM_GNU_VTINHERIT</code></td>
+<td>Deprecated</td>
+<td>Data</td>
+<td><code>???</code></td>
+</tr>
+<tr>
+<td>102</td>
+<td><code>R_ARM_THM_JUMP11</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>103</td>
+<td><code>R_ARM_THM_JUMP8</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>S + A - P</code></td>
+</tr>
+<tr>
+<td>104</td>
+<td><code>R_ARM_TLS_GD32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>GOT(S) + A - P</code></td>
+</tr>
+<tr>
+<td>105</td>
+<td><code>R_ARM_TLS_LDM32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>GOT(S) + A - P</code></td>
+</tr>
+<tr>
+<td>106</td>
+<td><code>R_ARM_TLS_LDO32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>S + A - TLS</code></td>
+</tr>
+<tr>
+<td>107</td>
+<td><code>R_ARM_TLS_IE32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>GOT(S) + A - P</code></td>
+</tr>
+<tr>
+<td>108</td>
+<td><code>R_ARM_TLS_LE32</code></td>
+<td>Static</td>
+<td>Data</td>
+<td><code>S + A - tp</code></td>
+</tr>
+<tr>
+<td>109</td>
+<td><code>R_ARM_TLS_LDO12</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - TLS</code></td>
+</tr>
+<tr>
+<td>110</td>
+<td><code>R_ARM_TLS_LE12</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>S + A - tp</code></td>
+</tr>
+<tr>
+<td>111</td>
+<td><code>R_ARM_TLS_IE12GP</code></td>
+<td>Static</td>
+<td>Arm</td>
+<td><code>GOT(S) + A - GOT_ORG</code></td>
+</tr>
+<tr>
+<td>112-127</td>
+<td><code>R_ARM_PRIVATE_&lt;n&gt;</code></td>
+<td colspan="3">Private (n = 0, 1, ... 15)</td>
+</tr>
+<tr>
+<td>128</td>
+<td><code>R_ARM_ME_TOO</code></td>
+<td colspan="3">Obsolete</td>
+</tr>
+<tr>
+<td>129</td>
+<td><code>R_ARM_THM_TLS_DESCSEQ16</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td> </td>
+</tr>
+<tr>
+<td>130</td>
+<td><code>R_ARM_THM_TLS_DESCSEQ32</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td> </td>
+</tr>
+<tr>
+<td>131</td>
+<td><code>R_ARM_THM_GOT_BREL12</code></td>
+<td>Static</td>
+<td>Thumb32</td>
+<td><code>GOT(S) + A - GOT_ORG</code></td>
+</tr>
+<tr>
+<td>132</td>
+<td><code>R_ARM_THM_ALU_ABS_G0_NC</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>(S + A) | T</code></td>
+</tr>
+<tr>
+<td>133</td>
+<td><code>R_ARM_THM_ALU_ABS_G1_NC</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>134</td>
+<td><code>R_ARM_THM_ALU_ABS_G2_NC</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>135</td>
+<td><code>R_ARM_THM_ALU_ABS_G3</code></td>
+<td>Static</td>
+<td>Thumb16</td>
+<td><code>S + A</code></td>
+</tr>
+<tr>
+<td>136-159</td>
+<td> </td>
+<td>Static</td>
+<td colspan="2">Reserved for future allocation</td>
+</tr>
+<tr>
+<td>160</td>
+<td><code>R_ARM_IRELATIVE</code></td>
+<td>Dynamic</td>
+<td colspan="2">Reserved for future functionality</td>
+</tr>
+<tr>
+<td>161-176</td>
+<td><code>R_ARM_PRIVATE_&lt;n&gt;</code></td>
+<td colspan="3">Private (n = 16, 17, ... 31)</td>
+</tr>
+<tr>
+<td>177-255</td>
+<td> </td>
+<td>Dynamic</td>
+<td colspan="2">Reserved for future allocation</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="static-data-relocations">
+<h5>Static Data relocations</h5>
+<p>Except as indicated in <a href="index.html#aaelf32-table4-10">Table 4-10,
+Static Data relocations with non-standard size or processing</a>
+all static data relocations have size 4, alignment 1 and write the
+full 32-bit result to the place; there is thus no need for overflow
+checking.</p>
+<p>The overflow ranges for R_ARM_ABS16 and R_ARM_ABS8 permit either
+signed or unsigned results. It is therefore not possible to detect
+an unsigned value that has underflowed by a small amount, or a
+signed value that has overflowed by a small amount.</p>
+<p id="aaelf32-table4-10">Table 4-10, Static Data
+relocations with non-standard size or processing</p>
+<table>
+<colgroup>
+<col width="6%"/>
+<col width="23%"/>
+<col width="6%"/>
+<col width="23%"/>
+<col width="42%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Code</th>
+<th>Name</th>
+<th>Size</th>
+<th>REL Addend</th>
+<th>Overflow</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>5</td>
+<td><code>R_ARM_ABS16</code></td>
+<td>2</td>
+<td>sign_extend(P[16:0])</td>
+<td><div class="documents-docsimg-container"><img alt="-32768 \le X \le 65535" src="bfa81f26fff3db47b3ccc0304a731d7c42a486fb.png"/></div></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>R_ARM_ABS8</code></td>
+<td>1</td>
+<td>sign_extend(P[8:0])</td>
+<td><div class="documents-docsimg-container"><img alt="-128 \le X \le 255" src="65edd6a76b559686395d0994376ca8854dd8bce7.png"/></div></td>
+</tr>
+<tr>
+<td>42</td>
+<td><code>R_ARM_PREL31</code></td>
+<td>4</td>
+<td>sign_extend(P[30:0])</td>
+<td>31-bit 2's complement</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="static-arm-relocations">
+<h5>Static Arm relocations</h5>
+<p>The relocations that can modify fields of an Arm instruction are
+listed in <a href="index.html">Table 4-11, Static Arm
+instruction relocations</a>. All relocations in this class relocate
+a 32-bit aligned Arm instruction by modifying part of the
+instruction. In most cases the modification is to change the
+offset, but in some cases the opcode itself may be changed (for
+example, an ADD may be converted to a SUB and vice-versa). In the
+table:</p>
+<ul>
+<li>is the 32-bit result of normal relocation processing</li>
+<li>Gn is a mask operation that is instruction dependent. See Group
+Relocations below for rules on how the mask is formed for each
+case.</li>
+</ul>
+<table id="id8">
+<caption>Table 4-11, Static Arm instruction relocations</caption>
+<colgroup>
+<col width="6%"/>
+<col width="27%"/>
+<col width="10%"/>
+<col width="29%"/>
+<col width="28%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Code</th>
+<th>Name</th>
+<th>Overflow</th>
+<th>Instruction</th>
+<th>Result Mask</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>4</td>
+<td><code>R_ARM_LDR_PC_G0</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code>, <code>LDRB</code>,
+<code>STRB</code></td>
+<td>ABS(X) &amp; G<sub>0</sub> (LDR)</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>R_ARM_ABS12</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code></td>
+<td>ABS(X) &amp; 0xFFF</td>
+</tr>
+<tr>
+<td>28</td>
+<td><code>R_ARM_CALL</code></td>
+<td>Yes</td>
+<td><code>BL/BLX</code></td>
+<td>X &amp; 0x03FFFFFE</td>
+</tr>
+<tr>
+<td>29</td>
+<td><code>R_ARM_JUMP24</code></td>
+<td>Yes</td>
+<td><code>B/BL&lt;cond&gt;</code></td>
+<td>X &amp; 0x03FFFFFE</td>
+</tr>
+<tr>
+<td>43</td>
+<td><code>R_ARM_MOVW_ABS_NC</code></td>
+<td>No</td>
+<td><code>MOVW</code></td>
+<td>X &amp; 0xFFFF</td>
+</tr>
+<tr>
+<td>44</td>
+<td><code>R_ARM_MOVT_ABS</code></td>
+<td>No</td>
+<td><code>MOVT</code></td>
+<td>X &amp; 0xFFFF0000</td>
+</tr>
+<tr>
+<td>45</td>
+<td><code>R_ARM_MOVW_PREL_NC</code></td>
+<td>No</td>
+<td><code>MOVW</code></td>
+<td>X &amp; 0xFFFF</td>
+</tr>
+<tr>
+<td>46</td>
+<td><code>R_ARM_MOVT_PREL</code></td>
+<td>No</td>
+<td><code>MOVT</code></td>
+<td>X &amp; 0xFFFF0000</td>
+</tr>
+<tr>
+<td>57</td>
+<td><code>R_ARM_ALU_PC_G0_NC</code></td>
+<td>No</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>0</sub></td>
+</tr>
+<tr>
+<td>58</td>
+<td><code>R_ARM_ALU_PC_G0</code></td>
+<td>Yes</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>0</sub></td>
+</tr>
+<tr>
+<td>59</td>
+<td><code>R_ARM_ALU_PC_G1_NC</code></td>
+<td>No</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>1</sub></td>
+</tr>
+<tr>
+<td>60</td>
+<td><code>R_ARM_ALU_PC_G1</code></td>
+<td>Yes</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>1</sub></td>
+</tr>
+<tr>
+<td>61</td>
+<td><code>R_ARM_ALU_PC_G2</code></td>
+<td>Yes</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>2</sub></td>
+</tr>
+<tr>
+<td>62</td>
+<td><code>R_ARM_LDR_PC_G1</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code>, <code>LDRB</code>,
+<code>STRB</code></td>
+<td>ABS(X) &amp; G<sub>1</sub> (LDR)</td>
+</tr>
+<tr>
+<td>63</td>
+<td><code>R_ARM_LDR_PC_G2</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code>, <code>LDRB</code>,
+<code>STRB</code></td>
+<td>ABS(X) &amp; G<sub>2</sub> (LDR)</td>
+</tr>
+<tr>
+<td>64</td>
+<td><code>R_ARM_LDRS_PC_G0</code></td>
+<td>Yes</td>
+<td><code>LDRD</code>, <code>STRD</code>, <code>LDRH</code>,
+<code>STRH</code>,</td>
+<td>ABS(X) &amp; G<sub>0</sub> (LDRS)</td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td> </td>
+<td><code>LDRSH</code>, <code>LDRSB</code></td>
+<td> </td>
+</tr>
+<tr>
+<td>65</td>
+<td><code>R_ARM_LDRS_PC_G1</code></td>
+<td>Yes</td>
+<td><code>LDRD</code>, <code>STRD</code>,</td>
+<td>ABS(X) &amp; G<sub>1</sub> (LDRS)</td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td> </td>
+<td><code>LDRH</code>, <code>STRH</code>,</td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td> </td>
+<td><code>LDRSH</code>, <code>LDRSB</code></td>
+<td> </td>
+</tr>
+<tr>
+<td>66</td>
+<td><code>R_ARM_LDRS_PC_G2</code></td>
+<td>Yes</td>
+<td><code>LDRD</code>, <code>STRD</code>,</td>
+<td>ABS(X) &amp; G<sub>2</sub> (LDRS)</td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td> </td>
+<td><code>LDRH</code>, <code>STRH</code>,</td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td> </td>
+<td><code>LDRSH</code>, <code>LDRSB</code></td>
+<td> </td>
+</tr>
+<tr>
+<td>67</td>
+<td><code>R_ARM_LDC_PC_G0</code></td>
+<td>Yes</td>
+<td><code>LDC</code>, <code>STC</code></td>
+<td>ABS(X) &amp; G<sub>0</sub> (LDC)</td>
+</tr>
+<tr>
+<td>68</td>
+<td><code>R_ARM_LDC_PC_G1</code></td>
+<td>Yes</td>
+<td><code>LDC</code>, <code>STC</code></td>
+<td>ABS(X) &amp; G<sub>1</sub> (LDC)</td>
+</tr>
+<tr>
+<td>69</td>
+<td><code>R_ARM_LDC_PC_G2</code></td>
+<td>Yes</td>
+<td><code>LDC</code>, <code>STC</code></td>
+<td>ABS(X) &amp; G<sub>2</sub> (LDC)</td>
+</tr>
+<tr>
+<td>70</td>
+<td><code>R_ARM_ALU_SB_G0_NC</code></td>
+<td>No</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>0</sub></td>
+</tr>
+<tr>
+<td>71</td>
+<td><code>R_ARM_ALU_SB_G0</code></td>
+<td>Yes</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>0</sub></td>
+</tr>
+<tr>
+<td>72</td>
+<td><code>R_ARM_ALU_SB_G1_NC</code></td>
+<td>No</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>1</sub></td>
+</tr>
+<tr>
+<td>73</td>
+<td><code>R_ARM_ALU_SB_G1</code></td>
+<td>Yes</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>1</sub></td>
+</tr>
+<tr>
+<td>74</td>
+<td><code>R_ARM_ALU_SB_G2</code></td>
+<td>Yes</td>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>ABS(X) &amp; G<sub>2</sub></td>
+</tr>
+<tr>
+<td>75</td>
+<td><code>R_ARM_LDR_SB_G0</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code>, <code>LDRB</code>,
+<code>STRB</code></td>
+<td>ABS(X) &amp; G<sub>0</sub> (LDR)</td>
+</tr>
+<tr>
+<td>76</td>
+<td><code>R_ARM_LDR_SB_G1</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code>, <code>LDRB</code>,
+<code>STRB</code></td>
+<td>ABS(X) &amp; G<sub>1</sub> (LDR)</td>
+</tr>
+<tr>
+<td>77</td>
+<td><code>R_ARM_LDR_SB_G2</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code>, <code>LDRB</code>,
+<code>STRB</code></td>
+<td>ABS(X) &amp; G<sub>2</sub> (LDR)</td>
+</tr>
+<tr>
+<td>78</td>
+<td><code>R_ARM_LDRS_SB_G0</code></td>
+<td>Yes</td>
+<td><code>LDRD</code>, <code>STRD</code>, <code>LDRH</code>,
+<code>STRH</code>, <code>LDRSH</code>, <code>LDRSB</code></td>
+<td>ABS(X) &amp; G<sub>0</sub> (LDRS)</td>
+</tr>
+<tr>
+<td>79</td>
+<td><code>R_ARM_LDRS_SB_G1</code></td>
+<td>Yes</td>
+<td><code>LDRD</code>, <code>STRD</code>, <code>LDRH</code>,
+<code>STRH</code>, <code>LDRSH</code>, <code>LDRSB</code></td>
+<td>ABS(X) &amp; G<sub>1</sub> (LDRS)</td>
+</tr>
+<tr>
+<td>80</td>
+<td><code>R_ARM_LDRS_SB_G2</code></td>
+<td>Yes</td>
+<td><code>LDRD</code>, <code>STRD</code>, <code>LDRH</code>,
+<code>STRH</code>, <code>LDRSH</code>, <code>LDRSB</code></td>
+<td>ABS(X) &amp; G<sub>2</sub> (LDRS)</td>
+</tr>
+<tr>
+<td>81</td>
+<td><code>R_ARM_LDC_SB_G0</code></td>
+<td>Yes</td>
+<td><code>LDC</code>, <code>STC</code></td>
+<td>ABS(X) &amp; G<sub>0</sub> (LDC)</td>
+</tr>
+<tr>
+<td>82</td>
+<td><code>R_ARM_LDC_SB_G1</code></td>
+<td>Yes</td>
+<td><code>LDC</code>, <code>STC</code></td>
+<td>ABS(X) &amp; G<sub>1</sub> (LDC)</td>
+</tr>
+<tr>
+<td>83</td>
+<td><code>R_ARM_LDC_SB_G2</code></td>
+<td>Yes</td>
+<td><code>LDC</code>, <code>STC</code></td>
+<td>ABS(X) &amp; G<sub>2</sub> (LDC)</td>
+</tr>
+<tr>
+<td>84</td>
+<td><code>R_ARM_MOVW_BREL_NC</code></td>
+<td>No</td>
+<td><code>MOVW</code></td>
+<td>X &amp; 0xFFFF</td>
+</tr>
+<tr>
+<td>85</td>
+<td><code>R_ARM_MOVT_BREL</code></td>
+<td>No</td>
+<td><code>MOVT</code></td>
+<td>X &amp; 0xFFFF0000</td>
+</tr>
+<tr>
+<td>86</td>
+<td><code>R_ARM_MOVW_BREL</code></td>
+<td>Yes</td>
+<td><code>MOVW</code></td>
+<td>X &amp; 0xFFFF</td>
+</tr>
+<tr>
+<td>97</td>
+<td><code>R_ARM_GOT_BREL12</code></td>
+<td>Yes</td>
+<td><code>LDR</code></td>
+<td>ABS(X) &amp; 0xFFF</td>
+</tr>
+<tr>
+<td>98</td>
+<td><code>R_ARM_GOTOFF12</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code></td>
+<td>ABS(X) &amp; 0xFFF</td>
+</tr>
+<tr>
+<td>109</td>
+<td><code>R_ARM_TLS_LDO12</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code></td>
+<td>ABS(X) &amp; 0xFFF</td>
+</tr>
+<tr>
+<td>110</td>
+<td><code>R_ARM_TLS_LE12</code></td>
+<td>Yes</td>
+<td><code>LDR</code>, <code>STR</code></td>
+<td>ABS(X) &amp; 0xFFF</td>
+</tr>
+<tr>
+<td>111</td>
+<td><code>R_ARM_TLS_IE12GP</code></td>
+<td>Yes</td>
+<td><code>LDR</code></td>
+<td>ABS(X) &amp; 0xFFF</td>
+</tr>
+</tbody>
+</table>
+<p>The formation of the initial addend in a REL type relocation for
+the various instruction classes is described in <a href="index.html">Table 4-12, Arm relocation actions by
+instruction type</a>. Insn modification describes how the 32-bit
+result X is written back to the instruction; Result_Mask is the
+value of X after the masking operation described in Table 4 11 has
+been applied.</p>
+<table id="id9">
+<caption>Table 4-12, Arm relocation actions by instruction
+type</caption>
+<colgroup>
+<col width="19%"/>
+<col width="43%"/>
+<col width="37%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Instruction</th>
+<th>REL Addend</th>
+<th>Insn modification</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>BL</code>, <code>BLX</code></td>
+<td>sign_extend (insn[23:0] &lt;&lt; 2)</td>
+<td><a href="index.html#aaelf32-rubric1">See call and jump
+relocations</a></td>
+</tr>
+<tr>
+<td><code>B</code>, <code>BL&lt;cond&gt;</code></td>
+<td>sign_extend (insn[23:0] &lt;&lt; 2)</td>
+<td><a href="index.html#aaelf32-rubric1">See call and jump
+relocations</a></td>
+</tr>
+<tr>
+<td><code>LDR</code>, <code>STR</code>,</td>
+<td>insn[11:0] * -1<sup>(insn[23] == 0)</sup></td>
+<td>insn[23] = (X &gt;= 0)</td>
+</tr>
+<tr>
+<td><code>LDRB</code>, <code>STRB</code></td>
+<td> </td>
+<td>insn[11:0] = Result_Mask(X)</td>
+</tr>
+<tr>
+<td><code>LDRD</code>, <code>STRD</code>,</td>
+<td>((insn[11:8] &lt;&lt; 4) | insn[3:0]) * -1<sup>(insn[23] ==
+0)</sup></td>
+<td>insn[23] = (X &gt;= 0)</td>
+</tr>
+<tr>
+<td><code>LDRH</code>, <code>STRH</code>, <code>LDRSH</code>,
+<code>LDRSB</code></td>
+<td> </td>
+<td>insn[11:0] = Result_Mask(X)</td>
+</tr>
+<tr>
+<td><code>LDC</code>, <code>STC</code></td>
+<td>(insn[7:0] &lt;&lt; 2) * -1<sup>(insn[23] == 0)</sup></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>insn[23] = (X &gt;= 0)</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[7:0] = Result_Mask(X) &gt;&gt; 2</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>ADD</code>, <code>SUB</code></td>
+<td>Imm(insn) * -1<sup>(opcode(insn) == SUB)</sup></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>opcode(insn) = X &gt;= 0 ? ADD : SUB</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>Imm(insn) = Result_Mask(X)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>MOVW</code></td>
+<td>See <a href="index.html">Addends and PC-bias
+compensation</a></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>insn[19:16] = Result_Mask(X) &gt;&gt; 12</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[11:0] = Result_Mask(X) &amp; 0xFFF</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>MOVT</code></td>
+<td>See <a href="index.html">Addends and PC-bias
+compensation</a>. The effect permits executing <code>MOVW</code>
+and later <code>MOVT</code> to create a 32-bit link-time constant
+in a register.</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>insn[19:16] = (Result_Mask(X) &gt;&gt; 16)
+&gt;&gt; 12</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[11:0] = (Result_Mask(X) &gt;&gt; 16) &amp;
+0xFFF</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p id="aaelf32-rubric1">Call and Jump
+relocations</p>
+<p>There is one relocation (R_ARM_CALL) for unconditional function
+call instructions (BLX and BL with the condition field set to 0xe),
+and one for jump instructions (R_ARM_JUMP24). The principal
+difference between the two relocation values is the handling of
+Arm/Thumb inter-working: on Arm architecture 5 and above, an
+instruction relocated by R_ARM_CALL that calls a function that is
+entered in Thumb state may be relocated by changing the instruction
+to BLX; an instruction relocated by R_ARM_JUMP24 must use a veneer
+to effect the transition to Thumb state. Conditional function call
+instructions (BL&lt;cond&gt;) must be relocated using
+R_ARM_JUMP24.</p>
+<p>linker may use a veneer (a sequence of instructions) to
+implement the relocated branch if the relocation is one of
+R_ARM_PC24, R_ARM_CALL, R_ARM_JUMP24, (or, in Thumb state,
+R_ARM_THM_CALL, R_ARM_THM_JUMP24, or R_ARM_THM_JUMP19) and:</p>
+<ul>
+<li>The target symbol has type STT_FUNC</li>
+<li>Or, the target symbol and relocated place are in separate
+sections input to the linker</li>
+</ul>
+<p>In all other cases a linker shall diagnose an error if
+relocation cannot be effected without a veneer. A linker generated
+veneer may corrupt register r12 (IP) and the condition flags, but
+must preserve all other registers. On M-profile processors a veneer
+may also assume the presence of a stack with at least 8 bytes (2
+words) of memory. Linker veneers may be needed for a number of
+reasons, including, but not limited to:</p>
+<ul>
+<li>Target is outside the addressable span of the branch
+instruction (+/- 32Mb)</li>
+<li>Target address and execution state will not be known until run
+time, or the address might be pre-empted</li>
+</ul>
+<p>In some systems indirect calls may also use veneers in order to
+support dynamic linkage while preserving pointer equivalence. On
+platforms that do not support dynamic pre-emption of symbols an
+unresolved weak reference to a symbol relocated by R_ARM_CALL (or,
+in Thumb state, R_ARM_THM_CALL) shall be treated as a jump to the
+next instruction (the call becomes a no-op). The behaviour of
+R_ARM_JUMP24 and static Thumb jump relocations in these conditions
+is implementation-defined.</p>
+<p>Group relocations</p>
+<p>Relocation codes 4 and 57-83 are intended to relocate sequences
+of instructions that generate a single address. They are encoded to
+extract the maximum flexibility from the Arm ADD- and SUB-immediate
+instructions without need to determine during linking the full
+sequence being used. The relocations operate by performing the
+basic relocation calculation and then partitioning the result into
+a set of groups of bits that can be statically determined. All
+processing for the formation of the groups is done on the absolute
+value of X; the sign of X is used to determine whether ADD or SUB
+instructions are used, or, if the sequence concludes with a
+load/store operation, the setting of the U bit (bit 23) in the
+instruction.</p>
+<p>A group, G<sub>n</sub>, is formed by examining the residual
+value, Y<sub>n</sub>, after the bits for group G<sub>n-1</sub> have
+been masked off. Processing for group G<sub>0</sub> starts with the
+absolute value of X. For ALU-type relocations a group is formed by
+determining the most significant bit (MSB) in the residual and
+selecting the smallest constant K<sub>n</sub> such that</p>
+<div>
+<div>
+<div>
+<div>
+<div>MSB(Y<sub>n</sub>) &amp; (255 &lt;&lt; 2K<sub>n</sub>) !=
+0,</div>
+</div>
+</div>
+</div>
+</div>
+<p>except that if Y<sub>n</sub> is 0, then K<sub>n</sub> is 0. The
+value G<sub>n</sub> is then</p>
+<div>
+<div>
+<div>
+<div>
+<div>Y<sub>n</sub> &amp; (255 &lt;&lt; 2K<sub>n</sub>),</div>
+</div>
+</div>
+</div>
+</div>
+<p>and the residual, Y<sub>n+1</sub>, for the next group is</p>
+<div>
+<div>
+<div>
+<div>
+<div>Y<sub>n</sub> &amp; ~G<sub>n</sub>.</div>
+</div>
+</div>
+</div>
+</div>
+<p>Note that if Y<sub>n</sub> is 0, then G<sub>n</sub> will also be
+0.</p>
+<p>For group relocations that access memory the residual value is
+examined in its entirety (i.e. after the appropriate sequence of
+ALU groups have been removed): if the relocation has not
+overflowed, then the residual for such an instruction will always
+be a valid offset for the indicated type of memory access.</p>
+<p>Overflow checking is always performed on the highest-numbered
+group in a sequence. For ALU-type relocations the result has
+overflowed if Yn+1 is not zero. For memory access relocations the
+result has overflowed if the residual is not a valid offset for the
+type of memory access.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>The unchecked (_NC) group relocations all include
+processing of the Thumb bit of a symbol. However, the memory forms
+of group relocations (eg R_ARM_LDR_G0) ignore this bit. Therefore
+the use of the memory forms with symbols of type STT_FUNC is
+unpredictable.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="static-thumb16-relocations">
+<h5>Static Thumb16 relocations</h5>
+<p>Relocations for 16-bit thumb instructions are shown in <a href="index.html">Table 4-13, Static Thumb-16 Relocations</a>.
+In general the addressing range of these relocations is too small
+for them to reference external symbols and they are documented here
+for completeness. A linker is not required to generate trampoline
+sequences (or veneers) to extend the branching range of the jump
+relocations.</p>
+<p>Relocation R_ARM_THM_JUMP6 is only applicable to the Thumb-2
+instruction set.</p>
+<table id="id10">
+<caption>Table 4-13, Static Thumb-16 Relocations</caption>
+<colgroup>
+<col width="4%"/>
+<col width="24%"/>
+<col width="7%"/>
+<col width="53%"/>
+<col width="12%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Code</th>
+<th>Name</th>
+<th>Overflow</th>
+<th>Instruction</th>
+<th>Result Mask</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>7</td>
+<td><code>R_ARM_THM_ABS5</code></td>
+<td>Yes</td>
+<td>LDR(1)/LDR(immediate, Thumb), STR(1)/STR(immediate, Thumb)</td>
+<td>&amp; 0x7C</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>R_ARM_THM_PC8</code></td>
+<td>Yes</td>
+<td>LDR(3)/LDR(literal), ADD(5)/ADR</td>
+<td>X &amp; 0x3FC</td>
+</tr>
+<tr>
+<td>52</td>
+<td><code>R_ARM_THM_JUMP6</code></td>
+<td>Yes</td>
+<td>CBZ, CBNZ</td>
+<td>X &amp; 0x7E</td>
+</tr>
+<tr>
+<td>102</td>
+<td><code>R_ARM_THM_JUMP11</code></td>
+<td>Yes</td>
+<td>B(2)/B</td>
+<td>X &amp; 0xFFE</td>
+</tr>
+<tr>
+<td>103</td>
+<td><code>R_ARM_THM_JUMP8</code></td>
+<td>Yes</td>
+<td>B(1)/B&lt;cond&gt;</td>
+<td>X &amp; 0x1FE</td>
+</tr>
+<tr>
+<td>132</td>
+<td><code>R_ARM_THM_ALU_ABS_G0_NC</code></td>
+<td>No</td>
+<td>ADD(2)/ADD (immediate, Thumb, 8-bit immediate), MOV(1)/MOV
+(immediate)</td>
+<td>X &amp; 0x000000FF</td>
+</tr>
+<tr>
+<td>133</td>
+<td><code>R_ARM_THM_ALU_ABS_G1_NC</code></td>
+<td>No</td>
+<td>ADD(2)/ADD (immediate, Thumb, 8-bit immediate), MOV(1)/MOV
+(immediate)</td>
+<td>X &amp; 0x0000FF00</td>
+</tr>
+<tr>
+<td>134</td>
+<td><code>R_ARM_THM_ALU_ABS_G2_NC</code></td>
+<td>No</td>
+<td>ADD(2)/ADD (immediate, Thumb, 8-bit immediate), MOV(1)/MOV
+(immediate)</td>
+<td>X &amp; 0x00FF0000</td>
+</tr>
+<tr>
+<td>135</td>
+<td><code>R_ARM_THM_ALU_ABS_G3</code></td>
+<td>No</td>
+<td>ADD(2)/ADD (immediate, Thumb, 8-bit immediate), MOV(1)/MOV
+(immediate)</td>
+<td>X &amp; 0xFF000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="static-thumb32-relocations">
+<h5>Static Thumb32 relocations</h5>
+<p>Relocations for 32-bit Thumb instructions are shown in <a href="index.html">Table 4-14, Static Thumb-32 instruction
+relocations</a>. With the exception of R_ARM_THM_CALL, these
+relocations are only applicable to 32-bit Thumb instructions.</p>
+<table id="id11">
+<caption>Table 4-14, Static Thumb-32 instruction
+relocations</caption>
+<colgroup>
+<col width="5%"/>
+<col width="30%"/>
+<col width="9%"/>
+<col width="36%"/>
+<col width="19%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Code</th>
+<th>Name</th>
+<th>Overflow</th>
+<th>Instruction</th>
+<th>Result Mask</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>10</td>
+<td><code>R_ARM_THM_CALL</code></td>
+<td>Yes</td>
+<td>BL</td>
+<td>&amp; 0x01FFFFFE</td>
+</tr>
+<tr>
+<td>30</td>
+<td><code>R_ARM_THM_JUMP24</code></td>
+<td>Yes</td>
+<td>B.W</td>
+<td>X &amp; 0x01FFFFFE</td>
+</tr>
+<tr>
+<td>47</td>
+<td><code>R_ARM_THM_MOVW_ABS_NC</code></td>
+<td>No</td>
+<td>MOVW</td>
+<td>X &amp; 0x0000FFFF</td>
+</tr>
+<tr>
+<td>48</td>
+<td><code>R_ARM_THM_MOVT_ABS</code></td>
+<td>No</td>
+<td>MOVT</td>
+<td>X &amp; 0xFFFF0000</td>
+</tr>
+<tr>
+<td>49</td>
+<td><code>R_ARM_THM_MOVW_PREL_NC</code></td>
+<td>No</td>
+<td>MOVW</td>
+<td>X &amp; 0x0000FFFF</td>
+</tr>
+<tr>
+<td>50</td>
+<td><code>R_ARM_THM_MOVT_PREL</code></td>
+<td>No</td>
+<td>MOVT</td>
+<td>X &amp; 0xFFFF0000</td>
+</tr>
+<tr>
+<td>51</td>
+<td><code>R_ARM_THM_JUMP19</code></td>
+<td>Yes</td>
+<td>B&lt;cond&gt;.W</td>
+<td>X &amp; 0x001FFFFE</td>
+</tr>
+<tr>
+<td>53</td>
+<td><code>R_ARM_THM_ALU_PREL_11_0</code></td>
+<td>Yes</td>
+<td>ADR.W</td>
+<td>X &amp; 0x00000FFF</td>
+</tr>
+<tr>
+<td>54</td>
+<td><code>R_ARM_THM_PC12</code></td>
+<td>Yes</td>
+<td>LDR&lt;,B,SB,H,SH&gt; (literal)</td>
+<td>ABS(X) &amp; 0x00000FFF</td>
+</tr>
+<tr>
+<td>87</td>
+<td><code>R_ARM_THM_MOVW_BREL_NC</code></td>
+<td>No</td>
+<td>MOVW</td>
+<td>X &amp; 0x0000FFFF</td>
+</tr>
+<tr>
+<td>88</td>
+<td><code>R_ARM_THM_MOVT_BREL</code></td>
+<td>No</td>
+<td>MOVT</td>
+<td>X &amp; 0xFFFF0000</td>
+</tr>
+<tr>
+<td>89</td>
+<td><code>R_ARM_THM_MOVW_BREL</code></td>
+<td>Yes</td>
+<td>MOVW</td>
+<td>X &amp; 0x0000FFFF</td>
+</tr>
+<tr>
+<td>131</td>
+<td><code>R_ARM_THM_GOT_BREL12</code></td>
+<td>Yes</td>
+<td>LDR(immediate, Thumb) 12-bit immediate</td>
+<td>X &amp; 0x00000FFF</td>
+</tr>
+</tbody>
+</table>
+<p>The formation of the initial addend in a REL type relocation for
+the various instruction classes is described in <a href="index.html">Table 4-15 Thumb relocation actions by
+instruction type</a>. Insn modification describes how the result X
+is written back to the instruction; Result_Mask is the value of X
+after the masking operation described in <a href="index.html">Table 4-13</a> or <a href="index.html">Table 4-14</a> has been applied.</p>
+<table id="id12">
+<caption>Table 4-15 Thumb relocation actions by instruction
+type</caption>
+<colgroup>
+<col width="28%"/>
+<col width="35%"/>
+<col width="37%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Instruction</th>
+<th>REL Addend</th>
+<th>Insn modification</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td colspan="3"><strong>Thumb-16 instructions</strong></td>
+</tr>
+<tr>
+<td><code>LDR</code>(1)/<code>LDR</code>(immediate, Thumb),
+<code>STR</code>(1)/<code>STR</code>(immediate, Thumb)</td>
+<td>insn[10:6] &lt;&lt; 2</td>
+<td>insn[10:6] = Result_Mask(X) &gt;&gt; 2</td>
+</tr>
+<tr>
+<td><code>LDR</code>(3)/<code>LDR</code>(literal),
+<code>ADD</code>(5)/<code>ADR</code></td>
+<td>See <a href="index.html">Addends and PC-bias
+compensation</a></td>
+<td>insn[7:0] = Result_Mask(X) &gt;&gt; 2</td>
+</tr>
+<tr>
+<td><code>CBZ</code>, <code>CBNZ</code></td>
+<td>See <a href="index.html">Addends and PC-bias
+compensation</a></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>insn [9] = Result_Mask(X) &gt;&gt; 6</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[7:0] = (Result_Mask(X) &gt;&gt; 1) &amp;
+0x1F</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>B</code>(2)/<code>B</code></td>
+<td>sign_extend(insn[10:0] &lt;&lt; 1)</td>
+<td>insn[10:0] = Result_Mask(X) &gt;&gt; 1</td>
+</tr>
+<tr>
+<td><code>B</code>(1)/<code>B&lt;cond&gt;</code></td>
+<td>sign_extend(insn[7:0] &lt;&lt; 1)</td>
+<td>insn[7:0] = Result_Mask(X) &gt;&gt; 1</td>
+</tr>
+<tr>
+<td><code>ADD</code>(2)/<code>ADD</code>(immediate, Thumb, 8-bit
+immediate), <code>MOV</code>(1)/<code>MOV</code>(immediate)</td>
+<td>insn[7:0]</td>
+<td>insn[7:0] = Result_Mask(X) &gt;&gt; (8*n) when relocated by
+R_ARM_THM_ALU_ABS_Gn[_NC]</td>
+</tr>
+<tr>
+<td colspan="3"><strong>Thumb-32 instructions</strong></td>
+</tr>
+<tr>
+<td><code>BL</code></td>
+<td>See <a href="index.html#aaelf32-rubric2">Thumb call and jump
+relocations</a></td>
+<td>See <a href="index.html#aaelf32-rubric2">Thumb call and jump
+relocations</a></td>
+</tr>
+<tr>
+<td><code>B.W</code></td>
+<td>See <a href="index.html#aaelf32-rubric2">Thumb call and jump
+relocations</a></td>
+<td>See <a href="index.html#aaelf32-rubric2">Thumb call and jump
+relocations</a></td>
+</tr>
+<tr>
+<td><code>B&lt;cond&gt;.W</code></td>
+<td>See <a href="index.html#aaelf32-rubric2">Thumb call and jump
+relocations</a></td>
+<td>See <a href="index.html#aaelf32-rubric2">Thumb call and jump
+relocations</a></td>
+</tr>
+<tr>
+<td><code>MOVW</code></td>
+<td>See <a href="index.html">Addends and PC-bias
+compensation</a></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>insn[19:16] = Result_Mask(X) &gt;&gt; 12</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[26] = (Result_Mask(X) &gt;&gt; 11) &amp;
+0x1</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[14:12] = (Result_Mask(X) &gt;&gt; 8) &amp;
+0x7</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[7:0] = Result_Mask(X) &amp; 0xFF</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>(encodes the least significant 16 bits)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>MOVT</code></td>
+<td>See <a href="index.html">Addends and PC-bias
+compensation</a>. The effect permits executing <code>MOVW</code>
+and later <code>MOVT</code> to create a 32-bit link-time constant
+in a register.</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>insn[19:16] = Result_Mask(X) &gt;&gt; 28</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[26] = (Result_Mask(X) &gt;&gt; 27) &amp;
+0x1</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[14:12] = (Result_Mask(X) &gt;&gt; 24) &amp;
+0x7</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[7:0] = (Result_Mask(X) &gt;&gt; 16) &amp;
+0xFF</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>(encodes the most significant 16 bits)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>ADR.W</code></td>
+<td>(insn[26] &lt;&lt; 11) | (insn[14:12] &lt;&lt; 8) |
+insn[7:0]</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>insn[26] = Result_Mask(X) &gt;&gt; 11</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[14:12] = (Result_Mask(X) &gt;&gt; 8) &amp;
+0x7</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[7:0] = Result_Mask(X) &amp; 0xFF</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>LDR&lt;,B,SB,H,SH&gt;</code>(literal)</td>
+<td>insn[11:0] * -1<sup>(insn[23] ==0)</sup></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>insn[23] = (X &gt;= 0)</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>insn[11:0] = Result_Mask(X)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>LDR</code>(immediate, Thumb) 12-bit immediate</td>
+<td>insn[11:0]</td>
+<td>insn[11:0] = Result_Mask(X)</td>
+</tr>
+</tbody>
+</table>
+<p id="aaelf32-rubric2">Thumb call and jump
+relocations</p>
+<p>R_ARM_THM_CALL is used to relocate Thumb BL (and Armv5 Thumb
+BLX) instructions. It is the Thumb equivalent of R_ARM_CALL and the
+same rules on conversion apply. Bits 0-10 of the first half-word
+encode the most significant bits of the branch offset, bits 0-10 of
+the second half-word encode the least significant bits and the
+offset is in units of half-words. Thus 22 bits encode a branch
+offset of +/- 2<sup>22</sup> bytes. When linking Armv6 (and later,
+see [ARM ARM]) Thumb code the range of the branch is increased by 2
+bits, increasing the offset range to +/- 2<sup>24</sup> bytes. The
+same relocation is used for both cases since a linker need only
+know that the code will run on a Thumb-2 (Armv6 and later) capable
+processor to exploit the additional range.</p>
+<p>The addend for B.W and B&lt;cond&gt;.W is the signed immediate
+quantity encoded in the instruction, extracted in a similar way to
+BL; for details see [<a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">ARMARM</a>].</p>
+<p>The conditions under which call and jump relocations are
+permitted to generate an ip-corrupting intra-call veneer, and their
+behaviour in conjunction with unresolved weak references, are
+specified in <a href="index.html">Static Arm
+relocations</a> under the heading Call and Jump relocations.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="static-miscellaneous-relocations">
+<h5>Static miscellaneous relocations</h5>
+<p>R_ARM_NONE records that the section containing the place to be
+relocated depends on the section defining the symbol mentioned in
+the relocation directive in a way otherwise invisible to the static
+linker. The effect is to prevent removal of sections that might
+otherwise appear to be unused.</p>
+<p>R_ARM_V4BX records the location of an Armv4t BX instruction.
+This enables a static linker to generate Armv4 compatible images
+from Armv4t objects containing only Arm code by converting the
+instruction to MOV PC, r, where r is the register used in the BX
+instruction. See [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>] for
+details. The symbol is unused and may even be the NULL symbol
+(index 0).</p>
+<p>R_ARM_TARGET1 is processed in a platform-specific manner. It may
+only be used in sections with the types SHT_INIT_ARRAY,
+SHT_PREINIT_ARRAY, and SHT_FINI_ARRAY. The relocation must be
+processed either in the same way as R_ARM_REL32 or as R_ARM_ABS32:
+a virtual platform must specify which method is used. If the
+relocation is processed as R_ARM_REL32 then the section may be
+marked read-only and coalesced with other read-only data, otherwise
+it may only be marked read-only if it does not require dynamic
+linking.</p>
+<p>R_ARM_TARGET2 is processed in a platform-specific manner. It is
+used to encode a data dependency that will only be dereferenced by
+code in the run-time support library.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="proxy-generating-relocations">
+<h5>Proxy generating relocations</h5>
+<p>number of relocations generate proxy locations that are then
+subject to dynamic relocation. The proxies are normally gathered
+together in a single table, called the Global Offset Table or GOT.
+<a href="index.html">Table 4-16, Proxy generating
+relocations</a> lists the relocations that generate proxy
+entries.</p>
+<table id="id13">
+<caption>Table 4-16, Proxy generating relocations</caption>
+<colgroup>
+<col width="5%"/>
+<col width="24%"/>
+<col width="71%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Code</th>
+<th>Relocation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>26</td>
+<td><code>R_ARM_GOT_BREL</code></td>
+<td>Offset of the GOT entry relative to the GOT origin</td>
+</tr>
+<tr>
+<td>95</td>
+<td><code>R_ARM_GOT_ABS</code></td>
+<td>Absolute address of the GOT entry</td>
+</tr>
+<tr>
+<td>96</td>
+<td><code>R_ARM_GOT_PREL</code></td>
+<td>Offset of the GOT entry from the place</td>
+</tr>
+<tr>
+<td>97</td>
+<td><code>R_ARM_GOT_BREL12</code></td>
+<td>Offset of the GOT entry from the GOT origin. Stored in the
+offset field of an Arm LDR instruction</td>
+</tr>
+<tr>
+<td>131</td>
+<td><code>R_ARM_THM_GOT_BREL12</code></td>
+<td>Offset of the GOT entry from the GOT origin. Stored in the
+offset field of a Thumb LDR instruction</td>
+</tr>
+</tbody>
+</table>
+<p>All of the GOT entries generated by these relocations are
+subject to dynamic relocation by R_ARM_GLOB_DAT of the symbol
+indicated in the generating relocation. There is no provision for
+generating an addend for the dynamic entry. GOT entries must always
+be 32-bit aligned words. Multiple GOT-generating relocations
+referencing the same symbol may share a single entry in the
+GOT.</p>
+<p>R_ARM_GOT_BREL, R_ARM_GOT_BREL12 and R_ARM_THM_GOT_BREL12
+generate an offset from the addressing origin of the GOT. To
+calculate the absolute address of an entry it is necessary to add
+in the GOT's addressing origin. How the origin is established
+depends on the execution environment and several relocations are
+provided in support of it.</p>
+<ul>
+<li>R_ARM_BASE_PREL with the NULL symbol (symbol 0) will give the
+offset of the GOT origin from the address of the place.</li>
+<li>R_ARM_BASE_ABS with the NULL symbol will give the absolute
+address of the GOT origin.</li>
+<li>Other execution environments may require that the GOT origin be
+congruent with some other base. In these environments the
+appropriate means of establishing that base will apply.</li>
+</ul>
+<p>In addition to the data generating relocations listed above the
+call and branch relocations (R_ARM_CALL, R_ARM_THM_CALL,
+R_ARM_JUMP24, R_ARM_THM_JUMP24, R_ARM_THM_JUMP19) may also require
+a proxy to be generated if the symbol will be defined in an
+external executable or may be pre-empted at execution time. The
+details of proxy sequences and locations are described in <a href="index.html">PLT Sequences and Usage Models</a>.</p>
+<p>R_ARM_GOTRELAX is reserved to permit future-linker based
+optimizations of GOT addressing sequences.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="relocations-for-thread-local-storage">
+<h5>Relocations for thread-local storage</h5>
+<p>The static relocations needed to support thread-local storage in
+a SVr4-type environment are listed in <a href="index.html#aaelf32-table4-17">Table 4-17, Static TLS relocations</a>.</p>
+<p id="aaelf32-table4-17">Table 4-17, Static TLS
+relocations</p>
+<table>
+<colgroup>
+<col width="11%"/>
+<col width="32%"/>
+<col width="16%"/>
+<col width="41%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Code</th>
+<th>Relocation</th>
+<th>Place</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>104</td>
+<td>R_ARM_TLS_GD32</td>
+<td>Data</td>
+<td>General Dynamic Model</td>
+</tr>
+<tr>
+<td>105</td>
+<td>R_ARM_TLS_LDM32</td>
+<td>Data</td>
+<td>Local Dynamic Model</td>
+</tr>
+<tr>
+<td>106</td>
+<td>R_ARM_TLS_LDO32</td>
+<td>Data</td>
+<td>Local Dynamic Model</td>
+</tr>
+<tr>
+<td>107</td>
+<td>R_ARM_TLS_IE32</td>
+<td>Data</td>
+<td>Initial Exec Model</td>
+</tr>
+<tr>
+<td>108</td>
+<td>R_ARM_TLS_LE32</td>
+<td>Data</td>
+<td>Local Exec Model</td>
+</tr>
+<tr>
+<td>109</td>
+<td>R_ARM_TLS_LDO12</td>
+<td>Arm LDR</td>
+<td>Local Dynamic Model</td>
+</tr>
+<tr>
+<td>110</td>
+<td>R_ARM_TLS_LE12</td>
+<td>Arm LDR</td>
+<td>Local Exec Model</td>
+</tr>
+<tr>
+<td>111</td>
+<td>R_ARM_TLS_IE12GP</td>
+<td>Arm LDR</td>
+<td>Initial Exec Model</td>
+</tr>
+</tbody>
+</table>
+<p>R_ARM_TLS_GD32 causes two adjacent entries to be added to the
+dynamically relocated section (the Global Offset Table, or GOT).
+The first of these is dynamically relocated by R_ARM_TLS_DTPMOD32,
+the second by R_ARM_TLS_DTPOFF32. The place resolves to the offset
+of the first of the GOT entries from the place.</p>
+<p>R_ARM_TLS_LDM32 is the same as R_ARM_TLS_GD32 except that the
+second slot in the GOT is initialized to zero and has no dynamic
+relocation.</p>
+<p>R_ARM_TLS_LDO32 resolves to the offset of the referenced data
+object (which must be local to the module) from the origin of the
+TLS block for the current module.</p>
+<p>R_ARM_TLS_LDO12 is the same as R_ARM_TLS_LDO32 except that the
+result of the relocation is encoded as the 12-bit offset of an Arm
+LDR instruction.</p>
+<p>R_ARM_TLS_LE32 resolves to the offset of the referenced data
+object (which must be in the initial data block) from the thread
+pointer ($tp).</p>
+<p>R_ARM_TLS_LE12 is the same as R_ARM_TLS_LE32 except that the
+result of the relocation is encoded as the 12-bit offset of an Arm
+LDR instruction.</p>
+<p>R_ARM_TLS_IE32 allocates an entry in the GOT that is dynamically
+relocated by R_ARM_TLS_TPOFF32. The place resolves to the offset of
+the GOT entry from the place.</p>
+<p>R_ARM_TLS_IE12GP allocates an entry in the GOT that is
+dynamically relocated by R_ARM_TLS_TPOFF32. The place resolved to
+the offset of the GOT entry from the origin of the GOT and is
+encoded in the 12-bit offset of an Arm LDR instruction.</p>
+<p>New experimental TLS relocations</p>
+<p><a href="http://www.lsd.ic.unicamp.br/~oliva/writeups/TLS/RFC-TLSDESC-ARM.txt">
+http://www.lsd.ic.unicamp.br/~oliva/writeups/TLS/RFC-TLSDESC-ARM.txt</a>
+contains a proposal for enhanced performance of TLS code. At this
+stage the proposal is still experimental, but the relocations
+R_ARM_TLS_DESC, R_ARM_TLS_GOTDESC, R_ARM_TLS_CALL,
+R_ARM_TLS_DESCSEQ, R_ARM_THM_TLS_CALL, R_ARM_THM_TLS_DESCSEQ16 and
+R_ARM_THM_TLS_DESCSEQ32 have been reserved to support this.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>The relocation R_ARM_TLS_DESC re-uses relocation
+code from the now-obsolete R_ARM_SWI24, but since the former was a
+static relocation and the new relocation is dynamic there are no
+practical conflicts in usage.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="dynamic-relocations">
+<h5>Dynamic relocations</h5>
+<p>The dynamic relocations for those execution environments that
+support only a limited number of run-time relocation types are
+listed in <a href="index.html#aaelf32-table4-18">Table 4-18, Dynamic
+relocations</a>.</p>
+<p id="aaelf32-table4-18">Table 4-18, Dynamic
+relocations</p>
+<table>
+<colgroup>
+<col width="4%"/>
+<col width="20%"/>
+<col width="76%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Code</th>
+<th>Relocation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>17</td>
+<td><code>R_ARM_TLS_DTPMOD32</code></td>
+<td>
+<p>(S  0) Resolves to
+the module number of the module defining the specified TLS symbol,
+S.</p>
+<p>(S = 0) Resolves to the module number of the
+current module (ie. the module containing this relocation).</p>
+</td>
+</tr>
+<tr>
+<td>18</td>
+<td><code>R_ARM_TLS_DTPOFF32</code></td>
+<td>Resolves to the index of the specified TLS symbol within its
+TLS block</td>
+</tr>
+<tr>
+<td>19</td>
+<td><code>R_ARM_TLS_TPOFF32</code></td>
+<td>
+<p>(S  0) Resolves to
+the offset of the specified TLS symbol, S, from the Thread Pointer,
+TP.</p>
+<p>(S = 0) Resolves to the offset of the current
+module's TLS block from the Thread Pointer, TP (the addend contains
+the offset of the local symbol within the TLS block).</p>
+</td>
+</tr>
+<tr>
+<td>20</td>
+<td><code>R_ARM_COPY</code></td>
+<td>See below</td>
+</tr>
+<tr>
+<td>21</td>
+<td><code>R_ARM_GLOB_DAT</code></td>
+<td>Resolves to the address of the specified symbol</td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>R_ARM_JUMP_SLOT</code></td>
+<td>Resolves to the address of the specified symbol</td>
+</tr>
+<tr>
+<td>23</td>
+<td>:code:R_ARM_RELATIVE`</td>
+<td>
+<p>(S  0) B(S) resolves
+to the difference between the address at which the segment defining
+the symbol S was loaded and the address at which it was linked.</p>
+<p>(S = 0) B(S) resolves to the difference between the
+address at which the segment being relocated was loaded and the
+address at which it was linked.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>With the exception of R_ARM_COPY all dynamic relocations require
+that the place being relocated is a word-aligned 32-bit object.</p>
+<p>R_ARM_JUMP_SLOT is used to mark code targets that will be
+executed. On platforms that support dynamic binding the relocations
+may be performed lazily on demand. The unresolved address stored in
+the place will initially point to the entry sequence stub for the
+dynamic linker and must be adjusted during initial loading by the
+offset of the load address of the segment from its link address.
+Addresses stored in the place of these relocations may not be used
+for pointer comparison until the relocation has been resolved. In a
+REL form of this relocation the addend, A, is always 0.</p>
+<p>R_ARM_COPY may only appear in executable objects where e_type is
+set to ET_EXEC. The effect is to cause the dynamic linker to locate
+the target symbol in a shared library object and then to copy the
+number of bytes specified by the st_size field to the place. The
+address of the place is then used to pre-empt all other references
+to the specified symbol. It is an error if the storage space
+allocated in the executable is insufficient to hold the full copy
+of the symbol. If the object being copied contains dynamic
+relocations then the effect must be as if those relocations were
+performed before the copy was made.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>R_ARM_COPY is normally only used in SVr4 type environments where
+the executable is not position independent and references by the
+code and read-only data sections cannot be relocated dynamically to
+refer to an object that is defined in a shared library.</p>
+<p>The need for copy relocations can be avoided if a
+compiler generates all code references to such objects indirectly
+through a dynamically relocatable location, and if all static data
+references are placed in relocatable regions of the image. In
+practice, however, this is difficult to achieve without source-code
+annotation; a better approach is to avoid defining static global
+data in shared libraries.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="deprecated-relocations">
+<h5>Deprecated relocations</h5>
+<p>Deprecated relocations are in the process of being retired from
+the specification and may be removed or marked obsolete in future
+revisions. An object file containing these codes is still
+conforming, but producers should be changed to use the new
+alternatives.</p>
+<p>The relocations R_ARM_GNU_VTENTRY and R_ARM_GNU_VTINHERIT have
+been used by some toolchains to facilitate unused virtual function
+elimination during linking. This method is not recommended and
+these relocations may be made obsolete in a future revision of this
+specification. These relocations may be safely ignored.</p>
+<p id="aaelf32-table4-19">Table 4-19, Deprecated
+relocations</p>
+<table>
+<colgroup>
+<col width="22%"/>
+<col width="78%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Relocation</th>
+<th>Replacement</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>R_ARM_PC24</td>
+<td>Use R_ARM_CALL or R_ARM_JUMP24</td>
+</tr>
+<tr>
+<td>R_ARM_PLT32</td>
+<td>Use R_ARM_CALL or R_ARM_JUMP24</td>
+</tr>
+<tr>
+<td>R_ARM_LDR_SBREL_11_0_NC</td>
+<td>Use R_ARM_LDR_SB_Gxxx</td>
+</tr>
+<tr>
+<td>R_ARM_ALU_SBREL_19_12_NC</td>
+<td>Use R_ARM_ALU_SB_Gxxx</td>
+</tr>
+<tr>
+<td>R_ARM_ALU_SBREL_27_20_CK</td>
+<td>Use R_ARM_ALU_SB_Gxxx</td>
+</tr>
+<tr>
+<td>R_ARM_SBREL31</td>
+<td>Use new exception table format. Previous drafts of this
+document sometimes referred to this relocation as
+R_ARM_ROSEGREL32.</td>
+</tr>
+<tr>
+<td>R_ARM_GNU_VTENTRY</td>
+<td>None</td>
+</tr>
+<tr>
+<td>R_ARM_GNU_VTINHERIT</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="obsolete-relocations">
+<h5>Obsolete relocations</h5>
+<p>Obsolete relocations are no-longer used in this revision of the
+specification (but had defined meanings in a previous revision).
+Unlike deprecated relocations, there is no, or little known, use of
+these relocation codes. Conforming object producers must not
+generate these relocation codes and conforming linkers are not
+required to process them. Future revisions of this specification
+may re-assign these codes for a new relocation type.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="private-relocations">
+<h5>Private relocations</h5>
+<p>Relocation types 112-127 and 161-176 are reserved as
+platform-specific relocations. The interpretation of these
+relocations is dependent on the value of the <code>EI_OSABI</code>
+field of the ELF header. If the value of <code>EI_OSABI</code> is
+zero or <code>ELFOSABI_ARM_AEABI</code>, these relocations are
+reserved.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="unallocated-relocations">
+<h5>Unallocated relocations</h5>
+<p>All unallocated relocation types are reserved for use by future
+revisions of this specification.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="aaelf32-section4-6-2">
+<h4>Idempotency</h4>
+<p>All RELA type relocations are idempotent. They may be reapplied
+to the place and the result will be the same. This allows a static
+linker to preserve full relocation information for an image by
+converting all REL type relocations into RELA type relocations.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>REL type relocation can never be idempotent because
+the act of applying the relocation destroys the original
+addend.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="program-loading-and-dynamic-linking">
+<h2>Program Loading and Dynamic Linking</h2>
+<div>
+<div>
+<div>
+<div id="aaelf32-section5-1">
+<h3>Introduction</h3>
+<p>This section provides details of Arm-specific definitions and
+changes relating to executable images.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="program-header">
+<h3>Program Header</h3>
+<p>The Program Header provides a number of fields that assist in
+interpretation of the file. Most of these are specified in the base
+standard. The following fields have Arm-specific meanings.</p>
+<p>p_type</p>
+<p><a href="index.html#aaelf32-table5-1">Table 5-1, Processor-specific
+segment types</a> lists the processor-specific segment types.</p>
+<p id="aaelf32-table5-1">Table 5-1,
+Processor-specific segment types</p>
+<table>
+<colgroup>
+<col width="21%"/>
+<col width="16%"/>
+<col width="64%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>p_type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>PT_ARM_ARCHEXT</td>
+<td>0x70000000</td>
+<td>Platform architecture compatibility information</td>
+</tr>
+<tr>
+<td>PT_ARM_EXIDX</td>
+<td rowspan="2">0x70000001</td>
+<td rowspan="2">Exception unwind tables</td>
+</tr>
+<tr>
+<td>PT_ARM_UNWIND</td>
+</tr>
+</tbody>
+</table>
+<p>segment of type PT_ARM_ARCHEXT contains information describing
+the platform capabilities required by the executable file. The
+segment is optional, but if present it must appear before segment
+of type PT_LOAD. The platform independent parts of this segment are
+described in <a href="index.html">Platform architecture
+compatibility data</a>.</p>
+<p>PT_ARM_EXIDX (alias PT_ARM_UNWIND) describes the location of a
+program's unwind tables.</p>
+<p>p_flags</p>
+<p>There are no processor-specific flags. All bits in the
+PT_MASKPROC part of this field are reserved to future revisions of
+this specification.</p>
+<div>
+<div>
+<div>
+<div id="platform-architecture-compatibility-data">
+<h4>Platform architecture compatibility data</h4>
+<p>This data describes the platform capabilities required by an
+executable file. It can be constructed by a linker using the
+attributes [<a href="https://developer.arm.com/docs/ihi0045/latest">ABI-addenda</a>,
+<a href="https://developer.arm.com/docs/ihi0045/latest#addenda32-section2">ADDENDUM:
+Build Attributes</a>] found in its input relocatable files, or
+otherwise.</p>
+<p>If this segment is present it shall contain at least one 32-bit
+word with meaning defined by <a href="index.html#aaelf32-table5-2">Table
+5-2</a>, <a href="index.html#aaelf32-table5-3">Table 5-3</a>, <a href="index.html#aaelf32-table5-4">Table 5-4</a>, and <a href="index.html#aaelf32-table5-5">Table 5-5</a>.</p>
+<p id="aaelf32-table5-2">Table 5-2, Common
+architecture compatibility data masks</p>
+<table>
+<colgroup>
+<col width="19%"/>
+<col width="9%"/>
+<col width="72%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>PT_ARM_ARCHEXT_FMTMSK</td>
+<td>0xff000000</td>
+<td>Masks bits describing the format of data in subsequent words.
+The masked value is described in <a href="index.html#aaelf32-table5-3">Table
+5-3</a>, below.</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_PROFMSK</td>
+<td>0x00ff0000</td>
+<td>Masks bits describing the architecture profile required by the
+executable. The masked value is described in <a href="index.html#aaelf32-table5-4">Table 5-4</a>, below.</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHMSK</td>
+<td>0x000000ff</td>
+<td>Masks bits describing the base architecture required by the
+executable. The masked value is described in <a href="index.html#aaelf32-table5-5">Table 5-5</a>, below.</td>
+</tr>
+</tbody>
+</table>
+<p><a href="index.html#aaelf32-table5-3">Table 5-3, Architecture
+compatibility data formats</a> lists the architecture compatibility
+data formats defined by this ABI. All other format identifiers are
+reserved to future revisions of this specification.</p>
+<p id="aaelf32-table5-3">Table 5-3, Architecture
+compatibility data formats</p>
+<table>
+<colgroup>
+<col width="19%"/>
+<col width="10%"/>
+<col width="71%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>PT_ARM_ARCHEXT_FMT_OS</td>
+<td>0x00000000</td>
+<td>There are no additional words of data. However, if EF_OSABI is
+non-zero, the relevant</td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>platform ABI may define additional data that follows the
+initial word.</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_FMT_ABI</td>
+<td>0x01000000</td>
+<td><a href="index.html">Platform architecture
+compatibility data (ABI format)</a>, below describes the format of
+the following data words.</td>
+</tr>
+</tbody>
+</table>
+<p><a href="index.html#aaelf32-table5-4">Table 5-4, Architecture profile
+compatibility data</a>, lists the values specifying the
+architectural profile needed by an executable file.</p>
+<p id="aaelf32-table5-4">Table 5-4, Architecture
+profile compatibility data</p>
+<table>
+<colgroup>
+<col width="24%"/>
+<col width="10%"/>
+<col width="67%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>PT_ARM_ARCHEXT_PROF_NONE</td>
+<td>0x00000000</td>
+<td>The architecture has no profile variants, or the image has no
+profile-specific constraints</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_PROF_ARM</td>
+<td>
+<p>0x00410000</p>
+<p>('A'&lt;&lt;16)</p>
+</td>
+<td>The executable file requires the Application profile</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_PROF_RT</td>
+<td>
+<p>0x00520000</p>
+<p>('R'&lt;&lt;16)</p>
+</td>
+<td>The executable file requires the Real-Time profile</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_PROF_MC</td>
+<td>
+<p>0x004D0000</p>
+<p>('M'&lt;&lt;16)</p>
+</td>
+<td>The executable file requires the Microcontroller profile</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_PROF_CLASSIC</td>
+<td>
+<p>0x00530000</p>
+<p>('S'&lt;&lt;16)</p>
+</td>
+<td>The executable file requires the 'classic' ('A' or 'R' profile)
+exception model.</td>
+</tr>
+</tbody>
+</table>
+<p><a href="index.html#aaelf32-table5-5">Table 5-5, Architecture version
+compatibility data</a> defines the values that specify the minimum
+architecture version needed by this executable file. These values
+are identical to those of the Tag_CPU_arch attribute used in the
+attributes section [<a href="https://developer.arm.com/docs/ihi0045/latest">ABI-addenda</a>,
+<a href="https://developer.arm.com/docs/ihi0045/latest#addenda32-section2">ADDENDUM:
+Build Attributes</a>] of a relocatable file.</p>
+<p id="aaelf32-table5-5">Table 5-5, Architecture
+version compatibility data</p>
+<table>
+<colgroup>
+<col width="20%"/>
+<col width="6%"/>
+<col width="74%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Meaning the executable file needs (at least)
+...</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>PT_ARM_ARCHEXT_ARCH_UNKN</td>
+<td>0x00</td>
+<td>The needed architecture is unknown or specified in some other
+way</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv4</td>
+<td>0x01</td>
+<td>Architecture v4</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv4T</td>
+<td>0x02</td>
+<td>Architecture v4T</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv5T</td>
+<td>0x03</td>
+<td>Architecture v5T</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv5TE</td>
+<td>0x04</td>
+<td>Architecture v5TE</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv5TEJ</td>
+<td>0x05</td>
+<td>Architecture v5TEJ</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv6</td>
+<td>0x06</td>
+<td>Architecture v6</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv6KZ</td>
+<td>0x07</td>
+<td>Architecture v6KZ</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv6T2</td>
+<td>0x08</td>
+<td>Architecture v6T2</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv6K</td>
+<td>0x09</td>
+<td>Architecture v6K</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv7</td>
+<td>0x0A</td>
+<td>Architecture v7 (in this case the architecture profile may also
+be required to fully specify the needed execution environment)</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv6M</td>
+<td>0x0B</td>
+<td>Architecture v6M (e.g. Cortex-M0)</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv6SM</td>
+<td>0x0C</td>
+<td>Architecture v6S-M (e.g. Cortex-M0)</td>
+</tr>
+<tr>
+<td>PT_ARM_ARCHEXT_ARCHv7EM</td>
+<td>0x0D</td>
+<td>Architecture v7E-M</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div id="platform-architecture-compatibility-data-abi-format">
+<h5>Platform architecture compatibility data (ABI format)</h5>
+<p>The status of this section is informative. It records a proposal
+that might be adopted.</p>
+<p>The data following the word defined by <a href="index.html">Platform architecture compatibility
+data</a> consists of an array of 2-byte signed integers (starting
+at offset 4 in the architecture compatibility data segment)
+followed by a number of null-terminated byte strings (NTBS). The
+p_filesz field of the segment header gives the total size in bytes
+of the architecture compatibility data.</p>
+<p>The integer array maps the ABI public attribute tags [<a href="https://developer.arm.com/docs/ihi0045/latest">ABI-addenda</a>,
+<a href="https://developer.arm.com/docs/ihi0045/latest#addenda32-section2">ADDENDUM:
+Build Attributes</a>] as follows.</p>
+<ul>
+<li>Array[0] contains the number of elements in array.</li>
+<li>If tag <div class="documents-docsimg-container"><img alt="\ge" src="744a7e944983312265f2ed7497ddf42da26942a6.png"/></div> array[0], the
+value of tag for the executable file is 0. Only tags with non-0
+values need to be mapped.</li>
+<li>If 4 <div class="documents-docsimg-container"><img alt="\le" src="671cf21691fd6f03157bda736f8d4910c1261519.png"/></div> tag &lt;
+array[0], the value of tag for the executable file is array[tag]. A
+negative value v denotes that tag has the NTBS value found at
+offset -v from the start of the segment.</li>
+<li>Array[1] contains the major version number and array[2] the
+minor version number of the ABI release to which the data conforms
+(at least 2, 8). Array[3] is reserved and should be 0.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="program-loading">
+<h3>Program Loading</h3>
+<p>There are no processor-specific definitions relating to program
+loading.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="dynamic-linking">
+<h3>Dynamic Linking</h3>
+<div>
+<div>
+<div>
+<div id="dynamic-section">
+<h4>Dynamic Section</h4>
+<p><a href="index.html#aaelf32-table5-6">Table 5-6, Arm-specific dynamic
+array tags</a> lists the processor-specific dynamic array tags.</p>
+<p id="aaelf32-table5-6">Table 5-6, Arm-specific
+dynamic array tags</p>
+<table>
+<colgroup>
+<col width="25%"/>
+<col width="16%"/>
+<col width="9%"/>
+<col width="25%"/>
+<col width="25%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>d_un</th>
+<th>Executable</th>
+<th>Shared Object</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>DT_ARM_RESERVED1</td>
+<td>0x70000000</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>DT_ARM_SYMTABSZ</td>
+<td>0x70000001</td>
+<td>d_val</td>
+<td>Platform specific</td>
+<td>Platform specific</td>
+</tr>
+<tr>
+<td>DT_ARM_PREEMPTMAP</td>
+<td>0x70000002</td>
+<td>d_ptr</td>
+<td>Platform specific</td>
+<td>Platform specific</td>
+</tr>
+<tr>
+<td>DT_ARM_RESERVED2</td>
+<td>0x70000003</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<p>DT_ARM_SYMTABSZ gives the number of entries in the dynamic
+symbol table, including the initial dummy symbol.</p>
+<p>DT_ARM_PREEMPTMAP holds the address of the pre-emption map for
+platforms that use the DLL static binding model. See <a href="index.html">Symbol Pre-emption in DLLs</a> for details.
+On platforms that permit use of a pre-emption map, the DT_SONAME
+tag must be present in all shared objects.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>Some executable images may exist that use
+DT_ARM_RESERVED1 and DT_ARM_RESERVED2 instead of DT_ARM_SYMTABSZ
+and DT_ARM_PREEMPTMAP respectively. These tags use the d_un field
+in a manner incompatible with the Generic ELF requirements.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="post-link-processing">
+<h3>Post-Link Processing</h3>
+<p>For some execution environments a further processing step may be
+needed after linking before an executable can be run on the target
+environment. The precise processing may depend on both the target
+platform. Depending on the nature of the post-processing it may be
+done in any of following places</p>
+<ul>
+<li>As a final step during linking</li>
+<li>As a preliminary step during execution of the image</li>
+<li>As a separate post-linking step</li>
+</ul>
+<p>In some cases the result may still be an ELF executable image,
+in others it may produce an image that is in some other format more
+appropriate to the operating system.</p>
+<div>
+<div>
+<div>
+<div id="production-of-be-8-images">
+<h4>Production of BE-8 images</h4>
+<p>Images that are expected to execute in big-endian mode on
+processors that implement Architecture version 6 or higher will
+normally need to be post-processed to convert the instructions that
+are in big-endian byte order to little-endian as expected by the
+processor. The mapping symbol information can be used to do this
+transformation accurately. In all segments that contain executable
+code:</p>
+<ul>
+<li>For areas mapped as data ($d or $d.&lt;any...&gt;) no changes
+are made</li>
+<li>For areas mapped as Thumb ($t or $t.&lt;any...&gt;) each
+half-word aligned pair of bytes are swapped</li>
+<li>For areas mapped as Arm ($a or $a.&lt;any...&gt;) each
+word-aligned object is swapped so that the first and fourth bytes
+are exchanged and the second and third exchanged.</li>
+</ul>
+<p>An ELF image that has been transformed in this manner is marked
+by setting EF_ARM_BE8 in the e_flags field.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>If BE-8 images are subject to further relocation of
+instructions (either by a dynamic linker or by further post-linking
+operations) account must be taken of the fact that the instructions
+are now in little-endian format.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="appendix-specimen-code-for-plt-sequences">
+<h2>APPENDIX Specimen Code for PLT Sequences</h2>
+<p>The status of this appendix is informative.</p>
+<div>
+<div>
+<div>
+<div id="dll-like-single-address-space-plt-linkage">
+<h3>DLL-like, single address space, PLT linkage</h3>
+<p>The simplest code sequence for the PLT entry corresponding to
+imported symbol X is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>LDR   ip, [pc, #0]         ; Load the 32-bit offset of my PLTGOT entry from SB
+LDR   pc, [ip, sb]!        ; Branch indirect through the PLTGOT entry leaving ip addressing the PLTGOT slot
+DCD   R_ARM_GOT_BREL(X)    ; GOT_BASE = SB
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The final DCD is subject to relocation by a PLTGOT-generating
+relocation directive. This directive may be processed by a
+target-specific linker or by a target-specific post-linker. After
+processing:</p>
+<ul>
+<li>The place contains the 32-bit offset from the static base (sb)
+of the PLTGOT entry for X.</li>
+<li>The PLTGOT entry for X is subject to an R_ARM_JUMP_SLOT(X)
+dynamic relocation.</li>
+</ul>
+<p>more complicated sequence that avoids one of the memory accesses
+is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>ADD   ip, sb, #:SB_OFFSET_27_20:__PLTGOT(X)    ; R_ARM_ALU_SB_G0_NC(__PLTGOT(X))
+ADD   ip, ip, #:SB_OFFSET_19_12:__PLTGOT(X)    ; R_ARM_ALU_SB_G1_NC(__PLTGOT(X))
+LDR   pc, [ip, #:SB_OFFSET_11_0:__PLTGOT(X)]!  ; R_ARM_LDR_SB_G2(__PLTGOT(X))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>If the linker can place all PLTGOT entries within 1MB of SB, the
+sequence becomes:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>ADD   ip, sb, #:SB_OFFSET_19_12:__PLTGOT(X)    ; R_ARM_ALU_SB_G0_NC(__PLTGOT(X))
+LDR   pc, [ip, #:SB_OFFSET_11_0:__PLTGOT(X)]!  ; R_ARM_LDR_SB_G1(__PLTGOT(X))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The write-back on the final LDR ensures that ip contains the
+address of the PLTGOT entry. This is critical to incremental
+dynamic linking.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="dll-like-multiple-virtual-address-space-plt-linkage">
+<h3>DLL-like, multiple virtual address space, PLT linkage</h3>
+<p>The code sequence for the PLT entry corresponding to imported
+symbol X is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>LDR   ip, [pc, #0]      ; Load the 32-bit address of my PLTGOT entry
+LDR   pc, [ip]          ; Branch indirect through the PLTGOT entry
+DCD   R_ARM_GOT_ABS(X)  ; GOT_BASE = 0
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Note that ip addresses the PLTGOT entry, which is critical to
+incremental dynamic linking.</p>
+<p>The final DCD is subject to relocation by a PLTGOT-generating
+relocation directive. This directive may be processed by a
+target-specific linker or by a target-specific post-linker. After
+processing:</p>
+<ul>
+<li>The place contains the 32-bit address of the PLTGOT entry for
+X.</li>
+<li>The PLTGOT entry for X is subject to an R_ARM_JUMP_SLOT(X)
+dynamic relocation.</li>
+</ul>
+<p>Because a DLL has two segments that can be loaded independently,
+there is no more efficient address generating sequence - analogous
+to the SB-relative sequence shown in above - that does not require
+complex instruction field-relocating directives to be processed at
+dynamic link time.</p>
+<p>This ABI requires dynamic relocations to relocate 32-bit fields,
+so there is no sequence analogous to that of the preceding
+subsection.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="svr4-dso-like-plt-linkage">
+<h3>SVr4 DSO-like PLT linkage</h3>
+<p>The simplest code sequence for the PLT entry corresponding to
+imported symbol X is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>     LDR   ip, L2         ; Load the 32-bit pc-relative offset of my PLTGOT entry
+L1:  ADD   ip, ip, pc     ; formulate its address...
+     LDR   pc, [ip]       ; Branch through the PLTGOT entry addressed by ip
+L2:  DCD   R_ARM_GOT_PREL(X) + (L2 - L1 - 8)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The dynamic linker relies on ip addressing the PLTGOT entry for
+X.</p>
+<p>The final DCD is subject to static relocation by a
+PLTGOT-generating relocation directive. This directive may be
+processed by a target-specific linker or by a target-specific
+post-linker. After processing:</p>
+<ul>
+<li>The place contains the 32-bit offset from L1+8 to the PLTGOT
+entry for X.</li>
+<li>The PLTGOT entry for X is subject to an R_ARM_JUMP_SLOT(X)
+dynamic relocation.</li>
+</ul>
+<p>A more complicated, pc-relative, sequence that avoids one of the
+memory accesses is shown below. Because an SVr4 executable file is
+compact (usually &lt; 2<sup>28</sup> bytes) and rigid (it has only
+one base address, whereas a DLL has two), all the relocations can
+be fully resolved during static linking.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>ADD   ip, pc, #-8:PC_OFFSET_27_20: __PLTGOT(X)    ; R_ARM_ALU_PC_G0_NC(__PLTGOT(X))
+ADD   ip, ip, #-4:PC_OFFSET_19_12: __PLTGOT(X)    ; R_ARM_ALU_PC_G1_NC(__PLTGOT(X))
+LDR   pc, [ip, #0:PC_OFFSET_11_0: __PLTGOT(X)]!   ; R_ARM_LDR_PC_G2(__PLTGOT(X))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The write-back on the final LDR ensures that ip contains the
+address of the PLTGOT entry. This is critical to incremental
+dynamic linking.</p>
+<p>In effect, the sequence constructs a 28-bit offset for the LDR.
+The first relocation does the right thing because pc addresses the
+LDR, so, in general, it picks out bits [27-20] of that offset. The
+third relocation picks out bits [11-0] of the same offset. The
+second relocation needs to construct bits [19-12] of the offset
+from dot+4 to X., that is, from dot to X-4. Ignoring the -4
+sometimes produces the wrong answer!</p>
+<p>Encoding such a small addend requires that the initial value not
+be shifted by the shift applied to the result value. This is
+expected for a RELA-type relocation that can encode -4 directly.
+However, a REL-type must encode the initial value of the addend
+using SUB ip, ip, #4.</p>
+<p>In small enough DSOs (&lt; 2<sup>20</sup> bytes from the PLT to
+the PLTGOT) the first instruction can be omitted, and the sequence
+collapses to the following.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>SUB   ip, pc, #4:PC_OFFSET_19_12: __PLTGOT(X)    ; R_ARM_ALU_PC_G0_NC(__PLTGOT(X))
+LDR   pc, [ip, #0:PC_OFFSET_11_0: __PLTGOT(X)]!  ; R_ARM_LDR_PC_G2(__PLTGOT(X))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="svr4-executable-like-plt-linkage">
+<h3>SVr4 executable-like PLT linkage</h3>
+<p>An SVr4 executable does not need be position independent, its
+writable segment can be relocated dynamically, and it is compact
+and rigid. Therefore, its PLT entries can use the simple, absolute
+code sketched in <a href="index.html">DLL-like, multiple
+virtual address space, PLT linkage</a> or the more complex,
+pc-relative, versions sketched in <a href="index.html">SVr4 DSO-like PLT linkage</a>, as the tool
+chain chooses.</p>
+<p>In both cases, ip must address the corresponding PLTGOT slot at
+the point where the PLT calls through it.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="conventions-for-symbols-containing">
+<h2>CONVENTIONS FOR SYMBOLS CONTAINING $</h2>
+<p>The status of this appendix is informative.</p>
+<p>A toolchain is not required to support any of the conventions
+described in this appendix; however, it is recommended that if
+symbols matching the patterns described are used, then the
+following conventions are adhered to.</p>
+<div>
+<div>
+<div>
+<div id="base-length-and-limit-symbols">
+<h3>Base, Length and Limit symbols</h3>
+<p>A number of symbols may be used to delimit the addresses and
+sizes of aspects of a linked image. These symbols are of the
+following general forms:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Load$$region_name$$Base
+Image$$region_name$${Base|Length|Limit}
+Image$$region_name$$ZI$${Base|Length|Limit}
+Image$${RO|RW|ZI}$${Base|Limit}
+SectionName$${Base|Limit}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>A toolchain may define these symbols unconditionally, or only if
+they are referred to by the application: so a post-linker must not
+depend on the existence of any of these symbols.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="sub-class-and-super-class-symbols">
+<h3>Sub-class and Super-class Symbols</h3>
+<p>A symbol $Sub$$name is the sub-class version of name. A symbol
+$Super$$name is the super-class version of name. In the presence of
+a definition of both name and $Sub$$name:</p>
+<ul>
+<li>A reference to name resolves to the definition of
+$Sub$$name.</li>
+<li>A reference to $Super$$name resolves to the definition of
+name.</li>
+</ul>
+<p>It is an error to refer to $Sub$$name, or to define
+$Super$$name, or to use $Sub$$... or $Super$$... recursively.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="symbols-for-veneering-and-interworking-stubs">
+<h3>Symbols for Veneering and Interworking Stubs</h3>
+<p>A veneer symbol has the same binding as the symbol it veneers.
+They are used to label sequences of instructions that are
+automatically generated during linking. The general format of the
+symbols is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>${Ven|other}${AA|AT|TA|TT}${I|L|S}[$PI]$$symbol_name
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>where AA, AT, TA, or TT denotes the type of the veneer — Arm to
+Arm, Arm to Thumb, etc; I, L, or S denotes inline (the target
+follows immediately), long reach (32-bit), or short reach
+(typically 26-bit); and $PI denotes that the veneer is position
+independent.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

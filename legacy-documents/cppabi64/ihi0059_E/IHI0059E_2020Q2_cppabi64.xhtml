@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>C++ Application Binary Interface Standard for the Arm®
+64-bit Architecture — ABI 2020Q2 documentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9"/>
+
+<meta name="keywords" content=""/></head>
+<body>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="c-application-binary-interface-standard-for-the-arm-64-bit-architecture">
+<h2>C++ Application Binary Interface Standard for the Arm® 64-bit
+Architecture<a href="index.html#c-application-binary-interface-standard-for-the-arm-64-bit-architecture"/></h2>
+<p>Document number: IHI 0059E, current through AArch64 ABI release
+2020Q2</p>
+<p>Date of Issue: 1<sup>st</sup> July 2020</p>
+
+<div>
+<div id="preamble">
+<h2>Preamble<a href="index.html#preamble"/></h2>
+<div>
+<div id="abstract">
+<h3>Abstract<a href="index.html#abstract"/></h3>
+<p>This document describes the C++ Application Binary Interface for
+the Arm 64-bit architecture.</p>
+</div>
+</div>
+<div>
+<div id="keywords">
+<h3>Keywords<a href="index.html#keywords"/></h3>
+<p>C++, Application Binary Interface, ABI, AArch64, C++ ABI,
+generic C++ ABI</p>
+</div>
+</div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it<a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it"/></h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/architectures/system-architectures/software-standards/abi">https://developer.arm.com/architectures/system-architectures/software-standards/abi</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <a href="mailto:arm.eabi%40arm.com">arm.eabi@arm.com</a>.</p>
+</div>
+</div>
+<div>
+<div id="licence">
+<h3>Licence<a href="index.html#licence"/></h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice<a href="index.html#non-confidential-proprietary-notice"/></h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © 2010-2020 Arm Limited or its affiliates. All
+rights reserved.</p>
+<div>
+<div>
+<div>
+<div>Arm Limited. Company 02557590 registered in
+England.</div>
+</div>
+<div>
+<div>110 Fulbourn Road, Cambridge, England CB1
+9NJ.</div>
+</div>
+<div>
+<div>LES-PRE-20349</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="contents">
+<h3>Contents<a href="index.html#contents"/></h3>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#c-application-binary-interface-standard-for-the-arm-64-bit-architecture" id="id2">C++ Application Binary Interface Standard for
+the Arm® 64-bit Architecture</a>
+<ul>
+<li><a href="index.html#preamble" id="id3">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id4">Abstract</a></li>
+<li><a href="index.html#keywords" id="id5">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id6">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id7">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id8">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id9">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id10">About this
+document</a>
+<ul>
+<li><a href="index.html#change-control" id="id11">Change
+Control</a></li>
+<li><a href="index.html#change-history" id="id12">Change
+History</a></li>
+<li><a href="index.html#references" id="id13">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id14">Terms
+and Abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id15">Your licence to use this specification</a></li>
+</ul>
+</li>
+<li><a href="index.html#overview" id="id16">Overview</a>
+<ul>
+<li><a href="index.html#the-generic-c-abi" id="id17">The Generic
+C++ ABI</a></li>
+<li><a href="index.html#the-exception-handling-abi-for-the-arm-architecture" id="id18">The Exception Handling ABI for the Arm
+architecture</a></li>
+</ul>
+</li>
+<li><a href="index.html#the-c-abi-supplement" id="id19">The C++
+ABI Supplement</a>
+<ul>
+<li><a href="index.html#summary-of-differences-from-and-additions-to-the-generic-c-abi" id="id20">Summary of differences from and additions to
+the generic C++ ABI</a></li>
+<li><a href="index.html#differences-in-detail" id="id21">Differences in detail</a></li>
+</ul>
+</li>
+<li><a href="index.html#eh-abi-level-i-implementation-abi-for-aarch64" id="id22">EH ABI Level I: Implementation ABI for
+AArch64</a>
+<ul>
+<li><a href="index.html#transferring-control-to-a-landing-pad" id="id23">Transferring Control to a Landing Pad</a></li>
+</ul>
+</li>
+<li><a href="index.html#eh-abi-level-iii-implementation-abi-for-gnu-linux" id="id24">EH ABI Level III: Implementation ABI for GNU
+Linux</a>
+<ul>
+<li><a href="index.html#introduction" id="id25">Introduction</a></li>
+<li><a href="index.html#data-structures" id="id26">Data
+Structures</a></li>
+<li><a href="index.html#standard-runtime-initialization" id="id27">Standard Runtime Initialization</a></li>
+<li><a href="index.html#throwing-an-exception" id="id28">Throwing
+an Exception</a></li>
+<li><a href="index.html#catching-an-exception" id="id29">Catching
+an Exception</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="about-this-document">
+<h2>About this document<a href="index.html#about-this-document"/></h2>
+<div>
+<div id="change-control">
+<h3>Change Control<a href="index.html#change-control"/></h3>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current Status and Anticipated Changes<a href="index.html#current-status-and-anticipated-changes"/></h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li><strong>Release</strong>Arm considers this specification to
+have enough implementations, which have received sufficient
+testing, to verify that it is correct. The details of these
+criteria are dependent on the scale and complexity of the change
+over previous versions: small, simple changes might only require
+one implementation, but more complex changes require multiple
+independent implementations, which have been rigorously tested for
+cross-compatibility. Arm anticipates that future changes to this
+specification will be limited to typographical corrections,
+clarifications and compatible extensions.</li>
+<li><strong>Beta</strong>Arm considers this specification to be
+complete, but existing implementations do not meet the requirements
+for confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li><strong>Alpha</strong>The content of this specification is a
+draft, and Arm considers the likelihood of future incompatible
+changes to be significant.</li>
+</ul>
+<p>All content in this document is at the <strong>Release</strong>
+quality level.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="change-history">
+<h3>Change History<a href="index.html#change-history"/></h3>
+<table>
+<colgroup>
+<col width="10%"/>
+<col width="23%"/>
+<col width="7%"/>
+<col width="60%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>00bet3</td>
+<td>15th December 2010</td>
+<td>MGD</td>
+<td>Beta release.</td>
+</tr>
+<tr>
+<td>1.0</td>
+<td>22nd May 2013</td>
+<td>RE</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>31st December 2018</td>
+<td>OS</td>
+<td>Typographical changes.</td>
+</tr>
+<tr>
+<td>2019Q4</td>
+<td>30st January 2020</td>
+<td>TS</td>
+<td>Add name mangling rules for half-precision Brain floating point
+format: <a href="index.html">Summary of differences from
+and additions to the generic C++ ABI</a>.</td>
+</tr>
+<tr>
+<td>2020Q2</td>
+<td>1st July 2020</td>
+<td>TS</td>
+<td>Specify behaviour between BTI and unwind library.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div id="references">
+<h3>References<a href="index.html#references"/></h3>
+<p>This document refers to, or is referred to by, the following
+documents.</p>
+<table>
+<colgroup>
+<col width="20%"/>
+<col width="35%"/>
+<col width="45%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>URL or other reference</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><a href="https://developer.arm.com/documentation/ihi0055/latest">AAPCS64</a></td>
+<td>IHI 0055</td>
+<td>Procedure Call Standard for the Arm 64-bit Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/documentation/ihi0056/latest">AAELF64</a></td>
+<td>IHI 0056</td>
+<td>ELF for the Arm 64-bit Architecture</td>
+</tr>
+<tr>
+<td>CPPABI64</td>
+<td>This document</td>
+<td>C++ ABI for the Arm 64-bit Architecture</td>
+</tr>
+<tr>
+<td>GC++ABI</td>
+<td><a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">http://itanium-cxx-abi.github.io/cxx-abi/abi.html</a></td>
+<td>Generic C++ ABI</td>
+</tr>
+<tr>
+<td>Generic ELF</td>
+<td><a href="http://www.sco.com/developers/gabi/">http://www.sco.com/developers/gabi/</a></td>
+<td>Generic ELF, 17th December 2003 Draft</td>
+</tr>
+<tr>
+<td>ISO C++</td>
+<td>ISO/IEC 14882:2003 (14882:1988 with Technical Corrigendum)</td>
+<td>International Standard ISO/IEC 14882:2003 - Programming
+languages C++</td>
+</tr>
+<tr>
+<td><a href="https://refspecs.linuxfoundation.org/LSB_4.0.0/LSB-Core-generic/LSB-Core-generic.html">
+LSB</a></td>
+<td><a href="https://refspecs.linuxfoundation.org/LSB_4.0.0/LSB-Core-generic/LSB-Core-generic.html">
+https://refspecs.linuxfoundation.org/LSB_4.0.0/LSB-Core-generic/LSB-Core-generic.html</a></td>
+<td>Linux Standards Base Core Specification 4.0</td>
+</tr>
+<tr>
+<td><a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a></td>
+<td><a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html</a></td>
+<td>Itanium C++ ABI: Exception Handling</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and Abbreviations<a href="index.html#terms-and-abbreviations"/></h3>
+<p>The ABI for the Arm 64-bit Architecture uses the following terms
+and abbreviations.</p>
+<ul>
+<li>A32The instruction set named Arm in the Armv7 architecture; A32
+uses 32-bit fixed-length instructions.</li>
+<li>A64The instruction set available when in AArch64 state.</li>
+<li>AAPCS64Procedure Call Standard for the Arm 64-bit Architecture
+(AArch64)</li>
+<li>AArch32The 32-bit general-purpose register width state of the
+Armv8 architecture, broadly compatible with the Armv7-A
+architecture.</li>
+<li>AArch64The 64-bit general-purpose register width state of the
+Armv8 architecture.</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+<cite>Linux ABI for the Arm Architecture</cite>.</li>
+<li>A particular aspect of the specifications to which
+independently produced relocatable files must conform in order to
+be statically linkable and executable. For example, the C++ ABI for
+the Arm Architecture, <a href="https://developer.arm.com/documentation/ihi0056/latest">ELF for
+the Arm Architecture</a>, ...</li>
+</ol>
+</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>Branch Target IdentificationSecurity technique ensuring a
+degree of control flow integrity by marking valid targets of
+indirect branches.</li>
+<li>Floating pointDepending on context floating point means or
+qualifies: (a) floating-point arithmetic conforming to IEEE 754
+2008; (b) the Armv8 floating point instruction set; (c) the
+register set shared by (b) and the Armv8 SIMD instruction set.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>SIMDSingle Instruction Multiple Data - A term denoting or
+qualifying: (a) processing several data items in parallel under the
+control of one instruction; (b) the Arm v8 SIMD instruction set:
+(c) the register set shared by (b) and the Armv8 floating point
+instruction set.</li>
+<li>SIMD and floating pointThe Arm architecture's SIMD and Floating
+Point architecture comprising the floating point instruction set,
+the SIMD instruction set and the register set shared by them.</li>
+<li>T32The instruction set named Thumb in the Armv7 architecture;
+T32 uses 16-bit and 32-bit instructions.</li>
+</ul>
+<p>More specific terminology is defined when it is first used.</p>
+</div>
+</div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification<a href="index.html#your-licence-to-use-this-specification"/></h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="overview">
+<h2>Overview<a href="index.html#overview"/></h2>
+<p>The C++ ABI for the Arm 64-bit architecture comprises the
+following sub-components.</p>
+<ul>
+<li>The generic C++ ABI, summarized in <a href="index.html">The Generic C++ ABI</a>, is the referenced
+base standard for this component.</li>
+<li>The C++ ABI supplement in <a href="index.html">The C++
+ABI Supplement</a> details Arm-specific additions to and deviations
+from the generic standard.</li>
+<li>The generic C++ exception handling ABI summarized in <a href="index.html">The Exception Handling ABI for the Arm
+architecture</a>, describes the language-independent and
+C++-specific aspects of exception handling.</li>
+<li>The C++ exception handling supplement for AArch64 in <a href="index.html">EH ABI Level I: Implementation ABI for
+AArch64</a> details Arm-specific adddtions to and deviations from
+the generic standard.</li>
+<li>The C++ exception handling ABI supplement for GNU/Linux in
+<a href="index.html">EH ABI Level III: Implementation ABI
+for GNU Linux</a> details Arm-specific additions to and deviations
+from the generic standard for GNU/Linux systems.</li>
+</ul>
+<p>The generic C++ ABI is implicitly an SVr4-based standard, and
+takes an SVr4 position on symbol visibility and vague linkage. This
+document does not cover extensions for DLL-based environments.</p>
+<div>
+<div id="the-generic-c-abi">
+<h3>The Generic C++ ABI<a href="index.html#the-generic-c-abi"/></h3>
+<p>The generic C++ ABI [GC++ABI] (originally developed for SVr4 on
+Itanium) specifies:</p>
+<ul>
+<li>The layout of C++ non-POD class types in terms of the layout of
+POD types (specified for this ABI by the Procedure Call Standard
+for the Arm Architecture [<a href="https://developer.arm.com/documentation/ihi0055/latest">AAPCS64</a>]).</li>
+<li>How class types requiring copy construction are passed as
+parameters and results.</li>
+<li>The content of run-time type information (RTTI).</li>
+<li>Necessary APIs for object construction and destruction.</li>
+<li>How names with linkage are mangled (name mangling).</li>
+</ul>
+<p>The generic C++ ABI refers to a separate Itanium-specific
+specification of exception handling. When the generic C++ ABI is
+used as a component of this ABI, corresponding reference must be
+made to the generic C++ exception handling ABI as summarised in
+<a href="index.html">The Exception Handling ABI for the
+Arm architecture</a>, and the C++ exception handling ABI supplement
+in <a href="index.html">EH ABI Level III: Implementation
+ABI for GNU Linux</a>.</p>
+</div>
+</div>
+<div>
+<div id="the-exception-handling-abi-for-the-arm-architecture">
+<h3>The Exception Handling ABI for the Arm architecture<a href="index.html#the-exception-handling-abi-for-the-arm-architecture"/></h3>
+<p>In common with [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>],
+this ABI specifies table-based unwinding that separates
+language-independent unwinding from language specific aspects. The
+[<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+specification describes three levels of ABI:</p>
+<div>
+<div>
+<div>
+<div>
+<p>Level I. A Base API, interfaces common to all languages and
+implementations.</p>
+<p>Level II. The C++ ABI, interfaces for interoperability of C++
+implementations.</p>
+<p>Level III. The Implementation ABI specific to a particular
+runtime implementation.</p>
+</div>
+</div>
+</div>
+</div>
+<p><a href="index.html">EH ABI Level I: Implementation ABI
+for AArch64</a> describes EH Level I ABI used on AArch64
+systems.</p>
+<p>The AArch64 C++ EH ABI uses Level II of the Itanium exception
+handling ABI as specified.</p>
+<p><a href="index.html">EH ABI Level III: Implementation
+ABI for GNU Linux</a> describes the EH Level III ABI used on
+GNU/Linux systems.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="the-c-abi-supplement">
+<h2>The C++ ABI Supplement<a href="index.html#the-c-abi-supplement"/></h2>
+<div>
+<div id="summary-of-differences-from-and-additions-to-the-generic-c-abi">
+<h3>Summary of differences from and additions to the generic C++
+ABI<a href="index.html#summary-of-differences-from-and-additions-to-the-generic-c-abi"/></h3>
+<p>This section summarizes the differences between the C++ ABI for
+the Arm 64-bit architecture and the generic C++ ABI. Section
+numbers in captions refer to the generic C++ ABI specification.
+Larger differences are detailed in subsections of <a href="index.html">Differences in detail</a>.</p>
+<p><strong>GC++ABI 2.2 POD Data Types</strong></p>
+<p>The GC++ABI defines the way in which empty class types are laid
+out. For the purposes of parameter passing in [<a href="https://developer.arm.com/documentation/ihi0055/latest">AAPCS64</a>],
+a parameter whose type is an empty class shall be treated as if its
+type were an aggregate with a single member of type unsigned
+byte.</p>
+<div>
+<div>
+<p>Note</p>
+<p>Of course, the single member has undefined
+content.</p>
+</div>
+</div>
+<p><strong>GC++ABI 2.3 Member Pointers</strong></p>
+<p>The pointer to member function representation differs from that
+used by Itanium. See <a href="index.html">Representation of pointer to member
+function</a>.</p>
+<p><strong>GC++ABI 2.8 Initialization guard variables</strong></p>
+<p>This ABI only specifies the bottom bit of the guard variable.
+See <a href="index.html">Guard variables</a>.</p>
+<p><strong>GC++ABI 3.1.4 Return Values</strong></p>
+<p>When a return value has a non-trivial copy constructor or
+destructor, the address of the caller-allocated temporary is passed
+in the Indirect Result Location Register (r8) rather than as an
+implicit first parameter before the <code>this</code> parameter and
+user parameters.</p>
+<p><strong>GC++ABI 3.3.4 Controlling Object Construction
+Order</strong></p>
+<p>Global object construction is managed in a simplified way under
+this ABI. See <a href="index.html">Controlling Object
+Construction Order</a>.</p>
+<p><strong>GC++ABI 3.4 Demangler</strong></p>
+<p>This ABI provides the demangler interface as specified in the
+generic C++ ABI. The ABI does not specify the format of the
+demangled string.</p>
+<p><strong>GC++ABI 5.1.5 Builtin Types</strong></p>
+<p>The <code>__bf16</code> is mangled as <code>u6__bf16</code>.</p>
+<p><strong>GC++ABI 5.2.2 Static Data</strong></p>
+<p>If a static datum and its guard variable are emitted in the same
+COMDAT group, the ELF binding [Generic ELF] for both symbols must
+be STB_GLOBAL, not STB_WEAK as specified in [GC++ABI64]. <a href="index.html">ELF binding of static data guard variable
+symbols</a> justifies this requirement.</p>
+<p><strong>GC++ABI 5.3 Unwind Table Location</strong></p>
+<p>The exception unwind table shall be located by use of program
+header entries of type PT_AARCH64_UNWIND. See <a href="index.html">Unwind Table Location</a>.</p>
+<p><strong>(No section in the generic C++ ABI) A library nothrow
+new function must not examine its 2nd argument</strong></p>
+<p>Library versions of the following functions must not examine
+their second argument.</p>
+<div>
+<div>
+<div>
+<div>
+<pre>::operator new(std::size_t, const std::nothrow_t&amp;)
+::operator new[](std::size_t, const std::nothrow_t&amp;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>(The second argument conveys no useful information other than
+through its presence or absence, which is manifest in the mangling
+of the name of the function. This ABI therefore allows code
+generators to use a potentially invalid second argument - for
+example, whatever value happens to be in R1 - at a point of
+call).</p>
+<p><strong>(No section in the generic C++ ABI, but would be 2.2)
+POD data types</strong></p>
+<p>Pointers to extern "C++" functions and pointers to extern "C"
+functions are interchangeable if the function types are otherwise
+identical.</p>
+<p>In order to be used by the library helper functions described
+below, implementations of constructor and destructor functions
+(complete, sub-object, deleting, and allocating) must have a type
+compatible with:</p>
+<div>
+<div>
+<div>
+<div>
+<pre>extern "C" void (*)(void* /* , other argument types if any */);
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>(No section in the generic C++ ABI) Namespace and
+mangling for the va_list type</strong></p>
+<p>The type <code>__va_list</code> is in namespace std. The type
+name of <code>va_list</code> therefore mangles to
+<code>St9__va_list</code>.</p>
+</div>
+</div>
+<div>
+<div id="differences-in-detail">
+<h3>Differences in detail<a href="index.html#differences-in-detail"/></h3>
+<div>
+<div id="representation-of-pointer-to-member-function">
+<h4>Representation of pointer to member function<a href="index.html#representation-of-pointer-to-member-function"/></h4>
+<p>The generic C++ ABI [GC++ABI] specifies that a pointer to member
+function is a pair of words <code>&lt;ptr, adj&gt;</code>. The
+least significant bit of <code>ptr</code> discriminates between (0)
+the address of a non-virtual member function and (1) the offset in
+the class's virtual table of the address of a virtual function.</p>
+<p>This encoding cannot work for the AArch64 instruction set where
+the architecture reserves all bits of code addresses.</p>
+<p>This ABI specifies that <code>adj</code> contains twice the
+<code>this</code> adjustment, plus 1 if the member function is
+virtual. The least significant bit of <code>adj</code> then makes
+exactly the same discrimination as the least significant bit of
+<code>ptr</code> does for Itanium.</p>
+<p>A pointer to member function is NULL when <code>ptr = 0</code>
+and the least significant bit of <code>adj</code> is zero.</p>
+</div>
+</div>
+<div>
+<div id="guard-variables">
+<h4>Guard variables<a href="index.html#guard-variables"/></h4>
+<p>The generic C++ ABI [GC++ABI] specifies the bottom byte of a
+static variable guard variable shall be 0 when the variable is not
+initialized, and 1 when it is. All other bytes are platform
+defined.</p>
+<p>This ABI instead only specifies the value bit 0 of the static
+guard variable; all other bits are platform defined. Bit 0 shall be
+0 when the variable is not initialized and 1 when it is.</p>
+</div>
+</div>
+<div>
+<div id="controlling-object-construction-order">
+<h4>Controlling Object Construction Order<a href="index.html#controlling-object-construction-order"/></h4>
+<p>The generic ABI specifies a #pragma and .priority_init section
+type to allow the user to specify object construction order. This
+scheme is not in wide use and so this ABI uses a different scheme
+which has several pre-existing implementations.</p>
+<p>The compiler is responsible for sequencing the construction of
+top-level static objects defined in a translation unit in
+accordance with the requirements of the C++ standard. The run-time
+environment (helper-function library) sequences the initialization
+of one translation unit after another. The global constructor
+vector provides the interface between these agents as follows:</p>
+<ul>
+<li>Each translation unit provides a fragment of the constructor
+vector in an ELF section called <code>.init_array</code> of type
+SHT_INIT_ARRAY (=0xE) and section flags SHF_ALLOC + SHF_WRITE.</li>
+<li>Each element of the vector contains the address of a function
+of type extern "C" void (* const)(void) that, when called, performs
+part or all of the global object construction for the translation
+unit. Producers must treat <code>.init_array</code> sections as if
+they were read-only.</li>
+<li>The appropriate entry for an element referring to, say,
+<code>__sti_file</code> that constructs the global static objects
+in filecpp, is 0 relocated by R_AARCH64_ABS64 (__sti_file).</li>
+<li>Object construction order may be controlled by appending an
+unsigned integer in the range 0-65535 (formatted as if by
+printf("%05d", priority)) to the name of the section. The linker
+must lay these sections out in ascending lexicographical
+order.</li>
+<li>Sections without a priority number appended are assumed to have
+a lower priority than those sections with a priority number. The
+linker should lay out sections without a priority number after
+those sections with.</li>
+<li>The priority values 0 to 100 inclusive are reserved to the
+implementation.</li>
+<li>Run-time support code iterates through the global constructor
+vector in increasing address order calling each identified
+initialization function in order.</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="elf-binding-of-static-data-guard-variable-symbols">
+<h4>ELF binding of static data guard variable symbols<a href="index.html#elf-binding-of-static-data-guard-variable-symbols"/></h4>
+<p>The generic C++ standard [GC++ABI] states at the end of
+5.2.2:</p>
+<div>
+<div>
+<div>
+<div>Local static data objects generally have associated guard
+variables used to ensure that they are initialized only once (see
+3.3.2). If the object is emitted using a COMDAT group, the guard
+variable must be too. It is suggested that it be emitted in the
+same COMDAT group as the associated data object, but it may be
+emitted in its own COMDAT group, identified by its name. In either
+case, it must be weak.</div>
+</div>
+</div>
+</div>
+<p>In effect the generic standard permits a producer to generate
+one of two alternative structures. Either:</p>
+<div>
+<div>
+<div>
+<div>
+<pre>COMDAT Group (Variable Name) {
+    Defines Variable Name       // ELF binding STB_GLOBAL, mangled name
+    Defines Guard Variable Name // ELF binding STB_WEAK, mangled name ...
+}                               // (... this ABI requires STB_GLOBAL binding)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Or:</p>
+<div>
+<div>
+<div>
+<div>
+<pre>COMDAT Group (Variable Name) {
+    Defines Variable Name       // ELF binding STB_GLOBAL, mangled name
+}
++
+COMDAT Group (Guard Variable Name) {
+    Defines Guard Variable Name // ELF binding STB_WEAK, mangled name
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>A link step involving multiple groups of the first kind causes
+no difficulties. A linker must retain only one copy of the group
+and there will be one definition of Variable Name and one weak
+definition of Guard Variable Name.</p>
+<p>A link step involving pairs of groups of the second kind also
+causes no difficulties. A linker must retain one copy of each group
+so there will be one definition of Variable Name and one weak
+definition of Guard Variable Name.</p>
+<p>A link step involving a group of the first kind and a pair of
+groups of the second kind generates two sub-cases.</p>
+<ul>
+<li>If the linker discards the group that defines two symbols there
+is no problem.</li>
+<li>If the linker retains the group that defines both Variable Name
+and Guard Variable Name it must nonetheless retain the group called
+Guard Variable Name. There are now two definitions of Guard
+Variable Name with ELF binding STB_WEAK.</li>
+</ul>
+<p>In this second case there is no problem provided the linker
+picks one of the definitions.</p>
+<p>Unfortunately, [Generic ELF] does not specify how linkers must
+process multiple weak definitions when there is no non-weak
+definition to override them. If a linker faults duplicate weak
+definitions there will be a functional failure.</p>
+<p>This ABI requires the ELF binding of Guard Variable Name in the
+first structure to be STB_GLOBAL.</p>
+<p>The rules codified in [Generic ELF] then make all three linking
+scenarios well defined and it becomes possible to link the output
+of compilers such as armcc that choose the first structure with the
+output of those such as gcc that choose the second without relying
+on linker behavior that the generic ELF standard leaves
+unspecified.</p>
+</div>
+</div>
+<div>
+<div id="unwind-table-location">
+<h4>Unwind Table Location<a href="index.html#unwind-table-location"/></h4>
+<p>Exception tables are located in sections with the name .eh_frame
+and .eh_frame_hdr. Linkers shall put the .eh_frame_hdr section in a
+single text segment, with a PT_AARCH64_UNWIND program table entry
+identifying the unwind table header location.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="eh-abi-level-i-implementation-abi-for-aarch64">
+<h2>EH ABI Level I: Implementation ABI for AArch64<a href="index.html#eh-abi-level-i-implementation-abi-for-aarch64"/></h2>
+<p>See [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+1.</p>
+<div>
+<div id="transferring-control-to-a-landing-pad">
+<h3>Transferring Control to a Landing Pad<a href="index.html#transferring-control-to-a-landing-pad"/></h3>
+<p>See [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+1.6.3.</p>
+<p>The unwind library may elect to transfer control to landing pads
+via a jump instruction that requires the jump target to be
+identified as a valid destination for indirect jumps.</p>
+<div>
+<div>
+<p>Note</p>
+<p>The intent is that the landing pads should start
+with a <code>bti j</code> instruction (or equivalent), when they
+might operate in an environment with Branch Target Identification
+enabled.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="eh-abi-level-iii-implementation-abi-for-gnu-linux">
+<h2>EH ABI Level III: Implementation ABI for GNU Linux<a href="index.html#eh-abi-level-iii-implementation-abi-for-gnu-linux"/></h2>
+<div>
+<div id="introduction">
+<h3>Introduction<a href="index.html#introduction"/></h3>
+<p>This section describes the Exception Handling Implementation ABI
+for GNU Linux systems.</p>
+<p>It specifies:</p>
+<ul>
+<li>The format of the unwind tables</li>
+<li>Standard Runtime Initialization features</li>
+<li>Throwing an Exception</li>
+<li>Catching an Exception</li>
+</ul>
+<p>This section follows the layout of [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+3.</p>
+</div>
+</div>
+<div>
+<div id="data-structures">
+<h3>Data Structures<a href="index.html#data-structures"/></h3>
+<p>The format of the exception tables is as specified in [<a href="https://refspecs.linuxfoundation.org/LSB_4.0.0/LSB-Core-generic/LSB-Core-generic.html">LSB</a>]
+II.11.6 (Exception Frames).</p>
+<p>The codes used to describe the encoding of pointers used in the
+exception frame tables, are the values described in [<a href="https://refspecs.linuxfoundation.org/LSB_4.0.0/LSB-Core-generic/LSB-Core-generic.html">LSB</a>]
+II.11.5.1 (DWARF Exception Header Encoding).</p>
+<p>Note that in particular that the layout of the Language Specific
+Data Area (LSDA) is not specified by this ABI. The structure and
+layout of a LSDA is specific to a particular implementation of a
+personality routine.</p>
+</div>
+</div>
+<div>
+<div id="standard-runtime-initialization">
+<h3>Standard Runtime Initialization<a href="index.html#standard-runtime-initialization"/></h3>
+<p>See [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+3.3.</p>
+</div>
+</div>
+<div>
+<div id="throwing-an-exception">
+<h3>Throwing an Exception<a href="index.html#throwing-an-exception"/></h3>
+<p>See [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+3.4.</p>
+</div>
+</div>
+<div>
+<div id="catching-an-exception">
+<h3>Catching an Exception<a href="index.html#catching-an-exception"/></h3>
+<div>
+<div id="overview-of-catch-processing">
+<h4>Overview of Catch Processing<a href="index.html#overview-of-catch-processing"/></h4>
+<p>Stack unwinding itself is begun by calling
+<code>__Unwind_RaiseException()</code>, and performed by the unwind
+library. See [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+3.5 for a summary.</p>
+</div>
+</div>
+<div>
+<div id="the-personality-routine">
+<h4>The Personality Routine<a href="index.html#the-personality-routine"/></h4>
+<p>The personality routine is specified in [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+2.5.2.</p>
+</div>
+</div>
+<div>
+<div id="exception-handlers">
+<h4>Exception Handlers<a href="index.html#exception-handlers"/></h4>
+<p>The behavior of exception handlers is described in [<a href="https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html">IA64EHABI</a>]
+2.5.3.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+<div>
+
+</div>
+</body>
+</html>
