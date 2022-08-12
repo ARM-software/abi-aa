@@ -1,0 +1,1514 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Application Binary Interface for the Arm® Architecture - The
+Base Standard — ABI 2018Q4 documentation</title>
+
+<meta name="keywords" content=""/></head>
+<body>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="application-binary-interface-for-the-armreg-architecture-the-base-standard">
+<h2>Application Binary Interface for the Arm® Architecture - The
+Base Standard</h2>
+<p id="bsabi32-header">Document number: IHI 0036C, current through
+ABI release 2018Q4</p>
+<p>Date of Issue: 21<sup>st</sup> December 2018</p>
+
+<div>
+<div>
+<div>
+<div id="preamble">
+<h2>Preamble</h2>
+<div>
+<div>
+<div>
+<div id="abstract">
+<h3>Abstract</h3>
+<p>This document describes the structure of the Application Binary
+Interface (ABI) for the Arm architecture, and links to the
+documents that define the base standard for the ABI for the Arm
+Architecture. The base standard governs inter-operation between
+independently generated binary files and sets standards common to
+Arm-based execution environments.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="keywords">
+<h3>Keywords</h3>
+<p>ABI for the Arm architecture, ABI base standard, embedded
+ABI</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it</h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/products/software-development-tools/specifications">https://developer.arm.com/products/software-development-tools/specifications</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <em>arm</em> dot
+<em>eabi</em> at <em>arm</em> dot <em>com</em>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="licence">
+<h3>Licence</h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice</h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © [2018] Arm Limited or its affiliates. All rights
+reserved.</p>
+<p>Arm Limited. Company 02557590 registered in England. 110
+Fulbourn Road, Cambridge, England CB1 9NJ. LES-PRE-20349</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="contents">
+<h3>Contents</h3>
+<div>
+<div>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#application-binary-interface-for-the-armreg-architecture-the-base-standard" id="id4">Application Binary Interface for the Arm®
+Architecture - The Base Standard</a>
+<ul>
+<li><a href="index.html#preamble" id="id5">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id6">Abstract</a></li>
+<li><a href="index.html#keywords" id="id7">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id8">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id9">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id10">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id11">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id12">About this
+document</a>
+<ul>
+<li><a href="index.html#change-control" id="id13">Change
+control</a>
+<ul>
+<li><a href="index.html#current-status-and-anticipated-changes" id="id14">Current status and anticipated changes</a></li>
+<li><a href="index.html#change-history" id="id15">Change
+history</a></li>
+</ul>
+</li>
+<li><a href="index.html#references" id="id16">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id17">Terms
+and abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id18">Your licence to use this specification</a></li>
+<li><a href="index.html#acknowledgements" id="id19">Acknowledgements</a></li>
+</ul>
+</li>
+<li><a href="index.html#schematic-map-of-the-abi-for-the-arm-architecture" id="id20">Schematic map of the ABI for the Arm
+Architecture</a>
+<ul>
+<li><a href="index.html#notes-about-the-schematic-map" id="id21">Notes about the schematic map</a></li>
+</ul>
+</li>
+<li><a href="index.html#the-abi-for-the-arm-architecture-base-standard" id="id22">The ABI for the Arm Architecture (base
+standard)</a>
+<ul>
+<li><a href="index.html#overview-and-documentation-map" id="id23">Overview and documentation map</a></li>
+<li><a href="index.html#procedure-call-standard-for-the-arm-architecture" id="id24">Procedure call standard for the Arm
+architecture</a></li>
+<li><a href="index.html#c-abi-for-the-arm-architecture" id="id25">C++ ABI for the Arm architecture</a>
+<ul>
+<li><a href="index.html#the-generic-c-abi" id="id26">The Generic
+C++ ABI</a></li>
+<li><a href="index.html#the-c-abi-supplement-for-the-arm-architecture" id="id27">The C++ ABI supplement for the Arm
+architecture</a></li>
+<li><a href="index.html#the-exception-handling-abi-for-the-arm-architecture" id="id28">The Exception handling ABI for the Arm
+architecture</a></li>
+<li><a href="index.html#the-exception-handling-components-specimen-implementation" id="id29">The exception handling components specimen
+implementation</a></li>
+</ul>
+</li>
+<li><a href="index.html#elf-for-the-arm-architecture" id="id30">ELF for the Arm architecture</a>
+<ul>
+<li><a href="index.html#the-generic-elf-specification" id="id31">The generic ELF specification</a></li>
+<li><a href="index.html#elf-for-the-arm-architecture-processor-supplement" id="id32">ELF for the Arm architecture (processor
+supplement)</a></li>
+</ul>
+</li>
+<li><a href="index.html#dwarf-for-the-arm-architecture" id="id33">DWARF for the Arm architecture</a>
+<ul>
+<li><a href="index.html#dwarf-3-0" id="id34">DWARF 3.0</a></li>
+<li><a href="index.html#abi-dwarf-usage-conventions" id="id35">ABI DWARF usage conventions</a></li>
+</ul>
+</li>
+<li><a href="index.html#run-time-abi-for-the-arm-architecture" id="id36">Run-time ABI for the Arm architecture</a></li>
+<li><a href="index.html#the-c-library-abi-for-the-arm-architecture" id="id37">The C library ABI for the Arm architecture</a></li>
+<li><a href="index.html#the-base-platform-abi-for-the-arm-architecture" id="id38">The base platform ABI for the Arm
+architecture</a></li>
+<li><a href="index.html#a-note-about-ar-format" id="id39">note
+about <strong>ar</strong> format</a></li>
+<li><a href="index.html#addenda-to-and-errata-in-the-abi-for-the-arm-architecture" id="id40">Addenda to and errata in the ABI for the Arm
+Architecture</a>
+<ul>
+<li><a href="index.html#build-attributes" id="id41">Build
+attributes</a></li>
+<li><a href="index.html#thread-local-storage" id="id42">Thread
+local storage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="about-this-document">
+<h2>About this document</h2>
+<div>
+<div>
+<div>
+<div id="change-control">
+<h3>Change control</h3>
+<div>
+<div>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current status and anticipated changes</h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li>ReleaseArm considers this specification to have enough
+implementations, which have received sufficient testing, to verify
+that it is correct. The details of these criteria are dependent on
+the scale and complexity of the change over previous versions:
+small, simple changes might only require one implementation, but
+more complex changes require multiple independent implementations,
+which have been rigorously tested for cross-compatibility. Arm
+anticipates that future changes to this specification will be
+limited to typographical corrections, clarifications and compatible
+extensions.</li>
+<li>BetaArm considers this specification to be complete, but
+existing implementations do not meet the requirements for
+confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li>AlphaThe content of this specification is a draft, and Arm
+considers the likelihood of future incompatible changes to be
+significant.</li>
+</ul>
+<p>All content in this document is at the "Release" quality
+level.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="change-history">
+<h4>Change history</h4>
+<table>
+<colgroup>
+<col width="8%"/>
+<col width="40%"/>
+<col width="4%"/>
+<col width="48%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>1.0</td>
+<td>30<sup>th</sup> October 2003</td>
+<td>LS</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>24<sup>th</sup> March 2005</td>
+<td>LS</td>
+<td>Second public release.</td>
+</tr>
+<tr>
+<td>A</td>
+<td>24<sup>th</sup> October 2007</td>
+<td>LS</td>
+<td>Document renumbered (formerly GEN-003535 v2.0).</td>
+</tr>
+<tr>
+<td>B</td>
+<td>10<sup>th</sup> October 2008</td>
+<td>LS</td>
+<td><a href="index.html">note about ar format</a> fixed a
+typo and updated the reference to <strong>ar</strong> format.</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>21<sup>st</sup> December 2018</td>
+<td>OS</td>
+<td>Minor typographical fixes, updated links.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="references">
+<h3>References</h3>
+<p>This document refers to the following documents.</p>
+<table>
+<colgroup>
+<col width="21%"/>
+<col width="34%"/>
+<col width="45%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>External URL</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0040/latest">AADWARF</a></td>
+<td> </td>
+<td>DWARF for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a></td>
+<td> </td>
+<td>ELF for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a></td>
+<td> </td>
+<td>Procedure Call Standard for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0045/latest">ADDENDA</a></td>
+<td> </td>
+<td>Addenda to, and errata in, the ABI for the Arm
+Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0037/latest">BPABI</a></td>
+<td> </td>
+<td>Base Platform ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td>BSABI</td>
+<td>This standard</td>
+<td>ABI for the Arm Architecture (Base Standard)</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0039/latest">CLIBABI</a></td>
+<td> </td>
+<td>Library ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a></td>
+<td> </td>
+<td>C++ ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a></td>
+<td> </td>
+<td>Exception Handling ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td>EHEGI</td>
+<td> </td>
+<td>Exception handling, components, example implementations</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a></td>
+<td> </td>
+<td>Run-time ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a></td>
+<td><a href="https://github.com/itanium-cxx-abi/cxx-abi">https://github.com/itanium-cxx-abi/cxx-abi</a></td>
+<td>Generic C++ ABI</td>
+</tr>
+<tr>
+<td><a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a></td>
+<td><a href="http://dwarfstd.org/Dwarf3Std.php">http://dwarfstd.org/Dwarf3Std.php</a></td>
+<td>DWARF 3.0, the generic debug table format.</td>
+</tr>
+<tr>
+<td><a href="http://www.sco.com/developers/gabi/">GABI</a></td>
+<td><a href="http://www.sco.com/developers/gabi/">http://www.sco.com/developers/gabi/</a></td>
+<td>Generic ELF, 17<sup>th</sup> December 2003 draft.</td>
+</tr>
+<tr>
+<td><a href="http://refspecs.linuxfoundation.org/lsb.shtml">GLSB</a></td>
+<td><a href="http://refspecs.linuxfoundation.org/lsb.shtml">http://refspecs.linuxfoundation.org/lsb.shtml</a></td>
+<td>gLSB v1.2 Linux Standard Base</td>
+</tr>
+<tr>
+<td><a href="http://www.obenbsd.org/">OpenBSD</a></td>
+<td><a href="http://www.openbsd.org/">http://www.openbsd.org/</a></td>
+<td>Open BSD Standard</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and abbreviations</h3>
+<p>The <cite>ABI for the Arm Architecture</cite> uses the following
+terms and abbreviations.</p>
+<ul>
+<li>AAPCSProcedure Call Standard for the Arm Architecture.</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+<cite>Linux ABI for the Arm Architecture</cite>.</li>
+<li>particular aspect of the specifications to which independently
+produced relocatable files must conform in order to be statically
+linkable and executable. For example, the <a href="https://developer.arm.com/docs/ihi0041/latest">C++ ABI for the Arm
+Architecture</a>, the <a href="https://developer.arm.com/docs/ihi0043/latest">Run-time ABI for
+the Arm Architecture</a>, the <a href="https://developer.arm.com/docs/ihi0039/latest">Library ABI for the
+Arm Architecture</a>.</li>
+</ol>
+</li>
+<li>AEABI(Embedded) ABI for the Arm architecture (this ABI...)</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>core registersThe general purpose registers visible in the Arm
+architecture's programmer's model, typically r0-r12, SP, LR, PC,
+and CPSR.</li>
+<li>EABIAn ABI suited to the needs of embedded, and deeply embedded
+(sometimes called free standing), applications.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>VFPThe Arm architecture's Floating Point architecture and
+instruction set. In this ABI, this abbreviation includes all
+floating point variants regardless of whether or not vector (V)
+mode is supported.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification</h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="acknowledgements">
+<h3>Acknowledgements</h3>
+<p>This specification has been developed with the active support of
+the following organizations. In alphabetical order: Arm,
+CodeSourcery, Intel, Metrowerks, Montavista, Nexus Electronics,
+PalmSource, Symbian, Texas Instruments, and Wind River.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="schematic-map-of-the-abi-for-the-arm-architecture">
+<h2>Schematic map of the ABI for the Arm Architecture</h2>
+<div class="documents-docsimg-container" id="id2"><img alt="bsabi-relationship.png" src="bsabi-relationship.png"/>
+<p>schematic map of the ABI for the Arm
+Architecture and some related standards</p>
+</div>
+<div>
+<div>
+<div>
+<div id="notes-about-the-schematic-map">
+<h3>Notes about the schematic map</h3>
+<p>Pale gray boxes depict the most important components of the base
+standard for the <cite>ABI for the Arm Architecture</cite>.</p>
+<p>Pastel blue (or darker gray on a gray-scale printed copy) boxes
+depict the most important external standards we refer to. We do not
+show them all - for example, we also refer to the ANSI standards
+for programming languages C and C++ and to the IEEE 754 standard
+for floating-point arithmetic.</p>
+<p>The tan (also darker gray on a gray-scale printed copy)
+annotation boxes label groups of related standards that might be
+developed in the future, and a pastel green box (pale gray on a
+gray-scale printed copy) encloses all components (direct and
+referenced) of the <cite>ABI for the Arm Architecture</cite> (base
+standard).</p>
+<p>The size of each box is unrelated to the size or significance of
+the component depicted.</p>
+<p>Sections depicted with white boxes on a tan background are
+beyond the scope of <em>this</em> base standard. In each case the
+section involves either or both of the following.</p>
+<ul>
+<li>A third party on whom there is no obligation to
+contribute.</li>
+<li>Future intentions to which there is no current commitment.</li>
+</ul>
+<p>The sections depicted with white boxes on a tan background show
+the position of <em>this base standard</em> in a larger context.
+They depict some of the ways in which those affected by this ABI
+standard might like to grow it, and how the base standard would
+relate to other plausible pieces of a larger jigsaw of Arm
+architecture-related standards. In no case shall this depiction be
+interpreted as an intention or commitment by Arm or any third party
+to create the component standard depicted.</p>
+<p><a href="index.html">The ABI for the Arm Architecture
+(base standard)</a>, below, describes the base standard in detail
+and refers to each of its components.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-abi-for-the-arm-architecture-base-standard">
+<h2>The ABI for the Arm Architecture (base standard)</h2>
+<div>
+<div>
+<div>
+<div id="overview-and-documentation-map">
+<h3>Overview and documentation map</h3>
+<p>The <cite>ABI for the Arm Architecture</cite> is a collection of
+standards, some open and some specific to the Arm architecture,
+that regulate the inter-operation of binary files and development
+tools in a spectrum of Arm-based execution environments from bare
+metal to major operating systems such as Arm Linux. We expect that
+ABIs for specific execution environments will build on, and extend,
+the slices of this ABI that apply to them.</p>
+<p>Standardizing the inter-operation of binary files requires
+standardizing certain aspects of code generation itself, so this
+base standard is aimed principally at the authors and vendors of C
+and C++ compilers, linkers, and run-time libraries. In general,
+there can be no complying executable files until there are
+complying relocatable files.</p>
+<table id="id3">
+<caption>Table 1, Documentation map of the ABI for the Arm
+architecture base standard</caption>
+<colgroup>
+<col width="21%"/>
+<col width="0%"/>
+<col width="28%"/>
+<col width="12%"/>
+<col width="0%"/>
+<col width="25%"/>
+<col width="0%"/>
+<col width="15%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th colspan="3">Component standard</th>
+<th colspan="5">Base standard</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td colspan="3">The <cite>Procedure Call Standard for the the Arm
+Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>], is
+summarized in <a href="index.html">Procedure call standard
+for the Arm architecture</a>.</td>
+<td colspan="5">None.</td>
+</tr>
+<tr>
+<td colspan="3">The <cite>C++ ABI for the Arm Architecture</cite>
+[<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>] is
+summarized in <a href="index.html">C++ ABI for the Arm
+architecture</a>. It details where the C++ ABI for the ABI deviates
+from the base standard.</td>
+<td colspan="5" rowspan="2">
+<p>The Generic C++ ABI (<cite>aka C++ ABI for
+Itanium</cite>).</p>
+<p><a href="https://github.com/itanium-cxx-abi/cxx-abi">https://github.com/itanium-cxx-abi/cxx-abi</a></p>
+</td>
+</tr>
+<tr>
+<td colspan="3">The <cite>Exception Handling ABI for the Arm
+Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>], is
+summarized in <a href="index.html">The Exception
+handling ABI for the Arm architecture</a>. It describes
+C++-specific and language-independent exception processing.</td>
+</tr>
+<tr>
+<td colspan="3"><cite>ELF for the Arm Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>] is
+summarized in <a href="index.html">ELF for the Arm
+architecture</a>. It gives processor-specific and platform-specific
+details not given in the generic ELF specification.</td>
+<td colspan="5">
+<p>The generic ELF standard (SVr4 GABI),
+17<sup>th</sup> December 2003 draft.</p>
+<p><a href="http://www.sco.com/developers/gabi/">http://www.sco.com/developers/gabi/</a></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"><cite>DWARF for the Arm Architecture</cite>
+[<a href="https://developer.arm.com/docs/ihi0040/latest">AADWARF</a>] is
+summarized in <a href="index.html">DWARF for the Arm
+architecture</a>. It describes how DWARF should be used to promote
+inter-operation between independent producers and consumers.</td>
+<td colspan="5">
+<p>DWARF 3.0.</p>
+<p><a href="http://dwarfstd.org/Dwarf3Std.php">http://dwarfstd.org/Dwarf3Std.php</a></p>
+</td>
+</tr>
+<tr>
+<td colspan="3">The <cite>Run-time ABI for the Arm
+Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a>] is
+summarized in <a href="index.html">Run-time ABI for the
+Arm architecture</a>. It specified a helper-function ABI to support
+C, C++, and arithmetic (floating-point, integer division, and
+non-trivial long long arithmetic).</td>
+<td colspan="5">The unix <strong>ar</strong> format
+is the base standard for libraries of relocatable ELF files (see
+<a href="index.html">note about ar format</a>).</td>
+</tr>
+<tr>
+<td colspan="3">The <cite>Library ABI for the Arm
+Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0039/latest">CLIBABI</a>], is
+summarized in <a href="index.html">The C library ABI for
+the Arm architecture</a>. It describes an ANSI C library ABI that
+can easily be supported by existing libraries.</td>
+<td colspan="5">ISO/IEC 9899:1990 Programming languages - C, with
+some reference to ISO/IEC 9899:1999. See also <a href="index.html">note about ar format</a> re <strong>ar</strong> format</td>
+</tr>
+<tr>
+<td colspan="3">The <cite>Base Platform ABI for the Arm
+Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0037/latest">BPABI</a>], is
+summarized in <a href="index.html">The base platform ABI
+for the Arm architecture</a>. It specified executable and shared
+object files suited to the execution environments supported by this
+ABI, and the static linker functionality required to create
+them.</td>
+<td colspan="5">
+<p>The generic ELF standard (SVr4 GABI),
+17<sup>th</sup> December 2003 draft.</p>
+<p><a href="http://www.sco.com/developers/gabi/">http://www.sco.com/developers/gabi/</a></p>
+<p>Linux Standard Base v1.2 specification [<a href="http://refspecs.linuxfoundation.org/lsb.shtml">GLSB</a>]</p>
+</td>
+</tr>
+<tr>
+<td colspan="3"><cite>Addenda to, and errata in, the ABI for the
+Arm Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0045/latest">ADDENDA</a>]
+contains late additions to this version of the ABI specification,
+summarized in <a href="index.html">Addenda to and errata
+in the ABI for the Arm Architecture</a>.</td>
+<td colspan="5">None.</td>
+</tr>
+</tbody>
+</table>
+<p>The ABI for the Arm architecture base standard comprises the
+component standards listed in <a href="index.html">Table 1,
+Documentation map of the ABI for the Arm architecture base
+standard</a>. The scope and purpose of each component is explained
+in following subsections referred to from the table.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="procedure-call-standard-for-the-arm-architecture">
+<h3>Procedure call standard for the Arm architecture</h3>
+<p>The Procedure Call Standard for the Arm architecture [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]
+specifies:</p>
+<ul>
+<li>
+<p>The size, alignment, and layout of C and C++
+<em>Plain Old Data</em> (POD) types including</p>
+<ul>
+<li>Primitive data types.</li>
+<li>Structures.</li>
+<li>Enumerated types.</li>
+<li>Bit field types.</li>
+</ul>
+</li>
+<li>
+<p>Primitive types specific to C++ (references and
+pointers to members).</p>
+</li>
+<li>
+<p>How to pass control and data between publicly
+visible functions. A function is publicly visible if its callers
+are translated separately from it, and some callers might have no
+knowledge of how it was translated, other than that it conforms to
+the AAPCS.</p>
+<p>(When the public visibility of F is made explicit - for example
+by using a <code>#pragma</code> or annotation such as
+<code>__export</code> or <code>__declspec(dllexport)</code> - we
+also describe F as <em>exported</em>).</p>
+</li>
+<li>
+<p>Use of the run-time stack, and the stack
+invariants that must be preserved.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="c-abi-for-the-arm-architecture">
+<h3>C++ ABI for the Arm architecture</h3>
+<p>The C++ ABI for the Arm architecture comprises four
+sub-components.</p>
+<ul>
+<li>The generic C++ ABI, summarized in <a href="index.html">The Generic C++ ABI</a>, is the referenced
+base standard for this component.</li>
+<li>The C++ ABI supplement for the Arm architecture, summarized in
+<a href="index.html">The C++ ABI supplement for the Arm
+architecture</a>, details Arm-specific deviations from the generic
+standard and records Arm-specific interpretations of it.</li>
+<li>The separately documented <cite>Exception Handling ABI for the
+Arm Architecture</cite>, summarized in <a href="index.html">The Exception handling ABI for the Arm
+architecture</a>, describes the language-independent and
+C++-specific aspects of exception handling.</li>
+<li>The specimen implementations of the exception handling
+components, summarized in <a href="index.html">The
+exception handling components specimen implementation</a>, include:
+<ul>
+<li>language independent unwinder.</li>
+<li>A C++ semantics module.</li>
+<li>Arm-specific C++ personality routines.</li>
+</ul>
+</li>
+</ul>
+<div>
+<div>
+<div>
+<div id="the-generic-c-abi">
+<h4>The Generic C++ ABI</h4>
+<p>The generic C++ ABI (originally developed for Itanium, [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>])
+specifies:</p>
+<ul>
+<li>The layout of C++ non-POD class types in terms of the layout of
+POD types (specified for <em>this</em> ABI by the <cite>Procedure
+Call Standard for the Arm Architecture</cite>, summarized in
+<a href="index.html">Procedure call standard for the Arm
+architecture</a>).</li>
+<li>How class types requiring copy construction are passed as
+parameters and results.</li>
+<li>The content of run-time type information (RTTI).</li>
+<li>Necessary APIs for object construction and destruction.</li>
+<li>How names with linkage are represented as ELF symbols (name
+mangling).</li>
+</ul>
+<p>The generic C++ ABI refers to a separate Itanium-specific
+specification of exception handling. When the generic C++ ABI is
+used as a component of <em>this</em> ABI, corresponding reference
+must be made to the <cite>Exception Handling ABI for the Arm
+Architecture</cite> (<a href="index.html">The Exception
+handling ABI for the Arm architecture</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-c-abi-supplement-for-the-arm-architecture">
+<h4>The C++ ABI supplement for the Arm architecture</h4>
+<p>The Arm C++ ABI supplement is a major section in the document
+<cite>C++ ABI for the Arm Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>].</p>
+<p>The Arm C++ ABI supplement describes where the C++ ABI for the
+Arm architecture necessarily diverges from the generic C++ ABI,
+because Itanium-specifics that cannot work (efficiently) for the
+Arm architecture show through an otherwise generic specification.
+For example, the generic encoding of a pointer to member function
+uses the least significant bit of a word to distinguish a code
+address from a v-table offset. The Arm architecture uses the same
+bit to distinguish Arm-code from Thumb-code, so the Arm ABI must
+deviate.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-exception-handling-abi-for-the-arm-architecture">
+<h4>The Exception handling ABI for the Arm architecture</h4>
+<p>In common with the Itanium exception handling ABI, the
+<cite>Exception Handling ABI for the Arm architecture</cite>
+[<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>]
+specifies table-based stack unwinding that separates
+language-independent unwinding from language specific concerns. The
+Arm specification describes:</p>
+<ul>
+<li>The <em>base class</em> understood by the language-independent
+exception handling system, and its representation in object files.
+The language-independent exception handler only uses fields from
+this base class.</li>
+<li><em>derived class</em> used by Arm tools that efficiently
+encodes stack-unwinding instructions and compactly represents the
+data tables needed for handling C++ exceptions.</li>
+<li>The interface between the language-independent exception
+handling system and the <em>personality routines</em> specific to a
+particular implementation for a particular language. Personality
+routines interpret the language specific, derived class tables.
+Conceptually (though not literally, for reasons of implementation
+convenience and run-time efficiency), personality routines are
+member functions of the derived class.</li>
+<li>The interfaces between the (C++) language exception handling
+semantics module and
+<ul>
+<li>The language independent exception handling system.</li>
+<li>The personality routines.</li>
+<li>The (C++) application code (effectively the interface
+underlying throw).</li>
+</ul>
+</li>
+</ul>
+<p>The <cite>Exception Handling ABI for the Arm Architecture</cite>
+contains a significant amount of commentary to aid and support
+independent implementation of:</p>
+<ul>
+<li>Personality routines.</li>
+<li>The language-specific exception handling semantics module.</li>
+<li>Language independent exception handling.</li>
+</ul>
+<p>This commentary does not provide, and is not intended to
+provide, a complete guide to independent implementation, but it
+does give a rationale for the interfaces to, and among, these
+components.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-exception-handling-components-specimen-implementation">
+<h4>The exception handling components specimen implementation</h4>
+<p>Licence to use the exception handling components
+specimen implementation</p>
+<p>The licence to use the specimen implementation of the exception
+handling components is included in the zip file containing them (as
+the file <code>LICENCE.txt</code>) and referred to from each source
+file. It is broadly similar in scope and intent to the licence to
+use this specification displayed in <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a>.</p>
+<p>Contents of the exception handling components
+example implementation</p>
+<p>The exception handling components example implementation [EHEGI]
+comprises the following files.</p>
+<ul>
+<li><code>cppsemantics.cpp</code> is a module that implements the
+semantics of C++ exception handling. It uses the
+language-independent unwinder (<code>unwinder.c</code>), and is
+used by the Arm-specific personality routines
+(<code>unwind_pr.[ch]</code>).</li>
+<li><code>cxxabi.h</code> describes the generic C++ ABI (<a href="index.html">The Generic C++ ABI</a>).</li>
+<li><code>LICENCE.txt</code> contains your licence to use, copy,
+modify, and sublicense the specimen implementation.</li>
+<li><code>unwind_env.h</code> is a header that describes the build
+and execution environments of the exception handling components.
+This header must be edited if the exception handling components are
+to be built with non-Arm compilers. This header #includes
+<code>cxxabi.h</code>.</li>
+<li><code>unwind_pr.c</code> implements the three Arm-specific
+personality routines described in the <cite>Exception Handling ABI
+for the Arm Architecture</cite>.</li>
+<li><code>unwinder.c</code> is an implementation of the
+language-independent unwinder.</li>
+<li><code>unwinder.h</code> describes the interface to the
+language-independent unwinder, as described in the <cite>Exception
+Handling ABI for the Arm Architecture</cite>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="elf-for-the-arm-architecture">
+<h3>ELF for the Arm architecture</h3>
+<p>ELF for the Arm architecture comprises two components.</p>
+<ul>
+<li>The generic ELF specification, summarized in <a href="index.html">The generic ELF specification</a>.</li>
+<li>The ELF processor supplement for the Arm architecture,
+summarized in <a href="index.html">ELF for the Arm
+architecture (processor supplement)</a>.</li>
+</ul>
+<div>
+<div>
+<div>
+<div id="the-generic-elf-specification">
+<h4>The generic ELF specification</h4>
+<p>The generic <cite>Executable and Linking Format</cite>
+specification was originally developed for Unix System V by
+AT&amp;T. The latest version and the most recent stable drafts are
+published by <cite>The SCO Group</cite> at [<a href="http://www.sco.com/developers/gabi/">GABI</a>]. They specify:</p>
+<ul>
+<li>The format and meaning of statically linkable object
+files.</li>
+<li>The format and meaning of executable and shared-object
+files.</li>
+</ul>
+<p>In each case, a supplement specifies processor-specific and
+platform-specific aspects.</p>
+<ul>
+<li>The enumeration of relocation directives is specific to a
+processor. Often, this is the only processor-specific facet of
+statically linkable (relocatable) ELF files.</li>
+<li>For executable files a platform-specific supplement specifies
+the interface to loading and dynamic linking.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="elf-for-the-arm-architecture-processor-supplement">
+<h4>ELF for the Arm architecture (processor supplement)</h4>
+<p><cite>ELF for the Arm Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>]
+describes the following:</p>
+<ul>
+<li>The representation in ELF and generation of cross-platform
+executable file information required by the <cite>Base Platform ABI
+for the Arm Architecture</cite> (<a href="index.html">The
+base platform ABI for the Arm architecture</a> and [<a href="https://developer.arm.com/docs/ihi0037/latest">BPABI</a>]).</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>Symbol versioning information.</li>
+<li>Symbol pre-emption information.</li>
+<li>Procedure linkage table (PLT) entries, also known to users of
+the Arm architecture as intra-call veneers.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>The enumeration of static and dynamic relocation
+directives.</li>
+<li>Processor-specific flags and conventions (for example, the
+<em>Mapping symbols</em> described in <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-5-5">
+Mapping symbols</a> of [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>], used to
+accommodate the use of the Arm and Thumb instruction sets in the
+same code section).</li>
+<li>Two kinds of big-endian executable file (corresponding to the
+two flavors of big-endian code defined by Arm architecture v6 - in
+a BE8 big-endian executable file, code is nonetheless encoded
+little-endian).</li>
+<li>Miscellaneous Arm-specific executable and shared-object flags
+and section types used by the <cite>ABI for the Arm
+Architecture</cite>.</li>
+</ul>
+<p>The Base Platform ABI for the Arm Architecture (<a href="index.html">The base platform ABI for the Arm
+architecture</a> and [<a href="https://developer.arm.com/docs/ihi0037/latest">BPABI</a>])
+specifies how ELF is used to support the executable file
+organizations and execution environments depicted in <a href="index.html">schematic map of the ABI for the Arm Architecture
+and some related standards</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="dwarf-for-the-arm-architecture">
+<h3>DWARF for the Arm architecture</h3>
+<p>DWARF for the Arm architecture comprises two components.</p>
+<ul>
+<li>The generic DWARF specification, DWARF 3.0, summarized in
+<a href="index.html">DWARF 3.0</a>.</li>
+<li>The Arm DWARF usage conventions, summarized in <a href="index.html">ABI DWARF usage conventions</a>.</li>
+</ul>
+<div>
+<div>
+<div>
+<div id="dwarf-3-0">
+<h4>DWARF 3.0</h4>
+<p>DWARF 3.0 [<a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a>] makes precise many
+ambiguous and ill-defined aspects of the DWARF 2.0 specification,
+and extends that specification with:</p>
+<ul>
+<li>Additional constructs for describing optimized code and stack
+unwinding.</li>
+<li>Additional constructs for describing C++, Java, and Fortran
+90.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="abi-dwarf-usage-conventions">
+<h4>ABI DWARF usage conventions</h4>
+<p>The ABI DWARF usage conventions are described in <a href="https://developer.arm.com/docs/ihi0040/latest#aadwarf32-section3">Arm-specific
+DWARF definitions</a> of the document <cite>DWARF for the Arm
+Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0040/latest">AADWARF</a>]. This
+section defines:</p>
+<ul>
+<li>An Arm-specific allocation of DWARF register numbers (in
+.debug_frame unwind descriptions).</li>
+<li>How Arm-state and Thumb-state are encoded in DWARF line number
+tables.</li>
+<li>How to describe data known to be in the other byte order (Arm
+architecture v6 access to other-endian data).</li>
+<li>The Canonical Frame Address (CFA).</li>
+<li>The default interpretation of debug frame Common Information
+Entries (CIEs).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="run-time-abi-for-the-arm-architecture">
+<h3>Run-time ABI for the Arm architecture</h3>
+<p>The run-time helper-function ABI is described in the document
+<cite>Run-time ABI for the Arm Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a>].</p>
+<p>The run-time helper-function ABI specifies how relocatable files
+produced by one tool chain must inter-operate with the run-time
+library from a different tool chain or execution environment. It
+gives a simple model of what a producer may assume of its output's
+eventual static linking and execution environments. It defines the
+following.</p>
+<ul>
+<li>
+<p>minimum model of floating-point arithmetic, based
+on the IEEE 754 floating-point arithmetic standard:</p>
+<ul>
+<li>To which producers of relocatable files must conform.</li>
+<li>Which producers of relocatable files can assume of the eventual
+execution environment.</li>
+</ul>
+<p>(The model sets a minimum standard. Implementers may implement
+the full IEEE 754 specification).</p>
+</li>
+<li>
+<p>The type signatures, meaning, and allowable names
+of the helper functions that all conforming static linking
+environments must support. The set of helper functions is divided
+into those required by C and assembly language, and those required
+only by C++.</p>
+</li>
+<li>
+<p>The provision, as part of the relocatable object
+itself or in separately delivered libraries, of all other helper
+functions used by a translation unit.</p>
+</li>
+</ul>
+<p>Libraries of relocatable ELF files must be formatted as
+Unix-style <strong>ar</strong> format linkable
+libraries (see <a href="index.html">A note about ar
+format</a>, below).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-c-library-abi-for-the-arm-architecture">
+<h3>The C library ABI for the Arm architecture</h3>
+<p>The C library ABI is described in the document <cite>Library ABI
+for the Arm Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0039/latest">CLIBABI</a>].</p>
+<p>The C library ABI specifies:</p>
+<ul>
+<li>binary interface to the C89 run-time library that allows a
+C-library-using function built by one tool chain to use the C
+library implementation provided by another.</li>
+<li>Constraints on language library headers necessary to allow tool
+chain X to use its own headers, or tool chain Y's headers, when
+building an object that must interface to tool chain Y's run-time
+library.</li>
+</ul>
+<p>Compliance with this specification is a header-by-header
+<em>quality of implementation</em> issue. Compliance is not
+required in order to claim compliance to this base standard ABI for
+the Arm architecture.</p>
+<p>Libraries of relocatable ELF files must be formatted as
+Unix-style <strong>ar</strong> format linkable
+libraries (see <a href="index.html">A note about ar
+format</a>, below).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-base-platform-abi-for-the-arm-architecture">
+<h3>The base platform ABI for the Arm architecture</h3>
+<p>The base platform ABI is described in the document <cite>Base
+Platform ABI for the Arm Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0037/latest">BPABI</a>].</p>
+<p>The base platform ABI specifies:</p>
+<ul>
+<li>The content and format of ELF-based executable files suitable
+for post-processing to platform-specific binary formats appropriate
+to the families of execution environment supported by this ABI
+(<a href="index.html">schematic map of the ABI for the Arm
+Architecture and some related standards</a>).</li>
+<li>The division of responsibility between static linkers
+generating fully symbolic executable ELF files and post-linkers
+generating less symbolic, platform-specific executable files.</li>
+<li>The static linking functionality needed to generate a generic
+executable file - the functionality needed to encompass the
+platform families supported by this ABI.</li>
+</ul>
+<p>In most cases, some platform-specific post-processing is
+required to produce a platform executable file, but the complexity
+of the post processor is limited:</p>
+<ul>
+<li>For the SVr4 platform family, the required post-processing is a
+tiny increment on the static linking needed to generate a BPABI
+executable file. We expect most static linkers will offer an option
+to directly generate an executable file for Linux.</li>
+<li>For the DLL-based platform families platform-specific
+post-linking is significant, but little more complicated than an
+off-line version of SVr4 dynamic linking followed by a file format
+conversion.</li>
+<li>The bare metal platform family may demand additional static
+linking functionality to manage separate load and execution
+addresses and multiple image segments. Extracting such segments
+from an ELF executable file to drive ROM generating tools is
+trivial in comparison with the above tasks.</li>
+</ul>
+<p>We expect post linking to be used primary in support of
+DLL-based platforms and specialized execution environments that
+feature dynamically loaded executable files.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="a-note-about-ar-format">
+<h3>note about <strong>ar</strong> format</h3>
+<p>This ABI specifies that libraries of relocatable ELF files must
+be formatted as Unix-style <strong>ar</strong>
+format linkable libraries. This section specifies the
+<strong>ar</strong> variant used by Arm tools.</p>
+<p>Unfortunately, <strong>ar</strong> format is not
+well standardized, and good public references to the format are
+hard to find. The <strong>ar</strong> command is
+deprecated from the Linux base standard [<a href="http://refspecs.linuxfoundation.org/lsb.shtml">GLSB</a>] which
+states that it is "... expected to disappear from a future version
+of the LSB".</p>
+<p>good general introduction to <strong>ar</strong>
+format, including a brief history and a warning about the
+incompatibility of its variants, is given in the
+<cite>Manuals</cite> section of [<a href="http://www.obenbsd.org/">OpenBSD</a>]. Search there for
+<strong>ar</strong> in section 5 - <cite>File
+Formats</cite>. However, please be aware of the following
+concerning the name field in archive headers:</p>
+<ul>
+<li>Different ar variants manage long file names (&gt; 14
+characters), and file names containing spaces, differently.</li>
+<li><cite>RealView</cite> tools from Arm do <em>not</em> use the
+BSD file name conventions described at [<a href="http://www.obenbsd.org/">OpenBSD</a>].</li>
+</ul>
+<p>Recently, we have found a <cite>Wikipedia</cite> article about
+<strong>ar</strong> format [<a href="http://en.wikipedia.org/wiki/Ar_(Unix">http://en.wikipedia.org/wiki/Ar_(Unix</a>)].
+The <cite>GNU variant</cite> it describes is similar to the
+<cite>RealView</cite> variant summarized immediately below with
+this difference.</p>
+<ul>
+<li>As of early October 2008, this <cite>Wikipedia</cite> article
+claims that the 32-bit binary integers in the symbol table member
+(called '/') are encoded <em>big endian</em>.</li>
+<li>Arm targeted GNU tools and <cite>RealView</cite> tools always
+encode binary data using the byte order of the target system -
+little endian for little endian targets and big endian for big
+endian targets.</li>
+</ul>
+<p><strong>ar</strong> format
+conventions used by RealView tools and Arm-targeted GNU tools</p>
+<p>File names recorded in archive member headers are terminated
+with a '/'. This allows short ( 14 characters)
+names to contain spaces.</p>
+<p>The symbol table member (always present if an archive contains
+relocatable files) has the header name '/'. The symbol table member
+contains, in order:</p>
+<ul>
+<li>32-bit count of the number of symbols in the table. The byte
+order is that of the target system.</li>
+<li>For each symbol, the 32-bit offset within the archive of the
+header of the member defining it. The byte order is that of the
+target system.</li>
+<li>The NUL-terminated name of each symbol, listed in the same
+order as the offsets.</li>
+</ul>
+<p>There is always a file names member with the header name '//'.
+It contains the names of all the files in the archive. Each name is
+terminated by '/' followed by 'n' (so the member contains only
+printable text).</p>
+<p>If the file name of an archive member is longer than 14
+characters, its header name is '/' followed by the decimal offset
+of its name in the file names member. Otherwise the header name is
+the file name of the member.</p>
+<p>Ordinary members follow the symbol table member and the file
+names member.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda-to-and-errata-in-the-abi-for-the-arm-architecture">
+<h3>Addenda to and errata in the ABI for the Arm Architecture</h3>
+<p><cite>Addenda to, and errata in, the ABI for the Arm
+Architecture</cite> [<a href="https://developer.arm.com/docs/ihi0045/latest">ADDENDA</a>]
+contains late additions to version 2.0 (<em>this</em> version) and
+will contain any significant additions made during future
+maintenance of v2.0.</p>
+<p>As of the publication of v2.0 of the <cite>ABI for the Arm
+Architecture</cite> (date shown <a href="index.html#bsabi32-header">at the
+top</a> of this document), there are two addenda, <a href="https://developer.arm.com/docs/ihi0045/latest#addenda32-section2">ADDENDUM:
+Build Attributes</a> and <a href="https://developer.arm.com/docs/ihi0045/latest#addenda32-section3">ADDENDUM:
+Thread Local Storage</a>.</p>
+<p>As of this publication date (shown <a href="index.html#bsabi32-header">at
+the top</a> of this document) there are no errata.</p>
+<div>
+<div>
+<div>
+<div id="build-attributes">
+<h4>Build attributes</h4>
+<p>Build attributes record:</p>
+<ul>
+<li>The use of architectural features and ABI variants by the code
+and data in a relocatable file.</li>
+<li>To a limited extent, the intentions of the builder of the
+file.</li>
+</ul>
+<p>Attributes allow linkers to determine whether separately built
+relocatable files are inter-operable or incompatible, and to select
+the variant of a required library member that best matches the
+intentions of their builders.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="thread-local-storage">
+<h4>Thread local storage</h4>
+<p>Thread Local Storage (TLS) is a class of <em>own data</em>
+(static storage) that - like the stack - is instanced once for each
+thread of execution.</p>
+<p>This addendum defines the thread local storage (TLS) model for
+Linux for the Arm architecture. It covers:</p>
+<ul>
+<li>An introduction to the ABI issues raised by thread local
+storage.</li>
+<li>An introduction to addressing thread local variables.</li>
+<li>How Linux for the Arm architecture addresses thread local
+variables:
+<ul>
+<li>How thread local variables must be addressed from dynamically
+loadable DSOs.</li>
+<li>How thread local variables may be addressed more efficiently
+from applications and DSOs loaded only when a process is
+created.</li>
+</ul>
+</li>
+</ul>
+<p>The Linux-specific TLS relocations are described in [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>]
+(<a href="index.html">ELF for the Arm
+architecture</a>).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,4302 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2018"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2018"/>
+<title>Library ABI for the Arm Architecture - ABI 2018Q4
+documentation</title>
+
+<meta name="keywords" content="Fast Models"/></head>
+<body>
+<h2>Library ABI for the Arm Architecture - ABI 2018Q4
+documentation</h2>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="c-library-abi-for-the-arm-architecture">
+<p>Document number: IHI 0039E, current through ABI release
+2018Q4</p>
+<p>Date of Issue: 21<sup>st</sup> December 2018</p>
+<p>The latest version of this document is now hosted on <a href="https://github.com/ARM-software/abi-aa/releases">GitHub</a>.</p>
+<div>
+<div>
+<div>
+<div id="preamble">
+<h2>Preamble</h2>
+<div>
+<div>
+<div>
+<div id="abstract">
+<h3>Abstract</h3>
+<p>This document defines an ANSI C (C89) run-time library ABI for
+programs written in Arm and Thumb assembly language, C, and stand
+alone C++.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="keywords">
+<h3>Keywords</h3>
+<p>C library ABI, run-time library</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it</h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/products/software-development-tools/specifications">https://developer.arm.com/products/software-development-tools/specifications</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <em>arm</em> dot
+<em>eabi</em> at <em>arm</em> dot <em>com</em>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="licence">
+<h3>Licence</h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice</h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © [2018] Arm Limited or its affiliates. All rights
+reserved.</p>
+<p>Arm Limited. Company 02557590 registered in England. 110
+Fulbourn Road, Cambridge, England CB1 9NJ. LES-PRE-20349</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="contents">
+<h3>Contents</h3>
+<div>
+<div>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#c-library-abi-for-the-arm-architecture" id="id25">Library ABI for the Arm® Architecture</a>
+<ul>
+<li><a href="index.html#preamble" id="id26">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id27">Abstract</a></li>
+<li><a href="index.html#keywords" id="id28">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id29">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id30">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id31">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id32">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id33">About this
+document</a>
+<ul>
+<li><a href="index.html#change-control" id="id34">Change
+control</a></li>
+<li><a href="index.html#references" id="id35">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id36">Terms
+and abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id37">Your licence to use this specification</a></li>
+<li><a href="index.html#acknowledgements" id="id38">Acknowledgements</a></li>
+</ul>
+</li>
+<li><a href="index.html#scope" id="id39">Scope</a></li>
+<li><a href="index.html#introduction" id="id40">Introduction</a>
+<ul>
+<li><a href="index.html#most-c-library-functions-have-a-standard-abi" id="id41">Most C library functions have a standard
+ABI</a></li>
+<li><a href="index.html#a-c-library-is-all-or-nothing" id="id42">C library is all or nothing</a></li>
+<li><a href="index.html#important-corollaries-of-this-c-library-standardization-model" id="id43">Important corollaries of this C library
+standardization model</a></li>
+<li><a href="index.html#private-names-for-private-and-aeabi-specific-helper-functions" id="id44">Private names for private and AEABI-specific
+helper functions</a></li>
+</ul>
+</li>
+<li><a href="index.html#the-c-library" id="id45">The C
+library</a>
+<ul>
+<li><a href="index.html#c-library-overview" id="id46">Library
+overview</a></li>
+<li><a href="index.html#the-c-library-standardization-model" id="id47">The C library standardization model</a></li>
+<li><a href="index.html#summary-of-the-inter-tool-chain-compatibility-model" id="id48">Summary of the inter-tool-chain compatibility
+model</a></li>
+</ul>
+</li>
+<li><a href="index.html#the-c-library-section-by-section" id="id49">The C library section by section</a>
+<ul>
+<li><a href="index.html#introduction-and-conventions" id="id50">Introduction and conventions</a></li>
+<li><a href="index.html#assert-h" id="id51">assert.h</a></li>
+<li><a href="index.html#ctype-h" id="id52">ctype.h</a></li>
+<li><a href="index.html#errno-h" id="id53">errno.h</a></li>
+<li><a href="index.html#float-h" id="id54">float.h</a></li>
+<li><a href="index.html#inttypes-h" id="id55">inttypes.h</a></li>
+<li><a href="index.html#iso646-h" id="id56">iso646.h</a></li>
+<li><a href="index.html#limits-h" id="id57">limits.h</a></li>
+<li><a href="index.html#locale-h" id="id58">locale.h</a></li>
+<li><a href="index.html#math-h" id="id59">math.h</a></li>
+<li><a href="index.html#setjmp-h" id="id60">setjmp.h</a></li>
+<li><a href="index.html#signal-h" id="id61">signal.h</a></li>
+<li><a href="index.html#stdarg-h" id="id62">stdarg.h</a></li>
+<li><a href="index.html#stdbool-h" id="id63">stdbool.h</a></li>
+<li><a href="index.html#stddef-h" id="id64">stddef.h</a></li>
+<li><a href="index.html#stdint-h" id="id65">stdint.h</a></li>
+<li><a href="index.html#stdio-h" id="id66">stdio.h</a></li>
+<li><a href="index.html#stdlib-h" id="id67">stdlib.h</a></li>
+<li><a href="index.html#string-h" id="id68">string.h</a></li>
+<li><a href="index.html#time-h" id="id69">time.h</a></li>
+<li><a href="index.html#wchar-h" id="id70">wchar.h</a></li>
+<li><a href="index.html#wctype-h" id="id71">wctype.h</a></li>
+</ul>
+</li>
+<li><a href="index.html#summary-of-requirements-on-c-libraries" id="id72">Summary of requirements on C Libraries</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="about-this-document">
+<h2>About this document</h2>
+<div>
+<div>
+<div>
+<div id="change-control">
+<h3>Change control</h3>
+<div>
+<div>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current status and anticipated changes</h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li>ReleaseArm considers this specification to have enough
+implementations, which have received sufficient testing, to verify
+that it is correct. The details of these criteria are dependent on
+the scale and complexity of the change over previous versions:
+small, simple changes might only require one implementation, but
+more complex changes require multiple independent implementations,
+which have been rigorously tested for cross-compatibility. Arm
+anticipates that future changes to this specification will be
+limited to typographical corrections, clarifications and compatible
+extensions.</li>
+<li>BetaArm considers this specification to be complete, but
+existing implementations do not meet the requirements for
+confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li>AlphaThe content of this specification is a draft, and Arm
+considers the likelihood of future incompatible changes to be
+significant.</li>
+</ul>
+<p>All content in this document is at the "Release" quality
+level.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="change-history">
+<h4>Change history</h4>
+<table>
+<colgroup>
+<col width="5%"/>
+<col width="12%"/>
+<col width="4%"/>
+<col width="79%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>0.1</td>
+<td> </td>
+<td>LS</td>
+<td>First public DRAFT.</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>24<sup>th</sup> March 2005</td>
+<td>LS</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>2.01</td>
+<td>4<sup>th</sup> July 2005</td>
+<td>LS</td>
+<td>First batch of typographical corrections. Added stdbool.h.</td>
+</tr>
+<tr>
+<td>2.02</td>
+<td>5<sup>th</sup> October 2005</td>
+<td>LS</td>
+<td>Clarified the intention behind __B and isblank() in <a href="index.html">Encoding of ctype table entries and
+macros (_AEABI_PORTABILITY_LEVEL != 0)</a>. Fixed the clash with
+the C99 specification.</td>
+</tr>
+<tr>
+<td>2.03</td>
+<td>5<sup>th</sup> May 2006</td>
+<td>LS</td>
+<td>Corrected misinformation in <a href="index.html">signal.h</a> concerning (non-)atomic
+access to 8-byte types using ldrd/strd/ldm/stm.</td>
+</tr>
+<tr>
+<td>/ A</td>
+<td>25<sup>th</sup> October 2007</td>
+<td>LS</td>
+<td>In <a href="index.html">Private names for private
+and AEABI-specific helper functions</a>, used the common table of
+registered vendor names Document renumbered (formerly GENC-003539
+v2.04).</td>
+</tr>
+<tr>
+<td>B</td>
+<td>4<sup>th</sup> November 2009</td>
+<td>LS</td>
+<td>Added <a href="index.html">C++ names of C
+library functions</a> explaining why, in C++ generating portable
+binary, standard library functions should be used via extern "C"
+linkage.</td>
+</tr>
+<tr>
+<td>r2.09</td>
+<td>30<sup>th</sup> November 2012</td>
+<td>AC</td>
+<td><a href="index.html">assert.h</a> Clarified the
+intended method of customizing assert(). <a href="index.html">setjmp.h</a> Corrected calculation of
+minimum jmp_buf size (previously given as 24 double-words).</td>
+</tr>
+<tr>
+<td>r2.10</td>
+<td>24<sup>th</sup> November 2015</td>
+<td>CR</td>
+<td><a href="index.html">wchar.h</a> Permit wint_t to
+be unsigned int.</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>21<sup>st</sup> December 2018</td>
+<td>OS</td>
+<td>Minor typographical fixes, updated links.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="references">
+<h3>References</h3>
+<p>This document refers to, and is referred to by, the following
+documents.</p>
+<table>
+<colgroup>
+<col width="26%"/>
+<col width="24%"/>
+<col width="50%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>URL or other reference</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a></td>
+<td> </td>
+<td>ELF for the Arm Architecture.</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a></td>
+<td> </td>
+<td>Procedure Call Standard for the Arm Architecture.</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0036/latest">BSABI</a></td>
+<td> </td>
+<td>ABI for the Arm Architecture (Base Standard).</td>
+</tr>
+<tr>
+<td>CLIBABI</td>
+<td><em>This document</em></td>
+<td>Library ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a></td>
+<td> </td>
+<td>C++ ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a></td>
+<td> </td>
+<td>Run-time ABI for the Arm Architecture.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and abbreviations</h3>
+<p>The <em>ABI for the Arm Architecture</em> uses the following
+terms and abbreviations.</p>
+<ul>
+<li>AAPCSProcedure Call Standard for the Arm Architecture.</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+<cite>Linux ABI for the Arm Architecture</cite>.</li>
+<li>particular aspect of the specifications to which independently
+produced relocatable files must conform in order to be statically
+linkable and executable. For example, the <a href="https://developer.arm.com/docs/ihi0041/latest">C++ ABI for the Arm
+Architecture</a>, the <a href="https://developer.arm.com/docs/ihi0043/latest">Run-time ABI for
+the Arm Architecture</a>, the C Library ABI for the Arm
+Architecture.</li>
+</ol>
+</li>
+<li>AEABI(Embedded) ABI for the Arm architecture (this ABI...)</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>core registersThe general purpose registers visible in the Arm
+architecture's programmer's model, typically r0-r12, SP, LR, PC,
+and CPSR.</li>
+<li>EABIAn ABI suited to the needs of embedded, and deeply embedded
+(sometimes called free standing), applications.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>VFPThe Arm architecture's Floating Point architecture and
+instruction set. In this ABI, this abbreviation includes all
+floating point variants regardless of whether or not vector (V)
+mode is supported.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification</h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="acknowledgements">
+<h3>Acknowledgements</h3>
+<p>This specification has been developed with the active support of
+the following organizations. In alphabetical order: Arm,
+CodeSourcery, Intel, Metrowerks, Montavista, Nexus Electronics,
+PalmSource, Symbian, Texas Instruments, and Wind River.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="scope">
+<h2>Scope</h2>
+<p>Conformance to the <em>ABI for the Arm architecture</em>
+[<a href="https://developer.arm.com/docs/ihi0036/latest">BSABI</a>]
+supports inter-operation between:</p>
+<ul>
+<li>Relocatable objects generated by different tool chains.</li>
+<li>Executables and shared objects generated for the same execution
+environment by different tool chains.</li>
+</ul>
+<p>This standard for C library functions allows a relocatable
+object built by one conforming tool chain from Arm-Thumb assembly
+language, C, or standalone C++ to be compatible with the static
+linking environment provided by a different conforming tool
+chain.</p>
+<div class="documents-docsimg-container" id="id2"><img alt="clibabi32-inter-operation.png" src="clibabi32-inter-operation.png"/>
+<p>Inter-operation between relocatable objects</p>
+</div>
+<p>In this model of inter-working, the standard headers used to
+build a relocatable object are those associated with the tool chain
+building it, not those associated with the library with which the
+object will, ultimately, be linked.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="introduction">
+<h2>Introduction</h2>
+<p>number of principles of inter-operation are implicit in, or
+compatible with, <a href="index.html">Inter-operation between
+relocatable objects</a>, above. This section describes these
+principles precisely, as they apply to a C library, and gives a
+rationale for each one. The corresponding section of [<a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a>]
+discusses the same principles as they apply to run-time helper
+functions.</p>
+<div>
+<div>
+<div>
+<div id="most-c-library-functions-have-a-standard-abi">
+<h3>Most C library functions have a standard ABI</h3>
+<p>library functions are declared explicitly in standard
+headers.</p>
+<p>As shown in <a href="index.html">The C library</a>,
+below, it is possible to standardize the interface to almost all
+the C library. However, it is very difficult to treat the C++
+library the same way. Too much of the implementation of the C++
+library is in the standard headers. Standardizing a binary
+interface to the C++ library is equivalent to standardizing its
+implementations.</p>
+<p>Among C library functions we can distinguish the following
+categories.</p>
+<ul>
+<li>Functions whose type signatures and argument ranges are
+precisely defined by a combination of the C standard and this ABI
+standard for data type size and alignment given in the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]. These
+functions already have a standardized binary interface.</li>
+<li>Functions that would fall in the above category if there were
+agreement about the layout of a structure that is only partly
+defined by the C standard, or agreement about the range and meaning
+of controlling values passed to the function for which the C
+standard gives only a macro name.</li>
+<li>Functions that take as arguments pointers to structures whose
+fields are not defined by the standard (FILE, mbstate_t, fpos_t,
+jmp_buf), that can be standardized by considering the structures to
+be opaque. (But beware FILE, which is also expected to be accessed
+non-opaquely).</li>
+<li>Miscellanea such as errno, va_arg, va_start, and the ctype
+functions that are expected to be implemented by macros in ways
+that are unspecified by the standard. These must be examined case
+by case.</li>
+</ul>
+<p>The C library declares few data objects, so standardization is
+concerned almost exclusively with functions.</p>
+<p><strong>Some standard functions may be inlined</strong></p>
+<p>The C and C++ standards allows compilers to recognize standard
+library functions and treat them specially, provided that such
+recognition does not depend on the inclusion of header files. In
+practice, this allows a compiler to inline any library function
+that neither reads nor writes program state (such as the state of
+the heap or the locale) managed by the library.</p>
+<div>
+<div>
+<div>
+<div id="already-standardized-c-library-functions">
+<h4>Already standardized C library functions</h4>
+<p>Already standardized functions include those whose type
+signatures include only primitive types, defined synonyms for
+primitive types (such as <code>size_t</code>), or obvious synonyms
+for primitive types (such as <code>time_t</code> and
+<code>clock_t</code>). Whole sections of the C library (for
+example, that described by string.h) fall into this category.</p>
+<p>Each such function is already very precisely defined.</p>
+<ul>
+<li>Its type signature is fixed.</li>
+<li>Its name is fixed by the C language standard.</li>
+<li>With some exceptions clearly identified by the C language
+standard (for example, whether malloc(0) <div class="documents-docsimg-container"><img alt="\ne" src="a6b912fd3b00d82e1d9b2f71c9c0daf7a7f439b7.png"/></div> NULL), Its
+behavior is fixed by the C language standard.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="nearly-standardized-c-library-functions">
+<h4>Nearly standardized C library functions</h4>
+<p>Functions that would already be standardized were it not for
+depending on the layout of a structure or the value of a
+controlling constant are prime candidates for standardizing. In
+many cases, there is already general consensus about layout or
+values.</p>
+<p><strong>Structure layout</strong></p>
+<p>The C standard defines only the fields that <em>must</em> be
+present in the structures it defines (lconv, tm, div_t, ldiv_t). It
+does not define the order of fields, and it gives latitude to
+implementers to add fields.</p>
+<p>In practice, most implementations use only the defined fields in
+the order listed in the C standard. In conjunction with the POD
+structure layout rules given in the AAPCS this effectively
+standardizes the ABI to functions that manipulate these
+structures.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>fpos_t, mbstate_t, and FILE, which have no
+standard-defined fields, do not have this property.</p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>Controlling values</strong></p>
+<p>For controlling values there are some universal agreements (for
+example, about the values of NULL, SEEK_*, EXIT_*) and some
+disagreements (about the values of LC_*, _IO*BF, etc).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="c-library-functions-operating-on-potentially-opaque-structures">
+<h4>library functions operating on potentially opaque
+structures</h4>
+<p>Functions that take as arguments pointers to structures whose
+fields are not defined by the standard (FILE, mbstate_t, fpos_t,
+jmp_buf) can be standardized only if those structures are made
+opaque.</p>
+<ul>
+<li>Unfortunately, we must be able to define objects of all of
+these types except FILE (a library client only ever allocates
+objects of type FILE *), so the size of each object must be
+standardized even if the contents are not.</li>
+<li>Functions that manipulate types opaquely cannot be implemented
+inline. Thus getc, putc, getchar, putchar, and so on must be out of
+line functions. This might be acceptable in a deeply embedded
+application, but is unlikely to be unconditionally acceptable in
+high performance platform ABIs where there is a history of these
+functions being implemented by macros that operate on the
+implementation of FILE.</li>
+</ul>
+<p>In <a href="index.html">The C library</a>, below, these
+functions are considered case by case under the library
+sub-sections that declare them.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="miscellanea">
+<h4>Miscellanea</h4>
+<p>The implementations of macros such as errno, va_arg, va_start,
+and the ctype functions are unspecified by the C standard. These
+must be considered case by case.</p>
+<ul>
+<li>The va_* macros essentially disappear. The type va_list and the
+binary interface to variadic functions are standardized by the
+AAPCS. We simply require compilers to inline what remains.</li>
+<li>There is probably no completely satisfactory cross platform
+definition of <em>errno</em>. <a href="index.html">errno.h</a>, below, proposes a definition
+well suited to deeply embedded use, and adequately efficient
+elsewhere.</li>
+<li>For the ctype macros there is no escaping calling a function in
+the general case.</li>
+</ul>
+<p>(Consider how to handle changing locale, as must be done by an
+application that processes Chinese, Japanese, or Korean characters,
+because the C library is defined to start in the "C" locale).</p>
+<p>The ctype functions are discussed further in <a href="index.html">ctype.h</a>, below.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="a-c-library-is-all-or-nothing">
+<h3>C library is all or nothing</h3>
+<p>In general, a function (for example, malloc) from vendor A's C
+library will not work with a function (for example, free) from
+vendor B's C library. Granted, large tracts of C library will be
+independent leaf (or near leaf) functions, portable between tool
+chains (strlen, strcpy, strstr, etc), and vendors will work hard to
+ensure that a statically linked program will only include the
+functions it needs. Nonetheless, tangled clumps of implementation
+might underlie many apparently independent parts of a run-time
+library's public interface.</p>
+<p>In some cases, there may be an element of conspiracy between the
+run-time libraries, the static linker, and the ultimate execution
+environment. For example, the way that a program acquires its
+startup code (sometimes called crt0.o) may depend on the library
+and the static linker, as well as the execution environment.</p>
+<p>This leads us to a major conclusion for statically linked
+executables:</p>
+<ul>
+<li><strong>The static linker and the language run-time libraries
+must be from the same tool chain</strong>.</li>
+</ul>
+<p>Accepting this constraint gives considerable scope for private
+arrangements (not governed by this ABI) between these tool chain
+components, restricted only by the requirement to provide a well
+defined binary interface (ABI) to the functions described in
+<a href="index.html">Most C library functions have a
+standard ABI</a>, above.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="important-corollaries-of-this-c-library-standardization-model">
+<h3>Important corollaries of this C library standardization
+model</h3>
+<p>System headers <em>can</em> require compiler-specific
+functionality (e.g. for handling va_start, va_arg, etc). The
+resulting binary code must conform to the ABI.</p>
+<p>As far as this ABI is concerned, a standard library header is
+processed only by a matching compiler. A platform ABI can impose
+further constraints that cause more compilers to match, but this
+ABI does not.</p>
+<p>This ABI defines the full set of public helper functions
+required to support portable access to a C library. Every
+ABI-conforming tool chain's run-time library must implement these
+helper functions.</p>
+<p>The header describing an ABI-conforming object must contain only
+standard-conforming source language.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>That does not preclude compiler-specific directives
+that are properly guarded in a standard conforming way. For
+example: #ifdef __CC_ARM... #pragma..., and so on. However, such
+directives must not change the ABI conformance of the generated
+binary.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="private-names-for-private-and-aeabi-specific-helper-functions">
+<h3>Private names for private and AEABI-specific helper
+functions</h3>
+<p>External names used by private helper functions and private
+helper data must be in the vendor-specific name space reserved by
+this ABI. All such names use the format __vendor_name.</p>
+<p>For example (from the C++ exception handling ABI):</p>
+<p>__<strong>aeabi</strong>_unwind_cpp_pr0
+__<strong>ARM</strong>_Unwind_cpp_prcommon</p>
+<p>The <em>vendor</em> prefix must be registered with the
+maintainers of this ABI specification. Prefixes must not contain
+underscore ('_') or dollar ('$'). Prefixes beginning with
+<em>Anon</em> and <em>anon</em> are reserved to unregistered
+use.</p>
+<p>The table of registered vendor prefixes is given below.</p>
+<table id="id3">
+<caption>Registered Vendors</caption>
+<colgroup>
+<col width="20%"/>
+<col width="80%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Vendor</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>ADI</code></td>
+<td>Analog Devices</td>
+</tr>
+<tr>
+<td><code>acle</code></td>
+<td>Reserved for use by Arm C Language Extensions.</td>
+</tr>
+<tr>
+<td><code>aeabi</code></td>
+<td>Reserved to the ABI for the Arm Architecture (EABI
+pseudo-vendor)</td>
+</tr>
+<tr>
+<td><code>Anon</code> <em>Xyz</em> <code>anon</code>
+<em>Xyz</em></td>
+<td>Reserved to private experiments by the Xyz vendor. Guaranteed
+not to clash with any registered vendor name.</td>
+</tr>
+<tr>
+<td><code>ARM</code></td>
+<td>Arm Ltd (Note: the company, not the processor).</td>
+</tr>
+<tr>
+<td><code>cxa</code></td>
+<td>C++ ABI pseudo-vendor</td>
+</tr>
+<tr>
+<td><code>FSL</code></td>
+<td>Freescale Semiconductor Inc.</td>
+</tr>
+<tr>
+<td><code>GHS</code></td>
+<td>Green Hills Systems</td>
+</tr>
+<tr>
+<td><code>gnu</code></td>
+<td>GNU compilers and tools (Free Software Foundation)</td>
+</tr>
+<tr>
+<td><code>iar</code></td>
+<td>IAR Systems</td>
+</tr>
+<tr>
+<td><code>icc</code></td>
+<td>ImageCraft Creations Inc (<em>ImageCraft C Compiler</em>)</td>
+</tr>
+<tr>
+<td><code>intel</code></td>
+<td>Intel Corporation</td>
+</tr>
+<tr>
+<td><code>ixs</code></td>
+<td>Intel Xscale</td>
+</tr>
+<tr>
+<td><code>llvm</code></td>
+<td>The LLVM/Clang projects</td>
+</tr>
+<tr>
+<td><code>PSI</code></td>
+<td>PalmSource Inc.</td>
+</tr>
+<tr>
+<td><code>RAL</code></td>
+<td>Rowley Associates Ltd</td>
+</tr>
+<tr>
+<td><code>SEGGER</code></td>
+<td>SEGGER Microcontroller GmbH</td>
+</tr>
+<tr>
+<td><code>somn</code></td>
+<td>SOMNIUM Technologies Limited.</td>
+</tr>
+<tr>
+<td><code>TASKING</code></td>
+<td>Altium Ltd.</td>
+</tr>
+<tr>
+<td><code>TI</code></td>
+<td>TI Inc.</td>
+</tr>
+<tr>
+<td><code>tls</code></td>
+<td>Reserved for use in thread-local storage routines.</td>
+</tr>
+<tr>
+<td><code>WRS</code></td>
+<td>Wind River Systems.</td>
+</tr>
+</tbody>
+</table>
+<p>To register a vendor prefix with Arm, please E-mail your request
+to arm.eabi at arm.com.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-c-library">
+<h2>The C library</h2>
+<div>
+<div>
+<div>
+<div id="c-library-overview">
+<h3>Library overview</h3>
+<p>The C Library ABI for the Arm architecture is associated with
+the headers listed in <a href="index.html">C library
+headers</a> below. Some are defined by the ANSI 1989 (ISO 1990)
+standard for C (called C89 in this document), some by addenda to
+it, and some by the 1999 standard for C (called C99 in this
+document). Most are in the set of headers considered by 17.4.1.2 of
+the ANSI 1998 C++ standard to provide <em>Headers for C Library
+Facilities</em>. These are denoted in the table below by 'C'.</p>
+<table id="id4">
+<caption>library headers</caption>
+<colgroup>
+<col width="10%"/>
+<col width="10%"/>
+<col width="80%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Header</th>
+<th>Origin</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>assert.h</td>
+<td>C</td>
+<td>See <a href="index.html">assert.h</a>. Standardize
+__aeabi_assert(const char*, const char*, int).</td>
+</tr>
+<tr>
+<td>ctype.h</td>
+<td>C</td>
+<td>See <a href="index.html">ctype.h</a>. Inlined macros
+cause difficulties for standardization.</td>
+</tr>
+<tr>
+<td>errno.h</td>
+<td>C</td>
+<td>See <a href="index.html">errno.h</a>.</td>
+</tr>
+<tr>
+<td>float.h</td>
+<td>C</td>
+<td>Defined by Arm's choice of 32 and 64-bit IEEE 2's complement
+format.</td>
+</tr>
+<tr>
+<td>inttypes.h</td>
+<td>C99</td>
+<td>Defined by the AAPCS and commonsense.</td>
+</tr>
+<tr>
+<td>iso646.h</td>
+<td>C</td>
+<td>Defined by entirely the C standard.</td>
+</tr>
+<tr>
+<td>limits.h</td>
+<td>C</td>
+<td>See <a href="index.html">limits.h</a>. Defined by
+the AAPCS (save for MB_LEN_MAX).</td>
+</tr>
+<tr>
+<td>locale.h</td>
+<td>C</td>
+<td>See <a href="index.html">locale.h</a>.</td>
+</tr>
+<tr>
+<td>math.h</td>
+<td>C</td>
+<td>See <a href="index.html">math.h</a>. All fixed
+apart from HUGE_VAL and related C99 definitions.</td>
+</tr>
+<tr>
+<td>setjmp.h</td>
+<td>C</td>
+<td>jmp_buf must be defined, setjmp and longjmp must not be
+inlined.</td>
+</tr>
+<tr>
+<td>signal.h</td>
+<td>C</td>
+<td>See <a href="index.html">signal.h</a>. Definitions
+of SIG_DFL, SIG_IGN, SIG_ERR, &amp; signal #s are
+controversial.</td>
+</tr>
+<tr>
+<td>stdarg.h</td>
+<td>C</td>
+<td>va_list is defined by AAPCS. Other artifacts are inline
+(compiler-defined)</td>
+</tr>
+<tr>
+<td>stdbool.h</td>
+<td>C99</td>
+<td>Defined by entirely the C standard</td>
+</tr>
+<tr>
+<td>stddef.h</td>
+<td>C</td>
+<td>Defined by the AAPCS.</td>
+</tr>
+<tr>
+<td>stdint.h</td>
+<td>C99</td>
+<td>Defined by the Arm architecture + AAPCS + C standard.</td>
+</tr>
+<tr>
+<td>stdio.h</td>
+<td>C</td>
+<td>See <a href="index.html">stdio.h</a>. Inlined
+macros and properties of the environment cause difficulties.</td>
+</tr>
+<tr>
+<td>stdlib.h</td>
+<td>C</td>
+<td>See <a href="index.html">stdlib.h</a>. All fixed
+apart from MB_CUR_MAX.</td>
+</tr>
+<tr>
+<td>string.h</td>
+<td>C</td>
+<td>The interface is fixed by the AAPCS data type size rules.</td>
+</tr>
+<tr>
+<td>time.h</td>
+<td>C</td>
+<td>See <a href="index.html">time.h</a>. CLOCKS_PER_SEC
+is a property of the execution environment.</td>
+</tr>
+<tr>
+<td>wchar.h</td>
+<td>C</td>
+<td>See <a href="index.html">wchar.h</a>. No issues
+apart from mbstate_t.</td>
+</tr>
+<tr>
+<td>wctype.h</td>
+<td>C</td>
+<td>See <a href="index.html">wctype.h</a>. Defined by
+the AAPCS and commonsense.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-c-library-standardization-model">
+<h3>The C library standardization model</h3>
+<div>
+<div>
+<div>
+<div id="purpose-and-principles">
+<h4>Purpose and principles</h4>
+<p>The purpose of standardizing a binary interface to the ANSI C
+library is to support creating portable binaries that can use that
+library. To this end we want to categorize developments as being of
+one of two kinds:</p>
+<ul>
+<li>Those that develop applications.</li>
+<li>Those that develop portable binaries.</li>
+</ul>
+<p>An application is built using a single tool chain. The
+executable may include statically linkable binary code from a 3rd
+party, built using a different tool chain. It may later be
+dynamically linked into an execution environment based on, or built
+by, yet another tool chain.</p>
+<p>portable binary may be relocatable object code for static
+linking or an executable for dynamic linking.</p>
+<p><strong>Principles</strong></p>
+<p>Whatever we do to support the creation of an ABI standard for
+the C library must be compatible with the library sections of the C
+and C++ language standards, from the perspective of application
+code. It can conflict with and overrule these language standards
+only if invited to do so by portable code.</p>
+<p><strong>Corollary</strong>: Anything reducing the guarantees
+given by a language standard must be guarded by:</p>
+<div>
+<div>
+<div>
+<div>
+<div><code>#if _AEABI_PORTABILITY_LEVEL != 0</code></div>
+</div>
+</div>
+</div>
+</div>
+<p>The ability to make portable binaries must impose no costs on
+non-portable application code. Portable code may incur costs
+including reduced performance and, or, loss of standard language
+guarantees.</p>
+<p>The cost of supporting portable binaries must be moderate for
+run-time libraries. Ideally, we should restrict the requirements to
+that which existing run-time libraries can support via pure
+extension and additional veneers.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="obstacles-to-creating-a-c-library-abi">
+<h4>Obstacles to creating a C library ABI</h4>
+<p>Within a C library header file there are several different sorts
+of declaration that affect binary inter-working.</p>
+<ul>
+<li>Function declarations. Most of these have no consequences for
+binary compatibility because:</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>For non-variadic functions the C standard guarantees that a
+function with that name will exist (because the user is entitled to
+declare it without including any library header).</li>
+<li>The meaning of the function is specified by the standard.</li>
+<li>The type signature involves only primitive types, and these are
+tightly specified by the AAPCS.</li>
+</ul>
+<p>An ABI standardization issue arises where an argument is not a
+primitive type.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Macro definitions. Many expand to constants, a few to
+implementation functions.</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>Many of the constant values follow from the C standard, the
+IEEE 754 FP standard, and the AAPCS. There is no choice of value
+for Arm-Thumb.</li>
+<li>Some constants such as EOF and NULL are uncontroversial and can
+be standardized.</li>
+</ul>
+<p>An ABI issue arises if a constant does not have a consensus
+value and if a function is inlined.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Structure and type definitions.</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>Most C library typedefs name primitive types fully defined by
+the AAPCS.</li>
+<li>Structure declarations affect binary inter-working only if
+there is variation in the size, alignment, or order of fields.</li>
+</ul>
+<p>An ABI issue arises if the content and field order of a
+structure is not fully specified by the standard.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="compile-time-constants-that-cannot-be-constant-at-compile-time">
+<h5>Compile-time constants that cannot be constant at compile
+time</h5>
+<p>The C library binds many constants at compile time that are
+properties of the target execution environment. Examples include
+_IO*BF, LC_*, EDOM, ERANGE, EILSEQ, SIG*, CLOCKS_PER_SEC,
+FILENAME_MAX.</p>
+<p>In some cases, there is consensus about the values of
+controlling constants. For example, there is near universal
+consensus about the values of NULL, SEEK_*, EXIT_*, EDOM, ERANGE
+(but not EILSEQ), most of SIG* (but not, universally, SIGABRT).</p>
+<p>These constants simply cannot be bound at compile time (as
+required by ANSI) if we want a portable binary. Instead, they must
+be bound at link time, or queried at run-time.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="inadequately-specified-structures">
+<h5>Inadequately specified structures</h5>
+<p>The interface to the C library includes inadequately specified
+structures such as lconv, tm, and *div_t.</p>
+<p>In fact, lconv, tm, and *div_t are the only structures not
+defined opaquely. For the others, we need to know at most the size
+and alignment. Even FILE is unproblematic, because (save for access
+by inline functions) it is always accessed opaquely via a FILE
+*.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="inline-functions-that-expose-implementation-details">
+<h5>Inline functions that expose implementation details</h5>
+<p>The C Library permits and encourages certain functions to be
+implemented inline via macros that expose otherwise hidden details
+of the implementation.</p>
+<p>The ctype functions provide a clear illustration, though getc,
+putc, getchar, putchar, and sometimes feof and ferror, are equally
+difficult.</p>
+<p>Of the ctype functions, isdigit and isxdigit can be inlined
+without reference to the target environment, though in practice,
+only isdigit can be efficiently inlined without helper functions or
+helper tables.</p>
+<ul>
+<li>Isdigit can be inlined in 2 Arm or Thumb instructions.</li>
+<li>Inline isxdigit takes 5 Arm or 8 Thumb instructions compared to
+2-3 using a 256 byte helper table.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="under-specified-exported-data">
+<h5>Under-specified exported data</h5>
+<p>There are some under-specified data exported by the C library,
+specifically errno, stdin, stdout, and stderr.</p>
+<p>In the case of errno, the requirement is to expand to a
+modifiable l-value. The most general form of modifiable l-value is
+something like (*__aeabi_errno()), and this can be layered
+efficiently on any environment.</p>
+<p>Stdin, stdout, and stderr must expand to expressions of type
+<em>pointer to FILE</em>. In practice, execution environments
+either define stdin to have type FILE * or define stdin to be the
+address of a FILE object. The former definition is slightly more
+general in that it can be trivially layered on an underlying
+environment of either sort (either by being a synonym for the
+underlying FILE *, or a location statically initialized to the
+address of the FILE).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="our-approach-to-defining-a-c-library-abi">
+<h4>Our approach to defining a C library ABI</h4>
+<div>
+<div>
+<div>
+<div id="compile-time-constants">
+<h5>Compile time constants</h5>
+<p>The first step is to deal with the controlling values C89 treats
+as compile-time constants that cannot be constant at compile time.
+We can categorize each group of such constants in one of three
+ways.</p>
+<ul>
+<li>Everyone agrees all the values. Examples include NULL, SEEK_*,
+EXIT_*. These remain constants.</li>
+<li>Different implementations disagree about the values. Examples
+include _IO*BF, LC_*. This is the <em>black</em> list.</li>
+<li>Most implementations agree about most of the values. Examples
+include EDOM, ERANGE, and SIG* excluding SIGABRT. This is the
+<em>grey</em> list.</li>
+</ul>
+<p>Black list items must become link-time constants or run-time
+queries. Link-time constants are more efficient for the client and
+no more difficult for the execution environment. In both cases they
+can be supported as a thin veneer on an existing execution
+environment. Name-space pollution is the only serious
+standardization issue, but use of names of the form __aeabi_xxx and
+_AEABI_XXX deals with that for C.</p>
+<p>Because this change violates the ANSI standard, it must be
+guarded by:</p>
+<div>
+<div>
+<div>
+<div>
+<div><code>#if _AEABI_PORTABILITY_LEVEL != 0.</code></div>
+</div>
+</div>
+</div>
+</div>
+<p>Grey list items are a little more difficult. There are two
+options.</p>
+<ul>
+<li>Treat each group as <em>black</em> or <em>white</em> on a case
+by case basis.</li>
+<li>Treat the consensus members as <em>white</em> and the remainder
+as <em>black</em>.</li>
+</ul>
+<p>Consider , ERANGE, and EILSEQ from errno.h. This is a grey list
+category because there is consensus that = 33 and ERANGE = 34, but
+no consensus (even among Unix-like implementations) about
+EILSEQ.</p>
+<p>In practice, these values will be rarely accessed by portable
+code, so there is no associated performance or size issue, and they
+should all be considered <em>black</em> to maximize
+portability.</p>
+<p>A similar argument suggests all the SIG* values should be
+considered <em>black</em>. Portable code will rarely raise a
+signal, and there is no overhead on the run-time environment to
+define the link-time constants, so we might as well err on the side
+of portability.</p>
+<p>Thus a clear principle emerges that seems to work robustly and
+satisfy all of principles and goals stated in <a href="index.html">Purpose and principles</a>. Namely, if
+any member of a related group of manifest constants does not have a
+consensus value, the whole group become link-time constants when
+_AEABI_PORTABILITY_LEVEL != 0.</p>
+<p>general template for managing this is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#if _AEABI_PORTABILITY_LEVEL == 0
+#  define XXXX ....
+#else
+   extern const int __aeabi_XXXX;
+#  define XXXX  (__aeabi_XXXX)
+#endif
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In other words, the compile time constant XXXX becomes the
+constant value __aeabi_XXXX (unless XXXX begins with an underscore,
+in which case underscores are omitted until only one remains after
+__aeabi)..</p>
+<p>This much imposes no overheads on non-portable (application)
+code, only trivial compliance overhead (provide a list of constant
+definitions) on tool chains and execution environments, and only a
+small tax on portable binaries.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="structures-used-in-the-c-library-interface">
+<h5>Structures used in the C library interface</h5>
+<p><strong>Opaque structures</strong></p>
+<p>Some structures are used opaquely by library code. Examples
+include fpos_t, mbstate_t, and jmp_buf. The key issue for a
+portable client using such a structure is to allocate sufficient
+space, properly aligned. In most cases this involves a
+straightforward decision.</p>
+<p>The trickiest case of these three is jmp_buf, whose size is
+really a feature of the execution environment. When
+_AEABI_PORTABILITY_LEVEL != 0 the definition should be reduced to
+one that is adequate for declaring parameters and extern data, but
+inadequate for reserving space. A suitable definition is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>typedef long long jmp_buf[];
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>A portable binary must contrive to obtain any needed jmp_buf
+structures from its client environment, either via parameters or
+extern data, and neither setjmp nor longjmp can be inlined.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>A link-time value __aeabi_JMP_BUF_SIZE would
+support allocating a jmp_buf using malloc.</p>
+</div>
+</div>
+</div>
+</div>
+<p>The *div_t structures are formal requirements of the C standard.
+They are unlikely to be used in the Arm world. We will define them
+consistent with the Arm helper functions for division. When
+_AEABI_PORTABILITY_LEVEL != 0 the definitions should simply
+disappear (in order to remove a marginal portability hazard).</p>
+<p>Two structures - tm and lconv - are definitely not opaque, and
+we discuss them further below.</p>
+<p><strong>struct tm</strong></p>
+<p>Most implementers agree that struct tm should be declared to be
+the C89/C99 fields in the order listed in the standards. BSD
+systems add two additional fields at the end relating to the time
+zone. It is a defect in BSD that a call to strftime() with a struct
+tm in which the additional fields have not been initialized
+properly can crash, even when the format string has no need to
+access the fields. We have reported this defect to the BSD
+maintainers.</p>
+<p>This ABI defines struct tm to contain two extra, trailing words
+that must not be used by ABI-conforming code.</p>
+<p><strong>struct lconv</strong></p>
+<p>Unfortunately, lconv has been extended between C89 and C99 (with
+6 additional fields) and the C89 field order has changed in the C99
+standard (though the new fields are listed last). Fortunately,
+lconv is generated by a C library, but not consumed by a C library.
+It is output only. That allows us to define the field order for
+portable objects, provided a portable object never passes a struct
+lconv to a non-portable object. In other words, when
+_AEABI_PORTABILITY_LEVEL != 0, struct lconv should be replaced by
+struct __aeabi_lconv, and localeconv by __aeabi_localeconv. We
+define the field order to be the C89 order followed by the new
+fields, so in many cases __aeabi_localeconv will simply be a
+synonym for localeconv. At worst it will be a small veneer.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="inline-functions">
+<h5>Inline functions</h5>
+<p>Inline functions damage portability if they refer directly to
+details of a hidden implementation. In C89, this problem is usually
+caused by the ctype functions <em>is</em>xxxxx and <em>toyyyy</em>,
+and the stdio functions getc, putc, getchar, putchar, and feof.
+(When new inline/macro functions are added to a header, the
+inline/macro implementations must be hidden when
+_AEABI_PORTABILITY_LEVEL != 0).</p>
+<p>In stdio, only feof generates a cogent case on performance
+grounds for being inline (a case weakened by getc etc returning
+EOF). The get and put functions are so complex - inevitably
+embedding a function call - that being inline saves little other
+than the cost of the function call itself. The C standard requires
+functions to exist in every case, so the required header change
+when _AEABI_PORTABILITY_LEVEL != 0 is simply to hide some macro
+definitions</p>
+<p>That leaves the ctype <em>is</em>xxxxx functions, excluding
+isdigit() which can always be inlined most efficiently without
+helper functions or tables. For these functions there is a choice
+when _AEABI_PORTABILITY_LEVEL != 0.</p>
+<ul>
+<li>They can be out of line (isdigit excepted). This always works,
+imposes no overhead on the execution environment, and delivers the
+semantic guarantees of the standard to portable code.</li>
+<li>There can be a defined tabular implementation that the
+execution environment must support.</li>
+</ul>
+<p>The second option can be a near zero cost addition to an
+existing execution environment provided a portable binary can bind
+statically to its ctype locale. All that needs to be provided are
+tables with defined names. No upheaval is required in the
+underlying ctype/locale system.</p>
+<p>The choice available to a user building a portable binary is
+then between the following.</p>
+<ul>
+<li>All ctype functions are out of line (save isdigit and, perhaps,
+isxdigit).</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>This is the appropriate choice when ctype performance does not
+matter, or the code must depend on the dynamic choice of ctype
+locale.</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>All ctype functions are inlined using a helper table
+appropriate to the statically chosen ctype locale.</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<p>The implementation is sketched in <a href="index.html">ctype.h</a>, below. The binding is managed
+by defining _AEABI_LC_CTYPE to be one of C, ISO8859_1, or SJIS.</p>
+<p>This is the appropriate choice when the ctype locale is known
+statically and performance <em>does</em> matter.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="naming-issues-in-c-header-files">
+<h4>Naming issues in C++ header files</h4>
+<div>
+<div>
+<div>
+<div id="names-introduced-by-this-c-library-abi-into-cyyy-headers">
+<h5>Names introduced by this C library ABI into
+&lt;c<em>yyy</em>&gt; headers</h5>
+<p>Identifiers introduced by the AEABI are of the form
+__aeabi_<em>xxxx</em> or _AEABI_<em>XXX</em> (macros only).</p>
+<p>Identifiers with linkage are all of the form
+__aeabi_<em>xxxx</em> and must be declared with extern "C"
+linkage.</p>
+<p>An __aeabi_<em>xxxx</em> identifier introduced into a
+&lt;c<em>yyy</em>&gt; header by expanding a macro XXXX defined by
+the ANSI C standard for &lt;<em>yyy</em>.h&gt; belongs to a C++
+name-space chosen by the implementation. The C++ standard permits
+implementations to extend the global namespace and, or, the
+<em>std</em> namespace with names that begin with an underscore.
+After including &lt;c<em>yyy</em>&gt; the expansion of XXXX shall
+be usable directly by a C++ program.</p>
+<p>small number of type names and function names are introduced
+into the &lt;c<em>yyy</em>&gt; headers by this ABI other than by
+macro expansion. These are all of the form __aeabi_<em>xxxx</em>.
+These shall be usable with std:: or global (::) namespace
+qualification after including the &lt;c<em>yyy</em>&gt; headers in
+which they are declared.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="c-names-of-c-library-functions">
+<h5>C++ names of C library functions</h5>
+<p>In most C++ implementations an encoding of a function's type
+signature forms part of the <em>mangled name</em> [<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>] used to
+name binary functions. If two sides of an interface (built using
+different tool chains) specify different language types to map the
+same binary type, a naming incompatibility will arise across the
+interface.</p>
+<p>As a simple example consider <code>void fn(int)</code> binary
+compatible under this ABI with <code>void fn(long)</code>. The
+first will have the mangled name <code>_Z2fni</code> and the second
+<code>_Z2fnl</code> [<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>]. A
+similar incompatibility occurs between int and unsigned int
+(<code>i</code> vs <code>j</code>) describing values restricted to
+the range 0-MAXINT.</p>
+<p>To avoid such difficulties, portable binary code built from C++
+source should refer to standard library functions using their (not
+mangled) C names by declaring them to have <code>extern</code> "C"
+{...} linkage.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="library-file-organization">
+<h4>Library file organization</h4>
+<p>The file format for libraries of linkable files is the
+<strong>ar</strong> format described in [<a href="https://developer.arm.com/docs/ihi0036/latest">BSABI</a>].</p>
+<p>Some factors that need to be considered when making a library
+file for use by multiple ABI-conforming tool chains are discussed
+in [<a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a>] (in the
+<em>Library file organization</em> section).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="summary-of-the-inter-tool-chain-compatibility-model">
+<h3>Summary of the inter-tool-chain compatibility model</h3>
+<p>When a C-library-using source file is compiled to a portable
+relocatable file we assume to following.</p>
+<p>The source file includes C-library header files associated with
+the compiler, not header files associated with the C library binary
+with which the object might ultimately be linked (which can be from
+a different tool chain, not visible when the object is
+compiled).</p>
+<p>The compiler conforms to the ANSI C standard. If it exercises
+its right to recognize C library functions as being special, it
+will nonetheless support a mode in which this is done without
+damaging inter-operation between tool chains. Thus, for example,
+functions that read or write program state managed by the library
+(heap state, locale state, etc) must not be inlined in this
+operating mode.</p>
+<p>How a user requests the AEABI-conforming mode from a tool chain
+is implementation defined (Q-o-I).</p>
+<p>compiler generates references to 3 kinds of library entity.</p>
+<ul>
+<li>Those declared in the standard interface to the C library. In
+many cases a user can legitimately declare these in a source
+program without including any library header file.</li>
+<li>Those defined by the AEABI to be standard helper functions or
+data (this specification and [<a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a>]).</li>
+<li>Those provided with the relocatable file (as part of the
+relocatable file, or as a separate, freely distributable library
+provided with the relocatable file).</li>
+</ul>
+<p>When generating a portable relocatable file, a compiler must not
+generate a reference to any other library entity.</p>
+<p>Note that a platform environment will often require all
+platform-targeted tool chains to use the same header files (defined
+by the platform). Such objects are not portable, but exportable
+only to a single environment.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-c-library-section-by-section">
+<h2>The C library section by section</h2>
+<div>
+<div>
+<div>
+<div id="introduction-and-conventions">
+<h3>Introduction and conventions</h3>
+<p>For each section of the C library we describe what must be
+specified that is not precisely specified by the ANSI C standard in
+conjunction with the data type size and alignment rules given in
+the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>].</p>
+<p>Aspects not listed explicitly are either fully specified as a
+consequence of the AAPCS data type size and alignment rules or
+(like NULL and EOF) have obvious consensus definitions.</p>
+<p>For all aspects mentioned explicitly in this section we tabulate
+either:</p>
+<ul>
+<li>The required definition (independent of
+_AEABI_PORTABILITY_LEVEL).</li>
+<li>Or, the recommended definition when _AEABI_PORTABILITY_LEVEL =
+0 (if there is one), and the required definition when
+_AEABI_PORTABILITY_LEVEL != 0.</li>
+</ul>
+<div>
+<div>
+<div>
+<div id="detecting-whether-a-header-file-honors-an-aeabi-portability-request">
+<h4>Detecting whether a header file honors an AEABI portability
+request</h4>
+<p>An application must be able to detect whether its request for
+AEABI portability has been honored.</p>
+<p>An application should #define _AEABI_PORTABILITY_LEVEL and
+#undef _AEABI_PORTABLE before including a C library header file
+that has obligations under this standard (see <a href="index.html">Summary of requirements on C Libraries</a>
+for a summary). The application can test whether _AEABI_PORTABLE is
+defined after the inclusion, and #error if not.</p>
+<table id="id5">
+<caption>Detecting when AEABI portability obligations have been
+met</caption>
+<colgroup>
+<col width="51%"/>
+<col width="49%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Application</th>
+<th>Library header</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#define _AEABI_PORTABILITY_LEVEL 1
+#undef _AEABI_PORTABLE
+
+#include &lt;header.h&gt;
+
+#ifndef _AEABI_PORTABLE
+# error "AEABI not supported by header.h"
+#endif
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#if defined _AEABI_PORTABILITY_LEVEL &amp;&amp;
+  !defined _AEABI_PORTABLE
+# define _AEABI_PORTABLE
+#endif
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="assert-h">
+<h3>assert.h</h3>
+<p>Although the standard does not specify it, a failing
+<em>assert</em> macro must eventually call a function of 3
+arguments as shown in <a href="index.html">Assert.h
+declarations</a>, below. As specified by the C standard, this
+function must print details of the failing diagnostic then
+terminate by calling abort. A C library implementation can
+fabricate a lighter weight, no arguments, non-printing,
+non-conformant version of assert() by calling abort directly, so we
+define no variants of __aeabi_assert().</p>
+<table id="id6">
+<caption>Assert.h declarations</caption>
+<colgroup>
+<col width="11%"/>
+<col width="89%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required definition (when generating a
+message)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>assert</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void __aeabi_assert(const char *expr, const char *file, int line);
+#define assert(__e) ((__e) ? (void)0 : __aeabi_assert(#__e, __FILE__, __LINE__))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>conforming implementation must signal its conformance as
+described in <a href="index.html">Detecting whether a
+header file honors an AEABI portability request</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="ctype-h">
+<h3>ctype.h</h3>
+<p>The ctype <em>functions</em> are fully defined by the C standard
+and the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]. Each
+function takes an int parameter whose value is restricted to the
+values {unsigned char, EOF}, and returns an int result.</p>
+<p>The ctype functions are often implemented inline as macros that
+test attributes encoded in a table indexed by the character's value
+(from EOF = -1 to UCHAR_MAX = 255). Using a fixed data table does
+not sit comfortably with being able to change locale in an
+execution environment in which all tables are in ROM.</p>
+<p>The functions isdigit and isxdigit have locale-independent
+definitions so they can be inlined under the assumption that the
+encoding of common characters will follow 7-bit ASCII in all
+locales. Under this assumption, isdigit can be defined as an
+unsigned range test that takes just two instructions.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#define isdigit(c) (((unsigned)(c) - '0') &lt; 10)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The analogous implementation of isxdigit takes 12 Thumb or 7 Arm
+instructions (24-28 bytes), which is usually unattractive to
+inline. However, implementations can inline this without creating a
+portability hazard.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#define isxdigit(c) (((unsigned)(c) &amp; ~0x20) - 0x41) &lt; 6 || isdigit(c))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>When _AEABI_PORTABILITY_LEVEL != 0 an implementation of ctype.h
+can choose:</p>
+<ul>
+<li>Not to inline the ctype functions (other than isdigit and,
+perhaps, isxdigit, as described above).</li>
+<li>To implement these functions inline as described in the next
+subsection.</li>
+</ul>
+<p>conforming C library implementation must support <em>both</em>
+alternatives. A conforming ctype.h must signal its conformance as
+described in <a href="index.html">Detecting whether a
+header file honors an AEABI portability request</a>.</p>
+<div>
+<div>
+<div>
+<div id="ctype-h-when-aeabi-portability-level-0-and-isxxxxx-inline">
+<h4>ctype.h when _AEABI_PORTABILITY_LEVEL != 0 and isxxxxx
+inline</h4>
+<p>The general form of the <strong>is</strong>xxxxx macros is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#define isxxxxx(c) (expxxxxx(((__aeabi_ctype_table + 1)[c]))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Where <strong>exp</strong>xxxxx is an expression that evaluates
+it's the argument <em>c</em> only once and __aeabi_ctype_table is a
+table of character attributes indexed from 0 to 256 inclusive.</p>
+<p>We define link-time selection of the attribute table in a
+locale-dependent way using the following structure. The same
+character translations and locale bindings should be used by the
+<strong>to</strong><em>xxxx</em> macros and functions.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>/* Mandatory character attribute arrays indexed from 0 to 256 */
+extern unsigned char const __aeabi_ctype_table_C[257];      /* "C" locale */
+extern unsigned char const __aeabi_ctype_table_[257];       /* default locale */
+                                  /* The default locale might be the C locale */
+/* Optional character attribute arrays indexed from 0 to 256.        */
+/* These do not have to be provided by every execution environment   */
+/* but, if provided, shall be provided with these names and meaning. */
+extern unsigned char const __aeabi_ctype_table_ISO8859_1[257];
+extern unsigned char const __aeabi_ctype_table_SJIS[257];
+extern unsigned char const __aeabi_ctype_table_BIG5[257];
+extern unsigned char const __aeabi_ctype_table_UTF8[257];
+
+#ifdef _AEABI_LC_CTYPE
+#  define _AEABI_CTYPE_TABLE(_X) __aeabi_ctype_table_ ## _X
+#  define _AEABI_CTYPE(_X) _AEABI_CTYPE_TABLE(_X)
+#  define __aeabi_ctype_table _AEABI_CTYPE(_AEABI_LC_CTYPE)
+#else
+#  define __aeabi_ctype_table __aeabi_ctype_table_
+#endif
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>To make a link-time selection of the ctype locale for this
+compilation unit, define _AEABI_PORTABILITY_LEVEL != 0 and
+_AEABI_LC_CTYPE to one of the values listed below before including
+ctype.h.</p>
+<ul>
+<li>Leave _AEABI_LC_CTYPE undefined or defined with no value
+(-D_AEABI_LC_CTYPE= or #define _AEABI_LC_CTYPE) to statically bind
+to the default locale.</li>
+<li>Define _AEABI_LC_CTYPE to be <em>C</em>, to statically bind to
+the C locale.</li>
+<li>Define _AEABI_LC_CTYPE to be one of the defined locale names
+<em>ISO8859_1</em>, <em>SJIS</em>, <em>BIG5</em>, or <em>UTF8</em>
+to bind to the corresponding locale name.</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>conforming environment shall support the C locale
+and a default locale for ctype. The default locale may be the C
+locale. Relocatable files binding statically to any other ctype
+locale shall provide the ctype table encoded as described in
+<a href="index.html">Encoding of ctype table entries
+and macros (_AEABI_PORTABILITY_LEVEL != 0)</a>, in a COMDAT section
+or in an adjunct library.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="encoding-of-ctype-table-entries-and-macros-aeabi-portability-level-0">
+<h5>Encoding of ctype table entries and macros
+(_AEABI_PORTABILITY_LEVEL != 0)</h5>
+<p>Each character in a locale belongs to one or more of the eight
+categories enumerated below. Categories are carefully ordered so
+that membership of multiple categories can be determined using a
+simple test.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#define __A    1       /* alphabetic        */  /* The names of these macros */
+#define __X    2       /* A-F, a-f and 0-9  */  /* are illustrative only and */
+#define __P    4       /* punctuation       */  /* are not mandated by this  */
+#define __B    8       /* printable blank   */  /* standard.                 */
+#define __S   16       /* white space       */
+#define __L   32       /* lower case letter */
+#define __U   64       /* upper case letter */
+#define __C  128       /* control chars     */
+
+isspace(x)  ((__aeabi_ctype_table+1)[x] &amp; __S)
+isalpha(x)  ((__aeabi_ctype_table+1)[x] &amp; __A)
+isalnum(x)  ((__aeabi_ctype_table+1)[x] &lt;&lt; 30)  // test for __A and __X
+isprint(x)  ((__aeabi_ctype_table+1)[x] &lt;&lt; 28)  // test for __A, __X, __P and __B
+isupper(x)  ((__aeabi_ctype_table+1)[x] &amp; __U)
+islower(x)  ((__aeabi_ctype_table+1)[x] &amp; __L)
+isxdigit(x) ((__aeabi_ctype_table+1)[x] &amp; __X)
+isblank(x)  (isblank)(x)              /* C99 isblank() is not a simple macro */
+isgraph(x)  ((__aeabi_ctype_table+1)[x] &lt;&lt; 29)  // test for __A, __X and __P
+iscntrl(x)  ((__aeabi_ctype_table+1)[x] &amp; __C)
+ispunct(x)  ((__aeabi_ctype_table+1)[x] &amp; __P)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In the "C" locale, the C99 function isblank() returns true for
+precisely space and tab while the C89 function isprint() returns
+true for any character that occupies <em>one printing position</em>
+(hence excluding tab). isblank(x) can be simply implemented as
+<code>(x == '\t' || ((__aeabi_ctype_table+1)[x] &amp; __B))</code>
+, but because 'x' is evaluated twice in this expression, it is not
+a satisfactory (standard conforming) macro. A compiler may,
+nonetheless, safely inline this implementation of the isblank()
+function.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="errno-h">
+<h3>errno.h</h3>
+<p>There are many reasons why accessing errno should call a
+function call. We define it as shown in <a href="index.html">errno.h definitions</a>, below.</p>
+<table id="id7">
+<caption>errno.h definitions</caption>
+<colgroup>
+<col width="25%"/>
+<col width="31%"/>
+<col width="44%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and signature</th>
+<th>Recommended value</th>
+<th>Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>errno</td>
+<td>(*__aeabi_errno_addr())</td>
+<td><code>volatile int *__aeabi_errno_addr(void);</code>
+<code>(*__aeabi_errno_addr())</code></td>
+</tr>
+<tr>
+<td>EDOM</td>
+<td>33</td>
+<td><code>extern const int __aeabi_EDOM = 33;</code>
+<code>(__aeabi_EDOM)</code></td>
+</tr>
+<tr>
+<td>ERANGE</td>
+<td>34</td>
+<td><code>extern const int __aeabi_ERANGE = 34;</code>
+<code>(__aeabi_ERANGE)</code></td>
+</tr>
+<tr>
+<td>EILSEQ (C89 NA 1/ C99)</td>
+<td>(42, or 84)</td>
+<td><code>extern const int __aeabi_EILSEQ = 47;</code>
+<code>(__aeabi_EILSEQ)</code></td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>There seems to be general agreement on 33 and 34,
+the long established Unix values of and ERANGE. There is little
+consensus about EILSEQ. 47 is claimed to be the IEEE 1003.1 POSIX
+value.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="float-h">
+<h3>float.h</h3>
+<p>The values in float.h follow from the choice of 32/64-bit 2s
+complement IEEE format floating point arithmetic.</p>
+<p>This header does not define _AEABI_PORTABLE (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="inttypes-h">
+<h3>inttypes.h</h3>
+<p>This C99 header file refers only to types and values
+standardized by the AEABI. It declares only constants and real
+functions whose type signatures involve only primitive types. Note
+that plain char is unsigned [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>].</p>
+<p>This header does not define _AEABI_PORTABLE (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="iso646-h">
+<h3>iso646.h</h3>
+<p>This header contains macros only. The definitions are
+standardized by a C89 normative addendum (and by C++).</p>
+<p>This header does not define _AEABI_PORTABLE (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="limits-h">
+<h3>limits.h</h3>
+<p>Other than MB_LEN_MAX, the values of the macros defined by
+limits.h follow from the data type sizes given in the AAPCS and the
+use of 2's complement representations.</p>
+<p>Conforming implementations must also define the C99 macros
+LLONG_MIN, LLONG_MAX, and ULLONG_MAX, and define _AEABI_PORTABLE
+when _AEABI_PORTABILITY_LEVEL != 0 (as specified in <a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>)</p>
+<table id="id8">
+<caption>The value of MB_LEN_MAX</caption>
+<colgroup>
+<col width="19%"/>
+<col width="25%"/>
+<col width="56%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Recommended value</th>
+<th>Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>MB_LEN_MAX</td>
+<td>6</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_MB_LEN_MAX = 6;
+(__aeabi_MB_LEN_MAX)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="locale-h">
+<h3>locale.h</h3>
+<p>Locale.h defines 6 macros for controlling constants (<a href="index.html">LC_* macros</a>) and struct lconv. The
+setlocale and localeconv functions are otherwise tightly specified
+by their type signatures, and AAPCS data type size and
+alignment.</p>
+<p>The C standard requires a minimum set of fields in struct lconv
+and places no constraints on their order. The C99 standard mandates
+an additional six fields, and lists them last. Unfortunately, it
+lists the C89 fields in a different order to that given in the C89
+standard. Prior art generally defines the C89 fields in the same
+order as listed in the C89 standard, or the C99 fields in the same
+order as in the C99 standard. No order is compatible with both.</p>
+<p>The localeconv function returns a pointer to a struct lconv.
+This must be correctly interpreted by clients using the C89
+specification and clients using the C99 specification.
+Consequently:</p>
+<ul>
+<li>The structure must contain all the C99-specified fields.</li>
+<li>The order of the C89-specified fields must be as listed in the
+C89 standard.</li>
+</ul>
+<p>To support layering on run-time libraries that do not implement
+the full C99 definition of struct lconv, or that implement it with
+a different field order, we define struct __aeabi_lconv and
+__aeabi_localeconv.</p>
+<p>In the C++ header &lt;clocale&gt; both must be declared in
+namespace std::.</p>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, the declarations of struct
+lconv and localeconv must be hidden, and _AEABI_PORTABLE should be
+defined as specified in <a href="index.html">Detecting
+whether a header file honors an AEABI portability request</a>.</p>
+<div>
+<div>
+<div>
+<div id="id9">
+<div>
+<div>
+<div>
+<div><strong>struct
+__aeabi_lconv</strong></div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre> struct __aeabi_lconv {
+   char *decimal_point;
+   char *thousands_sep;
+   char *grouping;
+   char *int_curr_symbol;
+   char *currency_symbol;
+   char *mon_decimal_point;
+   char *mon_thousands_sep;
+   char *mon_grouping;
+   char *positive_sign;
+   char *negative_sign;
+   char int_frac_digits;
+   char frac_digits;
+   char p_cs_precedes;
+   char p_sep_by_space;
+   char n_cs_precedes;
+   char n_sep_by_space;
+   char p_sign_posn;
+   char n_sign_posn;
+  /* The following fields are added by C99 */
+   char int_p_cs_precedes;
+   char int_n_cs_precedes;
+   char int_p_sep_by_space;
+   char int_n_sep_by_space;
+   char int_p_sign_posn;
+   char int_n_sign_posn;
+ };
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<table id="id10">
+<caption>locale.h required portable definitions</caption>
+<colgroup>
+<col width="32%"/>
+<col width="68%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>__aeabi_lconv</code></td>
+<td>As above.</td>
+</tr>
+<tr>
+<td><code>__aeabi_localeconv</code></td>
+<td><code>struct __aeabi_lconv
+*__aeabi_localeconv(void)</code></td>
+</tr>
+</tbody>
+</table>
+<table id="id11">
+<caption>LC_* macros</caption>
+<colgroup>
+<col width="25%"/>
+<col width="75%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Macro</th>
+<th>Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>LC_COLLATE</td>
+<td><code>extern const int __aeabi_LC_COLLATE = ...;</code>
+<code>(__aeabi_LC_COLLATE)</code></td>
+</tr>
+<tr>
+<td>LC_CTYPE</td>
+<td><code>extern const int __aeabi_LC_CTYPE = ...;</code>
+<code>(__aeabi_LC_CTYPE)</code></td>
+</tr>
+<tr>
+<td>LC_MONETARY</td>
+<td><code>extern const int __aeabi_LC_MONETARY = ...;</code>
+<code>(__aeabi_LC_MONETARY)</code></td>
+</tr>
+<tr>
+<td>LC_NUMERIC</td>
+<td><code>extern const int __aeabi_LC_NUMERIC = ...;</code>
+<code>(__aeabi_LC_NUMERIC)</code></td>
+</tr>
+<tr>
+<td>LC_TIME</td>
+<td><code>extern const int __aeabi_LC_TIME = ...;</code>
+<code>(__aeabi_LC_TIME)</code></td>
+</tr>
+<tr>
+<td>LC_ALL</td>
+<td><code>extern const int __aeabi_LC_ALL = ...;</code>
+<code>(__aeabi_LC_ALL)</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="math-h">
+<h3>math.h</h3>
+<p>Math.h functions are functions of primitive types only and raise
+no standardization issues.</p>
+<p>The definitions of HUGE_VAL and its C99 counterparts HUGE_VALF,
+HUGE_VALL, and INFINITY are slightly problematic in strict C89.
+HUGE_VAL must either expand to a constant specified by some non-C89
+means (for example, as a C99 hexadecimal FP bit pattern), or it
+must expand to a location in the C library initialized with the
+appropriate value by some non-C89 means (for example, using
+assembly language).</p>
+<p>Tool chains that define these macros as listed in the
+<em>required value</em> column of <a href="index.html">math.h definitions</a> can use the same
+definitions inline when _AEABI_PORTABILITY_LEVEL != 0. Otherwise,
+the alternative portable definition must be used when
+_AEABI_PORTABILITY_LEVEL != 0.</p>
+<p>The macro _AEABI_PORTABLE should be defined as described in
+<a href="index.html">Detecting whether a header file
+honors an AEABI portability request</a>.</p>
+<table id="id12">
+<caption>math.h definitions</caption>
+<colgroup>
+<col width="13%"/>
+<col width="21%"/>
+<col width="45%"/>
+<col width="21%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required value</th>
+<th>Alternative portable definition</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>HUGE_VAL</td>
+<td>0d_7FF0000000000000</td>
+<td>extern const double __aeabi_HUGE_VAL</td>
+<td>Double infinity</td>
+</tr>
+<tr>
+<td>HUGE_VALL</td>
+<td>0d_7FF0000000000000</td>
+<td>extern const long double __aeabi_HUGE_VALL</td>
+<td>Long double infinity</td>
+</tr>
+<tr>
+<td>HUGE_VALF</td>
+<td>0d_7F800000</td>
+<td>extern const float __aeabi_HUGE_VALF</td>
+<td>Float infinity</td>
+</tr>
+<tr>
+<td>INFINITY</td>
+<td>0f_7F800000</td>
+<td>extern const float __aeabi_INFINITY</td>
+<td>Float infinity</td>
+</tr>
+<tr>
+<td>NAN</td>
+<td>0f_7FC00000</td>
+<td>extern const float __aeabi_NAN</td>
+<td>Quiet</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="setjmp-h">
+<h3>setjmp.h</h3>
+<p>The type and size of jmp_buf are defined by setjmp.h. Its
+contents are opaque, so setjmp and longjmp must be from the same
+library, and called out of line.</p>
+<p>In deference to VFP, XScale Wireless MMX, and other
+co-processors manipulating 8-byte aligned types, a jmp_buf must be
+8-byte aligned.</p>
+<p>The minimum jmp_buf size is calculated as follows:</p>
+<p>SP, LR: 2x4; reserved to setjmp implementation: 4x4; Total 3x8
+bytes</p>
+<p>General purpose register save: 8x4; Total 4x8 bytes</p>
+<p>Floating point register save: 8x8; Total 8x8 bytes</p>
+<p>WMMX (if present): 5x8; Total 5x8 bytes</p>
+<p>Total: 20x8 = 160 bytes = 20 8-byte double-words.</p>
+<p>If WMMX can be guaranteed not to be present this can be reduced
+to 15x8 = 120 bytes.</p>
+<p>If floating point hardware can be guaranteed not to be present
+this can be further reduced to 7x8 = 56 bytes.</p>
+<p>An implementation may define the size of a jmp_buf to be larger
+than the ABI-defined minimum size.</p>
+<p>If code allocates a jmp_buf statically using a compile-time
+constant size smaller than the "maximum minimum" value of 160
+bytes, the size of the jmp_buf becomes part of its interface
+contract. Portable code is urged not to do this.</p>
+<p>The link-time constant __aeabi_JMP_BUF_SIZE gives the actual
+size of a target system jmp_buf measured in 8-byte
+double-words.</p>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, the required definition of
+jmp_buf cannot be used to create jmp_buf objects. Instead, a
+jmp_buf must be passed as a parameter or allocated dynamically.</p>
+<table id="id13">
+<caption>setjmp.h definitions</caption>
+<colgroup>
+<col width="25%"/>
+<col width="33%"/>
+<col width="42%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Recommended definition (_AEABI_PORTABILITY_LEVEL =
+0)</th>
+<th>Required portable definition
+(_AEABI_PORTABILITY_LEVEL != 0)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>jmp_buf</td>
+<td><code>typedef __int64 jmp_buf[20]</code></td>
+<td><code>typedef __int64 jmp_buf[];</code></td>
+</tr>
+<tr>
+<td>__aeabi_JMP_BUF_SIZE</td>
+<td>value not less than 20.</td>
+<td>extern const int __aeabi_JMP_BUF_SIZE = ...</td>
+</tr>
+</tbody>
+</table>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, conforming implementations
+should define _AEABI_PORTABLE as specified in <a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="signal-h">
+<h3>signal.h</h3>
+<p>Signal.h declares the typedef sig_atomic_t which is unused in
+the signal interface.</p>
+<p>Arm processors from architecture v4 onwards support
+uni-processor atomic access to 1, 2, and 4 byte data.
+Uni-processors that do not use low latency mode <em>might</em>
+support atomic access to 8-byte data via LDM/STM and/or LDRD/STRD.
+In architecture v6, LDREX/STREX gives multi-processor-safe atomic
+access to 4-byte data, and from v7 onwards the load/store exclusive
+instruction family gives MP-safe atomic access to 1, 2, 4, and 8
+byte data.</p>
+<p>The only access size likely to work with <em>all</em> Arm CPUs,
+buses, and memory systems is 4-bytes, so we strongly recommend
+sig_atomic_t to be int (and require this definition when
+_AEABI_PORTABILITY_LEVEL != 0).</p>
+<p>Also declared are function pointer constants SIG_DFL, SIG_IGN,
+and SIG_ERR. Usually, these are defined to be suitably cast integer
+constants such as 0, 1, and -1. Unfortunately, when facing an
+unknown embedded system, there are no address values that can be
+safely reserved, other than addresses in the program itself.</p>
+<p>It is a quality of implementation whether at least one byte of
+program image space will be allocated to each of __aeabi_SIG_*
+listed in <a href="index.html">signal.h standard handler
+definitions</a>, or whether references to those values will be
+relocated to distinct, target-dependent constants.</p>
+<p>Signal.h defines six SIGXXX macros. We recommend the common
+Linux/Unix values listed in <a href="index.html">Standard
+signal names and values</a>. All signal values are less than 64.
+With the exception of SIGABRT, these are also the Windows SIGXXX
+values.</p>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, conforming implementations
+should define _AEABI_PORTABLE as specified in <a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>.</p>
+<table id="id14">
+<caption>signal.h standard handler definitions</caption>
+<colgroup>
+<col width="30%"/>
+<col width="70%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>sig_atomic_t</code></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>typedef int sig_atomic_t;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>SIG_DFL</code></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern void __aeabi_SIG_DFL(int);
+#define SIG_DFL  (__aeabi_SIG_DFL)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>SIG_IGN</code></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern void __aeabi_SIG_IGN(int);
+#define SIG_IGN  (__aeabi_SIG_IGN)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>SIG_ERR</code></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern void __aeabi_SIG_ERR(int);
+#define SIG_ERR  (__aeabi_SIG_ERR)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table id="id15">
+<caption>Standard signal names and values</caption>
+<colgroup>
+<col width="17%"/>
+<col width="25%"/>
+<col width="58%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Recommended value</th>
+<th>Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>sigabrt</code></td>
+<td>6</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_SIGABRT = ...
+(__aeabi_SIGABRT)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>SIGFPE</code></td>
+<td>8</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_SIGFPE = ...
+(__aeabi_SIGFPE)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>SIGILL</td>
+<td>4</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_SIGILL = ...
+(__aeabi_SIGILL)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>SIGINT</td>
+<td>2</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_SIGINT = ...
+(__aeabi_SIGINT)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>SIGSEGV</td>
+<td>11</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_SIGSEGV = ...
+(__aeabi_SIGSEGV)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>SIGTERM</td>
+<td>15</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_SIGTERM = ...
+(__aeabi_SIGTERM)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="stdarg-h">
+<h3>stdarg.h</h3>
+<p>Stdarg.h declares the type va_list defined by the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>] and
+three macros, va_start, va_arg, and va_end. Only va_list appears in
+binary interfaces.</p>
+<p>This header does not define _AEABI_PORTABLE (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="stdbool-h">
+<h3>stdbool.h</h3>
+<p>Stdbool.h defines the type bool and the values true and
+false.</p>
+<p>This header does not define _AEABI_PORTABLE (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="stddef-h">
+<h3>stddef.h</h3>
+<p>The size and alignment of each typedef declared in stddef.h is
+specified by the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>].</p>
+<p>This header does not define _AEABI_PORTABLE (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="stdint-h">
+<h3>stdint.h</h3>
+<p>The types declared in this C99 header are defined by the Arm
+architecture and [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>].</p>
+<p>This header does not define _AEABI_PORTABLE (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="stdio-h">
+<h3>stdio.h</h3>
+<div>
+<div>
+<div>
+<div id="background-discussion-and-rationale">
+<h4>Background discussion and rationale</h4>
+<p>Stream-oriented library functions can only be useful if the end
+user (of a deeply embedded program), or the underlying operating
+environment, can implement the stream object (that is, the FILE
+structure).</p>
+<p>To standardize portably what can be standardized in binary
+form:</p>
+<ul>
+<li>FILE must be opaque.</li>
+<li>Writing to a stream must reduce to a sequence of calls to a
+lowest common denominator stream operation such as fputc (sensible
+for fprintf, but less so for fwrite).</li>
+<li>Similarly, reading from a stream must reduce to a sequence of
+calls to fgetc.</li>
+<li>putc, putchar, getc, and getchar cannot be inlined in
+applications, but must expand to an out of line call to a function
+from the library.</li>
+<li>We must take care with stdin, stdout, and stderr, as discussed
+in <a href="index.html">Under-specified exported
+data</a>.</li>
+</ul>
+<p>Surprisingly, these constraints <em>can</em> be compatible with
+high performance implementations of fread, fwrite, and fprintf. For
+example, if __flsbuf is included from the RVCT C library
+(effectively Arm's implementation of fputc), a faster fwrite, aware
+of the FILE implementation, replaces use of the generic fputc-using
+fwrite.</p>
+<p>In principle the same trick can be used with fprintf (probably
+not worthwhile) and fread (definitely worthwhile).</p>
+<p>The most contentious issue remaining is that of not being able
+to inline getc and putc. However, the effect of such inlining on
+performance will usually be much less dramatic than might be
+imagined.</p>
+<ul>
+<li>The essential work of putc takes about 10 cycles (Arm9-class
+CPU) and uses four registers in almost any plausible
+implementation. Getc is similar, but needs only 3 registers.</li>
+<li>Fputc and fgetc both embed a conditional tail continuation and
+use most of the AAPCS scratch registers, so the difference in
+effect on register allocation between putc inline and a call to
+fputc will often be small.</li>
+</ul>
+<p>In essence, the inescapable <em>additional</em> cost of putc out
+of line (getc is similar) is only:</p>
+<ul>
+<li>The cost of the call and return, typically about 6 cycles.</li>
+<li>move of the stream handle to r1 (r0 for getc), costing 1
+cycle.</li>
+</ul>
+<p>Given some loop overhead and some, even trivial, processing of
+each character, it is hard to see how moving putc (or getc) out of
+line could add more than 25% to the directly visible per-character
+cycle count. Given that buffer flushing and filling probably
+doubles the visible per-character cycle count, the overall impact
+on performance is unlikely to be more than 10-15%, even when almost
+no work is being done on each character written or read.</p>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, conforming implementations
+should define _AEABI_PORTABLE as specified in <a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="easy-stdio-h-definitions">
+<h4>Easy stdio.h definitions</h4>
+<p>The definitions listed in this section are commonly accepted
+values, or values easily distinguishable from legacy values.
+Together with the definition of fpos_t they make all the functions
+listed in stdio.h precisely defined.</p>
+<table id="id16">
+<caption>Easy stdio.h definitions</caption>
+<colgroup>
+<col width="8%"/>
+<col width="17%"/>
+<col width="75%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required definition</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>fpos_t</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>struct {
+  long long pos;
+  mbstate_t mbstate;
+}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<p>Only ever passed and returned by reference, and
+really opaque, so 32-bit systems need use only the first word of
+pos.</p>
+<p>virtually requires an mbstate_t member in support
+of multi-byte stream I/O.</p>
+</td>
+</tr>
+<tr>
+<td>EOF</td>
+<td>(-1)</td>
+<td>Not contentious. <em>Everybody</em> agrees!</td>
+</tr>
+<tr>
+<td>SEEK_SET SEEK_CUR SEEK_END</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>0</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>1</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>2</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>Not contentious. <em>Everybody</em> agrees!</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="difficult-stdio-h-definitions">
+<h4>Difficult stdio.h definitions</h4>
+<p>When _AEABI_PORTABILITY_LEVEL !=0, getc, putc, getchar, and
+putchar must expand to calls to out of line functions (or to other
+stdio functions), and the standard streams must expand to
+references to FILE * variables (this is more general than expanding
+directly to the addresses of the FILE objects themselves because it
+is compatible with execution environments in which standard FILE
+objects do not have link-time addresses).</p>
+<table id="id17">
+<caption>Difficult stdio.h definitions</caption>
+<colgroup>
+<col width="14%"/>
+<col width="18%"/>
+<col width="68%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Recommended value</th>
+<th>Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>getc, putc</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>getchar, putchar</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td> </td>
+<td>Must be functions, must not be inlined (except as equivalent
+calls to other stdio functions)</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>stdin</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>stdout</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>stderr</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td> </td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern FILE * __aeabi_stdin;
+extern FILE *__aeabi_stdout;
+extern FILE *__aeabi_stderr;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>_IOFBF</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>_IOLBF</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>_IONBF</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>0 1 2</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_IOFBF = 0;
+(__aeabi_IOFBF)
+extern const int __aeabi_IOLBF = 1;
+(__aeabi_IOLBF)
+extern const int __aeabi_IONBF = 2;
+(__aeabi_IONBF)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>BUFSIZ</td>
+<td><div class="documents-docsimg-container"><img alt="\ge" src="744a7e944983312265f2ed7497ddf42da26942a6.png"/></div> 256</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_BUFSIZ = 256;
+(__aeabi_BUFSIZ)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>FOPEN_MAX</td>
+<td><div class="documents-docsimg-container"><img alt="\ge" src="744a7e944983312265f2ed7497ddf42da26942a6.png"/></div> 8</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_FOPEN_MAX = 8;
+(__aeabi_FOPEN_MAX)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>TMP_MAX</td>
+<td><div class="documents-docsimg-container"><img alt="\ge" src="744a7e944983312265f2ed7497ddf42da26942a6.png"/></div> 256</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_TMP_MAX = 256;
+(__aeabi_TMP_MAX)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>FILENAME_MAX L_tmpnam</td>
+<td><div class="documents-docsimg-container"><img alt="\ge" src="744a7e944983312265f2ed7497ddf42da26942a6.png"/></div> 256</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_FILENAME_MAX = 256;
+(__aeabi_FILENAME_MAX)
+extern const int __aeabi_L_tmpnam = 256;
+(__aeabi_L_tmpnam)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<ul>
+<li>Among these difficult constants, BUFSIZ is least difficult. It
+is merely the default for a value that can be specified by calling
+setvbuf. A cautious application can use a more appropriate
+value.</li>
+<li>FOPEN_MAX is the <em>minimum</em> number of files the execution
+environment guarantees can be open simultaneously. Similarly,
+TMP_MAX is the <em>minimum</em> number of distinct temporary file
+names generated by calling tmpnam.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>In the 1.7M lines of source code in the Arm code
+size database - encompassing a broad spectrum of applications from
+deeply embedded to gcc_cc1 and povray - L_tmpnam is unused,
+FILENAME_MAX is used just 5 times [in 1 application], and there are
+no uses of TMP_MAX save in one application that simulates a
+run-time environment.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="stdlib-h">
+<h3>stdlib.h</h3>
+<p>Stdlib.h contains the following interface difficulties.</p>
+<ul>
+<li>The div_t and ldiv_t structures and div and ldiv functions. We
+think these functions are little used, so we define the structures
+in the obvious way. Because the functions are pure, compilers are
+entitled to inline them.</li>
+<li>The values of EXIT_FAILURE and EXIT_SUCCESS. There is near
+universal agreement that success is 0 and failure is non-0, usually
+1.</li>
+<li>MB_CUR_MAX. This can only expand into a function call (to get
+the current maximum length of a locale-specific multi-byte
+sequence. This is a marginal issue for embedded applications,
+though not for platforms..</li>
+<li>We do not standardize the sequence computed by rand(). If an
+application depends on pseudo-random numbers, we believe it will
+use its own generator.</li>
+<li>Getenv and system are both questionable candidates for an
+embedded (rather than platform) ABI standard. We do not standardize
+either function.</li>
+</ul>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, a conforming implementation
+must define _AEABI_PORTABLE as specified in <a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>.</p>
+<table id="id18">
+<caption>stdlib.h definitions</caption>
+<colgroup>
+<col width="16%"/>
+<col width="38%"/>
+<col width="46%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required definition</th>
+<th>Comment / Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>div_t</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>ldiv_t</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>lldiv_t</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>struct { int quot, rem; }
+struct { long int quot, rem; }
+struct { long long int quot, rem; }
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<p><em>div and ldiv are pure and can be
+inlined.</em></p>
+<p><em>lldiv_t and lldiv are C99 extensions.</em></p>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>EXIT_SUCCESS</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>EXIT_FAILURE</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>0</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>1</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td><em>Everyone agrees.</em></td>
+</tr>
+<tr>
+<td>MB_CUR_MAX</td>
+<td>(__aeabi_MB_CUR_MAX())</td>
+<td>int __aeabi_MB_CUR_MAX(void);</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="string-h">
+<h3>string.h</h3>
+<p>String.h poses no interface problems. It contains only function
+declarations using standard basic types.</p>
+<p>With the exception of strtok (which has static state), and
+strcoll and strxfrm (which depend on the locale setting), all
+functions are pure may be inlined by a compiler.</p>
+<p>This header does not define _AEABI_PORTABLE (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="time-h">
+<h3>time.h</h3>
+<p>The time.h header defines typedefs clock_t and time_t, struct
+tm, and the constant CLOCKS_PER_SEC. The constant is properly a
+property of the execution environment.</p>
+<p>Portable code should not assume that time_t or clock_t are
+either signed or unsigned, and should generate only positive values
+no larger than INT_MAX.</p>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, a conforming implementation
+must define _AEABI_PORTABLE as specified in <a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>.</p>
+<table id="id19">
+<caption>time.h definitions</caption>
+<colgroup>
+<col width="10%"/>
+<col width="90%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required portable definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>time_t;</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>clock_t;</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>unsigned int;
+unsigned int;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>struct tm {...}</td>
+<td>All and only the fields listed in the C89 standard, in the
+published order, together with 2 additional 4-byte trailing fields
+(as discussed in <a href="index.html">Structures
+used in the C library interface</a>, above).</td>
+</tr>
+<tr>
+<td>CLOCKS_PER_SEC</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>extern const int __aeabi_CLOCKS_PER_SEC;
+(__aeabi_CLOCKS_PER_SEC)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="wchar-h">
+<h3>wchar.h</h3>
+<p>The interface to entities declared in this header is largely
+defined by the AAPCS. It must also define wint_t, WEOF, and
+mbstate_t. There is little reason for WEOF to be anything other
+than -1.</p>
+<p>For mbstate_t we define a structure field big enough to hold the
+data from an incomplete multi-byte character together with its
+shift state. 32-bits suffice for any CJK-specific encoding such as
+shift-JIS, Big-5, UTF8, and UTF16. Because the structure is always
+addressed indirectly, we also include some headroom.</p>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, conforming implementations
+must not inline functions read or write an mbstate_t, and should
+define _AEABI_PORTABLE as specified in <a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>.</p>
+<table id="id20">
+<caption>wchar.h definitions</caption>
+<colgroup>
+<col width="12%"/>
+<col width="32%"/>
+<col width="57%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required definition</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>wint_t</td>
+<td>int or unsigned int</td>
+<td> </td>
+</tr>
+<tr>
+<td>WEOF</td>
+<td>((wint_t)-1)</td>
+<td> </td>
+</tr>
+<tr>
+<td>mbstate_t</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>struct { unsigned state1, state2;}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>Big enough for CJK-specifics, UTF8 and UTF16, and some
+headroom.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="wctype-h">
+<h3>wctype.h</h3>
+<p>This header is mostly defined by the AAPCS and wchar.h. The only
+additional types defined are wctype_t and wctrans_t. Both are
+handles passed to or produced by wide character functions.</p>
+<p>When _AEABI_PORTABILITY_LEVEL != 0, conforming implementations
+must not inline functions that accept or produce these handles, and
+should define _AEABI_PORTABLE as specified in <a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>.</p>
+<table id="id21">
+<caption>wctype.h definitions</caption>
+<colgroup>
+<col width="25%"/>
+<col width="42%"/>
+<col width="33%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Required definition</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>wctype_t</td>
+<td>void *</td>
+<td>Opaque handle.</td>
+</tr>
+<tr>
+<td>wctrans_t</td>
+<td>void *</td>
+<td>Opaque handle.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="summary-of-requirements-on-c-libraries">
+<h2>Summary of requirements on C Libraries</h2>
+<table id="id22">
+<caption>Summary of conformance requirements when
+_AEABI_PORTABILITY_LEVEL != 0</caption>
+<colgroup>
+<col width="4%"/>
+<col width="5%"/>
+<col width="91%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Header</th>
+<th>Affected</th>
+<th>Summary of conformance requirements</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>assert.h</td>
+<td>Yes</td>
+<td>Must declare __aeabi_assert (<a href="index.html">Assert.h declarations</a>).</td>
+</tr>
+<tr>
+<td>ctype..h</td>
+<td>Yes</td>
+<td>Must define <strong>is</strong>xxxx(c) to be
+((<strong>is</strong>xxxx)(c)) etc [no inline implementation] or
+implement the inline versions as described in <a href="index.html">ctype.h when _AEABI_PORTABILITY_LEVEL !=
+0 and isxxxxx inline</a>.</td>
+</tr>
+<tr>
+<td>errno.h</td>
+<td>Yes</td>
+<td>errno is (*__aeabi_errno()); , ERANGE, etc are link-time
+constants (<a href="index.html">errno.h
+definitions</a>)</td>
+</tr>
+<tr>
+<td>float.h</td>
+<td>No</td>
+<td> </td>
+</tr>
+<tr>
+<td>inttypes.h</td>
+<td>No</td>
+<td> </td>
+</tr>
+<tr>
+<td>iso646.h</td>
+<td>No</td>
+<td> </td>
+</tr>
+<tr>
+<td>limits.h</td>
+<td>Yes</td>
+<td>MB_LEN_MAX is a link-time constant (<a href="index.html">The value of MB_LEN_MAX</a>).</td>
+</tr>
+<tr>
+<td>locale.h</td>
+<td>Yes</td>
+<td>Must hide struct lconv and localeconv and declare struct
+__aeabi_lconv and __aeabi_localeconv (<a href="index.html">struct __aeabi_lconv</a>, <a href="index.html">locale.h required portable definitions</a>).
+LC_* are link-time constants (<a href="index.html">LC_*
+macros</a>).</td>
+</tr>
+<tr>
+<td>math.h</td>
+<td>Yes</td>
+<td>Must define HUGE_VAL and similar using non-C89 means (e.g. C99
+hex float notation) or provide suitably initialized const library
+members (<a href="index.html">math.h definitions</a>).</td>
+</tr>
+<tr>
+<td>setjmp.h</td>
+<td>Yes</td>
+<td>Must declare jmp_buf[] to preclude creating such objects.
+__aeabi_JMP_BUF_SIZE is a link-time constant (<a href="index.html">setjmp.h definitions</a>).</td>
+</tr>
+<tr>
+<td>signal.h</td>
+<td>Yes</td>
+<td>SIG_* are defined by the library (<a href="index.html">signal.h standard handler definitions</a>);
+SIG* are link-time const (<a href="index.html">Standard
+signal names and values</a>).</td>
+</tr>
+<tr>
+<td>stdarg.h</td>
+<td>No</td>
+<td> </td>
+</tr>
+<tr>
+<td>stdbool.h</td>
+<td>No</td>
+<td> </td>
+</tr>
+<tr>
+<td>stddef.h</td>
+<td>No</td>
+<td> </td>
+</tr>
+<tr>
+<td>stdint.h</td>
+<td>No</td>
+<td> </td>
+</tr>
+<tr>
+<td>stdio.h</td>
+<td>Yes</td>
+<td>Get/put macros must expand to function-calls; stdin, stdout,
+and stderr must expand to pointers, not addresses of FILE objects;
+FILE must be opaque. Some consensus constants must be defined as in
+<a href="index.html">Easy stdio.h definitions</a>; other
+controlling values become link-time constants as defined in
+<a href="index.html">Difficult stdio.h
+definitions</a>.</td>
+</tr>
+<tr>
+<td>stdlib.h</td>
+<td>Yes</td>
+<td>MB_CUR_MAX must expand to the function call
+__aeabi_MB_CUR_MAX(); div_t, ldiv_t, EXIT_* must be declared as
+described in <a href="index.html">stdlib.h
+definitions</a>.</td>
+</tr>
+<tr>
+<td>string.h</td>
+<td>No</td>
+<td> </td>
+</tr>
+<tr>
+<td>time.h</td>
+<td>Yes</td>
+<td>time_t ,clock_t, and struct tm must be as specified in <a href="index.html">time.h definitions</a>. CLOCKS_PER_SEC must be
+a link-time constant.</td>
+</tr>
+<tr>
+<td>wchar.h</td>
+<td>Yes</td>
+<td>wint_t, WEOF, and mbstate_t must be declared as specified in
+<a href="index.html">wchar.h definitions</a>.</td>
+</tr>
+<tr>
+<td>wctype.h</td>
+<td>Yes</td>
+<td>wctype_t and wctrans_t must be opaque handles as specified in
+<a href="index.html">wctype.h definitions</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>Affected headers (only) must #define _AEABI_PORTABLE if (and
+only if) they honor their portability obligations and
+_AEABI_PORTABILITY_LEVEL has been defined by the user (<a href="index.html">Detecting whether a header file honors an
+AEABI portability request</a>).</p>
+<table id="id23">
+<caption>Summary of link-time constants (when
+_AEABI_PORTABILITY_LEVEL != 0)</caption>
+<colgroup>
+<col width="15%"/>
+<col width="24%"/>
+<col width="60%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Header</th>
+<th>ANSI C macro</th>
+<th>AEABI name (extern const int
+__attribute__(STV_HIDDEN) ...)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td rowspan="3">errno.h</td>
+<td><code>EDOM</code></td>
+<td><code>__aeabi_EDOM</code></td>
+</tr>
+<tr>
+<td><code>ERANGE</code></td>
+<td><code>__aeabi_ERANGE</code></td>
+</tr>
+<tr>
+<td><code>EILSEQ</code></td>
+<td><code>__aeabi_EILSEQ</code></td>
+</tr>
+<tr>
+<td>limits.h</td>
+<td><code>MB_LEN_MAX</code></td>
+<td><code>__aeabi_MB_LEN_MAX</code></td>
+</tr>
+<tr>
+<td rowspan="6">locale.h</td>
+<td><code>LC_COLLATE</code></td>
+<td><code>__aeabi_LC_COLLATE</code></td>
+</tr>
+<tr>
+<td><code>LC_CTYPE</code></td>
+<td><code>__aeabi_LC_CTYPE</code></td>
+</tr>
+<tr>
+<td><code>LC_MONETARY</code></td>
+<td><code>__aeabi_LC_MONETARY</code></td>
+</tr>
+<tr>
+<td><code>LC_NUMERIC</code></td>
+<td><code>__aeabi_LC_NUMERIC</code></td>
+</tr>
+<tr>
+<td><code>LC_TIME</code></td>
+<td><code>__aeabi_LC_TIME</code></td>
+</tr>
+<tr>
+<td><code>LC_ALL</code></td>
+<td><code>__aeabi_LC_ALL</code></td>
+</tr>
+<tr>
+<td>setjmp.h</td>
+<td>None</td>
+<td><code>__aeabi_JMP_BUF_SIZE</code> (in 64-bit words)</td>
+</tr>
+<tr>
+<td rowspan="6">signal.h</td>
+<td><code>SIGABRT</code></td>
+<td><code>__aeabi_SIGABRT</code></td>
+</tr>
+<tr>
+<td><code>SIGFPE</code></td>
+<td><code>__aeabi_SIGFPE</code></td>
+</tr>
+<tr>
+<td><code>SIGILL</code></td>
+<td><code>__aeabi_SIGILL</code></td>
+</tr>
+<tr>
+<td><code>SIGINT</code></td>
+<td><code>__aeabi_SIGINT</code></td>
+</tr>
+<tr>
+<td><code>SIGSEGV</code></td>
+<td><code>__aeabi_SIGSEGV</code></td>
+</tr>
+<tr>
+<td><code>SIGTERM</code></td>
+<td><code>__aeabi_SIGTERM</code></td>
+</tr>
+<tr>
+<td rowspan="8">stdio.h</td>
+<td><code>_IOFBF</code></td>
+<td><code>__aeabi_IOFBF</code></td>
+</tr>
+<tr>
+<td><code>_IOLBF</code></td>
+<td><code>__aeabi_IOLBF</code></td>
+</tr>
+<tr>
+<td><code>_IONBF</code></td>
+<td><code>__aeabi_IONBF</code></td>
+</tr>
+<tr>
+<td><code>BUFSIZ</code></td>
+<td><code>__aeabi_BUFSIZ</code></td>
+</tr>
+<tr>
+<td><code>FOPEN_MAX</code></td>
+<td><code>__aeabi_FOPEN_MAX</code></td>
+</tr>
+<tr>
+<td><code>TMP_MAX</code></td>
+<td><code>__aeabi_TMP_MAX</code></td>
+</tr>
+<tr>
+<td><code>FILENAME_MAX</code></td>
+<td><code>__aeabi_FILENAME_MAX</code></td>
+</tr>
+<tr>
+<td><code>L_tmpnam</code></td>
+<td><code>__aeabi_L_tmpnam</code></td>
+</tr>
+<tr>
+<td>time.h</td>
+<td><code>CLOCKS_PER_SEC</code></td>
+<td><code>__aeabi_CLOCKS_PER_SEC</code></td>
+</tr>
+</tbody>
+</table>
+<p>If possible, link-time constants should be defined with
+visibility STV_HIDDEN [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>], and
+linked statically with client code. Dynamic linking is possible,
+but will almost always be significantly less efficient.</p>
+<table id="id24">
+<caption>Additional functions (when _AEABI_PORTABILITY_LEVEL !=
+0)</caption>
+<colgroup>
+<col width="16%"/>
+<col width="23%"/>
+<col width="61%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Header</th>
+<th>ANSI C macro</th>
+<th>AEABI function</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>assert.h</td>
+<td><code>assert</code></td>
+<td>
+<ul>
+<li><code>void __aeabi_assert(</code> <code>const char *expr, const
+char *file, int line);</code></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>errno.h</td>
+<td><code>errno</code></td>
+<td><code>volatile int *__aeabi_errno_addr(void);</code>
+<code>(*__aeabi_errno_addr())</code></td>
+</tr>
+<tr>
+<td>locale.h</td>
+<td>None</td>
+<td><code>struct __aeabi_lconv
+*__aeabi_localeconv(void);</code></td>
+</tr>
+<tr>
+<td rowspan="3">signal.h</td>
+<td><code>SIG_DFL</code></td>
+<td><code>extern void __aeabi_SIG_DFL(int);</code></td>
+</tr>
+<tr>
+<td><code>SIG_IGN</code></td>
+<td><code>extern void __aeabi_SIG_IGN(int);</code></td>
+</tr>
+<tr>
+<td><code>SIG_ERR</code></td>
+<td><code>extern void __aeabi_SIG_ERR(int);</code></td>
+</tr>
+<tr>
+<td>stdlib.h</td>
+<td><code>MB_CUR_MAX</code></td>
+<td><code>int __aeabi_MB_CUR_MAX(void);</code></td>
+</tr>
+</tbody>
+</table>
+<p>It is an implementation choice whether __aeabi_SIG_* occupy
+space in the run-time library, or whether they resolve to absolute
+symbols.</p>
+<p>As with other link-time constants, these should be defined with
+visibility STV_HIDDEN [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>], and
+linked statically with client code. Dynamic linking is possible,
+but will almost always be significantly less efficient.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

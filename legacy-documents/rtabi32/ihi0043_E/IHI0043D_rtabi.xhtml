@@ -1,0 +1,2952 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Run-time ABI for the Arm Architecture - ABI 2018Q4
+documentation</title>
+
+<meta name="keywords" content="Fast Models"/></head>
+<body>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="run-time-abi-for-the-arm-architecture">
+<h2>Run-time ABI for the Arm Architecture - ABI 2018Q4
+documentation</h2>
+<p>Document number: IHI 0043E, current through ABI release
+2018Q4</p>
+<p>Date of Issue: 21<sup>st</sup> December 2018</p>
+
+<div>
+<div>
+<div>
+<div id="preamble">
+<h2>Preamble</h2>
+<div>
+<div>
+<div>
+<div id="abstract">
+<h3>Abstract</h3>
+<p>This document defines a run-time helper-function ABI for
+programs written in Arm-Thumb assembly language, C, and C++.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="keywords">
+<h3>Keywords</h3>
+<p>Run-time ABI, run-time library, helper functions</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it</h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/products/software-development-tools/specifications">https://developer.arm.com/products/software-development-tools/specifications</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <em>arm</em> dot
+<em>eabi</em> at <em>arm</em> dot <em>com</em>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="licence">
+<h3>Licence</h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice</h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © [2018] Arm Limited or its affiliates. All rights
+reserved.</p>
+<p>Arm Limited. Company 02557590 registered in England. 110
+Fulbourn Road, Cambridge, England CB1 9NJ. LES-PRE-20349</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="contents">
+<h3>Contents</h3>
+<div>
+<div>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#run-time-abi-for-the-arm-architecture" id="id13">Run-time ABI for the Arm® Architecture</a>
+<ul>
+<li><a href="index.html#preamble" id="id14">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id15">Abstract</a></li>
+<li><a href="index.html#keywords" id="id16">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id17">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id18">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id19">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id20">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id21">About this
+document</a>
+<ul>
+<li><a href="index.html#change-control" id="id22">Change
+control</a></li>
+<li><a href="index.html#references" id="id23">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id24">Terms
+and abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id25">Your licence to use this specification</a></li>
+<li><a href="index.html#acknowledgements" id="id26">Acknowledgements</a></li>
+</ul>
+</li>
+<li><a href="index.html#scope" id="id27">Scope</a></li>
+<li><a href="index.html#introduction" id="id28">Introduction</a>
+<ul>
+<li><a href="index.html#references-between-separately-built-relocatable-files" id="id29">References between separately built relocatable
+files</a></li>
+<li><a href="index.html#standardized-compiler-helper-functions" id="id30">Standardized compiler helper functions</a></li>
+<li><a href="index.html#private-helper-functions-must-be-carried-with-the-using-file" id="id31">Private helper functions must be carried with
+the using file</a></li>
+<li><a href="index.html#some-private-functions-might-nonetheless-be-standardized" id="id32">Some private functions might nonetheless be
+standardized</a></li>
+<li><a href="index.html#many-run-time-functions-do-not-have-a-standard-abi" id="id33">Many run-time functions do not have a
+standard ABI</a></li>
+<li><a href="index.html#a-run-time-library-is-all-or-nothing" id="id34">run-time library is all or nothing</a></li>
+<li><a href="index.html#important-corollaries-of-this-library-standardization-model" id="id35">Important corollaries of this library
+standardization model</a></li>
+<li><a href="index.html#private-names-for-private-and-aeabi-specific-helper-functions" id="id36">Private names for private and AEABI-specific
+helper functions</a></li>
+<li><a href="index.html#library-file-organization" id="id37">Library file organization</a></li>
+<li><a href="index.html#hardfp-name-mangling" id="id38">__hardfp_
+name mangling</a></li>
+</ul>
+</li>
+<li><a href="index.html#the-standard-compiler-helper-function-library" id="id39">The Standard Compiler Helper Function
+Library</a>
+<ul>
+<li><a href="index.html#floating-point-library" id="id40">Floating-point library</a></li>
+<li><a href="index.html#the-long-long-helper-functions" id="id41">The long long helper functions</a></li>
+<li><a href="index.html#other-c-and-assembly-language-helper-functions" id="id42">Other C and assembly language helper
+functions</a></li>
+<li><a href="index.html#c-helper-functions" id="id43">C++ helper
+functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="about-this-document">
+<h2>About this document</h2>
+<div>
+<div>
+<div>
+<div id="change-control">
+<h3>Change control</h3>
+<div>
+<div>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current status and anticipated changes</h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li>ReleaseArm considers this specification to have enough
+implementations, which have received sufficient testing, to verify
+that it is correct. The details of these criteria are dependent on
+the scale and complexity of the change over previous versions:
+small, simple changes might only require one implementation, but
+more complex changes require multiple independent implementations,
+which have been rigorously tested for cross-compatibility. Arm
+anticipates that future changes to this specification will be
+limited to typographical corrections, clarifications and compatible
+extensions.</li>
+<li>BetaArm considers this specification to be complete, but
+existing implementations do not meet the requirements for
+confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li>AlphaThe content of this specification is a draft, and Arm
+considers the likelihood of future incompatible changes to be
+significant.</li>
+</ul>
+<p>All content in this document is at the "Release" quality
+level.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="change-history">
+<h4>Change history</h4>
+<table>
+<colgroup>
+<col width="11%"/>
+<col width="29%"/>
+<col width="6%"/>
+<col width="54%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>1.0</td>
+<td>30<sup>th</sup> October 2003</td>
+<td>LS</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>24<sup>th</sup> March 2005</td>
+<td>LS</td>
+<td>Second public release.</td>
+</tr>
+<tr>
+<td>2.01</td>
+<td>6<sup>th</sup> October 2005</td>
+<td>LS</td>
+<td>Added specifications of __aeabi_read_tp() (<a href="index.html">Thread-local storage (new in v2.01)</a>)
+and __cxa_get_exception_ptr() (<a href="index.html">Exception-handling support</a>).</td>
+</tr>
+<tr>
+<td>2.02</td>
+<td>23<sup>rd</sup> January 2007</td>
+<td>LS</td>
+<td>Deprecated fneg/dneg in <a href="index.html">The
+floating-point helper functions</a>.</td>
+</tr>
+<tr>
+<td>2.03</td>
+<td>10<sup>th</sup> October 2007</td>
+<td>LS</td>
+<td>In <a href="index.html">Private names for private and
+AEABI-specific helper functions</a>, replaced table by table shared
+with AAELF. Clarified <a href="index.html">Integer
+(32/32 → 32) division functions</a>, integer division. Updated the
+Arm ARM reference to include the version from <a href="http://www.arm.com">www.arm.com</a>.</td>
+</tr>
+<tr>
+<td>A, r2.06</td>
+<td>25<sup>th</sup> October 2007</td>
+<td>LS</td>
+<td>Document renumbered (formerly GENC-003537 v2.03).</td>
+</tr>
+<tr>
+<td>B, r2.07</td>
+<td>10<sup>th</sup> October 2008</td>
+<td>LS</td>
+<td>Add return value comments to __aeabi_* helper functions in
+<a href="index.html">Helper functions defined by the
+C++ ABI for the Arm Architecture</a>.</td>
+</tr>
+<tr>
+<td>C, r2.08</td>
+<td>19<sup>th</sup> October 2009</td>
+<td>LS</td>
+<td>Added <a href="index.html">__hardfp_ name
+mangling</a> to explain legacy, deprecated __hardfp_ name mangling;
+in <a href="index.html">The floating-point helper
+functions</a>, declared fneg/dneg <em>obsolete</em>; improved text
+specifying the registers maybe affected by a call to an FP helper;
+added conversion helpers between VFPv3 half-precision and float to
+<a href="index.html">Standard conversions between floating
+types</a>.</td>
+</tr>
+<tr>
+<td>D, r2.09</td>
+<td>30<sup>th</sup> November 2012</td>
+<td>AC</td>
+<td>In <a href="index.html">Base requirements on
+AEABI-complying FP helper functions</a>, updated [ARM ARM]
+reference for signaling NaNs. In <a href="index.html">The floating-point helper functions</a>,
+removed __aeabi_dneg and __aeabi_fneg obsoleted in r2.08, and added
+conversion helpers from double to VFPv3 half-precision to <a href="index.html">Standard conversions between floating
+types</a>.</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>21<sup>st</sup> December 2018</td>
+<td>OS</td>
+<td>In <a href="index.html">Standard conversions between
+floating types</a>, specified handling of infinity and NaN in
+f2h_alt and d2h_alt.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="references">
+<h3>References</h3>
+<p>This document refers to, or is referred to by, the
+following.</p>
+<table>
+<colgroup>
+<col width="13%"/>
+<col width="48%"/>
+<col width="38%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>URL or other reference</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a></td>
+<td> </td>
+<td>ELF for the Arm Architecture.</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a></td>
+<td> </td>
+<td>Procedure Call Standard for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0036/latest">BSABI</a></td>
+<td> </td>
+<td>ABI for the Arm Architecture (Base Standard)</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0039/latest">CLIBABI</a></td>
+<td> </td>
+<td>Library ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a></td>
+<td> </td>
+<td>C++ ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a></td>
+<td> </td>
+<td>Exception Handling ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td>RTABI</td>
+<td> </td>
+<td>Run-time ABI for the Arm Architecture (<em>This
+document</em>)</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0045/latest">ADDENDA</a></td>
+<td> </td>
+<td>Addenda to, and Errata in, the ABI for the Arm
+Architecture</td>
+</tr>
+<tr>
+<td>Arm ARM</td>
+<td>
+<p><a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">
+https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition</a></p>
+<p><a href="https://developer.arm.com/products/architecture/m-profile/docs/ddi0403/e/armv7-m-architecture-reference-manual">
+https://developer.arm.com/products/architecture/m-profile/docs/ddi0403/e/armv7-m-architecture-reference-manual</a></p>
+</td>
+<td>
+<p>Arm DDI 0406: Arm Architecture Reference Manual
+Arm v7-A and Arm v7-R edition</p>
+<p>Arm DDI 0403C: Armv7-M Architecture Reference
+Manual</p>
+</td>
+</tr>
+<tr>
+<td>Armv5 ARM</td>
+<td><a href="https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual">
+https://developer.arm.com/docs/ddi0100/latest/armv5-architecture-reference-manual</a></td>
+<td>Arm DDI 0100I: Armv5 Architecture Reference Manual</td>
+</tr>
+<tr>
+<td><a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a></td>
+<td><a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">http://itanium-cxx-abi.github.io/cxx-abi/abi.html</a></td>
+<td>Generic C++ ABI</td>
+</tr>
+<tr>
+<td><a href="http://grouper.ieee.org/groups/754/">IEEE754</a></td>
+<td><a href="http://grouper.ieee.org/groups/754/">http://grouper.ieee.org/groups/754/</a></td>
+<td>IEEE P754 Standard for Floating-Point Arithmetic</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and abbreviations</h3>
+<p>The <em>ABI for the Arm Architecture</em> uses the following
+terms and abbreviations.</p>
+<ul>
+<li>AAPCSProcedure Call Standard for the Arm Architecture.</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+<cite>Linux ABI for the Arm Architecture</cite>.</li>
+<li>particular aspect of the specifications to which independently
+produced relocatable files must conform in order to be statically
+linkable and executable. For example, the <a href="https://developer.arm.com/docs/ihi0041/latest">C++ ABI for the Arm
+Architecture</a>, the Run-time ABI for the Arm Architecture, the
+<a href="https://developer.arm.com/docs/ihi0039/latest">Library ABI
+for the Arm Architecture</a>.</li>
+</ol>
+</li>
+<li>AEABI(Embedded) ABI for the Arm architecture (this ABI...)</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>core registersThe general purpose registers visible in the Arm
+architecture's programmer's model, typically r0-r12, SP, LR, PC,
+and CPSR.</li>
+<li>EABIAn ABI suited to the needs of embedded, and deeply embedded
+(sometimes called free standing), applications.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>VFPThe Arm architecture's Floating Point architecture and
+instruction set. In this ABI, this abbreviation includes all
+floating point variants regardless of whether or not vector (V)
+mode is supported.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification</h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="acknowledgements">
+<h3>Acknowledgements</h3>
+<p>This specification has been developed with the active support of
+the following organizations. In alphabetical order: Arm,
+CodeSourcery, Intel, Metrowerks, Montavista, Nexus Electronics,
+PalmSource, Symbian, Texas Instruments, and Wind River.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="scope">
+<h2>Scope</h2>
+<p>Conformance to the <em>ABI for the Arm architecture</em> is
+intended to support inter-operation between:</p>
+<ul>
+<li>Relocatable files generated by different tool chains.</li>
+<li>Executable and shared object files generated for the same
+execution environment by different tool chains.</li>
+</ul>
+<p>This <em>standard for run-time helper functions</em> allows a
+relocatable file built by one conforming tool chain from Arm-Thumb
+assembly language, C, or stand alone C++ to be compatible with the
+static linking environment provided by a different conforming tool
+chain.</p>
+<div class="documents-docsimg-container" id="rtabi32-fig1"><img alt="clibabi32-inter-operation.png" src="clibabi32-inter-operation.png"/></div>
+<p>Figure 1, Inter-operation between relocatable files</p>
+<p>In this model of inter-working, the standard headers used to
+build a relocatable file are those associated with the tool chain
+building it, not those associated with the library with which the
+relocatable fille will, ultimately, be linked.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="introduction">
+<h2>Introduction</h2>
+<p>number of principles of inter-operation are implicit in, or
+compatible with, Figure 1, above. This section describes these
+principles as they apply to run-time helper functions, and gives a
+rationale for each one. The corresponding section (<a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section3">Introduction</a>)
+of [<a href="https://developer.arm.com/docs/ihi0039/latest">CLIBABI</a>]
+discusses the same issues as they apply to C library functions.</p>
+<div>
+<div>
+<div>
+<div id="references-between-separately-built-relocatable-files">
+<h3>References between separately built relocatable files</h3>
+<p>relocatable file can refer to functions and data defined in
+other relocatable files or libraries.</p>
+<p><strong>Application headers describe application
+entities</strong></p>
+<p>Entities defined in application relocatable files are declared
+in application header files (<em>"header"</em> in Figure 1).</p>
+<ul>
+<li>An application header file must describe the same binary
+interface to declared data and functions, to every ABI-conforming
+compiler that reads it.</li>
+<li>Tool-chain-specific information in such header files must
+affect only the quality of implementation of the relocatable files
+whose sources includes the headers, not their binary
+interfaces.</li>
+</ul>
+<p><strong>Rationale</strong>: A relocatable file or library is
+distributed with a set of header files describing its interface.
+Different compilers must interpret the underlying binary interface
+description identically. Nevertheless, some compilers might
+comprehend pragmas or pre-processor-guarded language extensions
+that cause better code to be generated, or that trigger behavior
+that does not affect the binary compatibility of interfaces.</p>
+<p><strong>Standard (system) headers describe run-time
+libraries</strong></p>
+<p>In general, entities defined in run-time libraries are declared
+in standard (or system) header files (<em>&lt;header&gt;</em> in
+Figure 1). A standard header need not be intelligible to any tool
+chain other than the one that provides it.</p>
+<p><strong>Rationale</strong>: Some language-standardized behavior
+cannot be securely or conveniently described in source-language
+terms that all compilers implement identically (for example,
+va_start and va_arg from C's stdarg.h).</p>
+<p>So, a relocatable file must be built using the standard headers
+associated with the compiler building it.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="standardized-compiler-helper-functions">
+<h3>Standardized compiler helper functions</h3>
+<p>Each static linking environment shall provide a set of standard
+<em>helper functions</em> defined by this ABI. See <a href="index.html">The Standard Compiler Helper Function
+Library</a>, for a list of standardized helper functions.</p>
+<p>helper function is one that a relocatable file might refer to
+even though its source includes no standard headers (or, indeed, no
+headers at all). A helper function usually implements some aspect
+of a programming language not implemented by its standard library
+(for example, from C, floating-point to integer conversions).</p>
+<p>In some cases, a helper function might implement some aspect of
+standard library behavior not implemented by any of its interface
+functions (for example, from the C library, <em>errno</em>).</p>
+<p>A helper function might also implement an operation not
+implemented by the underlying hardware, for example, integer
+division, floating-point arithmetic, or reading and writing
+misaligned data.</p>
+<p>Examples of run-time helper functions include those to perform
+integer division, and floating-point arithmetic by software, and
+those required to support the processing of C++ exceptions.</p>
+<p>Each such function has a defined type signature, a precise
+(often simple) meaning, and a small set of standard names (there
+may be more than one name for a helper function).</p>
+<div>
+<div>
+<div>
+<div id="rationale-for-standardizing-helper-functions">
+<h4>Rationale for standardizing helper functions</h4>
+<p>There is a mixture of convenience, opportunism, and
+necessity.</p>
+<ul>
+<li>Without standard helper functions, each relocatable file would
+have to carry all of its support functions with it, either in ELF
+COMDAT groups within the relocatable file itself or in an adjunct
+library.</li>
+<li>Multiple tool chains (at least from Arm and GNU) implement
+essentially compatible floating-point arithmetic functions.
+(Corresponding functions have identical type signatures and
+semantics, but different names).</li>
+<li>In C++, even if no system headers are included, inter-working
+is only possible if implementations agree on the helpers to use in
+construction, destruction, and throwing exceptions.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="private-helper-functions-must-be-carried-with-the-using-file">
+<h3>Private helper functions must be carried with the using
+file</h3>
+<p>A needed helper function that is not available in all
+ABI-complying environments—any helper not standardized by this ABI
+component—must be supplied with the relocatable file that needs it.
+There are two ways to do this.</p>
+<ul>
+<li>Provide the required helpers in a separate library (see
+<a href="index.html">Library file organization</a>) and
+provide the library with any relocatable file that might refer to
+it.</li>
+<li>Include the helpers in additional sections within the
+relocatable file in named ELF COMDAT groups. This is the standard
+way to distribute C++ constructors, destructors, out-of-line copies
+of inline functions, etc.</li>
+</ul>
+<p>We encourage use of the second (COMDAT group) method, though the
+choice of method is properly a quality of implementation concern
+for each tool chain provider.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="some-private-functions-might-nonetheless-be-standardized">
+<h3>Some private functions might nonetheless be standardized</h3>
+<p>The first issue of this ABI defines no functions in this class.
+However, new helper functions would first be added as standardized
+private helper functions, until implementations of helper-function
+libraries caught up.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="many-run-time-functions-do-not-have-a-standard-abi">
+<h3>Many run-time functions do not have a standard ABI</h3>
+<p>In general, it is very hard to standardize the C++ library using
+the approach to library standardization outlined here and in
+[<a href="https://developer.arm.com/docs/ihi0039/latest">CLIBABI</a>]. The
+C++ standard allows an implementation to inline any of the library
+functions [17.4.4.3, 17.4.4.4] and to add private members to any
+C++ library class [17.3.2.3]. In general, implementations use this
+latitude, and there is no ubiquitous standard implementation of the
+C++ library.</p>
+<p>In effect, C++ library headers define an API, not an ABI. To
+inter-work with a particular C++ library implementation requires
+that the compiler read the matching header files, breaking the
+model depicted in Figure 1, above.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="a-run-time-library-is-all-or-nothing">
+<h3>run-time library is all or nothing</h3>
+<p>In general, we cannot expect a helper function from vendor A's
+library to work with a different helper function from vendor B's
+library. Although most helper functions will be independent leaf
+(or near leaf) functions, tangled clumps of implementation could
+underlie apparently independent parts of a run-time library's
+public interface.</p>
+<p>In some cases, there may be inter-dependencies between run-time
+libraries, the static linker, and the ultimate execution
+environment. For example, the way that a program acquires its
+startup code (sometimes called crt0.o) may depend on the run-time
+library and the static linker.</p>
+<p>This leads to a major conclusion for statically linked
+executables: <strong>the static linker and the run-time libraries
+must be from the same tool chain</strong>.</p>
+<p>Accepting this constraint gives considerable scope for private
+arrangements (not governed by this ABI) between these tool chain
+components, restricted only by the requirement to provide a well
+defined binary interface (ABI) to the functions described in
+<a href="index.html">The Standard Compiler Helper Function
+Library</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="important-corollaries-of-this-library-standardization-model">
+<h3>Important corollaries of this library standardization
+model</h3>
+<p>System headers <em>can</em> require compiler-specific
+functionality (e.g. for handling va_start, va_arg, etc). The
+resulting binary code must conform to this ABI.</p>
+<p>As far as this ABI is concerned, a standard library header is
+processed only by a matching compiler. A platform ABI can impose
+further constraints that cause more compilers to match, but this
+ABI does not.</p>
+<p>This ABI defines the full set of public helper functions
+available in every conforming execution environment.</p>
+<p>Every tool chain's run-time library must implement the full set
+of public helper functions defined by this ABI.</p>
+<p>Private helper functions can call other private helper
+functions, public helper functions, and language-standard-defined
+library functions. A private helper function must not call any
+function that requires a specific implementation of a language
+run-time library or helper library.</p>
+<p>The implementation of a private helper function (and that of
+each private helper function it calls) must be offered in a COMDAT
+group within the ELF [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>]
+relocatable file that needs it, or in a <em>freely
+re-distributable</em> library (<a href="index.html">Library file organization</a>) provided by
+the tool chain as an adjunct to the relocatable file.</p>
+<p>(<em>Freely re-distributable</em> means: Distributable on terms
+no more restrictive than those applying to any generated
+relocatable file).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="private-names-for-private-and-aeabi-specific-helper-functions">
+<h3>Private names for private and AEABI-specific helper
+functions</h3>
+<p>External names used in the implementation of private helper
+functions and private helper data must be in the vendor-specific
+name space reserved by this ABI. All such names have the form
+__<em>vendor-prefix_name</em>.</p>
+<p>The vendor prefix must be registered with the maintainers of
+this ABI specification. Prefixes must not contain underscore ('_')
+or dollar ('$'). Prefixes starting with <em>Anon</em> and
+<em>anon</em> are reserved for unregistered private use.</p>
+<p>For example (from the C++ exception handling ABI):</p>
+<div>
+<div>
+<div>
+<div>
+<div>__<strong>aeabi</strong>_unwind_cpp_pr0
+__<strong>ARM</strong>_Unwind_cpp_prcommon</div>
+</div>
+</div>
+</div>
+</div>
+<p>The current list of registered vendor, and pseudo vendor,
+prefixes is given in <a href="index.html">Registered
+Vendors</a> below.</p>
+<table id="id2">
+<caption>Registered Vendors</caption>
+<colgroup>
+<col width="20%"/>
+<col width="80%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Vendor</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>ADI</code></td>
+<td>Analog Devices</td>
+</tr>
+<tr>
+<td><code>acle</code></td>
+<td>Reserved for use by Arm C Language Extensions.</td>
+</tr>
+<tr>
+<td><code>aeabi</code></td>
+<td>Reserved to the ABI for the Arm Architecture (EABI
+pseudo-vendor)</td>
+</tr>
+<tr>
+<td><code>Anon</code> <em>Xyz</em> <code>anon</code>
+<em>Xyz</em></td>
+<td>Reserved to private experiments by the Xyz vendor. Guaranteed
+not to clash with any registered vendor name.</td>
+</tr>
+<tr>
+<td><code>ARM</code></td>
+<td>Arm Ltd (Note: the company, not the processor).</td>
+</tr>
+<tr>
+<td><code>cxa</code></td>
+<td>C++ ABI pseudo-vendor</td>
+</tr>
+<tr>
+<td><code>FSL</code></td>
+<td>Freescale Semiconductor Inc.</td>
+</tr>
+<tr>
+<td><code>GHS</code></td>
+<td>Green Hills Systems</td>
+</tr>
+<tr>
+<td><code>gnu</code></td>
+<td>GNU compilers and tools (Free Software Foundation)</td>
+</tr>
+<tr>
+<td><code>iar</code></td>
+<td>IAR Systems</td>
+</tr>
+<tr>
+<td><code>icc</code></td>
+<td>ImageCraft Creations Inc (<em>ImageCraft C Compiler</em>)</td>
+</tr>
+<tr>
+<td><code>intel</code></td>
+<td>Intel Corporation</td>
+</tr>
+<tr>
+<td><code>ixs</code></td>
+<td>Intel Xscale</td>
+</tr>
+<tr>
+<td><code>llvm</code></td>
+<td>The LLVM/Clang projects</td>
+</tr>
+<tr>
+<td><code>PSI</code></td>
+<td>PalmSource Inc.</td>
+</tr>
+<tr>
+<td><code>RAL</code></td>
+<td>Rowley Associates Ltd</td>
+</tr>
+<tr>
+<td><code>SEGGER</code></td>
+<td>SEGGER Microcontroller GmbH</td>
+</tr>
+<tr>
+<td><code>somn</code></td>
+<td>SOMNIUM Technologies Limited.</td>
+</tr>
+<tr>
+<td><code>TASKING</code></td>
+<td>Altium Ltd.</td>
+</tr>
+<tr>
+<td><code>TI</code></td>
+<td>TI Inc.</td>
+</tr>
+<tr>
+<td><code>tls</code></td>
+<td>Reserved for use in thread-local storage routines.</td>
+</tr>
+<tr>
+<td><code>WRS</code></td>
+<td>Wind River Systems.</td>
+</tr>
+</tbody>
+</table>
+<p>To register a vendor prefix with Arm, please E-mail your request
+to arm.eabi at arm.com.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="library-file-organization">
+<h3>Library file organization</h3>
+<p>Libraries that must be portable between complying tool chains -
+such as adjunct libraries of private helper functions (<a href="index.html">Private helper functions must be carried with
+the using file</a>), and libraries of run-time helper functions
+that comply with this specification (<a href="index.html">The Standard Compiler Helper Function
+Library</a>) and are intended to be used with other tool chains'
+linkers - must satisfy the following conditions.</p>
+<ul>
+<li>The library file format is the <strong>ar</strong> format
+describe in [<a href="https://developer.arm.com/docs/ihi0036/latest">BSABI</a>].</li>
+<li>It must not matter whether libraries are searched once or
+repeatedly (this is Q-o-I).</li>
+<li>Multiple adjunct libraries can appear in any order in the list
+of libraries given to the linker provided that they precede all
+libraries contributing to the run-time environment.</li>
+</ul>
+<p>In general, this requires accepting the following organizational
+constraints.</p>
+<ul>
+<li>No member of an adjunct library can refer to a member of any
+other library other than to an entity specified by this ABI that
+contributes to the run-time environment.</li>
+<li>The names of adjunct members must be in a vendor-private name
+space (<a href="index.html">Private names for private and
+AEABI-specific helper functions</a>).</li>
+<li>If run-time environment support functions are provided in
+multiple libraries, and these are intended to be usable by other
+ABI-conforming linkers, it must be possible to list the libraries
+in at least one order in which each reference between them is from
+a library to one later in the order. This order must be
+documented.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="hardfp-name-mangling">
+<h3>__hardfp_ name mangling</h3>
+<p>This section describes a name-mangling convention adopted by
+armcc (Arm Limited's commercial compiler) six years before this ABI
+was published and three years before ABI development began. The
+name mangling is unnecessary under this ABI so we now deprecate it.
+Obviously, compilers in service will continue to generate the names
+for some time.</p>
+<p>goal of this ABI is to support the development of portable
+binary code but the lack of ubiquity of the floating-point (FP)
+instruction set causes a problem if the code uses FP values in its
+interface functions.</p>
+<ul>
+<li>Code that makes no use of FP values can be built to the
+<em>Base Procedure Call Standard</em> [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>, <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5">The
+Base Procedure Call Standard</a>] and will be compatible with an
+application built to the base standard or the VFP procedure call
+standard [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>, <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1">VFP
+and Advanced SIMD Register Arguments</a>].</li>
+<li>Portable binary code that makes heavy use of FP will surely be
+offered in two variants: base-standard for environments that lack
+FP hardware and VFP-standard otherwise.</li>
+<li>Portable binary code that makes only light use of floating
+point might reasonably be offered in the base standard only with
+its FP-using functions declared in its supporting header files as
+base-standard interfaces using some Q-o-I means such as decoration
+with <code>__softfp`</code> or
+<code>__ATTRIBUTE((softfp))__</code>.</li>
+</ul>
+<p>The third use case causes a potential problem.</p>
+<ul>
+<li>Both the portable code and the application that uses it might
+refer to the same standard library function (such as
+<code>strtod()</code> or <code>sin()</code>).</li>
+<li>The portable code will expect a base-standard interface and the
+application will expect a VFP-standard interface. The variants are
+not call-compatible.</li>
+</ul>
+<p>The scope of this problem is precisely: all non-variadic
+standard library functions taking floating-point parameters or
+delivering floating-point results.</p>
+<p>Implicit calls to conversion functions that arise from
+expressions such as <code>double d = (double) int_val</code> can
+also cause difficulties. A call is either to a floating-point (FP)
+helper function (such as <code>__aeabi_i2d</code>, <a href="index.html">Standard integer to floating-point
+conversions</a>, below]) defined by this ABI (<a href="index.html">The floating-point helper functions</a>) or
+to a private helper function. The FP helpers defined by this ABI
+cause no difficulties because they always use a base-standard
+interface but a private helper function would suffer the same
+problem as <code>strtod()</code> or <code>sin()</code> if the same
+tool chain were used to build the application and the portable
+binary and the helper function were not forced to have a
+base-standard interface.</p>
+<p>The 1999 (pre-ABI) solution to this problem (first adopted by
+ADS 1.0) was as follows.</p>
+<ul>
+<li>Identify those functions that would be expected to have
+VFP-standard interfaces when used in a VFP-standard application
+(such as <code>strtod</code> and <code>sin</code>).</li>
+<li>Mangle the name of the VFP-standard variant of each of these
+functions using the prefix <code>__hardfp</code>.</li>
+</ul>
+<p>In 1999, VFP was not widely deployed in Arm-based products so it
+was reasonable to load these inter-operation costs on users of the
+VFP calling standard.</p>
+<p>Today, this ABI defines a clean way for tool chains to support
+this functionality without resorting to encoding the interface
+standard in a function's name. The <code>Tag_ABI_VFP_args</code>
+build attribute in [<a href="https://developer.arm.com/docs/ihi0045/latest">ADDENDA</a>]
+records the interface intentions of a producer. In principle, this
+tag gives enough information to a tool chain to allow it to solve,
+using its own Q-o-I means, the problem described in this section
+that arises from the third use case.</p>
+<p>The problem described in this section arises in the most
+marginal of the three portable-code use cases described in the
+bullet points at the beginning of this section so we now recommend
+that tool chains should <em>not</em> mangle the affected names
+(essentially the functions described by the C library's
+<code>&lt;math.h&gt;</code> and some from
+<code>&lt;stdlib.h&gt;</code>).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-standard-compiler-helper-function-library">
+<h2>The Standard Compiler Helper Function Library</h2>
+<div>
+<div>
+<div>
+<div id="floating-point-library">
+<h3>Floating-point library</h3>
+<div>
+<div>
+<div>
+<div id="the-floating-point-model">
+<h4>The floating point model</h4>
+<p>The floating point model is based on [<a href="http://grouper.ieee.org/groups/754/">IEEE754</a>] floating-point
+number representations and arithmetic. Base requirements on helper
+functions and restrictions on usage by client code are listed
+below.</p>
+<p>ABI-complying helper function libraries may provide more
+functionality than is specified here, perhaps a full implementation
+of the IEEE 754 specification, but ABI-complying application code
+must not require more than the specified subset (save by private
+contract with the execution environments).</p>
+<p>The set of helper functions has been designed so that:</p>
+<ul>
+<li>full IEEE implementation is a natural super-set.</li>
+<li>A producer can ensure that, by carefully choosing the correct
+helper function for the purpose, the intended application behavior
+does not change inappropriately if the helper-function
+implementations support more than the ABI-required, IEEE
+754-specified behavior.</li>
+</ul>
+<div>
+<div>
+<div>
+<div id="base-requirements-on-aeabi-complying-fp-helper-functions">
+<h5>Base requirements on AEABI-complying FP helper functions</h5>
+<p>Helper functions must correctly process all IEEE 754 single- and
+double-precision numbers, including -0 and ±infinity, using the
+<em>round to nearest</em> rounding mode.</p>
+<p>Floating-point exceptions are untrapped, so invalid operations
+must generate a default result.</p>
+<p>If the implementation supports NaNs, the following requirements
+hold in addition to those imposed on processing by IEEE 754.</p>
+<ul>
+<li>All IEEE NaN bit patterns with the most significant bit of the
+significand set are quiet, and all with the most significant bit
+clear are signaling (as defined by [ARM ARM], chapter A2,
+Application Level Programmers' Model).</li>
+<li>When not otherwise specified by IEEE 754, the result on an
+invalid operation should be the quiet bit pattern with only the
+most significant bit of the significand set, and all other
+significand bits zero.</li>
+</ul>
+<p><strong>Dispensation - de-normal numbers</strong></p>
+<p>De-normal numbers may be flushed to zero in an
+implementation-defined way.</p>
+<p>We permit de-normal flushing in deference to hardware
+implementations of floating-point, where correct IEEE 754 behavior
+might require supporting code that would be an unwelcome burden to
+an embedded system.</p>
+<p>Implementations that flush to zero will violate the Java
+numerical model, but we recognize that:</p>
+<ul>
+<li>Often, higher performance and smaller code size legitimately
+outweigh floating-point accuracy concerns.</li>
+<li>High quality floating-point behavior inevitably requires
+application code to be aware of the floating-point properties of
+its execution environment. Floating-point code that has onerous
+requirements (rare in embedded applications) must advertise
+this.</li>
+</ul>
+<p>Software-only implementations should correctly support de-normal
+numbers.</p>
+<p><strong>Dispensations relating to NaNs</strong></p>
+<p>An implementation need not process or generate NaNs. In this
+case, the result of each invalid operation is implementation
+defined (and could, for example, simply be ±zero).</p>
+<p>If NaNs are supported, it is only required to recognize,
+process, and convert those values with at least one bit set in the
+20 most significant bits of the mantissa. Remaining bits should be
+zero and can be ignored. When a quiet NaN of one precision is
+converted to a quiet of the other precision, the most significant
+20 bits of the mantissa must be preserved. Consequently:</p>
+<ul>
+<li>A NaN can be recognized by processing the most significant or
+only word of the representation. The least significant word of a
+double can be ignored (it should be zero).</li>
+<li>Each ABI-complying value has a single-precision representation,
+and a corresponding double-precision representation in which the
+least significant word is zero.</li>
+<li>Each ABI-complying NaN value is converted between single- and
+double-precision in the same way that Arm VFP VCVT instructions
+convert the values.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="restrictions-on-fp-usage-by-abi-complying-programs">
+<h5>Restrictions on FP usage by ABI-complying programs</h5>
+<p>The rounding mode is fixed as round to nearest. This is the IEEE
+754 default when a program starts and the state required by the
+Java numerical model. A conforming client must not change the
+rounding mode.</p>
+<p>Conforming clients must not fabricate bit patterns that
+correspond to de-normal numbers. A de-normal number must only be
+generated as a result of operating on normal numbers (for example,
+subtracting two very close values). A de-normal number may be
+flushed to zero on input to, or on output from, a helper
+function.</p>
+<p>There are no floating-point exceptions. This is the IEEE 754
+default when a program starts. A conforming client must not change
+the exception trap state or attempt to trap IEEE exceptions.</p>
+<p>Conforming clients must not directly fabricate bit patterns that
+correspond to NaNs. A NaN can only be generated as a result of an
+operation on normal numbers (for example, subtracting +infinity
+from +infinity or multiplying ±infinity by ±zero).</p>
+<p>A conforming client must not rely on generating a by operating
+on normal numbers as described above.</p>
+<p>A NaN-using client must use only those values having at least
+one bit set in the 20 most significant mantissa bits, and all other
+mantissa bits zero.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-floating-point-helper-functions">
+<h4>The floating-point helper functions</h4>
+<p>The functions defined in this section use software
+floating-point (<em>Base Procedure Call Standard</em> [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]) calling
+and result-returning conventions, even when they are implemented
+using floating-point hardware. That is, parameters to and results
+from them are passed in <em>integer</em> <em>core
+registers</em>.</p>
+<p>The functions defined in <a href="index.html">Standard
+double precision floating-point arithmetic helper functions</a>,
+<a href="index.html">double precision floating-point
+comparison helper functions</a>, <a href="index.html">Standard
+single precision floating-point arithmetic helper functions</a>,
+and <a href="index.html">Standard single precision
+floating-point comparison helper functions</a> together implement
+the floating-point (FP) arithmetic operations from the FP
+instruction set. The functions defined in <a href="index.html">Standard floating-point to integer
+conversions</a>, <a href="index.html">Standard conversions
+between floating types</a>, and <a href="index.html">Standard
+integer to floating-point conversions</a> implement the
+floating-point (FP) conversion operations from the FP instruction
+set, the conversions between FP values and {unsigned} long long,
+and the conversions between the VFPv3 half-precision storage-only
+binary format and IEEE 754 binary32 (single precision) binary
+format.</p>
+<p>Implementations of these helper functions are allowed to corrupt
+the integer core registers permitted to be corrupted by the
+[<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]
+(r0-r3, ip, lr, and CPSR).</p>
+<p>If the FP instruction set is available, implementations of these
+functions may use it. Consequently, FP hardware-using code that
+calls one of these helper functions directly, <em>or indirectly by
+calling a function with a base-standard interface</em>, must assume
+that the FP parameter, result, scratch, and status registers might
+be altered by a call to it.</p>
+<p>Binary functions take their arguments in source order where the
+order matters. For example, <code>__aeabi_op(x, y)</code> computes
+x <em>op</em> y, not y <em>op</em> x. The exceptions are
+<strong>r</strong>sub, and <strong>r</strong>cmple whose very
+purpose is to operate the other way round.</p>
+<table id="id3">
+<caption>Standard double precision floating-point arithmetic helper
+functions</caption>
+<colgroup>
+<col width="50%"/>
+<col width="50%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>double __aeabi_dadd(double, double)</code></td>
+<td>double-precision addition</td>
+</tr>
+<tr>
+<td><code>double __aeabi_ddiv(double n, double d)</code></td>
+<td>double-precision division, n / d</td>
+</tr>
+<tr>
+<td><code>double __aeabi_dmul(double, double)</code></td>
+<td>double-precision multiplication</td>
+</tr>
+<tr>
+<td><code>double __aeabi_drsub(double x, double y)</code></td>
+<td>double-precision reverse subtraction, y - x</td>
+</tr>
+<tr>
+<td><code>double __aeabi_dsub(double x, double y)</code></td>
+<td>double-precision subtraction, x - y</td>
+</tr>
+</tbody>
+</table>
+<table id="id4">
+<caption>double precision floating-point comparison helper
+functions</caption>
+<colgroup>
+<col width="40%"/>
+<col width="60%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>void __aeabi_cdcmpeq(double, double)</code></td>
+<td>non-excepting equality comparison [1], result in PSR ZC
+flags</td>
+</tr>
+<tr>
+<td><code>void __aeabi_cdcmple(double, double)</code></td>
+<td>3-way (&lt;, =, ?&gt;) compare [1], result in PSR ZC flags</td>
+</tr>
+<tr>
+<td><code>void __aeabi_cdrcmple(double, double)</code></td>
+<td>reversed 3-way (&lt;, =, ?&gt;) compare [1], result in PSR ZC
+flags</td>
+</tr>
+<tr>
+<td><code>int __aeabi_dcmpeq(double, double)</code></td>
+<td>result (1, 0) denotes (=, ?&lt;&gt;) [2], use for C == and
+!=</td>
+</tr>
+<tr>
+<td><code>int __aeabi_dcmplt(double, double)</code></td>
+<td>result (1, 0) denotes (&lt;, ?&gt;=) [2], use for C &lt;</td>
+</tr>
+<tr>
+<td><code>int __aeabi_dcmple(double, double)</code></td>
+<td>result (1, 0) denotes (&lt;=, ?&gt;) [2], use for C &lt;=</td>
+</tr>
+<tr>
+<td><code>int __aeabi_dcmpge(double, double)</code></td>
+<td>result (1, 0) denotes (&gt;=, ?&lt;) [2], use for C &gt;=</td>
+</tr>
+<tr>
+<td><code>int __aeabi_dcmpgt(double, double)</code></td>
+<td>result (1, 0) denotes (&gt;, ?&lt;=) [2], use for C &gt;</td>
+</tr>
+<tr>
+<td><code>int __aeabi_dcmpun(double, double)</code></td>
+<td>result (1, 0) denotes (?, &lt;=&gt;) [2], use for C99
+<code>isunordered()</code></td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>Notes on Table 3, above, and Table 5, below</p>
+<ol>
+<li>
+<p>The 3-way comparison functions
+<code>c*cmple</code>, <code>c*cmpeq</code> and
+<code>c*rcmple</code> return their results in the CPSR Z and C
+flags. C is clear only if the operands are ordered and the first
+operand is less than the second. Z is set only when the operands
+are ordered and equal.</p>
+<p>This means that <code>c*cmple</code> is the appropriate helper
+to use for C language &lt; and  comparisons.</p>
+<p>For &gt; and  comparisons, the
+order of operands to the comparator and the sense of the following
+branch condition must both be reversed. For example, to implement
+<code>if (a &gt; b) {...} else L1</code>, use:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div><code>__aeabi_cdcmple(b, a); BHS L1</code>;
+or</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div><code>__aeabi_cdrcmple(a, b); BHS
+L1</code>.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The <code>*rcmple</code> functions may be implemented as operand
+swapping veneers that tail-call the corresponding versions of
+<code>cmple</code>.</p>
+<p>When implemented to the full IEEE specification,
+<code>*le</code> helpers potentially throw exceptions when
+comparing with quiet NaNs. The <code>*eq</code> helpers do not. Of
+course, all comparisons will potentially throw exceptions when
+comparing with signaling NaNs.</p>
+<p>Minimal implementations never throw exceptions. In the absence
+of NaNs, <code>c*cmpeq</code> can be an alias for
+<code>c*cmple</code>.</p>
+<p>The 3-way, status-returning comparison functions preserve all
+core registers except ip, lr, and the CPSR.</p>
+</li>
+<li>
+<p>The six Boolean versions <code>*cmp*</code> return
+1 or 0 in r0 to denote the truth or falsity of the IEEE predicate
+they test. As in note1, all except <code>*cmpeq</code> and
+<code>*cmpun</code> can throw an exception when comparing a
+quiet.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<table id="id5">
+<caption>Standard single precision floating-point arithmetic helper
+functions</caption>
+<colgroup>
+<col width="48%"/>
+<col width="52%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>float __aeabi_fadd(float, float)</code></td>
+<td>single-precision addition</td>
+</tr>
+<tr>
+<td><code>float __aeabi_fdiv(float n, float d)</code></td>
+<td>single-precision division, n / d</td>
+</tr>
+<tr>
+<td><code>float __aeabi_fmul(float, float)</code></td>
+<td>single-precision multiplication</td>
+</tr>
+<tr>
+<td><code>float __aeabi_frsub(float x, float y)</code></td>
+<td>single-precision reverse subtraction, y - x</td>
+</tr>
+<tr>
+<td><code>float __aeabi_fsub(float x, float y)</code></td>
+<td>single-precision subtraction, x - y</td>
+</tr>
+</tbody>
+</table>
+<table id="id6">
+<caption>Standard single precision floating-point comparison helper
+functions</caption>
+<colgroup>
+<col width="39%"/>
+<col width="61%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>void __aeabi_cfcmpeq(float, float)</code></td>
+<td>non-excepting equality comparison [1], result in PSR ZC
+flags</td>
+</tr>
+<tr>
+<td><code>void __aeabi_cfcmple(float, float)</code></td>
+<td>3-way (&lt;, =, ?&gt;) compare [1], result in PSR ZC flags</td>
+</tr>
+<tr>
+<td><code>void __aeabi_cfrcmple(float, float)</code></td>
+<td>reversed 3-way (&lt;, =, ?&gt;) compare [1], result in PSR ZC
+flags</td>
+</tr>
+<tr>
+<td><code>int __aeabi_fcmpeq(float, float)</code></td>
+<td>result (1, 0) denotes (=, ?&lt;&gt;) [2], use for C == and
+!=</td>
+</tr>
+<tr>
+<td><code>int __aeabi_fcmplt(float, float)</code></td>
+<td>result (1, 0) denotes (&lt;, ?&gt;=) [2], use for C &lt;</td>
+</tr>
+<tr>
+<td><code>int __aeabi_fcmple(float, float)</code></td>
+<td>result (1, 0) denotes (&lt;=, ?&gt;) [2], use for C &lt;=</td>
+</tr>
+<tr>
+<td><code>int __aeabi_fcmpge(float, float)</code></td>
+<td>result (1, 0) denotes (&gt;=, ?&lt;) [2], use for C &gt;=</td>
+</tr>
+<tr>
+<td><code>int __aeabi_fcmpgt(float, float)</code></td>
+<td>result (1, 0) denotes (&gt;, ?&lt;=) [2], use for C &gt;</td>
+</tr>
+<tr>
+<td><code>int __aeabi_fcmpun(float, float)</code></td>
+<td>result (1, 0) denotes (?, &lt;=&gt;) [2], use for C99
+<code>isunordered()</code></td>
+</tr>
+</tbody>
+</table>
+<table id="id7">
+<caption>Standard floating-point to integer conversions</caption>
+<colgroup>
+<col width="42%"/>
+<col width="58%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>int __aeabi_d2iz(double)</code></td>
+<td>double to integer C-style conversion [3]</td>
+</tr>
+<tr>
+<td><code>unsigned __aeabi_d2uiz(double)</code></td>
+<td>double to unsigned C-style conversion [3]</td>
+</tr>
+<tr>
+<td><code>long long __aeabi_d2lz(double)</code></td>
+<td>double to long long C-style conversion [3]</td>
+</tr>
+<tr>
+<td><code>unsigned long long __aeabi_d2ulz(double)</code></td>
+<td>double to unsigned long long C-style conversion [3]</td>
+</tr>
+<tr>
+<td><code>int __aeabi_f2iz(float)</code></td>
+<td>float (single precision) to integer C-style conversion [3]</td>
+</tr>
+<tr>
+<td><code>unsigned __aeabi_f2uiz(float)</code></td>
+<td>float (single precision) to unsigned C-style conversion
+[3]</td>
+</tr>
+<tr>
+<td><code>long long __aeabi_f2lz(float)</code></td>
+<td>float (single precision) to long long C-style conversion
+[3]</td>
+</tr>
+<tr>
+<td><code>unsigned long long __aeabi_f2ulz(float)</code></td>
+<td>float to unsigned long long C-style conversion [3]</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<ol>
+<li>The conversion-to-integer functions whose names end in
+<em>z</em> always round towards zero, rather than going with the
+current or default rounding mode. This makes them the appropriate
+ones to use for C casts-to-integer, which are required by the C
+standard to round towards zero.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<table id="id8">
+<caption>Standard conversions between floating types</caption>
+<colgroup>
+<col width="19%"/>
+<col width="81%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>float __aeabi_d2f(double)</code></td>
+<td>double to float (single precision) conversion</td>
+</tr>
+<tr>
+<td><code>double __aeabi_f2d(float)</code></td>
+<td>float (single precision) to double conversion</td>
+</tr>
+<tr>
+<td><code>float __aeabi_h2f(short hf)</code> <code>float
+__aeabi_h2f_alt(short hf)</code></td>
+<td>IEEE 754 binary16 storage format (<em>VFP half precision</em>)
+to binary32 (float) conversion [4, 5]; <code>__aeabi_h2f_alt</code>
+converts from VFP <em>alternative format</em> [7].</td>
+</tr>
+<tr>
+<td><code>short __aeabi_f2h(float f)</code> <code>short
+__aeabi_f2h_alt(float f)</code></td>
+<td>IEEE 754 binary32 (float) to binary16 storage format (<em>VFP
+half precision</em>) conversion [4, 6];
+<code>__aeabi_f2h_alt</code> converts to VFP <em>alternative
+format</em> [8].</td>
+</tr>
+<tr>
+<td><code>short __aeabi_d2h(double)</code> <code>short
+__aeabi_d2h_alt(double)</code></td>
+<td>IEEE 754 binary64 (double) to binary16 storage format (<em>VFP
+half precision</em>) conversion [4, 9];
+<code>__aeabi_d2h_alt</code> converts to VFP <em>alternative
+format</em> [10].</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<ol>
+<li>IEEE P754 binary16 format is a <em>storage-only</em> format on
+which no floating-point operations are defined. Loading and storing
+such values is supported through the integer instruction set rather
+than the floating-point instruction set. Hence these functions
+convert between 16-bit short and 32-bit or 64-bit float. In the
+<em>VFPv3 alternative format</em> there are no NaNs or infinities
+and encodings with maximum exponent value encode numbers.</li>
+<li>h2f converts a 16-bit binary floating point bit pattern to the
+32-bit binary floating point bit pattern representing the same
+number, infinity, zero, or NaN. A is converted by appending 13
+0-bits to its representation.</li>
+<li>f2h converts a 32-bit binary floating point bit pattern to the
+16-bit binary floating point bit pattern representing the same
+number, infinity, zero, or NaN. The least significant 13 bits of
+the representation of a are lost in conversion. Unless altered by
+Q-o-I means, rounding is RN, underflow flushes to zero, and
+overflow generates infinity.</li>
+<li>h2f_alt converts a VFPv3 alternative-format 16-bit binary
+floating point bit pattern to the IEEE-format 32-bit binary
+floating point bit pattern that represents the same number.</li>
+<li>f2h_alt converts an IEEE-format 32-bit binary floating point
+bit pattern to the VFPv3 alternative-format 16-bit binary floating
+point bit pattern that represents the same number. Unless altered
+by Q-o-I means, rounding is RN, underflow flushes to zero,
+overflows and infinite inputs generate the largest representable
+number with the input sign, and NaN inputs generate a zero with the
+input sign.</li>
+<li>d2h converts a 64-bit binary floating point bit pattern to the
+16-bit binary floating point bit pattern representing the same
+number, infinity, zero, or NaN. The least significant 42 bits of
+the representation of a NaN are lost in conversion. Unless altered
+by Q-o-I means, rounding is RN, underflow flushes to zero, and
+overflow generates infinity.</li>
+<li>d2h_alt converts an IEEE-format 64-bit binary floating point
+bit pattern to the VFPv3 alternative-format 16-bit binary floating
+point bit pattern that represents the same number. Unless altered
+by Q-o-I means, rounding is RN, underflow flushes to zero,
+overflows and infinite inputs generate the largest representable
+number with the input sign, and NaN inputs generate a zero with the
+input sign.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<table id="id9">
+<caption>Standard integer to floating-point conversions</caption>
+<colgroup>
+<col width="43%"/>
+<col width="57%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>double __aeabi_i2d(int)</code></td>
+<td>integer to double conversion</td>
+</tr>
+<tr>
+<td><code>double __aeabi_ui2d(unsigned)</code></td>
+<td>unsigned to double conversion</td>
+</tr>
+<tr>
+<td><code>double __aeabi_l2d(long long)</code></td>
+<td>long long to double conversion</td>
+</tr>
+<tr>
+<td><code>double __aeabi_ul2d(unsigned long long)</code></td>
+<td>unsigned long long to double conversion</td>
+</tr>
+<tr>
+<td><code>float __aeabi_i2f(int)</code></td>
+<td>integer to float (single precision) conversion</td>
+</tr>
+<tr>
+<td><code>float __aeabi_ui2f(unsigned)</code></td>
+<td>unsigned to float (single precision) conversion</td>
+</tr>
+<tr>
+<td><code>float __aeabi_l2f(long long)</code></td>
+<td>long long to float (single precision) conversion</td>
+</tr>
+<tr>
+<td><code>float __aeabi_ul2f(unsigned long long)</code></td>
+<td>unsigned long long to float (single precision) conversion</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-long-long-helper-functions">
+<h3>The long long helper functions</h3>
+<p>The long long helper functions support 64-bit integer
+arithmetic. They are listed in <a href="index.html">Long long
+functions</a>.</p>
+<p>Most long operations can be inlined in fewer instructions than
+it takes to marshal arguments to, and a result from, a function
+call. The difficult functions that usually need to be implemented
+out of line are listed in the table below.</p>
+<p>As in <a href="index.html">The floating-point helper
+functions</a>, binary functions operate between the operands given
+in source text order (div(a, b) = a/b).</p>
+<p>The division functions produce both the quotient and the
+remainder, an important optimization opportunity, because the
+function is large and slow.</p>
+<p>The shift functions only need to work for shift counts in 0..63.
+Compilers can efficiently inline constant shifts.</p>
+<table id="id10">
+<caption>Long long functions</caption>
+<colgroup>
+<col width="50%"/>
+<col width="50%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>long long __aeabi_lmul(long long, long long)</code></td>
+<td>multiplication [1]</td>
+</tr>
+<tr>
+<td>
+<ul>
+<li><code>__value_in_regs lldiv_t __aeabi_ldivmod(</code>
+<code>long long n, long long d)</code></li>
+</ul>
+</td>
+<td>signed long long division and remainder, {q, r} = n / d
+[2]</td>
+</tr>
+<tr>
+<td>
+<ul>
+<li><code>__value_in_regs ulldiv_t __aeabi_uldivmod(</code>
+<code>unsigned long long n, unsigned long long d)</code></li>
+</ul>
+</td>
+<td>unsigned signed ll division, remainder, {q, r} = n / d [2]</td>
+</tr>
+<tr>
+<td><code>long long __aeabi_llsl(long long, int)</code></td>
+<td>logical shift left [1]</td>
+</tr>
+<tr>
+<td><code>long long __aeabi_llsr(long long, int)</code></td>
+<td>logical shift right [1]</td>
+</tr>
+<tr>
+<td><code>long long __aeabi_lasr(long long, int)</code></td>
+<td>arithmetic shift right [1]</td>
+</tr>
+<tr>
+<td><code>int __aeabi_lcmp(long long, long long)</code></td>
+<td>signed long long comparison [3]</td>
+</tr>
+<tr>
+<td><code>int __aeabi_ulcmp(unsigned long long, unsigned long
+long)</code></td>
+<td>unsigned long long comparison [3]</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<ol>
+<li>Because of 2's complement number representation, these
+functions work identically with long long replaced uniformly by
+unsigned long long. Each returns its result in {r0, r1}, as
+specified by the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>].</li>
+<li>pair of (unsigned) long longs is returned in {{r0, r1}, {r2,
+r3}}, the quotient in {r0, r1}, and the remainder in {r2, r3}. The
+description above is written using Arm-specific function prototype
+notation, though no prototype need be read by any compiler. (In the
+table above, think of __value_in_regs as a <em>structured
+comment</em>).</li>
+<li>The comparison functions return negative, zero, or a positive
+integer according to whether the comparison result is &lt;, ==, or
+&gt;, respectively (like strcmp). In practice, compilers can inline
+all comparisons using SUBS, SBCS (the test for equality needs 3
+Thumb instructions).</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<p>Implementations of ldivmod and uldivmod have full [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]
+privileges and may corrupt any register permitted to be corrupted
+by an AAPCS-conforming call. Thus, for example, an implementation
+may use a co-processor that has a division, or division-step,
+operation. The effect that such use has on the co-processor state
+is documented in a co-processor supplement.</p>
+<p>Otherwise, implementations of the long long helper functions are
+allowed to corrupt only the integer core registers permitted to be
+corrupted by the AAPCS (r0-r3, ip, lr, and CPSR).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="other-c-and-assembly-language-helper-functions">
+<h3>Other C and assembly language helper functions</h3>
+<p>Other helper functions include 32-bit (32/32 → 32) integer
+division (<a href="index.html">Integer (32/32 → 32)
+division functions</a>), unaligned data access functions (<a href="index.html">Unaligned memory access</a>) and functions
+to copy, move, clear, and set memory (<a href="index.html">Memory copying, clearing, and
+setting</a>).</p>
+<div>
+<div>
+<div>
+<div id="integer-32-32-32-division-functions">
+<h4>Integer (32/32 → 32) division functions</h4>
+<p>The 32-bit integer division functions return the quotient in r0
+or both quotient and remainder in {r0, r1}. Below the
+2-value-returning functions are described using Arm-specific
+prototype notation, though it is clear that no prototype need be
+read by any compiler (think of __value_in_regs as a <em>structured
+comment</em>).</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>int __aeabi_idiv(int numerator, int denominator);
+unsigned __aeabi_uidiv(unsigned numerator, unsigned denominator);
+
+typedef struct { int quot; int rem; } idiv_return;
+typedef struct { unsigned quot; unsigned rem; } uidiv_return;
+
+__value_in_regs idiv_return __aeabi_idivmod(int numerator, int denominator);
+__value_in_regs uidiv_return __aeabi_uidivmod(unsigned numerator, unsigned denominator);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>Separate modulo functions would have little value
+because modulo on its own is rare. Division by a constant and
+constant modulo can be inlined efficiently using (64-bit)
+multiplication. For implementations in C, __value_in_regs can be
+emulated by tail-calling an assembler function that receives the
+values to be returned as arguments and, itself, returns
+immediately.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Implementations of idiv, uidiv, idivmod, and uidivmod have full
+[<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]
+privileges and may corrupt any register an AAPCS-conforming call
+may corrupt. Thus, for example, an implementation may use a
+co-processor that has a division, or division-step, operation. The
+effect that such use has on co-processor state is documented in a
+separate co-processor supplement.</p>
+<p>The division functions take the numerator and denominator in
+that order, and produce the quotient in r0 or the quotient and the
+remainder in {r0, r1} respectively.</p>
+<p>Integer division truncates towards zero and the following
+identities hold if the quotient can be represented.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>(numerator / denominator) = -(numerator / -denominator)
+(numerator / denominator) * denominator + (numerator % denominator) = numerator
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The quotient can be represented for all input values except the
+following.</p>
+<ul>
+<li><code>denominator = 0</code> (discussed in <a href="index.html">Division by zero</a>).</li>
+<li><code>numerator = -2147483648</code> (bit pattern
+<code>0x80000000</code>), <code>denominator = -1</code>. (the
+number <code>2147483648</code> has no representation as a signed
+<code>int</code>).</li>
+</ul>
+<p>In the second case an implementation is may return any
+convenient value, possibly the original numerator.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="division-by-zero">
+<h4>Division by zero</h4>
+<p>If an integer or long long division helper function is called
+upon to divide by 0, it should return as quotient the value
+returned by a call to __aeabi_idiv0 or __aeabi_ldiv0, respectively.
+A *divmod helper should return as remainder either 0 or the
+original numerator.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>Ideally, a *divmod function should return
+{infinity, 0} or {0, numerator}, where <em>infinity</em> is an
+approximation.</p>
+</div>
+</div>
+</div>
+</div>
+<p>The *div0 functions:</p>
+<ul>
+<li>Return the value passed to them as a parameter.</li>
+<li>Or, return a fixed value defined by the execution environment
+(such as 0).</li>
+<li>Or, raise a signal (often SIGFPE) or throw an exception, and do
+not return.</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>int __aeabi_idiv0(int return_value);
+long long __aeabi_ldiv0(long long return_value);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>An application may provide its own implementations of the *div0
+functions to force a particular behavior from *div and *divmod
+functions called out of line. Implementations of *div0 have full
+[<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]
+privileges just like the *div and *divmod functions.</p>
+<p>The *div and *divmod functions may be inlined by a tool chain.
+It is Q-o-I whether an inlined version calls *div0 out of line or
+returns the values that would have been returned by a particular
+value-returning version of *div0.</p>
+<p>Out of line implementations of the *div and *divmod functions
+call *div0 with the following parameter values.</p>
+<ul>
+<li>if the numerator is 0.</li>
+<li>The largest value of the type manipulated by the calling
+division function if the numerator is positive.</li>
+<li>The least value of the type manipulated by the calling division
+function if the numerator is negative.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="unaligned-memory-access">
+<h4>Unaligned memory access</h4>
+<p>These functions read and write 4-byte and 8-byte values at
+arbitrarily aligned addresses. An unaligned 2-byte value can always
+be read or written more efficiently using inline code.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>int __aeabi_uread4(void *address);
+int __aeabi_uwrite4(int value, void *address);
+long long __aeabi_uread8(void *address);
+long long __aeabi_uwrite8(long long value, void *address);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>We expect unaligned floating-point values to be read and written
+as integer bit patterns (if at all).</p>
+<p>Write functions return the value written, read functions the
+value read.</p>
+<p>Implementations of these functions are allowed to corrupt only
+the integer core registers permitted to be corrupted by the
+[<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>]
+(r0-r3, ip, lr, and CPSR).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="memory-copying-clearing-and-setting">
+<h4>Memory copying, clearing, and setting</h4>
+<p><strong>Memory copying</strong></p>
+<p>Memcpy-like helper functions are needed to implement structure
+assignment. We define three functions providing various levels of
+service, in addition to the normal ANSI C memcpy, and three
+variants of memmove.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void __aeabi_memcpy8(void *dest, const void *src, size_t n);
+void __aeabi_memcpy4(void *dest, const void *src, size_t n);
+void __aeabi_memcpy(void *dest, const void *src, size_t n);
+void __aeabi_memmove8(void *dest, const void *src, size_t n);
+void __aeabi_memmove4(void *dest, const void *src, size_t n);
+void __aeabi_memmove(void *dest, const void *src, size_t n);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>These functions work like the ANSI C memcpy and memmove
+functions. However, __aeabi_memcpy8 may assume that both of its
+arguments are 8-byte aligned, __aeabi_memcpy4 that both of its
+arguments are 4-byte aligned. None of the three functions is
+required to return anything in r0.</p>
+<p>Each of these functions can be smaller or faster than the
+general memcpy or each can be an alias for memcpy itself, similarly
+for memmove.</p>
+<p>Compilers can replace calls to memcpy with calls to one of these
+functions if they can deduce that the constraints are satisfied.
+For example, any memcpy whose return value is ignored can be
+replaced with __aeabi_memcpy. If the copy is between 4-byte-aligned
+pointers it can be replaced with __aeabi_memcpy4, and so on.</p>
+<p>The size_t argument does not need to be a multiple of 4 for the
+4/8-byte aligned versions, which allows copies with a non-constant
+size to be specialized according to source and destination
+alignment.</p>
+<p>Small aligned copies are likely to be inlined by compilers, so
+these functions should be optimized for larger copies.</p>
+<p><strong>Memory clearing and setting</strong></p>
+<p>In similar deference to run-time efficiency we define reduced
+forms of memset and memclr.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void __aeabi_memset8(void *dest, size_t n, int c);
+void __aeabi_memset4(void *dest, size_t n, int c);
+void __aeabi_memset(void *dest, size_t n, int c);
+void __aeabi_memclr8(void *dest, size_t n);
+void __aeabi_memclr4(void *dest, size_t n);
+void __aeabi_memclr(void *dest, size_t n);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Note that relative to ANSI memset, __aeabi_memset has the order
+of its second and third arguments reversed. This allows
+__aeabi_memclr to tail-call __aeabi_memset.</p>
+<p>The memclr functions simplify a very common special case of
+memset, namely the one in which c = 0 and the memory is being
+cleared to all zeroes.</p>
+<p>The size_t argument does not need to be a multiple of 4 for the
+4/8-byte aligned versions, which allows clears and sets with a
+non-constant size to be specialized according to the destination
+alignment.</p>
+<p>In general, implementations of these functions are allowed to
+corrupt only the integer core registers permitted to be corrupted
+by the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>] (r0-r3,
+ip, lr, and CPSR).</p>
+<p>If there is an attached device with efficient memory copying or
+clearing operations (such as a DMA engine), its device supplement
+specifies whether it may be used in implementations of these
+functions and what effect such use has on the device's state.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="thread-local-storage-new-in-v2-01">
+<h4>Thread-local storage (new in v2.01)</h4>
+<p>In <a href="https://developer.arm.com/docs/ihi0045/latest#addenda32-section3-3-2">
+Linux for Arm static (initial exec) model</a>, of [<a href="https://developer.arm.com/docs/ihi0045/latest">ADDENDA</a>] the
+description of thread-local storage addressing refers to the thread
+pointer denoted by <strong>$tp</strong> but does not specify how to
+obtain its value.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void *__aeabi_read_tp(void);  /* return the value of $tp */
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Implementations of this function should corrupt only the result
+register (r0) and the non-parameter integer core registers allowed
+to be corrupted by the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>] (ip, lr,
+and CPSR). Registers r1-r3 must be preserved.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="c-helper-functions">
+<h3>C++ helper functions</h3>
+<p>The C++ helper functions defined by this ABI closely follow
+those defined by the <em>Generic C++ ABI</em> (see [<a href="http://itanium-cxx-abi.github.io/cxx-abi/abi.html">GCPPABI</a>]).
+In this section, we list the required helper functions with
+references to their generic definitions and explain where the Arm
+C++ ABI diverges from the generic one.</p>
+<div>
+<div>
+<div>
+<div id="pure-virtual-function-calls">
+<h4>Pure virtual function calls</h4>
+<p>See GC++ABI, 3.2.6, <a href="index.html">Pure
+Virtual Function API</a>. This ABI specification follows the
+generic ABI exactly.</p>
+<p>The v-table entry for a pure virtual function must be
+initialized to __cxa_pure_virtual. The effect of calling a pure
+virtual function is not defined by the C++ standard. This ABI
+requires that the pure virtual helper function shall be called
+which takes an abnormal termination action defined by, and
+appropriate to, the execution environment.</p>
+<table id="id11">
+<caption>The pure virtual helper function</caption>
+<colgroup>
+<col width="37%"/>
+<col width="63%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>void __cxa_pure_virtual(void)</code></td>
+<td>The initial value of a pure virtual function. Called if a not
+overridden pure virtual function is called.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="one-time-construction-api-for-function-local-static-objects">
+<h4>One-time construction API for (function-local) static
+objects</h4>
+<p>See GC++ABI, 3.3.2, <a href="index.html">One-time
+Construction API</a>, and [<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>]
+<a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-3">
+Guard variables and the one-time construction API</a>.</p>
+<p>This ABI specification diverges from the Itanium ABI by using
+32-bit guard variables and specifying the use of the least
+significant two bits of a guard variable rather than first byte of
+it.</p>
+<p>static object must be guarded against being constructed more
+than once. In a threaded environment, the guard variable must also
+act as a semaphore or a handle for a semaphore. Typically, only the
+construction of function-local static objects needs to be guarded
+this way.</p>
+<p>A guard variable is a 32-bit, 4-byte aligned, static data value
+(described in <a href="index.html">One-time construction
+API</a>, below, as int). The least significant 2 bits must be
+statically initialized to zero. The least significant bit
+(2) is set to 1 when the guarded object has been
+successfully constructed. The next most significant bit
+(2<sup>1</sup>) may be used by the guard acquisition and release
+helper functions. The value and meaning of other bits is
+unspecified.</p>
+<table id="id12">
+<caption>One-time construction API</caption>
+<colgroup>
+<col width="25%"/>
+<col width="75%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name and type signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>Guard variable</td>
+<td>32-bit, 4-byte-aligned static data value. The least significant
+2 bits must be statically initialized to 0.</td>
+</tr>
+<tr>
+<td><code>int __cxa_guard_acquire(int *gv)</code></td>
+<td>If *gv guards an object under construction, wait for
+construction to complete (guard released) or abort (guard aborted).
+Then, if *gv guards a not-yet-constructed object, acquire the guard
+and return non-0. Otherwise, if *gv guards a constructed object,
+return 0.</td>
+</tr>
+<tr>
+<td><code>void __cxa_guard_release(int *gv)</code></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div><strong>Pre-condition</strong>: *gv acquired,
+guarded object constructed.</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div><strong>Post-condition</strong>: ((*gv &amp; 1) =
+1), *gv released.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td><code>void __cxa_guard_abort(int *gv)</code></td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div><strong>Pre-condition</strong>: *gv acquired,
+guarded object not constructed.</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div><strong>Post-condition</strong>: ((*gv &amp; 3) =
+0), *gv released.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The one-time construction API functions may corrupt only the
+integer core registers permitted to be corrupted by the [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>] (r0-r3,
+ip, lr, and CPSR).</p>
+<p>The one-time construction API is expected to be used in the
+following way.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>if ((obj_guard &amp; 1) == 0) {
+    if ( __cxa_guard_acquire(&amp;obj_guard) ) {
+        ... initialize the object ...;
+        ... queue object destructor with __cxa_atexit(); // See 4.4.5.
+        __cxa_guard_release(&amp;obj_guard);
+        // Assert: (obj_guard &amp; 1) == 1
+    }
+}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>If the object constructor throws an exception, cleanup code can
+call __cxa_guard_abort to release the guard and reset its state to
+the initial state.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="construction-and-destruction-of-arrays">
+<h4>Construction and destruction of arrays</h4>
+<p>See GC++ABI, 3.3.3, <a href="index.html">Array
+Construction and Destruction API</a>, and [<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>]
+<a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-2">
+Array construction and destruction</a>.</p>
+<div>
+<div>
+<div>
+<div id="helper-functions-defined-by-the-generic-c-abi">
+<h5>Helper functions defined by the generic C++ ABI</h5>
+<p>This ABI follows the generic ABI closely. Differences from the
+generic ABI are as follows.</p>
+<ul>
+<li>This ABI gives __cxa_vec_ctor and __cxa_vec_cctor a void *
+return type instead of void. The value returned is the same as the
+first parameter - a pointer to the array being constructed</li>
+<li>This ABI specifies the same array cookie format whenever an
+array cookie is needed. The cookie occupies 8 bytes, 8-byte
+aligned. It contains two 4-byte fields, the element size followed
+by the element count.</li>
+</ul>
+<p>Below we list the functions and their arguments. For details see
+the references cited at the start of <a href="index.html">Construction and destruction of
+arrays</a>.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void *__cxa_vec_new(
+    size_t count, size_t element_size, size_t cookie_size,
+        void (*ctor)(void *), void (dtor)(void *));
+void *__cxa_vec_new2(
+     size_t count, size_t element_size, size_t cookie_size,
+         void (*ctor)(void *this), void (*dtor)(void *this),
+             void *(*alloc)(size_t size), void (*dealloc)(void *object));
+void *__cxa_vec_new3(
+    size_t count, size_t element_size, size_t cookie_size,
+        void (*ctor)(void *this), void (*dtor)(void *this),
+            void *(*alloc)(size_t size), void (*dealloc)(void *object, size_t size));
+void *__cxa_vec_ctor(
+    void *vector, size_t count, size_t element_size,
+        void (*ctor)(void *this),  void (*dtor)(void *this));
+void __cxa_vec_dtor(
+    void *vector, size_t count, size_t element_size,
+        void (*dtor)(void *this));
+void __cxa_vec_cleanup(
+    void *vector, size_t count, size_t element_size,
+        void (*dtor)(void *this));
+void __cxa_vec_delete(
+    void *vector, size_t element_size, size_t cookie_size,
+        void (*dtor)(void *this));
+void __cxa_vec_delete2(
+    void *vector, size_t element_size, size_t cookie_size,
+        void (*dtor)(void *this),
+            void (*dealloc)(void *object));
+void __cxa_vec_delete3(
+    void *vector, size_t element_size, size_t cookie_size,
+        void (*dtor)(void *this),
+            void (*dealloc)(void *object, size_t size));
+void *__cxa_vec_cctor(
+    void *destination, void *source, size_t count, size_t element_size,
+        void (*copy_ctor)(void *this, void *source),
+            void (*dtor)(void *this));
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="helper-functions-defined-by-the-c-abi-for-the-arm-architecture">
+<h5>Helper functions defined by the C++ ABI for the Arm
+Architecture</h5>
+<p>This ABI define the following new helpers which can be called
+more efficiently.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>__aeabi_vec_ctor_nocookie_nodtor
+__aeabi_vec_ctor_cookie_nodtor
+__aeabi_vec_cctor_nocookie_nodtor
+__aeabi_vec_new_cookie_noctor
+__aeabi_vec_new_nocookie
+__aeabi_vec_new_cookie_nodtor
+__aeabi_vec_new_cookie
+__aeabi_vec_dtor
+__aeabi_vec_dtor_cookie
+__aeabi_vec_delete
+__aeabi_vec_delete3
+__aeabi_vec_delete3_nodtor
+__aeabi_atexit
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Compilers are not required to use these functions but runtime
+libraries complying with this ABI must supply them. Below we list
+the functions and their arguments. For details see [<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>]
+<a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-2">
+Array construction and destruction</a>. Each function is declared
+extern "C".</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void* __aeabi_vec_ctor_nocookie_nodtor(
+    void* user_array, void* (*constructor)(void*),
+        size_t element_size, size_t  element_count);   // Returns: user_array
+void* __aeabi_vec_ctor_cookie_nodtor(                  // Returns:
+    array_cookie* cookie, void*(*constructor)(void*),  //   (cookie==NULL) ? NULL :
+        size_t element_size, size_t element_count);    //   array associated with cookie
+void* __aeabi_vec_cctor_nocookie_nodtor(               // Returns: user_array_dest
+    void* user_array_dest, void* user_array_src,
+        size_t element_size, size_t element_count, void* (*copy_constructor)(void*, void*));
+void* __aeabi_vec_new_cookie_noctor(
+    size_t element_size, size_t element_count);        // Returns: new array
+void* __aeabi_vec_new_nocookie(                        // Returns: new array
+    size_t  element_size, size_t  element_count, void* (*constructor)(void*));
+void* __aeabi_vec_new_cookie_nodtor(                   // Returns: new array
+          size_t  element_size, size_t  element_count, void* (*constructor)(void*));
+void* __aeabi_vec_new_cookie(                          // Returns: new array
+    size_t  element_size, size_t  element_count,
+        void* (*constructor)(void*), void* (*destructor)(void*));
+void* __aeabi_vec_dtor(                                // Returns:
+    void* user_array, void* (*destructor)(void*),      //   cookie associated with user_array
+        size_t element_size, size_t element_count);    //   (if there is one)
+void* __aeabi_vec_dtor_cookie(                         // Returns:
+    void* user_array, void* (*destructor)(void*));     //   cookie associated with user_array
+void __aeabi_vec_delete(
+    void* user_array, void* (*destructor)(void*));
+void __aeabi_vec_delete3(
+          void* user_array, void* (*destructor)(void*), void (*dealloc)(void*, size_t));
+void __aeabi_vec_delete3_nodtor(
+          void* user_array, void (*dealloc)(void*, size_t));
+int  __aeabi_atexit(                                   // Returns: 0 =&gt; OK; non-0 =&gt; failed
+    void* object, void (*destroyer)(void*), void* dso_handle);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="controlling-object-construction-order">
+<h4>Controlling object construction order</h4>
+<p>See GC++ABI, 3.3.4, <a href="index.html">Controlling
+Object Construction Order</a>.</p>
+<p>This ABI currently defines no helper functions to control object
+construction order.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="static-object-finalization">
+<h4>Static object finalization</h4>
+<p>See GC++ABI, 3.3.5, <a href="index.html">DSO
+Object Destruction API</a>, and [<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>]
+<a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-4">
+Static object construction and destruction</a>.</p>
+<p>The generic C++ ABI and this ABI both define the destruction
+protocol for static objects created by dynamically linked shared
+objects in separate platform supplements. Here we define only the
+interface used to destroy static objects in the correct order.</p>
+<p>When a static object is created that will require destruction on
+program exit, its destructor and a pointer to the object must be
+registered with the run-time system by calling __aeabi_atexit
+(which calls __cxa_atexit).</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>int __aeabi_atexit(void *object, void (*dtor)(void *this), void *handle);
+int __cxa_atexit(void (*dtor)(void *this), void *object, void *handle);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>(It is slightly more efficient for the caller to call
+__aeabi_exit, and calling this function supports static allocation
+of memory for the list of destructions - see [<a href="https://developer.arm.com/docs/ihi0041/latest">CPPABI</a>]
+<a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-4-2">
+Static object destruction</a>).</p>
+<p>The handle argument should be NULL unless the object was created
+by a dynamically loaded shared library (DSO or DLL). On exit,
+dtor(object) is called in the correct order relative to other
+static object destructors.</p>
+<p>When a user function F is registered by calling the C/C++
+library function atexit, it must be registered by calling
+__aeabi_exit(NULL, F, NULL) or __cxa_atexit(F, NULL, NULL).</p>
+<p>The handle argument and the dynamically loaded shared object
+(DSOor DLL ) finalization function __cxa_finalize (listed below)
+are relevant only in the presence of DSOs or DLLs. The handle is
+the value passed to __cxa_finalize. See the relevant platform
+supplement or the generic C++ ABI for further information.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void __cxa_finalize(void *handle);  // Not used in the absence of DLLs/DSOs
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>When a DSO is involved, <em>handle</em> must be an address that
+uniquely identifies the DSO. Conventionally, handle =
+&amp;__dso_handle, where __dso_handle is a label defined while
+statically linking the DSO.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="name-demangling">
+<h4>Name demangling</h4>
+<p>See GC++ABI, 3.4, <a href="index.html">Demangler
+API</a>. This API is not supported by this ABI.</p>
+<p>In particular, it is likely that bare metal environments neither
+need, nor want the overhead of, this functionality.</p>
+<p>Separate (virtual) platform supplements may require support for
+name demangling, and where they do, this ABI follows the generic
+C++ ABI precisely.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="exception-handling-support">
+<h4>Exception-handling support</h4>
+<p>For details see [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>],
+<a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4">
+ABI routines</a>. Here we merely list the required helper functions
+and their type signatures (each function is declared extern
+"C").</p>
+<div>
+<div>
+<div>
+<div id="compiler-helper-functions">
+<h5>Compiler helper functions</h5>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void *__cxa_allocate_exception(size_t size);
+void __cxa_free_exception(void *p);
+void __cxa_throw(void *, const std::type_info *, void (*dtor)(void *));
+void __cxa_rethrow(void);
+void *__cxa_begin_catch(void *);
+void *__cxa_get_exception_ptr(_Unwind_Control_Block *);
+              /* new in EHABI v2.02, ABI r2.02 */
+void __cxa_end_catch(void);
+void __cxa_end_cleanup(void);
+bool __cxa_begin_cleanup(_Unwind_Control_Block *ucbp)
+void __cxa_call_unexpected(_Unwind_Control_Block *ucbp)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>For details see [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>],
+<a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4">
+ABI routines</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="personality-routine-helper-functions">
+<h5>Personality routine helper functions</h5>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>bool __cxa_begin_cleanup(_Unwind_Control_Block *ucbp)
+__cxa_type_match_result __cxa_type_match(
+        _Unwind_Control_Block *ucbp,
+        const std::type_info *rttip, bool is_ref_type, void **matched_object)
+void __cxa_call_terminate(_Unwind_Control_Block *ucbp)
+void __cxa_call_unexpected(_Unwind_Control_Block *ucbp)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>For details see [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>],
+<a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4">
+ABI routines</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="auxiliary-functions-related-to-exception-processing">
+<h5>Auxiliary functions related to exception processing</h5>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>void __cxa_bad_cast();      // Throw a bad cast exception
+void __cxa_bad_typeid();    // Throw a bad typeid exception
+struct __cxa_eh_globals *__cxa_get_globals(void);
+                      // Get a pointer to the implementation-defined, per-thread EH state
+const std::type_info *__cxa_current_exception_type(void);
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>For details see [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>],
+<a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4">
+ABI routines</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

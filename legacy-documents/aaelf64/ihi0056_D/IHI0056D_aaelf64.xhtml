@@ -1,0 +1,3467 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ELF for the Arm® 64-bit Architecture (AArch64) — ABI 2018Q4
+documentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9"/>
+
+<meta name="keywords" content=""/></head>
+<body>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="elf-for-the-arm-64-bit-architecture-aarch64">
+<h2>ELF for the Arm® 64-bit Architecture (AArch64)<a href="index.html#elf-for-the-arm-64-bit-architecture-aarch64"/></h2>
+<p>Document number: IHI 0056D_beta, current through AArch64 ABI
+release 2018Q4</p>
+<p>Date of Issue: 31<sup>st</sup> December 2018</p>
+
+<div>
+<div id="preamble">
+<h2>Preamble<a href="index.html#preamble"/></h2>
+<div>
+<div id="ilp32-beta">
+<h3>ILP32 Beta<a href="index.html#ilp32-beta"/></h3>
+<p>This document is a beta proposal for ILP32 extensions to ELF for
+AArch64. All significant ILP32 changes are highlighted in yellow.
+Feedback welcome through your normal channels.</p>
+</div>
+</div>
+<div>
+<div id="abstract">
+<h3>Abstract<a href="index.html#abstract"/></h3>
+<p>This document describes the use of the ELF binary file format in
+the Application Binary Interface (ABI) for the Arm 64-bit
+architecture.</p>
+</div>
+</div>
+<div>
+<div id="keywords">
+<h3>Keywords<a href="index.html#keywords"/></h3>
+<p>ELF, AArch64 ELF, ...</p>
+</div>
+</div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it<a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it"/></h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/products/software-development-tools/specifications">https://developer.arm.com/products/software-development-tools/specifications</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <em>arm</em> dot
+<em>eabi</em> at <em>arm</em> dot <em>com</em>.</p>
+</div>
+</div>
+<div>
+<div id="licence">
+<h3>Licence<a href="index.html#licence"/></h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice<a href="index.html#non-confidential-proprietary-notice"/></h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © [2018] Arm Limited or its affiliates. All rights
+reserved.</p>
+<p>Arm Limited. Company 02557590 registered in England. 110
+Fulbourn Road, Cambridge, England CB1 9NJ. LES-PRE-20349</p>
+</div>
+</div>
+<div>
+<div id="contents">
+<h3>Contents<a href="index.html#contents"/></h3>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#elf-for-the-arm-64-bit-architecture-aarch64" id="id27">ELF for the Arm® 64-bit Architecture
+(AArch64)</a>
+<ul>
+<li><a href="index.html#preamble" id="id28">Preamble</a>
+<ul>
+<li><a href="index.html#ilp32-beta" id="id29">ILP32 Beta</a></li>
+<li><a href="index.html#abstract" id="id30">Abstract</a></li>
+<li><a href="index.html#keywords" id="id31">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id32">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id33">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id34">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id35">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id36">About this
+document</a>
+<ul>
+<li><a href="index.html#change-control" id="id37">Change
+control</a></li>
+<li><a href="index.html#references" id="id38">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id39">Terms
+and abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id40">Your licence to use this specification</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-specification" id="id41">About
+This Specification</a>
+<ul>
+<li><a href="index.html#elf-class-variants" id="id42">ELF Class
+variants</a></li>
+</ul>
+</li>
+<li><a href="index.html#platform-standards-example-only" id="id43">Platform standards (Example Only)</a>
+<ul>
+<li><a href="index.html#linux-platform-abi-example-only" id="id44">Linux Platform ABI (example only)</a></li>
+</ul>
+</li>
+<li><a href="index.html#object-files" id="id45">Object Files</a>
+<ul>
+<li><a href="index.html#introduction" id="id46">Introduction</a></li>
+<li><a href="index.html#elf-header" id="id47">ELF Header</a></li>
+<li><a href="index.html#sections" id="id48">Sections</a></li>
+<li><a href="index.html#string-table" id="id49">String
+Table</a></li>
+<li><a href="index.html#symbol-table" id="id50">Symbol
+Table</a></li>
+<li><a href="index.html#weak-symbols" id="id51">Weak
+Symbols</a></li>
+<li><a href="index.html#relocation" id="id52">Relocation</a></li>
+</ul>
+</li>
+<li><a href="index.html#program-loading-and-dynamic-linking" id="id53">Program Loading and Dynamic Linking</a>
+<ul>
+<li><a href="index.html#program-header" id="id54">Program
+Header</a></li>
+<li><a href="index.html#program-property" id="id55">Program
+Property</a></li>
+<li><a href="index.html#program-loading" id="id56">Program
+Loading</a></li>
+<li><a href="index.html#dynamic-linking" id="id57">Dynamic
+Linking</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="about-this-document">
+<h2>About this document<a href="index.html#about-this-document"/></h2>
+<div>
+<div id="change-control">
+<h3>Change control<a href="index.html#change-control"/></h3>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current status and anticipated changes<a href="index.html#current-status-and-anticipated-changes"/></h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li><strong>Release</strong>Arm considers this specification to
+have enough implementations, which have received sufficient
+testing, to verify that it is correct. The details of these
+criteria are dependent on the scale and complexity of the change
+over previous versions: small, simple changes might only require
+one implementation, but more complex changes require multiple
+independent implementations, which have been rigorously tested for
+cross-compatibility. Arm anticipates that future changes to this
+specification will be limited to typographical corrections,
+clarifications and compatible extensions.</li>
+<li><strong>Beta</strong>Arm considers this specification to be
+complete, but existing implementations do not meet the requirements
+for confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li><strong>Alpha</strong>The content of this specification is a
+draft, and Arm considers the likelihood of future incompatible
+changes to be significant.</li>
+</ul>
+<p>The ELF32 variant is at "Beta" release quality.</p>
+<p>All other content in this document is at the
+<strong>Release</strong> quality level.</p>
+</div>
+</div>
+<div>
+<div id="change-history">
+<h4>Change history<a href="index.html#change-history"/></h4>
+<div>
+<div>
+<div>
+<div>
+<table>
+<colgroup>
+<col width="25%"/>
+<col width="33%"/>
+<col width="7%"/>
+<col width="36%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>00bet3</td>
+<td>20th December 2011</td>
+<td>LS</td>
+<td>Beta release</td>
+</tr>
+<tr>
+<td>1.0</td>
+<td>22nd May 2013</td>
+<td>RE</td>
+<td>First public release</td>
+</tr>
+<tr>
+<td>1.1-beta</td>
+<td>6th November 2013</td>
+<td>JP</td>
+<td>ILP32 Beta</td>
+</tr>
+<tr>
+<td>2018Q4</td>
+<td>31st December 2018</td>
+<td>OS</td>
+<td>Typographical changes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="references">
+<h3>References<a href="index.html#references"/></h3>
+<p>This document refers to, or is referred to by, the following
+documents.</p>
+<div>
+<div>
+<div>
+<div>
+<table>
+<colgroup>
+<col width="20%"/>
+<col width="40%"/>
+<col width="40%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>External reference or URL</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>AAELF64</td>
+<td>Source for this document</td>
+<td>ELF for the Arm 64-bit Architecture (AArch64).</td>
+</tr>
+<tr>
+<td>AAPCS64</td>
+<td>IHI 0055</td>
+<td>Procedure Call Standard for the Arm 64-bit Architecture</td>
+</tr>
+<tr>
+<td>Addenda32</td>
+<td>IHI 0045</td>
+<td>Addenda to, and Errata in, the ABI for the Arm
+Architecture</td>
+</tr>
+<tr>
+<td><a href="http://www.linuxbase.org/">LSB</a></td>
+<td><a href="http://www.linuxbase.org/">http://www.linuxbase.org/</a></td>
+<td>Linux Standards Base</td>
+</tr>
+<tr>
+<td><a href="http://www.sco.com/developers/gabi/">SCO-ELF</a></td>
+<td><a href="http://www.sco.com/developers/gabi/">http://www.sco.com/developers/gabi/</a></td>
+<td>System V Application Binary Interface - DRAFT</td>
+</tr>
+<tr>
+<td><a href="https://github.com/hjl-tools/linux-abi/wiki">LINUX_ABI</a></td>
+<td><a href="https://github.com/hjl-tools/linux-abi/wiki">https://github.com/hjl-tools/linux-abi/wiki</a></td>
+<td>Linux Extensions to gABI</td>
+</tr>
+<tr>
+<td><a href="http://www.akkadia.org/drepper/symbol-versioning">SYM-VER</a></td>
+<td><a href="http://people.redhat.com/drepper/symbol-versioning">http://people.redhat.com/drepper/symbol-versioning</a></td>
+<td>GNU Symbol Versioning</td>
+</tr>
+<tr>
+<td><a href="http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf">TLSDESC</a></td>
+<td><a href="http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf">http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf</a></td>
+<td>TLS Descriptors for Arm. Original proposal document</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and abbreviations<a href="index.html#terms-and-abbreviations"/></h3>
+<p>The ABI for the Arm 64-bit Architecture uses the following terms
+and abbreviations.</p>
+<ul>
+<li>A32The instruction set named Arm in the Armv7 architecture; A32
+uses 32-bit fixed-length instructions.</li>
+<li>A64The instruction set available when in AArch64 state.</li>
+<li>AAPCS64Procedure Call Standard for the Arm 64-bit Architecture
+(AArch64)</li>
+<li>AArch32The 32-bit general-purpose register width state of the
+Armv8 architecture, broadly compatible with the Armv7-A
+architecture.</li>
+<li>AArch64The 64-bit general-purpose register width state of the
+Armv8 architecture.</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+<cite>Linux ABI for the Arm Architecture</cite>.</li>
+<li>A particular aspect of the specifications to which
+independently produced relocatable files must conform in order to
+be statically linkable and executable. For example, the C++ ABI for
+the Arm Architecture, ELF for the Arm Architecture, ...</li>
+</ol>
+</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>ELF32An ELF object file with a class of ELFCLASS32</li>
+<li>ELF64An ELF object file with a class of ELFCLASS64</li>
+<li>ILP32SysV-like data model where int, long int and pointer are
+32-bit</li>
+<li>LP64SysV-like data model where int is 32-bit, but long int and
+pointer are 64-bit.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>T32The instruction set named Thumb in the Armv7 architecture;
+T32 uses 16-bit and 32-bit instructions.</li>
+</ul>
+<p>Other terms may be defined when first used.</p>
+</div>
+</div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification<a href="index.html#your-licence-to-use-this-specification"/></h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="about-this-specification">
+<h2>About This Specification<a href="index.html#about-this-specification"/></h2>
+<p>This specification provides the processor-specific definitions
+required by ELF [<a href="http://www.sco.com/developers/gabi/">SCO-ELF</a>] for
+AArch64-based systems.</p>
+<p>The ELF specification is part of the larger Unix System V (SysV)
+ABI specification where it forms <a href="index.html">Object
+Files</a> and <a href="index.html">Program Loading and
+Dynamic Linking</a>. However, the ELF specification can be used in
+isolation as a generic object and executable format. <a href="index.html">Platform standards (Example Only)</a> covers
+ELF related matters that are platform specific.</p>
+<p><a href="index.html">Object Files</a> and <a href="index.html">Program Loading and Dynamic Linking</a> are
+structured to correspond to chapters 4 and 5 of the ELF
+specification. Specifically:</p>
+<ul>
+<li><a href="index.html">Object Files</a> covers object
+files and relocations</li>
+<li><a href="index.html">Program Loading and Dynamic
+Linking</a> covers program loading and dynamic linking.</li>
+</ul>
+<div>
+<div id="elf-class-variants">
+<h3>ELF Class variants<a href="index.html#elf-class-variants"/></h3>
+<p>Two different pointer sizes are supported by this specification,
+which result in two very similar but different ELF definitions.</p>
+<div>
+<div id="bit-pointers-elf64">
+<h4>64-bit Pointers, ELF64<a href="index.html#bit-pointers-elf64"/></h4>
+<ul>
+<li>Code and data using 64-bit pointers are contained in an ELF
+object file with a class of <strong>ELFCLASS64</strong>.</li>
+<li>Referred to as <strong>ELF64</strong> in this
+specification.</li>
+<li>Pointer-size is <strong>64 bits</strong>.</li>
+<li>Suitable for use by the LP64 variant of [AAPCS64]</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="bit-pointers-elf32-beta">
+<h4>32-bit Pointers, ELF32 <strong>(Beta)</strong><a href="index.html#bit-pointers-elf32-beta"/></h4>
+<ul>
+<li>Code and data using 32-bit pointers is contained in an ELF
+object file with a class of <strong>ELFCLASS32</strong>.</li>
+<li>Referred to as <strong>ELF32</strong> in this
+specification.</li>
+<li>Pointer-size is <strong>32 bits</strong>.</li>
+<li>Suitable for use by the ILP32 variant of [AAPCS64]</li>
+</ul>
+<div>
+<div>
+<p>Note</p>
+<p>Interlinking is not supported between the ELF32 and
+ELF64 variants.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="platform-standards-example-only">
+<h2>Platform standards (Example Only)<a href="index.html#platform-standards-example-only"/></h2>
+<p>We expect that each operating system that adopts components of
+this ABI specification will specify additional requirements and
+constraints that must be met by application code in binary form and
+the code-generation tools that generate such code.</p>
+<p>As an example of the kind of issue that must be addressed
+<a href="index.html">Linux Platform ABI (example
+only)</a>, below, lists some of the issues addressed by the
+<em>Linux Standard Base</em> [<a href="http://www.linuxbase.org/">LSB</a>] specifications.</p>
+<div>
+<div id="linux-platform-abi-example-only">
+<h3>Linux Platform ABI (example only)<a href="index.html#linux-platform-abi-example-only"/></h3>
+<div>
+<div id="symbol-versioning">
+<h4>Symbol Versioning<a href="index.html#symbol-versioning"/></h4>
+<p>The Linux ABI uses the GNU-extended Solaris symbol versioning
+mechanism [<a href="http://www.akkadia.org/drepper/symbol-versioning">SYM-VER</a>].</p>
+<p>Concrete data structure descriptions can be found in
+<code>/usr/include/sys/link.h</code> (Solaris),
+<code>/usr/include/elf.h</code> (Linux), in the <em>Linux Standard
+Base specifications</em> [<a href="http://www.linuxbase.org/">LSB</a>], and in Drepper's paper
+[<a href="http://www.akkadia.org/drepper/symbol-versioning">SYM-VER</a>].</p>
+<p>A binary file intended to be specific to Linux shall set the
+<code>EI_OSABI</code> field to the value required by Linux
+[<a href="http://www.linuxbase.org/">LSB</a>].</p>
+</div>
+</div>
+<div>
+<div id="program-linkage-table-plt-sequences-and-usage-models">
+<h4>Program Linkage Table (PLT) Sequences and Usage Models<a href="index.html#program-linkage-table-plt-sequences-and-usage-models"/></h4>
+<div>
+<div id="symbols-for-which-a-plt-entry-must-be-generated">
+<h5>Symbols for which a PLT entry must be generated<a href="index.html#symbols-for-which-a-plt-entry-must-be-generated"/></h5>
+<p>A PLT entry implements a long-branch to a destination outside of
+this executable file. In general, the static linker knows only the
+name of the destination. It does not know its address. Such a
+location is called an imported location or imported symbol.</p>
+<p>SysV-based Dynamic Shared Objects (DSOs) (e.g. for Linux) also
+require functions exported from an executable file to have PLT
+entries. In effect, exported functions are treated as if they were
+imported, so that their definitions can be overridden (pre-empted)
+at dynamic link time.</p>
+<p>A linker must generate a PLT entry for each candidate symbol
+cited by a relocation directive that relocates an AArch64
+B/BL-class instruction (<a href="index.html">Call and
+Jump relocations</a>). For a Linux/SysV DSO, each
+<code>STB_GLOBAL</code> symbol with <code>STV_DEFAULT</code>
+visibility is a candidate.</p>
+</div>
+</div>
+<div>
+<div id="overview-of-plt-entry-code-generation">
+<h5>Overview of PLT entry code generation<a href="index.html#overview-of-plt-entry-code-generation"/></h5>
+<p>A PLT entry must be able to branch any distance. This is
+typically achieved by loading the destination address from the
+corresponding Global Object Table (GOT) entry.</p>
+<p>On-demand dynamic linking constrains the code sequences that can
+be generated for a PLT entry. Specifically, there is a requirement
+from the dynamic linker for certain registers to contain certain
+values. Typically these are:</p>
+<ul>
+<li>The address or index of the of not-yet-linked PLT entry.</li>
+<li>The return address of the call to the PLT entry.</li>
+</ul>
+<p>The register interface to the dynamic linker is specified by the
+host operating system.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="object-files">
+<h2>Object Files<a href="index.html#object-files"/></h2>
+<div>
+<div id="introduction">
+<h3>Introduction<a href="index.html#introduction"/></h3>
+<div>
+<div id="registered-vendor-names">
+<h4>Registered Vendor Names<a href="index.html#registered-vendor-names"/></h4>
+<p>Various symbols and names may require a vendor-specific name to
+avoid the potential for name-space conflicts. The list of currently
+registered vendors and their preferred short-hand name is given in
+Table 4-1, Registered Vendors. Tools developers not listed are
+requested to co-ordinate with Arm to avoid the potential for
+conflicts.</p>
+<table id="id3">
+<caption>Table 4-1, Registered Vendors</caption>
+<colgroup>
+<col width="14%"/>
+<col width="86%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Vendor</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>aeabi</td>
+<td>Reserved to the ABI for the Arm Architecture (EABI
+pseudo-vendor)</td>
+</tr>
+<tr>
+<td>AnonXyz anonXyz</td>
+<td>Reserved to private experiments by the Xyz vendor. Guaranteed
+not to clash with any registered vendor name.</td>
+</tr>
+<tr>
+<td>ARM</td>
+<td>Arm Ltd (Note: the company, not the processor).</td>
+</tr>
+<tr>
+<td>cxa</td>
+<td>C++ ABI pseudo-vendor</td>
+</tr>
+<tr>
+<td>FSL</td>
+<td>Freescale Semiconductor Inc.</td>
+</tr>
+<tr>
+<td>GHS</td>
+<td>Green Hills Systems</td>
+</tr>
+<tr>
+<td>gnu</td>
+<td>GNU compilers and tools (Free Software Foundation)</td>
+</tr>
+<tr>
+<td>iar</td>
+<td>IAR Systems</td>
+</tr>
+<tr>
+<td>intel</td>
+<td>Intel Corporation</td>
+</tr>
+<tr>
+<td>ixs</td>
+<td>Intel Xscale</td>
+</tr>
+<tr>
+<td>llvm</td>
+<td>The LLVM/Clang projects</td>
+</tr>
+<tr>
+<td>PSI</td>
+<td>PalmSource Inc.</td>
+</tr>
+<tr>
+<td>RAL</td>
+<td>Rowley Associates Ltd</td>
+</tr>
+<tr>
+<td>somn</td>
+<td>SOMNIUM Technologies Limited.</td>
+</tr>
+<tr>
+<td>TASKING</td>
+<td>Altium Ltd.</td>
+</tr>
+<tr>
+<td>TI</td>
+<td>TI Inc.</td>
+</tr>
+<tr>
+<td>tls</td>
+<td>Reserved for use in thread-local storage routines.</td>
+</tr>
+<tr>
+<td>WRS</td>
+<td>Wind River Systems.</td>
+</tr>
+</tbody>
+</table>
+<p>To register a vendor prefix with Arm, please E-mail your request
+to arm.eabi at arm.com.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="elf-header">
+<h3>ELF Header<a href="index.html#elf-header"/></h3>
+<p>The ELF header provides a number of fields that assist in
+interpretation of the file. Most of these are specified in the base
+standard. The following fields have Arm-specific meanings.</p>
+<ul>
+<li><code>e_machine</code>An object file conforming to this
+specification must have the value EM_AARCH64 (183, 0xB7).</li>
+<li><code>e_entry</code>
+<p>The base ELF specification requires this field to
+be zero if an application does not have an entry point.
+Nonetheless, some applications may require an entry point of zero
+(for example, via a reset vector).</p>
+<p>A platform standard may specify that an executable
+file always has an entry point, in which case e_entry specifies
+that entry point, even if zero.</p>
+</li>
+<li><code>e_flags</code>There are no processor-specific flags so
+this field shall contain zero.</li>
+</ul>
+<div>
+<div id="elf-identification">
+<h4>ELF Identification<a href="index.html#elf-identification"/></h4>
+<p>The 16-byte ELF identification (<code>e_ident</code>) provides
+information on how to interpret the file itself. The following
+values shall be used on Arm systems</p>
+<ul>
+<li><code>EI_CLASS</code>
+<p>For object files (executable, shared and
+relocatable) the <strong>EI_CLASS</strong> shall be:</p>
+<ul>
+<li><code>ELFCLASS64</code> for an ELF64 object file.</li>
+<li><code>ELFCLASS32</code> for an ELF32 object file
+<strong>(Beta)</strong>.</li>
+</ul>
+</li>
+<li><code>EI_DATA</code>This field may be either
+<code>ELFDATA2LSB</code> or <code>ELFDATA2MSB</code>. The choice
+will be governed by the default data order in the execution
+environment.</li>
+<li><code>I_OSABI</code>This field shall be zero unless the file
+uses objects that have flags which have OS-specific meanings (for
+example, it makes use of a section index in the range
+<code>SHN_LOOS</code> through <code>SHN_HIOS</code>).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="sections">
+<h3>Sections<a href="index.html#sections"/></h3>
+<div>
+<div id="special-section-indexes">
+<h4>Special Section Indexes<a href="index.html#special-section-indexes"/></h4>
+<p>No processor-specific special section indexes are defined. All
+processor-specific values are reserved to future revisions of this
+specification.</p>
+</div>
+</div>
+<div>
+<div id="section-types">
+<h4>Section Types<a href="index.html#section-types"/></h4>
+<p>The defined processor-specific section types are listed in Table
+4-2, Processor specific section types. All other processor-specific
+values are reserved to future revisions of this specification.</p>
+<table id="id4">
+<caption>Table 4-2, Processor specific section types</caption>
+<colgroup>
+<col width="29%"/>
+<col width="18%"/>
+<col width="54%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>SHT_AARCH64_ATTRIBUTES</code></td>
+<td><code>0x70000003</code></td>
+<td>Reserved for Object file compatibility attributes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div id="section-attribute-flags">
+<h4>Section Attribute Flags<a href="index.html#section-attribute-flags"/></h4>
+<p>There are no processor-specific section attribute flags defined.
+All processor-specific values are reserved to future revisions of
+this specification.</p>
+<div>
+<div id="merging-of-objects-in-sections-with-shf-merge">
+<h5>Merging of objects in sections with SHF_MERGE<a href="index.html#merging-of-objects-in-sections-with-shf-merge"/></h5>
+<p>In a section with the <code>SHF_MERGE</code> flag set, duplicate
+used objects may be merged and unused objects may be removed. An
+object is used if:</p>
+<ul>
+<li>A relocation directive addresses the object via the section
+symbol with a suitable addend to point to the object.</li>
+<li>A relocation directive addresses a symbol within the section.
+The used object is the one addressed by the symbol irrespective of
+the addend used.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="special-sections">
+<h4>Special Sections<a href="index.html#special-sections"/></h4>
+<p>Table 4-3, AArch64 special sections lists the special sections
+defined by this ABI.</p>
+<table id="id5">
+<caption>Table 4-3, AArch64 special sections</caption>
+<colgroup>
+<col width="32%"/>
+<col width="46%"/>
+<col width="22%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Attributes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>.ARM.attributes</code></td>
+<td><code>SHT_AARCH64_ATTRIBUTES</code></td>
+<td>none</td>
+</tr>
+<tr>
+<td>.note.gnu.property</td>
+<td><code>SHT_NOTE</code></td>
+<td><code>SHF_ALLOC</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>.ARM.attributes</code> names a section that contains build
+attributes. See <a href="index.html">Build
+Attributes</a>.</p>
+<p><code>.note.gnu.property</code> names a section that holds a
+program property note. See [<a href="https://github.com/hjl-tools/linux-abi/wiki">LINUX_ABI</a>] for
+more information.</p>
+<p>Additional special sections may be required by some platforms
+standards.</p>
+</div>
+</div>
+<div>
+<div id="section-alignment">
+<h4>Section Alignment<a href="index.html#section-alignment"/></h4>
+<p>There is no minimum alignment required for a section. Sections
+containing code must be at least 4-byte aligned. Platform standards
+may set a limit on the maximum alignment that they can guarantee
+(normally the minimum page size supported by the platform).</p>
+</div>
+</div>
+<div>
+<div id="build-attributes">
+<h4>Build Attributes<a href="index.html#build-attributes"/></h4>
+<p>Build attributes are encoded in a section of type
+<code>SHT_AARCH64_ATTRIBUTES</code>, and name
+<code>.ARM.attributes</code>.</p>
+<p>Build attributes are unnecessary when a platform ABI operating
+system is fully specified. At this time no public build attributes
+have been defined for AArch64, however, software development tools
+are free to use attributes privately. For an introduction to
+AArch32 build attributes see [Addenda32].</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="string-table">
+<h3>String Table<a href="index.html#string-table"/></h3>
+<p>There are no processor-specific extensions to the string
+table.</p>
+</div>
+</div>
+<div>
+<div id="symbol-table">
+<h3>Symbol Table<a href="index.html#symbol-table"/></h3>
+<p>There are no processor-specific symbol types or symbol bindings.
+All processor-specific values are reserved to future revisions of
+this specification.</p>
+</div>
+</div>
+<div>
+<div id="weak-symbols">
+<h3>Weak Symbols<a href="index.html#weak-symbols"/></h3>
+<p>There are two forms of weak symbol:</p>
+<ul>
+<li>A weak reference — This is denoted by:
+<ul>
+<li><code>st_shndx=SHN_UNDEF, ELF64_ST_BIND()=STB_WEAK</code>.</li>
+<li><code>st_shndx=SHN_UNDEF, ELF32_ST_BIND()=STB_WEAK</code>
+<strong>(Beta)</strong>.</li>
+</ul>
+</li>
+<li>A weak definition — This is denoted by:
+<ul>
+<li><code>st_shndx!=SHN_UNDEF,
+ELF64_ST_BIND()=STB_WEAK</code>.</li>
+<li><code>st_shndx!=SHN_UNDEF, ELF32_ST_BIND()=STB_WEAK</code>
+<strong>(Beta)</strong>.</li>
+</ul>
+</li>
+</ul>
+<div>
+<div id="weak-references">
+<h4>Weak References<a href="index.html#weak-references"/></h4>
+<p>Libraries are not searched to resolve weak references. It is not
+an error for a weak reference to remain unsatisfied.</p>
+<p>During linking, the symbol value of an undefined weak reference
+is:</p>
+<ul>
+<li>Zero if the relocation type is absolute</li>
+<li>The address of the place if the relocation type is
+pc-relative.</li>
+</ul>
+<p>See <a href="index.html">Relocation</a> for further
+details.</p>
+</div>
+</div>
+<div>
+<div id="weak-definitions">
+<h4>Weak Definitions<a href="index.html#weak-definitions"/></h4>
+<p>A weak definition does not change the rules by which object
+files are selected from libraries. However, if a link set contains
+both a weak definition and a non-weak definition, the non-weak
+definition will always be used.</p>
+</div>
+</div>
+<div>
+<div id="symbol-types">
+<h4>Symbol Types<a href="index.html#symbol-types"/></h4>
+<p>All code symbols exported from an object file (symbols with
+binding <code>STB_GLOBAL</code>) shall have type
+<code>STT_FUNC</code>. All extern data objects shall have type
+<code>STT_OBJECT</code>. No <code>STB_GLOBAL</code> data symbol
+shall have type <code>STT_FUNC</code>. The type of an undefined
+symbol shall be <code>STT_NOTYPE</code> or the type of its expected
+definition.</p>
+<p>The type of any other symbol defined in an executable section
+can be <code>STT_NOTYPE</code>. A linker is only required to
+provide long-branch and PLT support for symbols of type
+<code>STT_FUNC</code>.</p>
+</div>
+</div>
+<div>
+<div id="symbol-names">
+<h4>Symbol names<a href="index.html#symbol-names"/></h4>
+<p>A symbol that names a C or assembly language entity should have
+the name of that entity. For example, a C function called
+<code>calculate</code> generates a symbol called
+<code>calculate</code> (not <code>_calculate</code>).</p>
+<p>Symbol names are case sensitive and are matched exactly by
+linkers.</p>
+<p>Any symbol with binding <code>STB_LOCAL</code> may be removed
+from an object and replaced with an offset from another symbol in
+the same section under the following conditions:</p>
+<ul>
+<li>The original symbol and replacement symbol are not of type
+<code>STT_FUNC</code>, or both symbols are of type
+<code>STT_FUNC</code>.</li>
+<li>All relocations referring to the symbol can accommodate the
+adjustment in the addend field (it is permitted to convert a
+<code>REL</code> type relocation to a <code>RELA</code> type
+relocation).</li>
+<li>The symbol is not described by the debug information.</li>
+<li>The symbol is not a mapping symbol (<a href="index.html">Mapping symbols</a>).</li>
+<li>The resulting object, or image, is not required to preserve
+accurate symbol information to permit de-compilation or other
+post-linking optimization techniques.</li>
+<li>If the symbol labels an object in a section with the
+<code>SHF_MERGE</code> flag set, the relocation using symbol may be
+changed to use the section symbol only if the initial addend of the
+relocation is zero.</li>
+</ul>
+<p>No tool is required to perform the above transformations; an
+object consumer must be prepared to do this itself if it might find
+the additional symbols confusing.</p>
+<div>
+<div>
+<p>Note</p>
+<p>Multiple conventions exist for the names of
+compiler temporary symbols (for example, ARMCC uses
+<code>Lxxx.yyy</code>, while GNU tools use <code>.Lxxx</code>).</p>
+</div>
+</div>
+<div>
+<div id="reserved-symbol-names">
+<h5>Reserved symbol names<a href="index.html#reserved-symbol-names"/></h5>
+<p>The following symbols are reserved to this and future revisions
+of this specification:</p>
+<ul>
+<li>Local symbols (<code>STB_LOCAL</code>) beginning with '$'</li>
+<li>Symbols matching the pattern
+<code><em>non-empty-prefix</em>$$<em>non-empty-suffix</em></code>.</li>
+<li>Global symbols (<code>STB_GLOBAL</code>, <code>STB_WEAK</code>)
+beginning with <code>'__aeabi_'</code> (double '_' at start).</li>
+</ul>
+<div>
+<div>
+<p>Note</p>
+<p>Global symbols beginning with
+<code>'__vendor_'</code> (double '_' at start), where vendor is
+listed in <a href="index.html">Registered Vendor
+Names</a> are reserved to the named vendor for the purpose of
+providing vendor-specific toolchain support functions.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="mapping-symbols">
+<h4>Mapping symbols<a href="index.html#mapping-symbols"/></h4>
+<p>A section of an ELF file can contain a mixture of A64 code and
+data. There are inline transitions between code and data at literal
+pool boundaries.</p>
+<p>Linkers, file decoders and other tools need to map binaries
+correctly. To support this, a number of symbols, termed mapping
+symbols appear in the symbol table to label the start of each
+sequence of bytes of the appropriate class. All mapping symbols
+have type <code>STT_NOTYPE</code> and binding
+<code>STB_LOCAL</code>. The <code>st_size</code> field is unused
+and must be zero.</p>
+<p>The mapping symbols are defined in Table 4-4, Mapping symbols.
+It is an error for a relocation to reference a mapping symbol. Two
+forms of mapping symbol are supported:</p>
+<ul>
+<li>A short form that uses a dollar character and a single letter
+denoting the class. This form can be used when an object producer
+creates mapping symbols automatically. Its use minimizes string
+table size.</li>
+<li>A longer form in which the short form is extended with a period
+and then any sequence of characters that are legal for a symbol.
+This form can be used when assembler files have to be annotated
+manually and the assembler does not support multiple definitions of
+symbols.</li>
+</ul>
+<p>Mapping symbols defined in a section (relocatable view) or
+segment (executable view) define a sequence of half- open intervals
+that cover the address range of the section or segment. Each
+interval starts at the address defined by the mapping symbol, and
+continues up to, but not including, the address defined by the next
+(in address order) mapping symbol or the end of the section or
+segment. A section that contains instructions must have a mapping
+symbol defined at the beginning of the section. If a section
+contains only data no mapping symbol is required. A platform ABI
+should specify whether or not mapping symbols are present in the
+executable view; they will never be present in a stripped
+executable file.</p>
+<table id="id6">
+<caption>Table 4-4, Mapping symbols</caption>
+<colgroup>
+<col width="19%"/>
+<col width="81%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>$x</div>
+</div>
+<div>
+<div>$x.&lt;any...&gt;</div>
+</div>
+</div>
+</div>
+</td>
+<td>Start of a sequence of A64 instructions</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>$d</div>
+</div>
+<div>
+<div>$d.&lt;any...&gt;</div>
+</div>
+</div>
+</div>
+</td>
+<td>Start of a sequence of data items (for example, a literal
+pool)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="relocation">
+<h3>Relocation<a href="index.html#relocation"/></h3>
+<p>Relocation information is used by linkers to bind symbols to
+addresses that could not be determined when the binary file was
+generated. Relocations are classified as <em>Static</em> or
+<em>Dynamic</em>.</p>
+<ul>
+<li>
+<p>A <em>static relocation</em> relocates a place in
+an ELF relocatable file (<code>e_type = ET_REL</code>); a static
+linker processes it.</p>
+</li>
+<li>
+<p>A <em>dynamic relocation</em> is designed to
+relocate a place in an ELF executable file or dynamic shared object
+(<code>e_type = ET_EXEC, ET_DYN</code>) and to be handled by a
+dynamic linker, program loader, or other post-linking tool (dynamic
+linker henceforth).</p>
+</li>
+<li>
+<p>A dynamic linker need only process dynamic
+relocations; a static linker must handle any defined
+relocation.</p>
+</li>
+<li>
+<p>Dynamic relocations are designed to be processed
+quickly.</p>
+<ul>
+<li>There are a small number of dynamic relocations whose codes are
+contiguous.</li>
+<li>Dynamic relocations relocate simple places and do not need
+complex field extraction or insertion.</li>
+</ul>
+</li>
+<li>
+<p>A static linker either:</p>
+<div>
+<div>
+<div>
+<div>
+<ul>
+<li>Fully resolves a relocation directive.</li>
+<li>Or, generates a dynamic relocation from it for processing by a
+dynamic linker.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>A well-formed executable file or dynamic shared
+object has no static relocations after static linking.</p>
+</li>
+</ul>
+<div>
+<div id="relocation-codes">
+<h4>Relocation codes<a href="index.html#relocation-codes"/></h4>
+<p>The relocation codes for AArch64 are divided into four
+categories:</p>
+<ul>
+<li>Mandatory relocations that must be supported by all static
+linkers.</li>
+<li>Platform-specific relocations required by specific platform
+ABIs.</li>
+<li>Private relocations that are guaranteed never to be allocated
+in future revisions of this specification, but which must never be
+used in portable object files.</li>
+<li>Unallocated relocations that are reserved for use in future
+revisions of this specification.</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="addends-and-pc-bias">
+<h4>Addends and PC-bias<a href="index.html#addends-and-pc-bias"/></h4>
+<p>A binary file may use <code>REL</code> or <code>RELA</code>
+relocations or a mixture of the two (but multiple relocations of
+the same place must use only one type).</p>
+<p>The initial addend for a <code>REL</code>-type relocation is
+formed according to the following rules.</p>
+<ul>
+<li>If the relocation relocates data (<a href="index.html">Static Data relocations</a>) the initial
+value in the place is sign-extended to 64 bits.</li>
+<li>If the relocation relocates an instruction the immediate field
+of the instruction is extracted, scaled as required by the
+instruction field encoding, and sign-extended to 64 bits.</li>
+</ul>
+<p>A <code>RELA</code> format relocation must be used if the
+initial addend cannot be encoded in the place.</p>
+<p>There is no PC bias to accommodate in the relocation of a place
+containing an instruction that formulates a PC- relative address.
+The program counter reflects the address of the currently executing
+instruction.</p>
+</div>
+</div>
+<div>
+<div id="relocation-types">
+<h4>Relocation types<a href="index.html#relocation-types"/></h4>
+<p>Tables in the following sections list the relocation codes for
+AArch64 and record the following.</p>
+<ul>
+<li>The relocation code which is stored in the
+<code>ELF64_R_TYPE</code> or <code>ELF32_R_TYPE</code> component of
+the <code>r_info</code> field.</li>
+<li>The preferred mnemonic name for the relocation. This has no
+significance in a binary file.</li>
+<li>The relocation operation required. This field describes how a
+symbol and addend are processed by a linker. It does not describe
+how an initial addend value is extracted from a place (<a href="index.html">Addends and PC-bias</a>) or how the
+resulting relocated value is inserted or encoded into a place.</li>
+<li>A comment describing the kind of place that can be relocated,
+the part of the result value inserted into the place, and whether
+or not field overflow should be checked.</li>
+</ul>
+<div>
+<div id="relocation-names-and-class">
+<h5>Relocation names and class<a href="index.html#relocation-names-and-class"/></h5>
+<p>A mnemonic name class is used to distinguish between ELF64 and
+ELF32 relocation names.</p>
+<ul>
+<li>ELF64 relocations have <code>&lt;CLS&gt; = AARCH64</code>, e.g.
+<code>R_AARCH64_ABS32</code></li>
+<li>ELF32 relocations have <code>&lt;CLS&gt; = AARCH64_P32</code>,
+where P32 denotes the pointer size, e.g.
+<code>R_AARCH64_P32_ABS32</code> <strong>(Beta)</strong></li>
+</ul>
+<div>
+<div>
+<p>Note</p>
+<p>Within this document <code>&lt;CLS&gt;</code> is
+not expanded in instances where only a single relocation name
+exists.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="aaelf64-section4-6-3-2">
+<h5>Relocation codes<a href="index.html#aaelf64-section4-6-3-2"/></h5>
+<p>References to relocation codes are disambiguated in the
+following way:</p>
+<ul>
+<li>ELF64 relocation codes are bounded by parentheses: <code>(
+)</code>.</li>
+<li>ELF32 relocation codes are bounded by brackets: <code>[
+]</code>.</li>
+</ul>
+<p>Static relocation codes for ELF64 object files begin at (257);
+dynamic ones at (1024). Both (0) and (256) should be accepted as
+values of <code>R_AARCH64_NONE</code>, the null relocation.</p>
+<p>Static relocation codes for ELF32 object files begin at [1];
+dynamic ones at [180].</p>
+<p>All unallocated type codes are reserved for future
+allocation.</p>
+</div>
+</div>
+<div>
+<div id="relocation-operations">
+<h5>Relocation operations<a href="index.html#relocation-operations"/></h5>
+<p>The following nomenclature is used in the descriptions of
+relocation operations:</p>
+<ul>
+<li><code>S</code> (when used on its own) is the address of the
+symbol.</li>
+<li><code>A</code> is the addend for the relocation.</li>
+<li><code>P</code> is the address of the place being relocated
+(derived from <code>r_offset</code>).</li>
+<li><code>X</code> is the result of a relocation operation, before
+any masking or bit-selection operation is applied</li>
+<li><code>Page(expr)</code> is the page address of the expression
+expr, defined as (expr &amp; ~0xFFF). (This applies even if the
+machine page size supported by the platform has a different
+value.)</li>
+<li><code>GOT</code> is the address of the Global Offset Table, the
+table of code and data addresses to be resolved at dynamic link
+time. The <code>GOT</code> and each entry in it must be, 64-bit
+aligned for ELF64 or 32-bit aligned for ELF32.</li>
+<li><code>GDAT(S+A)</code> represents a pointer-sized entry in the
+<code>GOT</code> for address <code>S+A</code>. The entry will be
+relocated at run time with relocation
+<code>R_&lt;CLS&gt;_GLOB_DAT(S+A)</code>.</li>
+<li><code>G(expr)</code> is the address of the GOT entry for the
+expression expr.</li>
+<li><code>Delta(S)</code> if S is a normal symbol, resolves to the
+difference between the static link address of S and the execution
+address of <code>S</code>. If <code>S</code> is the null symbol
+(ELF symbol index 0), resolves to the difference between the static
+link address of <code>P</code> and the execution address of
+<code>P</code>.</li>
+<li><code>Indirect(expr)</code> represents the result of calling
+expr as a function. The result is the return value from the
+function that is returned in <code>r0</code>. The arguments passed
+to the function are defined by the platform ABI.</li>
+<li><code>[msb:lsb]</code> is a bit-mask operation representing the
+selection of bits in a value. The bits selected range from lsb up
+to msb inclusive. For example, 'bits [3:0]' represents the bits
+under the mask 0x0000000F. When range checking is applied to a
+value, it is applied before the masking operation is
+performed.</li>
+</ul>
+<p>The value written into a target field is always reduced to fit
+the field. It is Q-o-I whether a linker generates a diagnostic when
+a relocated value overflows its target field.</p>
+<p>Relocation types whose names end with "<code>_NC</code>" are
+non-checking relocation types. These must not generate diagnostics
+in case of field overflow. Usually, a non-checking type relocates
+an instruction that computes one of the less significant parts of a
+single value computed by a group of instructions (<a href="index.html">Group relocations</a>). Only the
+instruction computing the most significant part of the value can be
+checked for field overflow because, in general, a relocated value
+will overflow the fields of instructions computing the less
+significant parts. Some non-checking relocations may, however, be
+expected to check for correct alignment of the result; the notes
+explain when this is permitted. In ELF32 relocations an overflow
+check of -2<sup>31</sup> &lt;= X &lt; 2<sup>31</sup> or 0 &lt;= X
+&lt; 2<sup>31</sup> is equivalent to no check (i.e. 'None').</p>
+<p>In ELF32 <strong>(Beta)</strong> relocations additional care
+must be taken when relocating an ADRP instruction which effectively
+uses a signed 33-bit PC-relative offset to generate a 32-bit
+address. The following relocations apply to ADRP:</p>
+<div>
+<div>
+<div>
+<div>
+<pre>R_&lt;CLS&gt;_ADR_PREL_PG_HI21,
+R_&lt;CLS&gt;_ADR_GOT_PAGE,
+R_&lt;CLS&gt;_TLSGD_ADR_PAGE21,
+R_&lt;CLS&gt;_TLSLD_ADR_PAGE21,
+R_&lt;CLS&gt;_TLSIE_ADR_GOTTPREL_PAGE21,
+R_&lt;CLS&gt;_TLSDESC_ADR_PAGE21
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="static-miscellaneous-relocations">
+<h4>Static miscellaneous relocations<a href="index.html#static-miscellaneous-relocations"/></h4>
+<p><code>R_&lt;CLS&gt;_NONE</code> (null relocation code) records
+that the section containing the place to be relocated depends on
+the section defining the symbol mentioned in the relocation
+directive in a way otherwise invisible to a static linker. The
+effect is to prevent removal of sections that might otherwise
+appear to be unused.</p>
+<table id="id7">
+<caption>Table 4-5, Null relocation codes</caption>
+<colgroup>
+<col width="15%"/>
+<col width="15%"/>
+<col width="21%"/>
+<col width="15%"/>
+<col width="34%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>0</td>
+<td>0</td>
+<td>R_&lt;CLS&gt;_NONE</td>
+<td>None</td>
+<td> </td>
+</tr>
+<tr>
+<td>256</td>
+<td>-</td>
+<td>withdrawn</td>
+<td>None</td>
+<td>Treat as R_&lt;CLS&gt;_NONE.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div id="static-data-relocations">
+<h4>Static Data relocations<a href="index.html#static-data-relocations"/></h4>
+<p>See also Table 4-13, GOT-relative data relocations.</p>
+<table id="id8">
+<caption>Table 4-6, Data relocations</caption>
+<colgroup>
+<col width="14%"/>
+<col width="14%"/>
+<col width="22%"/>
+<col width="13%"/>
+<col width="39%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Overflow check</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>257</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_ABS64</td>
+<td>S + A</td>
+<td>None</td>
+</tr>
+<tr>
+<td>258</td>
+<td>1</td>
+<td>R_&lt;CLS&gt;_ABS32</td>
+<td>S + A</td>
+<td>-2<sup>31</sup> &lt;= X &lt; 2<sup>32</sup></td>
+</tr>
+<tr>
+<td>259</td>
+<td>2</td>
+<td>R_&lt;CLS&gt;_ABS16</td>
+<td>S + A</td>
+<td>-2<sup>15</sup> &lt;= X &lt; 2<sup>16</sup></td>
+</tr>
+<tr>
+<td>260</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_PREL64</td>
+<td>S + A - P</td>
+<td>None</td>
+</tr>
+<tr>
+<td>261</td>
+<td>3</td>
+<td>R_&lt;CLS&gt;_PREL32</td>
+<td>S + A - P</td>
+<td>-2<sup>31</sup> &lt;= X &lt; 2<sup>32</sup></td>
+</tr>
+<tr>
+<td>262</td>
+<td>4</td>
+<td>R_&lt;CLS&gt;_PREL16</td>
+<td>S + A - P</td>
+<td>-2<sup>15</sup> &lt;= X &lt; 2<sup>16</sup></td>
+</tr>
+</tbody>
+</table>
+<p>These overflow ranges permit either signed or unsigned narrow
+values to be created from the intermediate result viewed as a
+64-bit signed integer. If the place is intended to hold a narrow
+signed value and <code>INTn_MAX &lt; X &lt;= UINTn_MAX</code>, no
+overflow will be detected but the positive result will be
+interpreted as a negative value.</p>
+</div>
+</div>
+<div>
+<div id="static-aarch64-relocations">
+<h4>Static AArch64 relocations<a href="index.html#static-aarch64-relocations"/></h4>
+<p>The following tables record single instruction relocations and
+relocations that allow a group or sequence of instructions to
+compute a single relocated value.</p>
+<table id="id9">
+<caption>Table 4-7, Group relocations to create a 16-, 32-, 48-, or
+64-bit unsigned data value or address inline</caption>
+<colgroup>
+<col width="8%"/>
+<col width="8%"/>
+<col width="21%"/>
+<col width="8%"/>
+<col width="55%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>263</td>
+<td>5</td>
+<td>R_&lt;CLS&gt;_MOVW_UABS_G0</td>
+<td>S + A</td>
+<td>Set a MOVZ immediate field to bits [15:0] of X; check that 0
+&lt;= X &lt; 2<sup>16</sup></td>
+</tr>
+<tr>
+<td>264</td>
+<td>6</td>
+<td>R_&lt;CLS&gt;_MOVW_UABS_G0_NC</td>
+<td>S + A</td>
+<td>Set a MOVK immediate field to bits [15:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>265</td>
+<td>7</td>
+<td>R_&lt;CLS&gt;_MOVW_UABS_G1</td>
+<td>S + A</td>
+<td>Set a MOVZ immediate field to bits [31:16] of X; check that 0
+&lt;= X &lt; 2<sup>32</sup></td>
+</tr>
+<tr>
+<td>266</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_UABS_G1_NC</td>
+<td>S + A</td>
+<td>Set a MOVK immediate field to bits [31:16] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>267</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_UABS_G2</td>
+<td>S + A</td>
+<td>Set a MOVZ immediate field to bits [47:32] of X; check that 0
+&lt;= X &lt; 2<sup>48</sup></td>
+</tr>
+<tr>
+<td>268</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_UABS_G2_NC</td>
+<td>S + A</td>
+<td>Set a MOVK immediate field to bits [47:32] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>269</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_UABS_G3</td>
+<td>S + A</td>
+<td>Set a MOV[KZ] immediate field to bits [63:48] of X (no overflow
+check needed)</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>Non-checking (<code>_NC</code>) forms relocate
+MOVK; checking forms relocate MOVZ except
+<code>R_&lt;CLS&gt;_MOVW_UABS_G3</code>, which can relocate
+either.</p>
+</div>
+</div>
+<table id="id10">
+<caption>Table 4-8, Group relocations to create a 16, 32, 48, or 64
+bit signed data or offset value inline</caption>
+<colgroup>
+<col width="7%"/>
+<col width="7%"/>
+<col width="15%"/>
+<col width="7%"/>
+<col width="64%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>270</td>
+<td>8</td>
+<td>R_&lt;CLS&gt;_MOVW_SABS_G0</td>
+<td>S + A</td>
+<td>Set a MOV[NZ] immediate field using bits [15:0] of X (see notes
+below); check -2<sup>16</sup> &lt;= X &lt; 2<sup>16</sup></td>
+</tr>
+<tr>
+<td>271</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_SABS_G1</td>
+<td>S + A</td>
+<td>Set a MOV[NZ] immediate field using bits [31:16] of X (see
+notes below); check -2<sup>32</sup> &lt;= X &lt;
+2<sup>32</sup></td>
+</tr>
+<tr>
+<td>272</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_SABS_G2</td>
+<td>S + A</td>
+<td>Set a MOV[NZ] immediate field using bits [47:32] of X (see
+notes below); check -2<sup>48</sup> &lt;= X &lt;
+2<sup>48</sup></td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>These checking forms relocate <code>MOVN</code> or
+<code>MOVZ</code>.</p>
+<p>X &gt;= 0: Set the instruction to <code>MOVZ</code> and its
+immediate field to the selected bits of X.</p>
+<p>X &lt; 0: Set the instruction to <code>MOVN</code>
+and its immediate field to NOT (selected bits of X).</p>
+</div>
+</div>
+<table id="id11">
+<caption>Table 4-9, Relocations to generate 19, 21 and 33 bit
+PC-relative addresses</caption>
+<colgroup>
+<col width="7%"/>
+<col width="7%"/>
+<col width="20%"/>
+<col width="10%"/>
+<col width="56%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>273</td>
+<td>9</td>
+<td>R_&lt;CLS&gt;_ LD_PREL_LO19</td>
+<td>S + A - P</td>
+<td>Set a load-literal immediate value to bits [20:2] of X; check
+that -2<sup>20</sup> &lt;= X &lt; 2<sup>20</sup></td>
+</tr>
+<tr>
+<td>274</td>
+<td>10</td>
+<td>R_&lt;CLS&gt;_ ADR_PREL_LO21</td>
+<td>S + A - P</td>
+<td>Set an ADR immediate value to bits [20:0] of X; check that
+-2<sup>20</sup> &lt;= X &lt; 2<sup>20</sup></td>
+</tr>
+<tr>
+<td>275</td>
+<td>11</td>
+<td>R_&lt;CLS&gt;_ ADR_PREL_PG_HI21</td>
+<td>Page(S+A)-Page(P)</td>
+<td>Set an ADRP immediate value to bits [32:12] of the X; check
+that -2<sup>32</sup> &lt;= X &lt; 2<sup>32</sup></td>
+</tr>
+<tr>
+<td>276</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_ ADR_PREL_PG_HI21_NC</td>
+<td>Page(S+A)-Page(P)</td>
+<td>Set an ADRP immediate value to bits [32:12] of the X. No
+overflow check</td>
+</tr>
+<tr>
+<td>277</td>
+<td>12</td>
+<td>R_&lt;CLS&gt;_ ADD_ABS_LO12_NC</td>
+<td>S + A</td>
+<td>Set an ADD immediate value to bits [11:0] of X. No overflow
+check. Used with relocations ADR_PREL_PG_HI21 and
+ADR_PREL_PG_HI21_NC</td>
+</tr>
+<tr>
+<td>278</td>
+<td>13</td>
+<td>R_&lt;CLS&gt;_ LDST8_ABS_LO12_NC</td>
+<td>S + A</td>
+<td>Set an LD/ST immediate value to bits [11:0] of X. No overflow
+check. Used with relocations ADR_PREL_PG_HI21 and
+ADR_PREL_PG_HI21_NC</td>
+</tr>
+<tr>
+<td>284</td>
+<td>14</td>
+<td>R_&lt;CLS&gt;_ LDST16_ABS_LO12_NC</td>
+<td>S + A</td>
+<td>Set an LD/ST immediate value to bits [11:1] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>285</td>
+<td>15</td>
+<td>R_&lt;CLS&gt;_ LDST32_ABS_LO12_NC</td>
+<td>S + A</td>
+<td>Set the LD/ST immediate value to bits [11:2] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>286</td>
+<td>16</td>
+<td>R_&lt;CLS&gt;_ LDST64_ABS_LO12_NC</td>
+<td>S + A</td>
+<td>Set the LD/ST immediate value to bits [11:3] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>299</td>
+<td>17</td>
+<td>R_&lt;CLS&gt;_ LDST128_ABS_LO12_NC</td>
+<td>S + A</td>
+<td>Set the LD/ST immediate value to bits [11:4] of X. No overflow
+check</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>Relocations (284, 285, 286 and 299) or [14, 15, 16, 17] are
+intended to be used with
+<code>R_&lt;CLS&gt;_ADR_PREL_PG_HI21</code> (275) or [11] so they
+pick out the low 12 bits of the address and, in effect, scale that
+by the access size. The increased address range provided by scaled
+addressing is not supported by these relocations because the extra
+range is unusable in conjunction with
+<code>R_&lt;CLS&gt;_ADR_PREL_PG_HI21</code>.</p>
+<p>Although overflow must not be checked, a linker
+should check that the value of X is aligned to a multiple of the
+datum size.</p>
+</div>
+</div>
+<table id="id12">
+<caption>Table 4-10, Relocations for control-flow instructions -
+all offsets are a multiple of 4</caption>
+<colgroup>
+<col width="7%"/>
+<col width="7%"/>
+<col width="11%"/>
+<col width="7%"/>
+<col width="68%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>279</td>
+<td>18</td>
+<td>R_&lt;CLS&gt;_TSTBR14</td>
+<td>S+A-P</td>
+<td>Set the immediate field of a TBZ/TBNZ instruction to bits
+[15:2] of X; check -2<sup>15</sup> &lt;= X &lt; 2<sup>15</sup></td>
+</tr>
+<tr>
+<td>280</td>
+<td>19</td>
+<td>R_&lt;CLS&gt;_CONDBR19</td>
+<td>S+A-P</td>
+<td>Set the immediate field of a conditional branch instruction to
+bits [20:2] of X; check -2<sup>20</sup> &lt;= X&lt;
+2<sup>20</sup></td>
+</tr>
+<tr>
+<td>282</td>
+<td>20</td>
+<td>R_&lt;CLS&gt;_JUMP26</td>
+<td>S+A-P</td>
+<td>Set a B immediate field to bits [27:2] of X; check that
+-2<sup>27</sup> &lt;= X &lt; 2<sup>27</sup></td>
+</tr>
+<tr>
+<td>283</td>
+<td>21</td>
+<td>R_&lt;CLS&gt;_CALL26</td>
+<td>S+A-P</td>
+<td>Set a CALL immediate field to bits [27:2] of X; check that
+-2<sup>27</sup> &lt;= X &lt; 2<sup>27</sup></td>
+</tr>
+</tbody>
+</table>
+<table id="id13">
+<caption>Table 4-11, Group relocations to create a 16, 32, 48, or
+64 bit PC-relative offset inline</caption>
+<colgroup>
+<col width="9%"/>
+<col width="9%"/>
+<col width="22%"/>
+<col width="9%"/>
+<col width="51%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>287</td>
+<td>22</td>
+<td>R_&lt;CLS&gt;_MOVW_PREL_G0</td>
+<td>S+A-P</td>
+<td>Set a MOV[NZ]immediate field to bits [15:0] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>288</td>
+<td>23</td>
+<td>R_&lt;CLS&gt;_MOVW_PREL_G0_NC</td>
+<td>S+A-P</td>
+<td>Set a MOVK immediate field to bits [15:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>289</td>
+<td>24</td>
+<td>R_&lt;CLS&gt;_MOVW_PREL_G1</td>
+<td>S+A-P</td>
+<td>Set a MOV[NZ]immediate field to bits [31:16] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>290</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_PREL_G1_NC</td>
+<td>S+A-P</td>
+<td>Set a MOVK immediate field to bits [31:16] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>291</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_PREL_G2</td>
+<td>S+A-P</td>
+<td>Set a MOV[NZ]immediate value to bits [47:32] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>292</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_PREL_G2_NC</td>
+<td>S+A-P</td>
+<td>Set a MOVK immediate field to bits [47:32] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>293</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_PREL_G3</td>
+<td>S+A-P</td>
+<td>Set a MOV[NZ]immediate value to bits [63:48] of X (see notes
+below)</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>Non-checking (<code>_NC</code>) forms relocate
+<code>MOVK</code>; checking forms relocate <code>MOVN</code> or
+<code>MOVZ</code>.</p>
+<p><code>X &gt;= 0</code>: Set the instruction to <code>MOVZ</code>
+and its immediate value to the selected bits of X; for relocation
+<code>R_..._Gn</code>, check in ELF64 that X &lt; {<code>G0:</code>
+2<sup>16</sup>, <code>G1:</code> 2<sup>32</sup>, <code>G2:</code>
+2<sup>48</sup>} (no check for <code>R_..._G3</code>); in ELF32 only
+check X &lt; 2<sup>16</sup> for <code>R_..._G0</code>.</p>
+<p><code>X &lt; 0</code>: Set the instruction to
+<code>MOVN</code> and its immediate value to NOT (selected bits of
+X); for relocation <code>R_..._Gn</code>, check in ELF64 that
+-{<code>G0:</code> 2<sup>16</sup>, <code>G1:</code> 2<sup>32</sup>,
+<code>G2:</code> 2<sup>48</sup>} &lt;= X (no check for
+<code>R_..._G3</code>); in ELF32 only check that -2<sup>16</sup>
+&lt;= X for R_..._G0.</p>
+</div>
+</div>
+<table id="id14">
+<caption>Table 4-12, Group relocations to create a 16, 32, 48, or
+64 bit GOT-relative offsets inline</caption>
+<colgroup>
+<col width="8%"/>
+<col width="8%"/>
+<col width="22%"/>
+<col width="13%"/>
+<col width="48%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>300</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_GOTOFF_G0</td>
+<td>G(GDAT(S+A)) -GOT</td>
+<td>Set a MOV[NZ] immediate field to bits [15:0] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>301</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_GOTOFF_G0_NC</td>
+<td>G(GDAT(S+A)) -GOT</td>
+<td>Set a MOVK immediate field to bits [15:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>302</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_GOTOFF_G1</td>
+<td>G(GDAT(S+A)) -GOT</td>
+<td>Set a MOV[NZ] immediate value to bits [31:16] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>303</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_GOTOFF_G1_NC</td>
+<td>G(GDAT(S+A)) -GOT</td>
+<td>Set a MOVK immediate value to bits [31:16] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>304</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_GOTOFF_G2</td>
+<td>G(GDAT(S+A)) -GOT</td>
+<td>Set a MOV[NZ] immediate value to bits [47:32] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>305</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_GOTOFF_G2_NC</td>
+<td>G(GDAT(S+A)) -GOT</td>
+<td>Set a MOVK immediate value to bits [47:32] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>306</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_MOVW_GOTOFF_G3</td>
+<td>G(GDAT(S+A)) -GOT</td>
+<td>Set a MOV[NZ] immediate value to bits [63:48] of X (see notes
+below)</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>Non-checking (<code>_NC</code>) forms relocate
+<code>MOVK</code>; checking forms relocate <code>MOVN</code> or
+<code>MOVZ</code>.</p>
+</div>
+</div>
+<table id="id15">
+<caption>Table 4-13, GOT-relative data relocations</caption>
+<colgroup>
+<col width="7%"/>
+<col width="7%"/>
+<col width="12%"/>
+<col width="7%"/>
+<col width="67%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>307</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_GOTREL64</td>
+<td>S+A-GOT</td>
+<td>Set the data to a 64-bit offset relative to the GOT.</td>
+</tr>
+<tr>
+<td>308</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_GOTREL32</td>
+<td>S+A-GOT</td>
+<td>Set the data to a 32-bit offset relative to GOT, treated as
+signed; check that -2<sup>31</sup> &lt;= X &lt; 2<sup>31</sup></td>
+</tr>
+</tbody>
+</table>
+<table id="id16">
+<caption>Table 4-14, GOT-relative instruction relocations</caption>
+<colgroup>
+<col width="7%"/>
+<col width="6%"/>
+<col width="17%"/>
+<col width="15%"/>
+<col width="55%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF6 4 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>309</td>
+<td>25</td>
+<td>R_&lt;CLS&gt;_GOT_LD_PREL19</td>
+<td>G(GDAT(S+A))- P</td>
+<td>Set a load-literal immediate field to bits [20:2] of X; check
+-2<sup>20</sup> &lt;= X &lt; 2<sup>20</sup></td>
+</tr>
+<tr>
+<td>310</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_LD64_GOTOFF_LO15</td>
+<td>G(GDAT(S+A))- GOT</td>
+<td>Set a LD/ST immediate field to bits [14:3] of X; check that 0
+&lt;= X &lt; 2<sup>15</sup>, X&amp;7 = 0</td>
+</tr>
+<tr>
+<td>311</td>
+<td>26</td>
+<td>R_&lt;CLS&gt;_ADR_GOT_PAGE</td>
+<td>Page(G(GDAT(S+A)))-Page(P)</td>
+<td>Set the immediate value of an ADRP to bits [32:12] of X; check
+that -2<sup>32</sup> &lt;= X &lt; 2<sup>32</sup></td>
+</tr>
+<tr>
+<td>312</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_LD64_GOT_LO12_NC</td>
+<td>G(GDAT(S+A))</td>
+<td>Set the LD/ST immediate field to bits [11:3] of X. No overflow
+check; check that X&amp;7 = 0</td>
+</tr>
+<tr>
+<td>-</td>
+<td>27</td>
+<td>R_&lt;CLS&gt;_LD32_GOT_LO12_NC</td>
+<td>G(GDAT(S+A))</td>
+<td>Set the LD/ST immediate field to bits [11:2] of X. No overflow
+check; check that X&amp;3 = 0</td>
+</tr>
+<tr>
+<td>313</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_LD64_GOTPAGE_LO15</td>
+<td>G(GDAT(S+A))-Page(GOT)</td>
+<td>Set the LD/ST immediate field to bits [14:3] of X; check that 0
+&lt;= X &lt; 2<sup>15</sup>, X&amp;7 = 0</td>
+</tr>
+<tr>
+<td>-</td>
+<td>28</td>
+<td>R_&lt;CLS&gt;_LD32_GOTPAGE_LO14</td>
+<td>G(GDAT(S+A))-Page(GOT)</td>
+<td>Set the LD/ST immediate field to bits [13:2] of X; check that 0
+&lt;= X &lt; 2<sup>14</sup>, X&amp;3 = 0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div id="call-and-jump-relocations">
+<h4>Call and Jump relocations<a href="index.html#call-and-jump-relocations"/></h4>
+<p>There is one relocation code (<code>R_&lt;CLS&gt;_CALL26</code>)
+for function call (<code>BL</code>) instructions and one
+(<code>R_&lt;CLS&gt;_JUMP26</code>) for jump (<code>B</code>)
+instructions.</p>
+<p>A linker may use a veneer (a sequence of instructions) to
+implement a relocated branch if the relocation is either</p>
+<p><code>R_&lt;CLS&gt;_CALL26</code> or
+<code>R_&lt;CLS&gt;_JUMP26</code> and:</p>
+<ul>
+<li>The target symbol has type <code>STT_FUNC</code>.</li>
+<li>Or, the target symbol and relocated place are in separate
+sections input to the linker.</li>
+<li>Or, the target symbol is undefined (external to the link
+unit).</li>
+</ul>
+<p>In all other cases a linker shall diagnose an error if
+relocation cannot be effected without a veneer. A linker generated
+veneer may corrupt registers IP0 and IP1 [AAPCS64] and the
+condition flags, but must preserve all other registers. Linker
+veneers may be needed for a number of reasons, including, but not
+limited to:</p>
+<ul>
+<li>Target is outside the addressable span of the branch
+instruction (+/- 128MB).</li>
+<li>Target address will not be known until run time, or the target
+address might be pre-empted.</li>
+</ul>
+<p>In some systems indirect calls may also use veneers in order to
+support dynamic linkage that preserves pointer comparability (all
+reference to the function resolve to the same address).</p>
+<p>On platforms that do not support dynamic pre-emption of symbols
+an unresolved weak reference to a symbol relocated by
+<code>R_&lt;CLS&gt;_CALL26</code> shall be treated as a jump to the
+next instruction (the call becomes a no-op). The behaviour of
+<code>R_&lt;CLS&gt;_JUMP26</code> in these conditions is not
+specified by this standard.</p>
+</div>
+</div>
+<div>
+<div id="group-relocations">
+<h4>Group relocations<a href="index.html#group-relocations"/></h4>
+<p>A relocation code whose name ends in <code>_Gn</code> or
+<code>_Gn_NC</code> (n = 0, 1, 2, 3) relocates an instruction in a
+group of instructions that generate a single value or address (see
+Table 4-7, Table 4-8, Table 4-11, Table 4-12). Each such relocation
+relocates one instruction in isolation, with no need to determine
+all members of the group at link time.</p>
+<p>These relocations operate by performing the relocation
+calculation then extracting a field from the result X. Generating
+the field for a <code>Gn</code> relocation directive starts by
+examining the residual value <code>Yn</code> after the bits of
+<code>abs(X)</code> corresponding to less significant fields have
+been masked off from X. If M is the mask specified in the table
+recording the relocation directive, <code>Yn = abs(X) &amp; ~((M
+&amp; -M) - 1)</code>.</p>
+<p>Overflow checking is performed on Yn unless the name of the
+relocation ends in "<code>_NC</code>".</p>
+<p>Finally the bit-field of X specified in the table (those bits of
+X picked out by 1-bits in M) is encoded into the instruction's
+literal field as specified in the table. In some cases other
+instruction bits may need to be changed according to the sign of
+X.</p>
+<p>For "<code>MOVW</code>" type relocations it is the assembler's
+responsibility to encode the hw bits (bits 21 and 22) to indicate
+the bits in the target value that the immediate field
+represents.</p>
+</div>
+</div>
+<div>
+<div id="proxy-generating-relocations">
+<h4>Proxy-generating relocations<a href="index.html#proxy-generating-relocations"/></h4>
+<p>A number of relocations generate proxy locations that are then
+subject to dynamic relocation. The proxies are normally gathered
+together in a single table, called the Global Offset Table or GOT.
+Table 4-12, Group relocations to create a 16, 32, 48, or 64 bit
+GOT-relative offsets inline and Table 4-14, GOT-relative
+instruction relocations list the relocations that generate proxy
+entries.</p>
+<p>All of the GOT entries generated by these relocations are
+subject to dynamic relocations (<a href="index.html">Dynamic relocations</a>).</p>
+</div>
+</div>
+<div>
+<div id="relocations-for-thread-local-storage">
+<h4>Relocations for thread-local storage<a href="index.html#relocations-for-thread-local-storage"/></h4>
+<p>The static relocations needed to support thread-local storage in
+a SysV-type environment are listed in tables in the following
+subsections</p>
+<p>In addition to the terms defined in <a href="index.html">Relocation types</a>, the tables listing
+the static relocations relating to thread-local storage use the
+following terms in the column named Operation.</p>
+<ul>
+<li><code>GLDM(S)</code> represents a consecutive pair of
+pointer-sized entries in the GOT for the load module index of the
+symbol <code>S</code>. The first pointer-sized entry will be
+relocated with <code>R_&lt;CLS&gt;_TLS_DTPMOD(S);</code> the second
+pointer-sized entry will contain the constant 0.</li>
+<li><code>GTLSIDX(S,A)</code> represents a consecutive pair of
+pointer-sized entries in the GOT. The entry contains a
+<code>tls_index</code> structure describing the thread-local
+variable located at offset <code>A</code> from thread-local symbol
+<code>S</code>. The first pointer-sized entry will be relocated
+with <code>R_&lt;CLS&gt;_TLS_DTPMOD(S)</code>, the second
+pointer-sized entry will be relocated with
+<code>R_&lt;CLS&gt;_TLS_DTPREL(S+A)</code>.</li>
+<li><code>GTPREL(S+A)</code> represents a pointer-sized entry in
+the GOT for the offset from the current thread pointer (TP) of the
+thread-local variable located at offset <code>A</code> from the
+symbol S``. The entry will be relocated with
+<code>R_&lt;CLS&gt;_TLS_TPREL(S+A)</code>.</li>
+<li><code>GTLSDESC(S+A)</code> represents a consecutive pair of
+pointer-sized entries in the GOT which contain a tlsdesc structure
+describing the thread-local variable located at offset A from
+thread-local symbol S. The first entry holds a pointer to the
+variable's TLS descriptor resolver function and the second entry
+holds a platform-specific offset or pointer. The pair of
+pointer-sized entries will be relocated with
+<code>R_&lt;CLS&gt;_TLSDESC(S+A)</code>.</li>
+<li><code>LDM(S)</code> resolves to the load module index of the
+symbol <code>S</code>.</li>
+<li><code>DTPREL(S+A)</code> resolves to the offset from its
+module's TLS block of the thread local variable located at offset
+<code>A</code> from thread-local symbol <code>S</code>.</li>
+<li><code>TPREL(S+A)</code> resolves to the offset from the current
+thread pointer (TP) of the thread local variable located at offset
+<code>A</code> from thread-local symbol <code>S</code>.</li>
+<li><code>TLSDESC(S+A)</code> resolves to a contiguous pair of
+pointer-sized values, as created by
+<code>GTLSDESC(S+A)</code>.</li>
+</ul>
+<div>
+<div id="general-dynamic-thread-local-storage-model">
+<h5>General Dynamic thread-local storage model<a href="index.html#general-dynamic-thread-local-storage-model"/></h5>
+<table id="id17">
+<caption>Table 4-15, General Dynamic TLS relocations</caption>
+<colgroup>
+<col width="7%"/>
+<col width="7%"/>
+<col width="18%"/>
+<col width="18%"/>
+<col width="50%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>512</td>
+<td>80</td>
+<td>R_&lt;CLS&gt;_TLSGD_ ADR_PREL21</td>
+<td>G(GTLSIDX(S,A)) - P</td>
+<td>Set an ADR immediate field to bits [20:0] of X; check
+-2<sup>20</sup> &lt;= X &lt; 2<sup>20</sup></td>
+</tr>
+<tr>
+<td>513</td>
+<td>81</td>
+<td>R_&lt;CLS&gt;_TLSGD_ ADR_PAGE21</td>
+<td>Page(G(GTLSIDX(S,A))) - Page(P)</td>
+<td>Set an ADRP immediate field to bits [32:12] of X; check
+-2<sup>32</sup> &lt;= X &lt; 2<sup>32</sup></td>
+</tr>
+<tr>
+<td>514</td>
+<td>82</td>
+<td>R_&lt;CLS&gt;_TLSGD_ ADD_LO12_NC</td>
+<td>G(GTLSIDX(S,A))</td>
+<td>Set an ADD immediate field to bits [11:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>515</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSGD_ MOVW_G1</td>
+<td>G(GTLSIDX(S,A)) - GOT</td>
+<td>Set a MOV[NZ] immediate field to bits [31:16] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>516</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSGD_ MOVW_G0_NC</td>
+<td>G(GTLSIDX(S,A)) - GOT</td>
+<td>Set a MOVK immediate field to bits [15:0] of X. No overflow
+check</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>Non-checking (<code>_NC</code>) MOVW forms relocate MOVK;
+checking forms relocate <code>MOVN</code> or <code>MOVZ</code>.</p>
+<p><code>X &gt;= 0</code>: Set the instruction to <code>MOVZ</code>
+and its immediate value to the selected bits of X; check that X
+&lt; 2<sup>32</sup>.</p>
+<p><code>X &lt; 0</code>: Set the instruction to
+<code>MOVN</code> and its immediate value to NOT (selected bits of
+X); check that -2<sup>32</sup> &lt;= X.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="local-dynamic-thread-local-storage-model">
+<h5>Local Dynamic thread-local storage model<a href="index.html#local-dynamic-thread-local-storage-model"/></h5>
+<table id="id18">
+<caption>Table 4-16, Local Dynamic TLS relocations</caption>
+<colgroup>
+<col width="7%"/>
+<col width="6%"/>
+<col width="24%"/>
+<col width="14%"/>
+<col width="49%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>517</td>
+<td>83</td>
+<td>R_&lt;CLS&gt;_TLSLD_ ADR_PREL21</td>
+<td>G(GLDM(S))) - P</td>
+<td>Set an ADR immediate field to bits [20:0] of X; check
+-2<sup>20</sup> &lt;= X &lt; 2<sup>20</sup></td>
+</tr>
+<tr>
+<td>518</td>
+<td>84</td>
+<td>R_&lt;CLS&gt;_TLSLD_ ADR_PAGE21</td>
+<td>Page(G(GLDM(S)))-Page(P)</td>
+<td>Set an ADRP immediate field to bits [32:12] of X; check
+-2<sup>32</sup> &lt;= X &lt; 2<sup>32</sup></td>
+</tr>
+<tr>
+<td>519</td>
+<td>85</td>
+<td>R_&lt;CLS&gt;_TLSLD_ ADD_LO12_NC</td>
+<td>G(GLDM(S))</td>
+<td>Set an ADD immediate field to bits [11:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>520</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSLD_ MOVW_G1</td>
+<td>G(GLDM(S)) - GOT</td>
+<td>Set a MOV[NZ] immediate field to bits [31:16] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>521</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSLD_ MOVW_G0_NC</td>
+<td>G(GLDM(S)) - GOT</td>
+<td>Set a MOVK immediate field to bits [15:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>522</td>
+<td>86</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LD_PREL19</td>
+<td>G(GLDM(S)) - P</td>
+<td>Set a load-literal immediate field to bits [20:2] of X; check
+-2<sup>20</sup> &lt;= X &lt; 2<sup>20</sup></td>
+</tr>
+<tr>
+<td>523</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSLD_ MOVW_DTPREL_G2</td>
+<td>DTPREL(S+A)</td>
+<td>Set a MOV[NZ] immediate field to bits [47:32] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>524</td>
+<td>87</td>
+<td>R_&lt;CLS&gt;_TLSLD_ MOVW_DTPREL_G1</td>
+<td>DTPREL(S+A)</td>
+<td>Set a MOV[NZ] immediate field to bits [31:16] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>525</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSLD_ MOVW_DTPREL_G1_NC</td>
+<td>DTPREL(S+A)</td>
+<td>Set a MOVK immediate field to bits [31:16] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>526</td>
+<td>88</td>
+<td>R_&lt;CLS&gt;_TLSLD_ MOVW_DTPREL_G0</td>
+<td>DTPREL(S+A)</td>
+<td>Set a MOV[NZ] immediate field to bits [15:0] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>527</td>
+<td>89</td>
+<td>R_&lt;CLS&gt;_TLSLD_ MOVW_DTPREL_G0_NC</td>
+<td>DTPREL(S+A)</td>
+<td>Set a MOVK immediate field to bits [15:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>528</td>
+<td>90</td>
+<td>R_&lt;CLS&gt;_TLSLD_ ADD_DTPREL_HI12</td>
+<td>DTPREL(S+A)</td>
+<td>Set an ADD immediate field to bits [23:12] of X; check 0 &lt;=
+X &lt; 2<sup>24</sup></td>
+</tr>
+<tr>
+<td>529</td>
+<td>91</td>
+<td>R_&lt;CLS&gt;_TLSLD_ ADD_DTPREL_LO12</td>
+<td>DTPREL(S+A)</td>
+<td>Set an ADD immediate field to bits [11:0] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>530</td>
+<td>92</td>
+<td>R_&lt;CLS&gt;_TLSLD_ ADD_DTPREL_LO12_NC</td>
+<td>DTPREL(S+A)</td>
+<td>Set an ADD immediate field to bits [11:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>531</td>
+<td>93</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST8_DTPREL_LO12</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:0] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>532</td>
+<td>94</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST8_DTPREL_LO12_NC</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>533</td>
+<td>95</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST16_DTPREL_LO12</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:1] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>534</td>
+<td>96</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST16_DTPREL_LO12_NC</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:1] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>535</td>
+<td>97</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST32_DTPREL_LO12</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:2] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>536</td>
+<td>98</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST32_DTPREL_LO12_NC</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:2] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>537</td>
+<td>99</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST64_DTPREL_LO12</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:3] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>538</td>
+<td>100</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST64_DTPREL_LO12_NC</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:3] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>572</td>
+<td>101</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST128_DTPREL_LO12</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:4] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>573</td>
+<td>102</td>
+<td>R_&lt;CLS&gt;_TLSLD_ LDST128_DTPREL_LO12_ NC</td>
+<td>DTPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:4] of X. No overflow
+check</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>Non-checking (<code>_NC</code>) MOVW forms relocate
+<code>MOVK</code>; checking forms relocate <code>MOVN</code> or
+<code>MOVZ</code>.</p>
+<p><code>X &gt;= 0</code>: Set the instruction to <code>MOVZ</code>
+and its immediate value to the selected bits S; for relocation
+<code>R_..._Gn</code>, check in ELF64 that X &lt; {<code>G0:</code>
+2<sup>16</sup>, <code>G1:</code> 2<sup>32</sup>, <code>G2:</code>
+2<sup>48</sup>} (no check for <code>R_..._G3</code>); in ELF32 only
+check that X &lt; 2<sup>16</sup> for <code>R_..._G0</code>.</p>
+<p><code>X &lt; 0</code>: Set the instruction to <code>MOVN</code>
+and its immediate value to NOT (selected bits of); for relocation
+<code>R_..._Gn</code>, check in ELF64 that -{<code>G0:</code>
+2<sup>16</sup>, <code>G1:</code> 2<sup>32</sup>, <code>G2:</code>
+2<sup>48</sup>} &lt;= X (no check for <code>R_..._G3</code>); in
+ELF32 only check that -2<sup>16</sup> &lt;= X for
+<code>R_..._G0</code>.</p>
+<p>For scaled-addressing relocations (533-538, 572 and
+573) or [95-102] a linker should check that X is a multiple of the
+datum size.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="initial-exec-thread-local-storage-model">
+<h5>Initial Exec thread-local storage model<a href="index.html#initial-exec-thread-local-storage-model"/></h5>
+<table id="id19">
+<caption>Table 4-17, Initial Exec TLS relocations</caption>
+<colgroup>
+<col width="6%"/>
+<col width="6%"/>
+<col width="23%"/>
+<col width="17%"/>
+<col width="47%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>539</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSIE_ MOVW_GOTTPREL_G1</td>
+<td>G(GTPREL(S+A)) - GOT</td>
+<td>Set a MOV[NZ] immediate field to bits [31:16] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>540</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSIE_ MOVW_GOTTPREL_G0_NC</td>
+<td>G(GTPREL(S+A)) - GOT</td>
+<td>Set MOVK immediate to bits [15:0] of X. No overflow check</td>
+</tr>
+<tr>
+<td>541</td>
+<td>103</td>
+<td>R_&lt;CLS&gt;_TLSIE_ ADR_GOTTPREL_PAGE21</td>
+<td>Page(G(GTPREL(S+A))) - Page(P)</td>
+<td>Set an ADRP immediate field to bits [32:12] of X; check
+-2<sup>32</sup> &lt;= X &lt; 2<sup>32</sup></td>
+</tr>
+<tr>
+<td>542</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSIE_ LD64_GOTTPREL_LO12_NC</td>
+<td>G(GTPREL(S+A))</td>
+<td>Set an LD offset field to bits [11:3] of X. No overflow check;
+check that X&amp;7=0</td>
+</tr>
+<tr>
+<td>-</td>
+<td>104</td>
+<td>R_&lt;CLS&gt;_TLSIE_ LD32_GOTTPREL_LO12_NC</td>
+<td>G(GTPREL(S+A))</td>
+<td>Set an LD offset field to bits [11:2] of X. No overflow check;
+check that X&amp;3=0</td>
+</tr>
+<tr>
+<td>543</td>
+<td>105</td>
+<td>R_&lt;CLS&gt;_TLSIE_ LD_GOTTPREL_PREL19</td>
+<td>G(GTPREL(S+A)) - P</td>
+<td>Set a load-literal immediate to bits [20:2] of X; check
+-2<sup>20</sup> &lt;= X &lt; 2<sup>20</sup></td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>Non-checking (<code>_NC</code>) <code>MOVW</code>
+forms relocate <code>MOVK</code>; checking forms relocate
+<code>MOVN</code> or <code>MOVZ</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="local-exec-thread-local-storage-model">
+<h5>Local Exec thread-local storage model<a href="index.html#local-exec-thread-local-storage-model"/></h5>
+<table id="id20">
+<caption>Table 4-18, Local Exec TLS relocations</caption>
+<colgroup>
+<col width="8%"/>
+<col width="8%"/>
+<col width="28%"/>
+<col width="8%"/>
+<col width="49%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>544</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSLE_ MOVW_TPREL_G2</td>
+<td>TPREL(S+A)</td>
+<td>Set a MOV[NZ] immediate field to bits [47:32] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>545</td>
+<td>106</td>
+<td>R_&lt;CLS&gt;_TLSLE_ MOVW_TPREL_G1</td>
+<td>TPREL(S+A)</td>
+<td>Set a MOV[NZ] immediate field to bits [31:16] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>546</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSLE_ MOVW_TPREL_G1_NC</td>
+<td>TPREL(S+A)</td>
+<td>Set a MOVK immediate field to bits [31:16] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>547</td>
+<td>107</td>
+<td>R_&lt;CLS&gt;_TLSLE_ MOVW_TPREL_G0</td>
+<td>TPREL(S+A)</td>
+<td>Set a MOV[NZ] immediate field to bits [15:0] of X (see notes
+below)</td>
+</tr>
+<tr>
+<td>548</td>
+<td>108</td>
+<td>R_&lt;CLS&gt;_TLSLE_ MOVW_TPREL_G0_NC</td>
+<td>TPREL(S+A)</td>
+<td>Set a MOVK immediate field to bits [15:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>549</td>
+<td>109</td>
+<td>R_&lt;CLS&gt;_TLSLE_ ADD_TPREL_HI12</td>
+<td>TPREL(S+A)</td>
+<td>Set an ADD immediate field to bits [23:12] of X; check 0 &lt;=
+X &lt; 2<sup>24</sup>.</td>
+</tr>
+<tr>
+<td>550</td>
+<td>110</td>
+<td>R_&lt;CLS&gt;_TLSLE_ ADD_TPREL_LO12</td>
+<td>TPREL(S+A)</td>
+<td>Set an ADD immediate field to bits [11:0] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup>.</td>
+</tr>
+<tr>
+<td>551</td>
+<td>111</td>
+<td>R_&lt;CLS&gt;_TLSLE_ ADD_TPREL_LO12_NC</td>
+<td>TPREL(S+A)</td>
+<td>Set an ADD immediate field to bits [11:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>552</td>
+<td>112</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST8_TPREL_LO12</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:0] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup>.</td>
+</tr>
+<tr>
+<td>553</td>
+<td>113</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST8_TPREL_LO12_NC</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:0] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>554</td>
+<td>114</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST16_TPREL_LO12</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:1] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>555</td>
+<td>115</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST16_TPREL_LO12_NC</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:1] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>556</td>
+<td>116</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST32_TPREL_LO12</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:2] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>557</td>
+<td>117</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST32_TPREL_LO12_NC</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:2] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>558</td>
+<td>118</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST64_TPREL_LO12</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:3] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>559</td>
+<td>119</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST64_TPREL_LO12_NC</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:3] of X. No overflow
+check</td>
+</tr>
+<tr>
+<td>570</td>
+<td>120</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST128_TPREL_LO12</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:4] of X; check 0 &lt;= X
+&lt; 2<sup>12</sup></td>
+</tr>
+<tr>
+<td>571</td>
+<td>121</td>
+<td>R_&lt;CLS&gt;_TLSLE_ LDST128_TPREL_LO12_NC</td>
+<td>TPREL(S+A)</td>
+<td>Set a LD/ST offset field to bits [11:4] of X. No overflow
+check</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p>Non-checking (<code>_NC</code>) <code>MOVW</code> forms relocate
+<code>MOVK</code>; checking forms relocate <code>MOVN</code> or
+<code>MOVZ</code>.</p>
+<p>For scaled-addressing relocations (554-559, 570 and
+571) or [112-121] a linker should check that X is a multiple of the
+datum size.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="thread-local-storage-descriptors">
+<h5>Thread-local storage descriptors<a href="index.html#thread-local-storage-descriptors"/></h5>
+<table id="id21">
+<caption>Table 4-19, TLS descriptor relocations</caption>
+<colgroup>
+<col width="6%"/>
+<col width="6%"/>
+<col width="18%"/>
+<col width="18%"/>
+<col width="51%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>560</td>
+<td>122</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ LD_PREL19</td>
+<td>G(GTLSDESC(S+A)) - P</td>
+<td>Set a load-literal immediate to bits [20:2]; check -220 &lt;= X
+&lt; 2<sup>20</sup>; check X &amp; 3 = 0.</td>
+</tr>
+<tr>
+<td>561</td>
+<td>123</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ ADR_PREL21</td>
+<td>G(GTLSDESC(S+A) - P</td>
+<td>Set an ADR immediate field to bits [20:0]; check -220 &lt;= X
+&lt; 2<sup>20</sup>.</td>
+</tr>
+<tr>
+<td>562</td>
+<td>124</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ ADR_PAGE21</td>
+<td>Page(G(GTLSDESC(S+A))) - Page(P)</td>
+<td>Set an ADRP immediate field to bits [32:12] of X; check
+-2<sup>32</sup> &lt;= X &lt; 2<sup>32</sup>.</td>
+</tr>
+<tr>
+<td>563</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ LD64_LO12</td>
+<td>G(GTLSDESC(S+A))</td>
+<td>Set an LD offset field to bits [11:3] of X. No overflow check;
+check X &amp; 7 = 0.</td>
+</tr>
+<tr>
+<td>-</td>
+<td>125</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ LD32_LO12</td>
+<td>G(GTLSDESC(S+A))</td>
+<td>Set an LD offset field to bits [11:2] of X. No overflow check;
+check X &amp; 3 = 0.</td>
+</tr>
+<tr>
+<td>564</td>
+<td>126</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ ADD_LO12</td>
+<td>G(GTLSDESC(S+A))</td>
+<td>Set an ADD immediate field to bits [11:0] of X. No overflow
+check.</td>
+</tr>
+<tr>
+<td>565</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ OFF_G1</td>
+<td>G(GTLSDESC(S+A)) - GOT</td>
+<td>Set a MOV[NZ] immediate field to bits [31:16] of X; check
+-2<sup>32</sup> &lt;= X &lt; 2<sup>32</sup>. See notes below.</td>
+</tr>
+<tr>
+<td>566</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ OFF_G0_NC</td>
+<td>G(GTLSDESC(S+A)) - GOT</td>
+<td>Set a MOVK immediate field to bits [15:0] of X. No overflow
+check.</td>
+</tr>
+<tr>
+<td>567</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ LDR</td>
+<td>None</td>
+<td>For relaxation only. Must be used to identify an LDR
+instruction which loads the TLS descriptor function pointer for S +
+A if it has no other relocation.</td>
+</tr>
+<tr>
+<td>568</td>
+<td>-</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ ADD</td>
+<td>None</td>
+<td>For relaxation only. Must be used to identify an ADD
+instruction which computes the address of the TLS Descriptor for S
++ A if it has no other relocation.</td>
+</tr>
+<tr>
+<td>569</td>
+<td>127</td>
+<td>R_&lt;CLS&gt;_TLSDESC_ CALL</td>
+<td>None</td>
+<td>For relaxation only. Must be used to identify a BLR instruction
+which performs an indirect call to the TLS descriptor function for
+S + A.</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p>Note</p>
+<p><code>X &gt;= 0</code>: Set the instruction to MOVZ and its
+immediate value to the selected bits of X.</p>
+<p><code>X &lt; 0</code>: Set the instruction to MOVN
+and its immediate value to NOT (selected bits of X).</p>
+</div>
+</div>
+<p>Relocation codes <code>R_&lt;CLS&gt;_TLSDESC_LDR</code>,
+<code>R_&lt;CLS&gt;_TLSDESC_ADD</code> and
+<code>R_&lt;CLS&gt;_TLSDESC_CALL</code> are needed to permit linker
+optimization of TLS descriptor code sequences to use Initial-exec
+or Local-exec TLS sequences; this can only be done if all relevant
+uses of TLS descriptors are marked to permit accurate relaxation.
+Object producers that are unable to satisfy this requirement must
+generate traditional General-dynamic TLS sequences using the
+relocations described in <a href="index.html">General
+Dynamic thread-local storage model</a>. The details of TLS
+descriptors are beyond the scope of this specification; a general
+introduction can be found in [<a href="http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf">TLSDESC</a>].</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="dynamic-relocations">
+<h4>Dynamic relocations<a href="index.html#dynamic-relocations"/></h4>
+<p>The dynamic relocations for those execution environments that
+support only a limited number of run-time relocation types are
+listed in Table 4-20, Dynamic relocations. The enumeration of
+dynamic relocations commences at (1024) or [180] and the range is
+compact.</p>
+<table id="id22">
+<caption>Table 4-20, Dynamic relocations</caption>
+<colgroup>
+<col width="10%"/>
+<col width="10%"/>
+<col width="22%"/>
+<col width="21%"/>
+<col width="37%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ELF64 Code</th>
+<th>ELF32 Code</th>
+<th>Name</th>
+<th>Operation</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>1024</td>
+<td>180</td>
+<td>R_&lt;CLS&gt;_COPY</td>
+<td> </td>
+<td>See note below.</td>
+</tr>
+<tr>
+<td>1025</td>
+<td>181</td>
+<td>R_&lt;CLS&gt;_GLOB_DAT</td>
+<td>S + A</td>
+<td>See note below</td>
+</tr>
+<tr>
+<td>1026</td>
+<td>182</td>
+<td>R_&lt;CLS&gt;_JUMP_SLOT</td>
+<td>S + A</td>
+<td>See note below</td>
+</tr>
+<tr>
+<td>1027</td>
+<td>183</td>
+<td>R_&lt;CLS&gt;_RELATIVE</td>
+<td>Delta(S) + A</td>
+<td>See note below</td>
+</tr>
+<tr>
+<td>1028</td>
+<td> </td>
+<td>R_&lt;CLS&gt;_TLS_DTPREL64</td>
+<td>DTPREL(S+A)</td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td>184</td>
+<td>R_&lt;CLS&gt;_TLS_DTPREL</td>
+<td>DTPREL(S+A)</td>
+<td> </td>
+</tr>
+<tr>
+<td>1029</td>
+<td> </td>
+<td>R_&lt;CLS&gt;_TLS_DTPMOD64</td>
+<td>LDM(S)</td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td>185</td>
+<td>R_&lt;CLS&gt;_TLS_DTPMOD</td>
+<td>LDM(S)</td>
+<td> </td>
+</tr>
+<tr>
+<td>1030</td>
+<td> </td>
+<td>R_&lt;CLS&gt;_TLS_TPREL64</td>
+<td>TPREL(S+A)</td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td>186</td>
+<td>R_&lt;CLS&gt;_TLS_TPREL</td>
+<td>TPREL(S+A)</td>
+<td> </td>
+</tr>
+<tr>
+<td>1031</td>
+<td>187</td>
+<td>R_&lt;CLS&gt;_TLSDESC</td>
+<td>TLSDESC(S+A)</td>
+<td>Identifies a TLS descriptor to be filled</td>
+</tr>
+<tr>
+<td>1032</td>
+<td>188</td>
+<td>R_&lt;CLS&gt;_IRELATIVE</td>
+<td>Indirect(Delta(S) + A)</td>
+<td>See note below.</td>
+</tr>
+</tbody>
+</table>
+<p>With the exception of <code>R_&lt;CLS&gt;_COPY</code> all
+dynamic relocations require that the place being relocated is an
+8-byte aligned 64-bit data location in ELF64 or a 4-byte aligned
+32-bit data location in ELF32.</p>
+<p><code>R_&lt;CLS&gt;_COPY</code> may only appear in executable
+ELF files where e_type is set to <code>ET_EXEC</code>. The effect
+is to cause the dynamic linker to locate the target symbol in a
+shared library object and then to copy the number of bytes
+specified by its <code>st_size</code> field to the place. The
+address of the place is then used to pre-empt all other references
+to the specified symbol. It is an error if the storage space
+allocated in the executable is insufficient to hold the full copy
+of the symbol. If the object being copied contains dynamic
+relocations then the effect must be as if those relocations were
+performed before the copy was made.</p>
+<p><code>R_&lt;CLS&gt;_COPY</code> is normally only used in SysV
+type environments where the executable is not position- independent
+and references by the code and read-only data sections cannot be
+relocated dynamically to refer to an object that is defined in a
+shared library.</p>
+<p>The need for copy relocations can be avoided if a compiler
+generates all code references to such objects indirectly through a
+dynamically relocatable location and if all static data references
+are placed in relocatable regions of the image. In practice, this
+is difficult to achieve without source-code annotation. A better
+approach is to avoid defining static global data in shared
+libraries.</p>
+<p><code>R_&lt;CLS&gt;_GLOB_DAT</code> relocates a GOT entry used
+to hold the address of a (data) symbol which must be resolved at
+load time.</p>
+<p><code>R_&lt;CLS&gt;_JUMP_SLOT</code> is used to mark code
+targets that will be executed.</p>
+<ul>
+<li>On platforms that support dynamic binding the relocations may
+be performed lazily on demand.</li>
+<li>The initial value stored in the place is the offset to the
+entry sequence stub for the dynamic linker. It must be adjusted
+during initial loading by the offset of the load address of the
+segment from its link address.</li>
+<li>Addresses stored in the place of these relocations may not be
+used for pointer comparison until the relocation after has been
+resolved.</li>
+<li>Because the initial value of the place is not related to the
+ultimate target of a <code>R_&lt;CLS&gt;_JUMP_SLOT</code>
+relocation the addend A of such a REL-type relocation shall be zero
+rather than the initial content of the place. A platform ABI shall
+prescribe whether or not the <code>r_addend</code> field of such a
+RELA-type relocation is honored. (There may be security-related
+reasons not to do so).</li>
+</ul>
+<p><code>R_&lt;CLS&gt;_RELATIVE</code> represents a relative
+adjustment to the place based on the load address of the object
+relative to its original link address. All symbols defined in the
+same segment will have the same relative adjustment. If S is the
+null symbol (ELF symbol index 0) then the adjustment is based on
+the segment defining the place. On systems where all segments are
+mapped contiguously the adjustment will be the same for each
+reloction, thus adjustment never needs to resolve the symbol. This
+relocation represents an optimization; it can be used to replace
+<code>R_&lt;CLS&gt;_GLOB_DAT</code> when the symbol resolves to the
+current dynamic shared object.</p>
+<p><code>R_&lt;CLS&gt;_IRELATIVE</code> represents a dynamic
+selection of the place's resolved value. The means by which this
+relocation is generated is platform specific, as are the conditions
+that must hold when resolving takes place.</p>
+</div>
+</div>
+<div>
+<div id="private-and-platform-specific-relocations">
+<h4>Private and platform-specific relocations<a href="index.html#private-and-platform-specific-relocations"/></h4>
+<p>Private relocations for vendor experiments:</p>
+<ul>
+<li>0xE000 to 0xEFFF for ELF64</li>
+<li>0xE0 to 0xEF for ELF32</li>
+</ul>
+<p>Platform ABI defined relocations:</p>
+<ul>
+<li>0xF000 to 0xFFFF for ELF64</li>
+<li>0xF0 to 0xFF for ELF32</li>
+</ul>
+<p>Platform ABI relocations can only be interpreted when the
+EI_OSABI field is set to indicate the Platform ABI governing the
+definition.</p>
+<p>All of the above codes will not be assigned by any future
+version of this standard.</p>
+</div>
+</div>
+<div>
+<div id="unallocated-relocations">
+<h4>Unallocated relocations<a href="index.html#unallocated-relocations"/></h4>
+<p>All unallocated relocation types are reserved for use by future
+revisions of this specification.</p>
+</div>
+</div>
+<div>
+<div id="aaelf64-section4-6-14">
+<h4>Idempotency<a href="index.html#aaelf64-section4-6-14"/></h4>
+<p>All <code>RELA</code> type relocations are idempotent. They may
+be reapplied to the place and the result will be the same. This
+allows a static linker to preserve full relocation information for
+an image by converting all <code>REL</code> type relocations into
+<code>RELA</code> type relocations.</p>
+<div>
+<div>
+<p>Note</p>
+<p>A <code>REL</code> type relocation can only be
+idempotent if the original addend was zero and if subsequent
+re-linking assumes that <code>REL</code> relocations have zero for
+all addends.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="program-loading-and-dynamic-linking">
+<h2>Program Loading and Dynamic Linking<a href="index.html#program-loading-and-dynamic-linking"/></h2>
+<p>This section provides details of AArch64-specific definitions
+and changes relating to executable images.</p>
+<div>
+<div id="program-header">
+<h3>Program Header<a href="index.html#program-header"/></h3>
+<p>The Program Header provides a number of fields that assist in
+interpretation of the file. Most of these are specified in the base
+standard [<a href="http://www.sco.com/developers/gabi/">SCO-ELF</a>]. The following
+fields have AArch64-specific meanings.</p>
+<ul>
+<li>p_typeTable 5-1, Processor-specific segment types lists the
+processor-specific segment types.</li>
+</ul>
+<table id="id23">
+<caption>Table 5-1, Processor-specific segment types</caption>
+<colgroup>
+<col width="26%"/>
+<col width="14%"/>
+<col width="60%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>p_type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>PT_AARCH64_ARCHEXT</td>
+<td>0x70000000</td>
+<td>Reserved for architecture compatibility information</td>
+</tr>
+<tr>
+<td>PT_AARCH64_UNWIND</td>
+<td>0x70000001</td>
+<td>Reserved for exception unwinding tables</td>
+</tr>
+</tbody>
+</table>
+<p>A segment of type <code>PT_AARCH64_ARCHEXT</code> (if present)
+contains information describing the architecture capabilities
+required by the executable file. Not all platform ABIs require this
+segment; the Linux ABI does not. If the segment is present it must
+appear before segment of type <code>PT_LOAD</code>.</p>
+<p><code>PT_AARCH64_UNWIND</code> (if present) describes the
+location of a program's exception unwind tables.</p>
+<ul>
+<li>p_flagsThere are no AArch64-specific flags.</li>
+</ul>
+<div>
+<div id="platform-architecture-compatibility-data">
+<h4>Platform architecture compatibility data<a href="index.html#platform-architecture-compatibility-data"/></h4>
+<p>At this time this ABI specifies no generic platform architecture
+compatibility data.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="program-property">
+<h3>Program Property<a href="index.html#program-property"/></h3>
+<p>The following processor-specific program property types
+[<a href="https://github.com/hjl-tools/linux-abi/wiki">LINUX_ABI</a>]
+are defined:</p>
+<table id="id24">
+<caption>Table 5-2, Program Property Type</caption>
+<colgroup>
+<col width="77%"/>
+<col width="23%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>GNU_PROPERTY_AARCH64_FEATURE_1_AND</td>
+<td>0xc0000000</td>
+</tr>
+</tbody>
+</table>
+<p><code>GNU_PROPERTY_AARCH64_FEATURE_1_AND</code> represents a
+bitfield of individual features. It has a single 4-byte integer for
+the <code>pr_data</code> field. For each feature, a static linker
+must set its corresponding bit if all input relocatable object
+files have the feature bit set.</p>
+<p>The following bits are defined for
+GNU_PROPERTY_AARCH64_FEATURE_1_AND:</p>
+<table id="id25">
+<caption>Table 5-3, GNU_PROPERTY_AARCH64_FEATURE_1_AND Bit
+Flags</caption>
+<colgroup>
+<col width="77%"/>
+<col width="23%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>GNU_PROPERTY_AARCH64_FEATURE_1_BTI</td>
+<td>1U &lt;&lt; 0</td>
+</tr>
+<tr>
+<td>GNU_PROPERTY_AARCH64_FEATURE_1_PAC</td>
+<td>1U &lt;&lt; 1</td>
+</tr>
+</tbody>
+</table>
+<p><code>GNU_PROPERTY_AARCH64_FEATURE_1_BTI</code> This indicates
+that all executable sections are compatible with Branch Target
+Identification mechanism. An executable or shared object with this
+bit set is requried to generate <a href="index.html">Custom PLTs</a> with BTI instruction.</p>
+<p><code>GNU_PROPERTY_AARCH64_FEATURE_1_PAC</code> This indicates
+that all executable sections have Return Address Signing enabled.
+An executable or shared object with this bit set can generate
+<a href="index.html">Custom PLTs</a> with a PAC
+instruction.</p>
+</div>
+</div>
+<div>
+<div id="program-loading">
+<h3>Program Loading<a href="index.html#program-loading"/></h3>
+<div>
+<div id="process-gnu-property-aarch64-feature-1-bti">
+<h4>Process <code>GNU_PROPERTY_AARCH64_FEATURE_1_BTI</code><a href="index.html#process-gnu-property-aarch64-feature-1-bti"/></h4>
+<p>If Branch Target Identification mechanism is enabled on a
+processor then the Guard Page (GP) bit must be disabled on the
+memory image of loaded executable segments of executables and
+shared objects that do not have
+<code>GNU_PROPERTY_AARCH64_FEATURE_1_BTI</code> set, before
+execution is transferred to them.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="dynamic-linking">
+<h3>Dynamic Linking<a href="index.html#dynamic-linking"/></h3>
+<div>
+<div id="custom-plts">
+<h4>Custom PLTs<a href="index.html#custom-plts"/></h4>
+<ul>
+<li>To support Branch Target Identification mechinasm, in the
+presense of a <code>GNU_PROPERTY_AARCH64_FEATURE_1_BTI</code> all
+PLT entries generated by the linker must have a BTI instruction as
+the first instruction. The linker must add the
+<code>DT_AARCH64_BTI_PLT</code> (<a href="index.html">Table
+5-4, AArch64 specific dynamic array tags</a>) tag to the dynamic
+section.</li>
+<li>To support Pointer Authentication, PLT entries generated by the
+linker can have an authenticating instruction as the final
+instruction before branching back. The linker must add the
+<code>DT_AARCH64_PAC_PLT</code> (<a href="index.html">Table
+5-4, AArch64 specific dynamic array tags</a>) tag to the dynamic
+section.</li>
+<li>If the linker generates custom PLT entries with both BTI and
+PAC instructions, it must add both <code>DT_AARCH64_BTI_PLT</code>
+and <code>DT_AARCH64_PAC_PLT</code> tags to the dynamic
+section.</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="dynamic-section">
+<h4>Dynamic Section<a href="index.html#dynamic-section"/></h4>
+<p>AArch64 specifies the following processor-specific dynamic array
+tags.</p>
+<table id="id26">
+<caption>Table 5-4, AArch64 specific dynamic array tags</caption>
+<colgroup>
+<col width="28%"/>
+<col width="15%"/>
+<col width="10%"/>
+<col width="23%"/>
+<col width="23%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>d_un</th>
+<th>Executable</th>
+<th>Shared Object</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>DT_AARCH64_BTI_PLT</td>
+<td>0x70000001</td>
+<td>d_val</td>
+<td>Platform specific</td>
+<td>Platform Specific</td>
+</tr>
+<tr>
+<td>DT_AARCH64_PAC_PLT</td>
+<td>0x70000003</td>
+<td>d_val</td>
+<td>Platform specific</td>
+<td>Platform Specific</td>
+</tr>
+</tbody>
+</table>
+<p><code>DT_AARCH64_BTI_PLT</code> indicates PLTs enabled with
+Branch Target Identification mechanism.</p>
+<p><code>DT_AARCH64_PAC_PLT</code> indicates PLTs enabled with
+Pointer Authentication.</p>
+<p>The presence of both <code>DT_AARCH64_BTI_PLT</code> and
+<code>DT_AARCH64_PAC_PLT</code> indicates PLTs enabled with both
+Branch Target Identification mechanism and Pointer
+Authentication.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+<div>
+
+</div>
+</body>
+</html>

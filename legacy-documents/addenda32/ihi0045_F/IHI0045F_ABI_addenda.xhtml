@@ -1,0 +1,5364 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
+<head>
+<meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.7.28"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Addenda to, and Errata in, the ABI for the Arm® Architecture
+— ABI 2018Q4 documentation</title>
+
+<meta name="keywords" content=""/></head>
+<body>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div id="addenda-to-and-errata-in-the-abi-for-the-armreg-architecture">
+<h2>Addenda to, and Errata in, the ABI for the Arm®
+Architecture</h2>
+<p>Document number: IHI 0045F, current through ABI release
+2018Q4</p>
+<p>Date of Issue: 21<sup>st</sup> December 2018</p>
+
+<div>
+<div>
+<div>
+<div id="preamble">
+<h2>Preamble</h2>
+<div>
+<div>
+<div>
+<div id="abstract">
+<h3>Abstract</h3>
+<p>This document describes late additions (addenda) to the ABI for
+the Arm Architecture version 2.0, and errors (errata) discovered in
+it after publication.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="keywords">
+<h3>Keywords</h3>
+<p>Addenda to the ABI for the Arm Architecture, errata in the ABI
+for the Arm Architecture</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it">
+<h3>How to find the latest release of this specification or report
+a defect in it</h3>
+<p>Please check the Arm Developer site (<a href="https://developer.arm.com/products/software-development-tools/specifications">https://developer.arm.com/products/software-development-tools/specifications</a>)
+for a later release if your copy is more than one year old.</p>
+<p>Please report defects in this specification to <em>arm</em> dot
+<em>eabi</em> at <em>arm</em> dot <em>com</em>.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="licence">
+<h3>Licence</h3>
+<p>THE TERMS OF YOUR ROYALTY FREE LIMITED LICENCE TO USE THIS ABI
+SPECIFICATION ARE GIVEN IN <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> (Arm contract reference LEC-ELA-00081 V2.0).
+PLEASE READ THEM CAREFULLY.</p>
+<p>BY DOWNLOADING OR OTHERWISE USING THIS SPECIFICATION, YOU AGREE
+TO BE BOUND BY ALL OF ITS TERMS. IF YOU DO NOT AGREE TO THIS, DO
+NOT DOWNLOAD OR USE THIS SPECIFICATION. THIS ABI SPECIFICATION IS
+PROVIDED "AS IS" WITH NO WARRANTIES (SEE <a href="index.html#your-licence-to-use-this-specification">Your licence to use this
+specification</a> FOR DETAILS).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="non-confidential-proprietary-notice">
+<h3>Non-Confidential Proprietary Notice</h3>
+<p>This document is protected by copyright and other related rights
+and the practice or implementation of the information contained in
+this document may be protected by one or more patents or pending
+patent applications. No part of this document may be reproduced in
+any form by any means without the express prior written permission
+of Arm. No license, express or implied, by estoppel or otherwise to
+any intellectual property rights is granted by this document unless
+specifically stated.</p>
+<p>Your access to the information in this document is conditional
+upon your acceptance that you will not use or permit others to use
+the information for the purposes of determining whether
+implementations infringe any third party patents.</p>
+<p>THIS DOCUMENT IS PROVIDED "AS IS". ARM PROVIDES NO
+REPRESENTATIONS AND NO WARRANTIES, EXPRESS, IMPLIED OR STATUTORY,
+INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, SATISFACTORY QUALITY, NON-INFRINGEMENT OR FITNESS
+FOR A PARTICULAR PURPOSE WITH RESPECT TO THE DOCUMENT. For the
+avoidance of doubt, Arm makes no representation with respect to,
+and has undertaken no analysis to identify or understand the scope
+and content of, patents, copyrights, trade secrets, or other
+rights.</p>
+<p>This document may include technical inaccuracies or
+typographical errors.</p>
+<p>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL ARM BE
+LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES,
+HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING
+OUT OF ANY USE OF THIS DOCUMENT, EVEN IF ARM HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.</p>
+<p>This document consists solely of commercial items. You shall be
+responsible for ensuring that any use, duplication or disclosure of
+this document complies fully with any relevant export laws and
+regulations to assure that this document or any portion thereof is
+not exported, directly or indirectly, in violation of such export
+laws. Use of the word "partner" in reference to Arm's customers is
+not intended to create or refer to any partnership relationship
+with any other company. Arm may make changes to this document at
+any time and without notice.</p>
+<p>If any of the provisions contained in these terms conflict with
+any of the provisions of any click through or signed written
+agreement covering this document with Arm, then the click through
+or signed written agreement prevails over and supersedes the
+conflicting provisions of these terms. This document may be
+translated into other languages for convenience, and you agree that
+if there is any conflict between the English version of this
+document and any translation, the terms of the English version of
+the Agreement shall prevail.</p>
+<p>The Arm corporate logo and words marked with ® or ™ are
+registered trademarks or trademarks of Arm Limited (or its
+subsidiaries) in the US and/or elsewhere. All rights reserved.
+Other brands and names mentioned in this document may be the
+trademarks of their respective owners. Please follow Arm's
+trademark usage guidelines at <a href="http://www.arm.com/company/policies/trademarks">http://www.arm.com/company/policies/trademarks</a>.</p>
+<p>Copyright © [2018] Arm Limited or its affiliates. All rights
+reserved.</p>
+<p>Arm Limited. Company 02557590 registered in England. 110
+Fulbourn Road, Cambridge, England CB1 9NJ. LES-PRE-20349</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="contents">
+<h3>Contents</h3>
+<div>
+<div>
+<div>
+<div id="id1">
+<p>Contents</p>
+<ul>
+<li><a href="index.html#addenda-to-and-errata-in-the-abi-for-the-armreg-architecture" id="id33">Addenda to, and Errata in, the ABI for the Arm®
+Architecture</a>
+<ul>
+<li><a href="index.html#preamble" id="id34">Preamble</a>
+<ul>
+<li><a href="index.html#abstract" id="id35">Abstract</a></li>
+<li><a href="index.html#keywords" id="id36">Keywords</a></li>
+<li><a href="index.html#how-to-find-the-latest-release-of-this-specification-or-report-a-defect-in-it" id="id37">How to find the latest release of this
+specification or report a defect in it</a></li>
+<li><a href="index.html#licence" id="id38">Licence</a></li>
+<li><a href="index.html#non-confidential-proprietary-notice" id="id39">Non-Confidential Proprietary Notice</a></li>
+<li><a href="index.html#contents" id="id40">Contents</a></li>
+</ul>
+</li>
+<li><a href="index.html#about-this-document" id="id41">ABOUT THIS
+DOCUMENT</a>
+<ul>
+<li><a href="index.html#change-control" id="id42">Change
+control</a></li>
+<li><a href="index.html#references" id="id43">References</a></li>
+<li><a href="index.html#terms-and-abbreviations" id="id44">Terms
+and abbreviations</a></li>
+<li><a href="index.html#your-licence-to-use-this-specification" id="id45">Your licence to use this specification</a></li>
+</ul>
+</li>
+<li><a href="index.html#addendum-build-attributes" id="id46">ADDENDUM: Build Attributes</a>
+<ul>
+<li><a href="index.html#introduction-to-build-attributes" id="id47">Introduction to build attributes</a></li>
+<li><a href="index.html#representing-build-attributes-in-elf-files" id="id48">Representing build attributes in ELF files</a></li>
+<li><a href="index.html#public-aeabi-attribute-tags" id="id49">Public ("aeabi") attribute tags</a></li>
+<li><a href="index.html#arm-cpu-names-recognized-by-arm-compiler-5-01-armcc" id="id50">Arm CPU names recognized by Arm Compiler 5.01
+(armcc)</a></li>
+<li><a href="index.html#attributes-summary-and-history" id="id51">Attributes summary and history</a></li>
+</ul>
+</li>
+<li><a href="index.html#addendum-thread-local-storage" id="id52">ADDENDUM: Thread Local Storage</a>
+<ul>
+<li><a href="index.html#introduction-to-thread-local-storage" id="id53">Introduction to thread local storage</a></li>
+<li><a href="index.html#introduction-to-tls-addressing" id="id54">Introduction to TLS addressing</a></li>
+<li><a href="index.html#linux-for-arm-tls-addressing" id="id55">Linux for Arm TLS addressing</a></li>
+</ul>
+</li>
+<li><a href="index.html#reserved-names" id="id56">Reserved
+Names</a></li>
+<li><a href="index.html#errata-and-minor-addenda" id="id57">Errata and Minor Addenda</a>
+<ul>
+<li><a href="index.html#dwarf-for-the-arm-architecture" id="id58">DWARF for the Arm Architecture</a></li>
+<li><a href="index.html#elf-for-the-arm-architecture" id="id59">ELF for the Arm Architecture</a></li>
+<li><a href="index.html#procedure-call-standard-for-the-arm-architecture" id="id60">Procedure Call Standard for the Arm
+Architecture</a></li>
+<li><a href="index.html#base-platform-abi-for-the-arm-architecture" id="id61">Base Platform ABI for the Arm Architecture</a></li>
+<li><a href="index.html#c-library-abi-for-the-arm-architecture" id="id62">Library ABI for the Arm Architecture</a></li>
+<li><a href="index.html#c-abi-for-the-arm-architecture" id="id63">C++ ABI for the Arm Architecture</a></li>
+<li><a href="index.html#exception-handling-abi-for-the-arm-architecture" id="id64">Exception Handling ABI for the Arm
+Architecture</a></li>
+<li><a href="index.html#run-time-abi-for-the-arm-architecture" id="id65">Run-time ABI for the Arm Architecture</a></li>
+<li><a href="index.html#abi-for-the-arm-architecture-the-base-standard" id="id66">ABI for the Arm Architecture - The Base
+Standard</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="about-this-document">
+<h2>ABOUT THIS DOCUMENT</h2>
+<div>
+<div>
+<div>
+<div id="change-control">
+<h3>Change control</h3>
+<div>
+<div>
+<div>
+<div id="current-status-and-anticipated-changes">
+<h4>Current status and anticipated changes</h4>
+<p>The following support level definitions are used by the Arm ABI
+specifications:</p>
+<ul>
+<li>ReleaseArm considers this specification to have enough
+implementations, which have received sufficient testing, to verify
+that it is correct. The details of these criteria are dependent on
+the scale and complexity of the change over previous versions:
+small, simple changes might only require one implementation, but
+more complex changes require multiple independent implementations,
+which have been rigorously tested for cross-compatibility. Arm
+anticipates that future changes to this specification will be
+limited to typographical corrections, clarifications and compatible
+extensions.</li>
+<li>BetaArm considers this specification to be complete, but
+existing implementations do not meet the requirements for
+confidence in its release quality. Arm may need to make
+incompatible changes if issues emerge from its implementation.</li>
+<li>AlphaThe content of this specification is a draft, and Arm
+considers the likelihood of future incompatible changes to be
+significant.</li>
+</ul>
+<p>All content in this document is at the "Release" quality
+level.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="change-history">
+<h4>Change history</h4>
+<table>
+<colgroup>
+<col width="5%"/>
+<col width="5%"/>
+<col width="28%"/>
+<col width="3%"/>
+<col width="58%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Issue</th>
+<th> </th>
+<th>Date</th>
+<th>By</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>v1.0</td>
+<td>r2.0</td>
+<td>24<sup>th</sup> March 2005</td>
+<td>LS</td>
+<td>First public release.</td>
+</tr>
+<tr>
+<td>v1.01</td>
+<td>r2.01</td>
+<td>4<sup>th</sup> July 2005</td>
+<td>LS</td>
+<td>Added new <a href="index.html">Coding
+extensibility and compatibility</a>. Noted component errata and
+omissions (<a href="index.html">ELF for the Arm
+Architecture</a>, <a href="index.html">Library ABI for
+the Arm Architecture</a>, and <a href="index.html">C++
+ABI for the Arm Architecture</a>).</td>
+</tr>
+<tr>
+<td>v1.02</td>
+<td> </td>
+<td>7<sup>th</sup> October 2005</td>
+<td>LS</td>
+<td>Added WMMX v2 architecture, TAG_CPU_unaligned_access (<a href="index.html">Public ("aeabi") attribute tags</a>);
+changed R_ARM_PC24 to R_ARM_CALL (<a href="index.html">Linux for Arm general dynamic model</a>);
+added list of reserved name-space prefixes (<a href="index.html">Reserved Names</a>); noted errata and
+omissions (<a href="index.html">DWARF for the Arm
+Architecture</a>, <a href="index.html">Procedure Call
+Standard for the Arm Architecture</a>, <a href="index.html">Library ABI for the Arm Architecture</a>,
+<a href="index.html">Exception Handling ABI for the Arm
+Architecture</a>, and <a href="index.html">Run-time ABI
+for the Arm Architecture</a>)</td>
+</tr>
+<tr>
+<td>v1.03</td>
+<td>r2.02</td>
+<td>13<sup>th</sup> October 2005</td>
+<td>LS</td>
+<td>Minor typographical fixes.</td>
+</tr>
+<tr>
+<td>v1.04</td>
+<td>r2.03</td>
+<td>6<sup>th</sup> January 2006</td>
+<td>LS</td>
+<td>Noted errata and omissions (<a href="index.html#addenda32-section5-2-1">Clarifications</a>, <a href="index.html#addenda32-section5-2-3">Additions and omissions fixed</a>, and
+<a href="index.html#addenda32-section5-6-1">Clarifications</a>).</td>
+</tr>
+<tr>
+<td>v1.05</td>
+<td>r2.04</td>
+<td>8<sup>th</sup> May 2006</td>
+<td>LS</td>
+<td>Added missing Tag_FP_arch value for VFPv3 (<a href="index.html">Target-related attributes</a>). Noted
+errata and omissions (<a href="index.html">Errors
+fixed</a>, <a href="index.html#addenda32-section5-2-3">Additions and
+omissions fixed</a>, <a href="index.html#addenda32-section5-3-1">Clarifications</a>, <a href="index.html#addenda32-section5-5-2">Errors fixed</a>, and <a href="index.html#addenda32-section5-6-1">Clarifications</a>).</td>
+</tr>
+<tr>
+<td>v1.06</td>
+<td>r2.05</td>
+<td>18<sup>th</sup> January 2007</td>
+<td>LS</td>
+<td>Major clarification of, and some compatible extension to,
+<a href="index.html">ADDENDUM: Build Attributes</a>.</td>
+</tr>
+<tr>
+<td>v1.07</td>
+<td>r2.06</td>
+<td>23<sup>rd</sup> October 2007</td>
+<td>LS</td>
+<td>Added: CPU_arch values for v6S-M and v6-M; and VFP_arch value
+for VFPv3-D16; added Tag_nodefaults, Tag_ABI_FP_16bit_format, and
+Tag_FP_HP_extension. Rewrote <a href="index.html">ADDENDUM: Build Attributes</a>. Noted errata
+and omissions.</td>
+</tr>
+<tr>
+<td>A</td>
+<td> </td>
+<td>25<sup>th</sup> October 2007</td>
+<td>LS</td>
+<td>Document renumbered (formerly GENC-005895 v1.07).</td>
+</tr>
+<tr>
+<td>A</td>
+<td> </td>
+<td>13<sup>th</sup> November 2007</td>
+<td>LS</td>
+<td>Minor corrections to <a href="index.html">Errata and
+Minor Addenda</a></td>
+</tr>
+<tr>
+<td>B</td>
+<td>r2.07</td>
+<td>10<sup>th</sup> October 2008</td>
+<td>LS</td>
+<td>Added architecture tags Tag_T2EE_use, Tag_Virtualization_use,
+and Tag_MPextension_use; clarified definitions of Tag_CPU_name and
+Tag_CPU_raw_name (<a href="index.html">The
+target-related attributes</a>); clarified tag value inheritance and
+Tag_Nodefaults (<a href="index.html">Default values
+for public tags</a>, <a href="index.html">Inheritance
+of public tag values</a>, <a href="index.html">No
+defaults tag</a>).</td>
+</tr>
+<tr>
+<td>C</td>
+<td>r2.08</td>
+<td>4<sup>th</sup> November 2009</td>
+<td>LS</td>
+<td>(<a href="index.html">The target-related
+attributes</a>): added Tag_CPU_arch enum value V7E-M =13; renamed
+Tag_VFP_arch to Tag_FP_arch, added values for VFPv4; renamed
+Tag_VFP_HP_extension to Tag_FP_HP_extension; added value to
+Tag_Advanced_SIMD_arch for Neon with fused MAC; added values to
+Tag_Virtualization_use describing use of the virtualization
+extensions; recoded Tag_MPextension use to catch potential
+user-mode faults; added Tag_DIV_use to describe use of UDIV/SDIV in
+code for v7A. (<a href="index.html">The procedure
+call-related attributes</a>) clarified the role of R9 when used as
+a TLS (Tag_ABI_PCS_R9_use = 2). Renamed and extended
+Tag_ABI_align8_needed, Tag_ABI_align8_preserved to data with
+extended 2n-byte alignment (for n in 4-12).</td>
+</tr>
+<tr>
+<td>D</td>
+<td>r2.09</td>
+<td>30<sup>th</sup> November 2012</td>
+<td>AC</td>
+<td>Made section and symbol attributes deprecated and optional
+(<a href="index.html">The scope of build
+attributes</a>, <a href="index.html">Formal syntax of
+a public ("aeabi") attributes subsection</a>, <a href="index.html">Inheritance of public tag values</a>,
+<a href="index.html">No defaults tag</a>). (<a href="index.html">Formal syntax of a public ("aeabi")
+attributes subsection</a>) clarified section and symbol numbers are
+ULEB128. (<a href="index.html">The target-related
+attributes</a>) added architecture v8 values to Tag_CPU_arch,
+Tag_FP_arch, Tag_Advanced_SIMD_arch; clarified use of existing
+Tag_Advanced_SIMD_arch and Tag_FP_HP_extension values; clarified
+the meaning of Tag_DIV_use; deprecated Tag_T2EE_use. (<a href="index.html">The procedure call-related
+attributes</a>) fixed typo in Tag_ABI_FP_exceptions; clarified use
+of Tag_ABI_HardFP_use values and removed pointless DP-only option;
+added enum value to Tag_ABI_VFP_args for code compatible with both
+the base and VFP variants. (<a href="index.html">Secondary compatibility tag</a>
+clarified the format of Tag_also_compatible_with data. (<a href="index.html">Arm CPU names recognized by Arm Compiler
+5.01 (armcc)</a>) updated list of recognised CPU names.</td>
+</tr>
+<tr>
+<td>E</td>
+<td>r2.10</td>
+<td>24<sup>th</sup> November 2015</td>
+<td>CR</td>
+<td>(<a href="index.html">The target-related
+attributes</a>) added architecture v8.1 values to
+Tag_Advanced_SIMD_arch.</td>
+</tr>
+<tr>
+<td>F</td>
+<td>2018Q4</td>
+<td>21<sup>st</sup> December 2018</td>
+<td>OS</td>
+<td>
+<p>In <a href="index.html">The
+target-related attributes</a>, deprecated values 1 and 2 of
+Tag_THUMB_ISA_use, added value 3.</p>
+<p>In <a href="index.html">The target-related
+attributes</a>, deprecated Tag_CPU_arch_profile for architecture
+version 8 onwards.</p>
+<p>In <a href="index.html">The
+target-related attributes</a>, defined build attributes for
+Armv8-M, Armv8-R, Armv8.1-A, Armv8.2-A and Armv8.3-A.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="references">
+<h3>References</h3>
+<p>This document refers to the following documents.</p>
+<table>
+<colgroup>
+<col width="19%"/>
+<col width="42%"/>
+<col width="39%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Ref</th>
+<th>Status / External URL</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a></td>
+<td> </td>
+<td>ELF for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a></td>
+<td> </td>
+<td>Procedure Call Standard for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0036/latest">BSABI</a></td>
+<td> </td>
+<td>ABI for the Arm Architecture (Base Standard).</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a></td>
+<td> </td>
+<td>Exception Handling ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a></td>
+<td> </td>
+<td>Run-time ABI for the Arm Architecture</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">
+ARMARM</a></td>
+<td>
+<p><a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">
+https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition</a></p>
+<p><a href="https://developer.arm.com/products/architecture/m-profile/docs/ddi0403/e/armv7-m-architecture-reference-manual">
+https://developer.arm.com/products/architecture/m-profile/docs/ddi0403/e/armv7-m-architecture-reference-manual</a></p>
+</td>
+<td>
+<p>Arm DDI 0406: Arm Architecture Reference Manual
+Arm v7-A and Arm v7-R edition</p>
+<p>Arm DDI 0403C: Armv7-M Architecture Reference
+Manual</p>
+</td>
+</tr>
+<tr>
+<td><a href="https://developer.arm.com/products/software-development-tools/compilers/arm-compiler-5/docs/101028/latest/1-preface">
+ACLE</a></td>
+<td>IHI 0053A</td>
+<td>Arm C Language Extensions</td>
+</tr>
+<tr>
+<td><a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a></td>
+<td><a href="http://dwarfstd.org/Dwarf3Std.php">http://dwarfstd.org/Dwarf3Std.php</a></td>
+<td>DWARF 3.0, the generic debug table format.</td>
+</tr>
+<tr>
+<td><a href="http://www.sco.com/developers/gabi/">GELF</a></td>
+<td><a href="http://www.sco.com/developers/gabi/">http://www.sco.com/developers/gabi/</a>
+...</td>
+<td>Generic ELF, 17<sup>th</sup> December 2003 draft.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="terms-and-abbreviations">
+<h3>Terms and abbreviations</h3>
+<p>The ABI for the Arm Architecture uses the following terms and
+abbreviations.</p>
+<ul>
+<li>AAPCSProcedure Call Standard for the Arm Architecture</li>
+<li>ABI
+<p>Application Binary Interface:</p>
+<ol>
+<li>The specifications to which an executable must conform in order
+to execute in a specific execution environment. For example, the
+<cite>Linux ABI for the Arm Architecture</cite>.</li>
+<li>particular aspect of the specifications to which independently
+produced relocatable files must conform in order to be statically
+linkable and executable. For example, the <a href="https://developer.arm.com/docs/ihi0041/latest">C++ ABI for the Arm
+Architecture</a>, the <a href="https://developer.arm.com/docs/ihi0043/latest">Run-time ABI for
+the Arm Architecture</a>, the <a href="https://developer.arm.com/docs/ihi0039/latest">Library ABI for the
+Arm Architecture</a>.</li>
+</ol>
+</li>
+<li>AEABI(Embedded) ABI for the Arm architecture (this ABI...)</li>
+<li>Arm-based... based on the Arm architecture ...</li>
+<li>core registersThe general purpose registers visible in the Arm
+architecture's programmer's model, typically r0-r12, SP, LR, PC,
+and CPSR.</li>
+<li>EABIAn ABI suited to the needs of embedded, and deeply embedded
+(sometimes called <em>free standing</em>), applications.</li>
+<li>Q-o-IQuality of Implementation - a quality, behavior,
+functionality, or mechanism not required by this standard, but
+which might be provided by systems conforming to it. Q-o-I is often
+used to describe the tool-chain-specific means by which a standard
+requirement is met.</li>
+<li>VFPThe Arm architecture's Floating Point architecture and
+instruction set. In this ABI, this abbreviation includes all
+floating point variants regardless of whether or not vector (V)
+mode is supported.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="your-licence-to-use-this-specification">
+<h3>Your licence to use this specification</h3>
+<p>IMPORTANT: THIS IS A LEGAL AGREEMENT ("LICENCE") BETWEEN YOU (AN
+INDIVIDUAL OR SINGLE ENTITY WHO IS RECEIVING THIS DOCUMENT DIRECTLY
+FROM ARM LIMITED) ("LICENSEE") AND ARM LIMITED ("ARM") FOR THE
+SPECIFICATION DEFINED IMMEDIATELY BELOW. BY DOWNLOADING OR
+OTHERWISE USING IT, YOU AGREE TO BE BOUND BY ALL OF THE TERMS OF
+THIS LICENCE. IF YOU DO NOT AGREE TO THIS, DO NOT DOWNLOAD OR USE
+THIS SPECIFICATION.</p>
+<p>"Specification" means, and is limited to, the version of the
+specification for the Applications Binary Interface for the Arm
+Architecture comprised in this document. Notwithstanding the
+foregoing, "Specification" shall not include (i) the implementation
+of other published specifications referenced in this Specification;
+(ii) any enabling technologies that may be necessary to make or use
+any product or portion thereof that complies with this
+Specification, but are not themselves expressly set forth in this
+Specification (e.g. compiler front ends, code generators, back
+ends, libraries or other compiler, assembler or linker
+technologies; validation or debug software or hardware;
+applications, operating system or driver software; RISC
+architecture; processor microarchitecture); (iii) maskworks and
+physical layouts of integrated circuit designs; or (iv) RTL or
+other high level representations of integrated circuit designs.</p>
+<p>Use, copying or disclosure by the US Government is subject to
+the restrictions set out in subparagraph (c)(1)(ii) of the Rights
+in Technical Data and Computer Software clause at DFARS
+252.227-7013 or subparagraphs (c)(1) and (2) of the Commercial
+Computer Software - Restricted Rights at 48 C.F.R. 52.227-19, as
+applicable.</p>
+<p>This Specification is owned by Arm or its licensors and is
+protected by copyright laws and international copyright treaties as
+well as other intellectual property laws and treaties. The
+Specification is licensed not sold.</p>
+<ol>
+<li>Subject to the provisions of Clauses 2 and 3, Arm hereby grants
+to LICENSEE, under any intellectual property that is (i) owned or
+freely licensable by Arm without payment to unaffiliated third
+parties and (ii) either embodied in the Specification or Necessary
+to copy or implement an applications binary interface compliant
+with this Specification, a perpetual, non-exclusive,
+non-transferable, fully paid, worldwide limited licence (without
+the right to sublicense) to use and copy this Specification solely
+for the purpose of developing, having developed, manufacturing,
+having manufactured, offering to sell, selling, supplying or
+otherwise distributing products which comply with the
+Specification.</li>
+<li>THIS SPECIFICATION IS PROVIDED "AS IS" WITH NO WARRANTIES
+EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO ANY
+WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, NONINFRINGEMENT
+OR FITNESS FOR A PARTICULAR PURPOSE. THE SPECIFICATION MAY INCLUDE
+ERRORS. Arm RESERVES THE RIGHT TO INCORPORATE MODIFICATIONS TO THE
+SPECIFICATION IN LATER REVISIONS OF IT, AND TO MAKE IMPROVEMENTS OR
+CHANGES IN THE SPECIFICATION OR THE PRODUCTS OR TECHNOLOGIES
+DESCRIBED THEREIN AT ANY TIME.</li>
+<li>This Licence shall immediately terminate and shall be
+unavailable to LICENSEE if LICENSEE or any party affiliated to
+LICENSEE asserts any patents against Arm, Arm affiliates, third
+parties who have a valid licence from Arm for the Specification, or
+any customers or distributors of any of them based upon a claim
+that a LICENSEE (or LICENSEE affiliate) patent is Necessary to
+implement the Specification. In this Licence; (i) "affiliate" means
+any entity controlling, controlled by or under common control with
+a party (in fact or in law, via voting securities, management
+control or otherwise) and "affiliated" shall be construed
+accordingly; (ii) "assert" means to allege infringement in legal or
+administrative proceedings, or proceedings before any other
+competent trade, arbitral or international authority; (iii)
+"Necessary" means with respect to any claims of any patent, those
+claims which, without the appropriate permission of the patent
+owner, will be infringed when implementing the Specification
+because no alternative, commercially reasonable, non-infringing way
+of implementing the Specification is known; and (iv) English law
+and the jurisdiction of the English courts shall apply to all
+aspects of this Licence, its interpretation and enforcement. The
+total liability of Arm and any of its suppliers and licensors under
+or in relation to this Licence shall be limited to the greater of
+the amount actually paid by LICENSEE for the Specification or
+US$10.00. The limitations, exclusions and disclaimers in this
+Licence shall apply to the maximum extent allowed by applicable
+law.</li>
+</ol>
+<p>Arm Contract reference LEC-ELA-00081 V2.0 AB/LS (9 March
+2005)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addendum-build-attributes">
+<h2>ADDENDUM: Build Attributes</h2>
+<div>
+<div>
+<div>
+<div id="introduction-to-build-attributes">
+<h3>Introduction to build attributes</h3>
+<div>
+<div>
+<div>
+<div id="about-build-attributes-and-compatibility">
+<h4>About build attributes and compatibility</h4>
+<p>Build attributes record data that a linker needs to reason
+mechanically about the compatibility, or incompatibility, of a set
+of relocatable files. Other tools that consume relocatable files
+may find the data useful.</p>
+<p>Build attributes are designed to have long-term invariant
+meaning. They record choices to which there is long term public
+commitment through the Arm Architecture Reference Manual [<a href="https://developer.arm.com/docs/ddi0406/c/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition">ARMARM</a>],
+the ABI for the Arm Architecture (of which this document is a
+component), vendor data sheets, and similar long lived
+publications.</p>
+<p>Build attributes approximate the intentions the user of a
+compiler or assembler has for the compatibility of the relocatable
+file produced by the compiler or assembler (<a href="index.html">Attribute values are based on user
+intentions</a>).</p>
+<p><a href="index.html">Software development flows supported
+by build attributes</a>, below, depicts the software development
+flows in which build attributes are important.</p>
+<div class="documents-docsimg-container" id="id22"><img alt="addenda32-toolflow.png" src="addenda32-toolflow.png"/>
+<p>Software development flows supported by build
+attributes</p>
+</div>
+<p>In this depiction there are two principal uses of build
+attributes.</p>
+<ul>
+<li>Within a tool chain, build attributes generate rich
+opportunities for a linker to diagnose incompatibility, enforce
+compatibility, and select library members intelligently according
+to its compatibility model.</li>
+<li>Between tool chains, build attributes describe the intended
+compatibility of a relocatable file and the entities it defines in
+terms independent of either tool chain, promoting safe exchange of
+portable code in binary form.</li>
+</ul>
+<div>
+<div>
+<div>
+<div id="attribute-values-are-based-on-user-intentions">
+<h5>Attribute values are based on user intentions</h5>
+<p>We base attribute values on user intentions to avoid the values
+being an unpredictable (effectively random) function of a
+compiler's code generation algorithms and to support using
+attributes with assembly language without overburdening
+programmers. Where attributes support exchanging portable
+relocatable files among tool chains, predictability is worth more
+than precision.</p>
+<p>Capturing a user's compile-time intentions about compatibility
+is also important at link time. For example:</p>
+<ul>
+<li>
+<p>user might permit a compiler to use both the Arm
+ISA and the Thumb ISA.</p>
+<p>(The user intends the code to be usable on any processor that
+has both the Arm ISA and the Thumb ISA).</p>
+</li>
+<li>
+<p>The compiler might choose to use only the Thumb
+ISA in a specific build of a source file.</p>
+<p>Nonetheless, the relocatable file should be tagged as having
+been permitted to use the Arm ISA so that a linker can later link
+it with Arm-state library code and generate Arm-state intra-call
+veneers if that gives benefit to the executable file.</p>
+</li>
+</ul>
+<p>On the other hand, if the user intends code to be executed by
+both Arm7TDMI and Cortex-M3, the compiler must be constrained to
+generate only Thumb v1 instructions and the relocatable file should
+be tagged as not permitted to use the Arm ISA.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="capturing-user-intentions-about-compatibility">
+<h5>Capturing user intentions about compatibility</h5>
+<p>This standard does not specify how a tool should capture and
+approximate the intentions of its users.</p>
+<p>As far as possible, ABI-defined compatibility tags (<a href="index.html">Public ("aeabi") attribute tags</a>) model
+the long-term compatibility commitments implicit in architectural
+specifications, product data sheets, and the ABI for the Arm
+Architecture.</p>
+<p>In general, tools have invocation options - command-line options
+and GUI configuration options - that present choices similar to
+those revealed in such documentation and modeled by ABI-defined
+compatibility tags.</p>
+<p>The challenge for a tool that generates relocatable files is to
+select the set of build attributes - giving a value to each
+compatibility tag - that best approximates the user's intentions
+implicit in its invocation options.</p>
+<p>This part of the problem of managing compatibility does not have
+a perfect solution. A user's intentions are imperfectly
+approximated by invocation options that are then sometimes
+imperfectly mapped to build attributes.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="no-standard-compatibility-model">
+<h5>No standard compatibility model</h5>
+<p>This specification standardizes the meaning of build attributes,
+not the compatibility models within which they will be
+interpreted.</p>
+<p>For the majority of build attributes there is only one
+reasonable interpretation of compatibility among their values, and
+it is an obvious one.</p>
+<p>For a minority - mostly associated with procedure-call
+compatibility between functions - this is not the case and it is
+reasonable for different tool chains to take different positions
+according to the markets they serve.</p>
+<p>Thus it is entirely reasonable that a relocatable file produced
+by tool chain A and accepted by tool chain B's linker might be
+rejected by tool chain C's linker when targeting exactly the same
+environment as tool chain B.</p>
+<p>Our hope and intention for attributes is that they might prevent
+C's linker from accepting the output of A and silently generating a
+non functioning executable file or failing in a mysterious and
+difficult to explain manner.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-kinds-of-compatibility-modeled-by-build-attributes">
+<h4>The kinds of compatibility modeled by build attributes</h4>
+<p>Build attributes primarily model two kinds of compatibility.</p>
+<ul>
+<li>The compatibility of binary code with target hardware
+conforming to a revision of the Arm Architecture.</li>
+<li>The procedure-call compatibility between functions conforming
+to variants of this ABI.</li>
+</ul>
+<p>The intuitive notion of compatibility can be given a
+mathematically precise definition using sets of demands placed on
+an execution environment.</p>
+<p>For example, a program could be defined to be compatible with a
+processor if (and only if) the set of instructions the program
+might try to execute is a subset of the set of instructions
+implemented by the processor.</p>
+<p>Target-related attributes (<a href="index.html">Target-related attributes</a>) describe
+the hardware-related demands a relocatable file will place on an
+execution environment through being included in an executable file
+for that environment.</p>
+<p>For example, target-related attributes record whether use of the
+Thumb ISA is permitted, and at what architectural revision use is
+permitted. A pair of values for these attributes describes the set
+of Thumb instructions that code is permitted to execute and that
+the target processor must implement.</p>
+<p>Procedure call-related attributes (<a href="index.html">Procedure call-related attributes</a>)
+describe features of the ABI contract that the ABI allows to vary,
+such as whether floating point parameters are passed in floating
+point registers, the size of <code>wchar_t</code>, whether
+enumerated values are containerized according to their size, and so
+on.</p>
+<p>We can also understand procedure call-related compatibility in
+terms of sets of demands placed on an execution environment, but
+the modeling is more difficult. In this case the environment is
+less obvious, more abstract, and elements of it can depend on an
+operating system or the tool chain itself.</p>
+<p>Mathematically, A <em>compatible with</em> B can be understood
+as: {demands made by A}  {demands made by
+B}.</p>
+<p>Making this concrete sometimes requires combining information
+from several tags. Writing {T16@v4T} to denote the set of 16-bit
+Thumb instructions a processor must execute to conform to
+architecture version v4T, we can understand T16@v4T compatible with
+T16@v5TE as {T16@v4T}  {T16@v5TE}.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-scope-of-build-attributes">
+<h4>The scope of build attributes</h4>
+<p>Unless <code>#pragma</code> or other mechanisms specific to a
+tool chain are used, it is usual for all parts of a relocatable
+file to be built the same way with the same compatibility
+intentions. So, usually, build attributes are given file scope and
+apply to all entities defined in the file to which they can apply.
+For example:</p>
+<ul>
+<li>
+<p>File-scope attributes that model the compatibility
+of binary instructions with processors naturally apply to each
+instruction in every code-containing section in the file.</p>
+<p>(They obviously do not apply to sections that contain no code,
+nor to the data - such as literal pools - embedded in code
+sections).</p>
+</li>
+<li>
+<p>Attributes that describe the procedure
+call-compatibility of functions naturally apply to every function
+symbol defined in the code sections contained within the file.</p>
+</li>
+</ul>
+<p>Build attributes can be given to individual entities defined in
+a relocatable file.</p>
+<ul>
+<li>
+<p>To an individual ELF section.</p>
+<p>These attributes also apply to every (relevant) symbol defined
+in the section.</p>
+</li>
+<li>
+<p>To an individual function or data object
+identified by an ELF symbol definition.</p>
+</li>
+</ul>
+<p>For the public build attributes defined by this ABI (<a href="index.html">Public ("aeabi") attribute tags</a>) a
+compiler for C/C++ can only need to use section and symbol
+attributes in the presence of #pragmas, language extensions, or
+other mechanisms that affect the compatibility of individual
+entities within a binary file.</p>
+<p>Linkers that support relocatable file merging - termed partial
+linking by RealView linkers - will, in general, need to transfer
+the file scope attributes of an input file to the individual
+sections that file contributes to the output file.</p>
+<p>This standard places no requirements on the presence or absence
+of build attributes in executable files.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>From the 2.09 release, section and symbol
+attributes are deprecated and optional. Primary object producers
+are discouraged from generating them and consumers are permitted to
+ignore them.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="build-attributes-and-conformance-to-the-abi">
+<h4>Build attributes and conformance to the ABI</h4>
+<p>In revision 2.05 and later revisions of this ABI specification,
+the presence of a build attributes section containing an "aeabi"
+subsection containing a conformance tag (<a href="index.html">Conformance tag</a>) denotes an
+explicit claim by the producer that the relocatable file conforms
+to:</p>
+<ul>
+<li>The version of the ABI described by tag's string
+parameter.</li>
+<li>The variant of that version described by the public ("aeabi")
+build attributes.</li>
+</ul>
+<p>claim to conform to ABI version "0" denotes that no
+unconditional claim to conform is being made. Generic compatibility
+tags (<a href="index.html">Generic compatibility
+tag</a>) may then describe limited or conditional claims to
+conform.</p>
+<p>In revisions of this specification before r2.05 any claim to
+conform to this ABI was implicit, and the version to which
+conformance was (possibly) claimed was implicitly "2".</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="combining-attribute-values">
+<h4>Combining attribute values</h4>
+<p>Suppose E1 and E2 are entities (for example, relocatable files)
+with attribute values a1 and a2 for an attribute tag T. This
+section discusses how to generate the correct value of T for the
+entity formed by combining E1 and E2 (for example, the executable
+file formed by linking E1 with E2)</p>
+<p>In each case, the values of a tag can be partially ordered
+according to the sets of demands they represent. We shall write a1
+ a2 if an entity
+tagged with &lt;T, a1&gt; makes no more demands on its environment
+than an entity tagged with &lt;T, a2&gt;.</p>
+<p>Writing {T:a1} to denote the set of demands made by an entity
+tagged with &lt;T, a1&gt;, we can define a1  a2 if {T:a1}
+ {T:a2}. (A set of
+demands might be the set of instructions a processor must execute,
+for example).</p>
+<p>Informally we say that a1 is compatible with a2 or a1 is more
+compatible than a2 when a1  a2.</p>
+<p>Using <code>Tag_CPU_arch</code> (<a href="index.html">The target-related attributes</a>) as
+an example, v4T  v5TE, because the
+set of instructions conforming to architecture v4T is a subset of
+the set conforming to architecture v5TE. Stated more precisely, for
+both the Arm ISA and the 16-bit Thumb ISA, it is the case that
+{ISA@v4T}  {ISA@v5TE}.</p>
+<p>This partial order often differs from the arithmetic order of
+the enumerated values though in many cases it</p>
+<ul>
+<li>Is identical (as with <code>Tag_THUMB_ISA_use</code> in
+<a href="index.html">The target-related
+attributes</a>).</li>
+<li>Is reversed (as with <code>Tag_ABI_align_preserved</code> in
+<a href="index.html">The procedure call-related
+attributes</a>).</li>
+<li>Represents mutually incompatible choices with which only the
+identical choice, or no use at all, is compatible (as with
+<code>Tag_ABI_PCS_wchar_t</code> in <a href="index.html">The procedure call-related
+attributes</a>).</li>
+</ul>
+<p>Note that the appropriate partial order to use can evolve over
+time as the underlying specifications evolve.</p>
+<div>
+<div>
+<div>
+<div id="combining-two-values-of-the-same-tag">
+<h5>Combining two values of the same tag</h5>
+<p>We shall write a1 &lt;&gt; a2 if a1 and a2 are unordered in the
+partial order of demands/compatibility and a1 + a2 to denote the
+combination of a1 and a2. There are the following combination
+rules.</p>
+<ul>
+<li>
+<p>If a1  a2, a1 + a2 = a2.
+Similarly, if a2  a1, a1 + a2 = a1.
+('+' behaves like the <em>maximum</em> function).</p>
+</li>
+<li>
+<p>If a1 &lt;&gt; a2 there are two mutually exclusive
+sub-cases.</p>
+<ul>
+<li>
+<p>There is a least a3 such that a1  a3 and a2
+ a3. Then a1 + a2
+= a3.</p>
+<p>Example: <code>Tag_CPU_arch</code> when a1 = v6KZ, a2 = v6T2,
+and a3 = v7.</p>
+</li>
+<li>
+<p>There is no such a3, so a1 + a2 denotes the
+attempted combination of incompatible values.</p>
+<p>Example: <code>Tag_ABI_PCS_wchar_t</code> when a1 = 2 and a2 =
+4.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>In this second sub-case it is a matter of notational taste
+whether a1 + a2 is defined to have a value such as error or Top, or
+defined to have no value. Either way, in practice we expect an
+attempted combination to fail in a way specific to a tool chain's
+compatibility model (for example by provoking a link-time
+diagnostic).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="representing-build-attributes-in-elf-files">
+<h3>Representing build attributes in ELF files</h3>
+<div>
+<div>
+<div>
+<div id="encoding">
+<h4>Encoding</h4>
+<p>Encoding build attributes needs more than a few bits, so we
+encode them in an vendor-specific section of type
+SHT_ARM_ATTRIBUTES and name .ARM.attributes (for further details
+see [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>]).</p>
+<p>An attribute is encoded in a &lt;tag, value&gt; pair.</p>
+<p>Both tags and numerical values are encoded using unsigned LEB128
+encoding (ULEB128), DWARF-3 style (for details see [<a href="http://dwarfstd.org/Dwarf3Std.php">GDWARF</a>]).</p>
+<p>The public tags and values specified by this version of the ABI
+encode identically as ULEB128 numbers and single byte numbers (all
+values are in the range 0-127).</p>
+<p>String values are encoded using NUL-terminated byte strings
+(NTBS).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="structure-of-an-elf-attributes-section">
+<h4>Structure of an ELF attributes section</h4>
+<p>An attributes section contains a sequence of subsections. Each
+one is either</p>
+<ul>
+<li>Defined by this ABI and public to all tools that process the
+file.</li>
+<li>Private to a tool vendor's tools.</li>
+</ul>
+<p>The type of each subsection is given by a short textual (NTBS)
+name.</p>
+<p>This ABI requires a vendor to register a short vendor name to
+use as a prefix to the names of private helper functions (for
+details see [<a href="https://developer.arm.com/docs/ihi0043/latest">RTABI</a>] or
+[<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>]). The
+same vendor name identifies attribute subsections private to that
+vendor's tools.</p>
+<p>public attributes subsection is named aeabi. Names beginning
+<em>Anon</em> and <em>anon</em> are reserved to unregistered
+private use.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="formal-syntax-of-an-elf-attributes-section">
+<h4>Formal syntax of an ELF attributes section</h4>
+<p>The syntactic structure of an attributes section is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>&lt;format-version: 'A'&gt;
+[ &lt;uint32: subsection-length&gt; NTBS: vendor-name
+  &lt;bytes: vendor-data&gt;
+]*
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><em>Format-version</em> describes the format of the following
+data. It is a single byte. This is version 'A' (0x41). This field
+exists to allow future changes in format. We do not intend that
+there will be many versions.</p>
+<p><em>Subsection-length</em> is a 4-byte integer in the byte order
+of the ELF file. It encodes the length of the subsection, including
+the length field itself, the vendor name string and its terminating
+NUL byte, and the following vendor data. It gives the offset from
+the start of this subsection to the start of the next one.</p>
+<p><em>Vendor-name</em> is a NUL-terminated byte string (NTBS) like
+a C-language literal string.</p>
+<p>No requirements are placed on the format of private vendor data.
+The format of a public attributes subsection ("aeabi" pseudo-vendor
+data) is described in <a href="index.html">Formal
+syntax of a public ("aeabi") attributes subsection</a>.</p>
+<p>We expect a dot-ARM-dot-attributes section in a relocatable file
+will most typically contain one vendor subsection from the "aeabi"
+pseudo-vendor and possibly one from the generating tool chain (e.g.
+"ARM", "gnu", "WRS", etc).</p>
+<p>Formally, there are no constraints on the order or number of
+vendor subsections. A consumer can collect the public ("aeabi")
+attributes in a single pass over the section, then all of its
+private data in a second pass.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="formal-syntax-of-a-public-aeabi-attributes-subsection">
+<h4>Formal syntax of a public ("aeabi") attributes subsection</h4>
+<p>The syntactic structure of a public attributes subsection
+is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>[   Tag_File    (=1) &lt;uint32: byte-size&gt; &lt;attribute&gt;*
+  | Tag_Section (=2) &lt;uint32: byte-size&gt; &lt;section number&gt;* 0 &lt;attribute&gt;*
+  | Tag_Symbol  (=3) &lt;unit32: byte-size&gt; &lt;symbol number&gt;*  0 &lt;attribute&gt;*
+]+
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>public subsection contains any number of sub-subsections. Each
+records attributes relating to:</p>
+<ul>
+<li>
+<p>The whole relocatable file.</p>
+<p>These sub-subsections contain just a list of attributes. They
+are identified by a leading <code>Tag_File</code> (=1) byte.</p>
+</li>
+<li>
+<p>A set of sections within the relocatable file.</p>
+<p>These sub-subsections contain a list of ULEB128 section numbers
+followed by a list of attributes. They are identified by a leading
+<code>Tag_Section</code> (=2) byte.</p>
+</li>
+<li>
+<p>A set of (defined) symbols in the relocatable
+file.</p>
+<p>These sub-subsections contain a list of ULEB128 symbol numbers
+followed by a list of attributes. They are identified by a leading
+<code>Tag_Symbol</code> (=3) byte.</p>
+</li>
+</ul>
+<p>In each case, byte-size is a 4-byte unsigned integer in the byte
+order of the ELF file. Byte-size includes the initial tag byte, the
+size field itself, and the sub-subsection content. That is, it is
+the byte offset from the start of this sub-subsection to the start
+of the next sub-subsection.</p>
+<p>Both section indexes and defined symbol indexes are non-zero, so
+a NUL byte ends a string and a list of indexes without
+ambiguity.</p>
+<p>There are no constraints on the order or number of
+sub-subsections in a public attributes subsection (but see remarks
+in <a href="index.html">Conformance tag</a>
+concerning <code>Tag_conformance</code> and <a href="index.html">No defaults tag</a> concerning
+<code>Tag_nodefaults</code>).</p>
+<p>consumer that needs the data in scope nesting order can obtain
+the file attributes, the section-related attributes, and the
+symbol-related attributes, by making three passes over the
+subsection.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>From the 2.09 release, section and symbol
+attributes are deprecated and optional. Primary object producers
+are discouraged from generating them and consumers are permitted to
+ignore them.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="conformance-constraints">
+<h4>Conformance constraints</h4>
+<p>This ABI requires the following of files that claim to conform
+(<a href="index.html">Build attributes and conformance
+to the ABI</a>) to the ABI.</p>
+<ul>
+<li>Attributes that record data about the compatibility of this
+file with other files must be recorded in a public "aeabi"
+subsection.</li>
+<li>Attributes meaningful only to the producer must be recorded in
+a private vendor subsection. These must not affect compatibility
+between relocatable files.</li>
+</ul>
+<p>When a producer does not explicitly claim compatibility to the
+ABI, it may nonetheless publicly describe the effect on
+compatibility of its private attributes by using generic
+compatibility tags (<a href="index.html">Generic
+compatibility tag</a>). These must record a safe approximation. The
+producer can record precise information that only its own tool
+chain comprehends in a private vendor subsection.</p>
+<ul>
+<li>We intend that another tool chain should not mistakenly link
+incompatible files. The price of safety is that a tool chain might
+sometimes diagnose incompatibility between files that could be
+safely linked, because their compatibility has been
+approximated.</li>
+<li>We do not expect that a tool chain should be able to comprehend
+the private data of a different tool chain (other than through
+private agreement among tool chains).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="coding-extensibility-and-compatibility">
+<h4>Coding extensibility and compatibility</h4>
+<p>As a specification like this evolves, legacy binary files and
+the tools that process them get out of step. This will cause
+difficulties when a tool must consume a public attributes
+subsection containing tags it does not comprehend (that is, when
+the tool follows an earlier version of the specification than the
+binary file).</p>
+<p>The attributes defined in <a href="index.html">Public
+("aeabi") attribute tags</a>, below, carry a mix of information
+that consumers can safely ignore and information about
+incompatibility that must not be ignored. In the absence of further
+conventions, the only safe course for a tool to take on
+encountering an unknown tag would be to stop processing.</p>
+<p>To support more graceful behavior in the face of an evolving set
+of public tags, we adopt these conventions.</p>
+<ul>
+<li>Tags 0-63 convey information that a consuming tool must
+comprehend. This includes all the tags (1-32) defined by the first
+release (v1.0) of this addendum. A tool encountering an unknown tag
+in this range should stop processing or take similar defensive
+action (Q-o-I).</li>
+<li>Tags 64-127 convey information a consumer can ignore safely
+(though maybe with degraded functionality).</li>
+<li>For N <div class="documents-docsimg-container"><img alt="\ge" src="744a7e944983312265f2ed7497ddf42da26942a6.png"/></div> 128, tag N has
+the same properties as tag N modulo 128.</li>
+</ul>
+<p>To allow an ignored tag and its parameter value to be skipped
+easily, we adopt this convention.</p>
+<ul>
+<li>For N &gt; 32, even numbered tags have a ULEB128 parameter and
+odd numbered ones have a null-terminated byte string (NTBS)
+parameter.</li>
+<li>consumer must comprehend tags 1-32 individually.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="public-aeabi-attribute-tags">
+<h3>Public ("aeabi") attribute tags</h3>
+<div>
+<div>
+<div>
+<div id="about-public-tags">
+<h4>About public tags</h4>
+<p>A consumer must recognize the tags described in this section
+(<a href="index.html">Public ("aeabi") attribute
+tags</a>) in vendor subsections named "aeabi".</p>
+<p>Other vendor sections may re-use these tags, define their own
+tags, or use a completely different encoding of their private
+attribute data. In each case the meaning of the data is private to
+the defining vendor.</p>
+<p>While public tags and their numerical parameters are specified
+as ULEB128-encoded, the values defined by this version, and all
+earlier versions, of the ABI encode identically as ULEB128 numbers
+and single byte numbers.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="default-values-for-public-tags">
+<h4>Default values for public tags</h4>
+<p>The effect of omitting a public tag in file scope is identical
+to including it with a value of 0 or "", depending on its parameter
+type.</p>
+<p>producer must consider what value it intends to give to each
+public tag. In the absence of <code>Tag_nodefaults</code> (<a href="index.html">No defaults tag</a>) a consumer should
+conclude that the producer intended to give the value 0 to each
+omitted public tag.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="inheritance-of-public-tag-values">
+<h4>Inheritance of public tag values</h4>
+<p>An attribute can be given to a symbol, a section, or a
+relocatable file. Normally, each section in a file inherits the
+attributes defined at file level and each symbol defined in a
+section inherits the attributes of that section.</p>
+<p>tag value given explicitly in a scope overrides a value that
+would otherwise be inherited. If <code>Tag_nodefaults</code>
+(<a href="index.html">No defaults tag</a>) appears
+in a scope, enclosed empty scopes have undefined attribute values
+value rather than default zero values.</p>
+<p>Semi formally we define the value of a public tag T in a scope S
+(one of Symbol, Section, or File) as follows.</p>
+<p><code>value(T, S)</code> </p><div class="documents-docsimg-container"><img alt="\equiv" src="3cf6ac86b595d882dba5a5a746f6f4410ba9feb4.png"/></div> <code>S.empty()
+&amp; S.parent.has(Tag_nodefaults) ? undefined :</code><br/>
+<code>S.has(T) ? T.value :</code><br/>
+<code>value(T, S.parent)</code><br/>
+<code>value(T, File.parent)</code> <div class="documents-docsimg-container"><img alt="\equiv" src="3cf6ac86b595d882dba5a5a746f6f4410ba9feb4.png"/></div>
+<code>0</code>
+<p><code>Where S.empty()</code> </p><div class="documents-docsimg-container"><img alt="\equiv" src="3cf6ac86b595d882dba5a5a746f6f4410ba9feb4.png"/></div> <code>not
+(S.has(T) for some T</code> <div class="documents-docsimg-container"><img alt="\ne" src="a6b912fd3b00d82e1d9b2f71c9c0daf7a7f439b7.png"/></div>
+<code>Tag_nodefaults)</code><br/>
+<code>S.has(T)</code> <div class="documents-docsimg-container"><img alt="\equiv" src="3cf6ac86b595d882dba5a5a746f6f4410ba9feb4.png"/></div> <code>T and its
+value are given explicitly in scope S</code><br/>
+<code>Symbol.parent</code> <div class="documents-docsimg-container"><img alt="\equiv" src="3cf6ac86b595d882dba5a5a746f6f4410ba9feb4.png"/></div> <code>Section;
+Section.parent</code> <div class="documents-docsimg-container"><img alt="\equiv" src="3cf6ac86b595d882dba5a5a746f6f4410ba9feb4.png"/></div>
+<code>File</code>
+<p>In any scope it is erroneous to give two different values to the
+same attribute, though the same value may be given more than
+once.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>From the 2.09 release, section and symbol
+attributes are deprecated and optional. Primary object producers
+are discouraged from generating them and consumers are permitted to
+ignore them.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="how-this-specification-describes-public-attributes">
+<h4>How this specification describes public attributes</h4>
+<p>In the following sections we describe each attribute in a
+uniform style, as follows.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_tag_name (=tag value), parameter type (=uleb128 or NTBS)
+   value  Comment
+   value  Comment
+   ...
+
+Block commentary about the tag and its possible values.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><em>Tag value</em> gives the numerical representation of the
+tag. It is a small integer less than 128.</p>
+<p><em>Parameter type</em> gives the type of the parameter that
+immediately follows the tag in the attributes section. It is either
+a ULEB128-encoded integer or a NUL-terminated byte string
+(NTBS).</p>
+<p>Following lines enumerate the currently defined parameter
+values, giving a short comment about each one.</p>
+<p>block of explanatory text follows in some cases.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="target-related-attributes">
+<h4>Target-related attributes</h4>
+<div>
+<div>
+<div>
+<div id="about-target-related-attributes">
+<h5>About target-related attributes</h5>
+<p>Target-related attributes describe the demands a user permitted
+a producer to place on the target system (<a href="index.html">Capturing user intentions about
+compatibility</a>).</p>
+<p>These attributes summarize the target features and facilities
+needed to execute the instructions contained in the code sections
+of this relocatable file. A file may make fewer demands than its
+attributes describe, but not more.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-target-related-attributes">
+<h5>The target-related attributes</h5>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_CPU_raw_name, (=4), NTBS
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The raw name is the name a user gave to a tool or selected from
+a menu. It can be:</p>
+<ul>
+<li>The name of a specific manufacturer's part (such as
+ML692000).</li>
+<li>The name of a generic part (such as Arm946E-S) or architecture
+(such as v5TE).</li>
+<li>Any other name acceptable to the tool chain.</li>
+</ul>
+<p>The value "" denotes that the raw name is identical to the CPU
+name (described immediately below) and records that the user built
+for a generic implementation (such as Arm946E-S) rather than any
+manufacturer-specific part (such as ML692000) based on it.</p>
+<p>It is always safe to use "" as a dummy value for this tag, or to
+omit this tag.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_CPU_name, (=5), NTBS
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>CPU name is defined by Arm or the architecture licensee
+responsible for designing the part. It is the official product
+name, with no extension and no abbreviation.</p>
+<p>An Arm-defined architecture name may be used instead of a CPU
+name, and denotes that the user had more generic intentions.
+Arm-defined names of CPUs and architectures recognized by Arm
+Compiler 5.01 are listed in <a href="index.html">Arm CPU
+names recognized by Arm Compiler 5.01 (armcc)</a>.</p>
+<p>The following tags describe the processor architecture version
+and architecture profile for which the user intended the producer
+to produce code.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_CPU_arch, (=6), uleb128
+    0  Pre-v4
+    1  Arm v4     // e.g. SA110
+    2  Arm v4T    // e.g. Arm7TDMI
+    3  Arm v5T    // e.g. Arm9TDMI
+    4  Arm v5TE   // e.g. Arm946E-S
+    5  Arm v5TEJ  // e.g. Arm926EJ-S
+    6  Arm v6     // e.g. Arm1136J-S
+    7  Arm v6KZ   // e.g. Arm1176JZ-S
+    8  Arm v6T2   // e.g. Arm1156T2F-S
+    9  Arm v6K    // e.g. Arm1136J-S
+   10  Arm v7     // e.g. Cortex-A8, Cortex-M3
+   11  Arm v6-M   // e.g. Cortex-M1
+   12  Arm v6S-M  // v6-M with the System extensions
+   13  Arm v7E-M  // v7-M with DSP extensions
+   14  Arm v8-A
+   15  Arm v8-R
+   16  Arm v8-M.baseline
+   17  Arm v8-M.mainline
+   18  Arm v8.1-A
+   19  Arm v8.2-A
+   20  Arm v8.3-A
+
+Tag_CPU_arch_profile (=7), uleb128
+    0  Architecture profile is not applicable (e.g. pre v7, or cross-profile code), or is indicated by Tag_CPU_arch
+   'A' (0x41) The application profile (e.g. for Cortex-A8)
+   'R' (0x52) The real-time profile (e.g. for Cortex-R4)
+   'M' (0x4D) The microcontroller profile (e.g. for Cortex-M3)
+   'S' (0x53) Application or real-time profile (i.e. the 'classic' programmer's model)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><code>Tag_CPU_arch_profile</code> states that the attributed
+entity requires the noted architecture profile.</p>
+<p>The value 0 states that there is no requirement for any specific
+architecture profile. The value 'S' denotes that the attributed
+entity requires the classic programmer's model rather than the
+microcontroller programmer's model.</p>
+<p>Starting with architecture versions v8-A, v8-R and v8-M, the
+profile is represented by Tag_CPU_arch. For these architecture
+versions and any later versions, a value of 0 should be used for
+<code>Tag_CPU_arch_profile</code>.</p>
+<p>The following tags track the permitted use of instruction sets.
+The architecture revision (<code>Tag_CPU_arch</code>) implies the
+permitted subset of instructions from the permitted ISA.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ARM_ISA_use, (=8), uleb128
+   0  The user did not permit this entity to use Arm instructions
+   1  The user intended that this entity could use Arm instructions
+
+Tag_THUMB_ISA_use, (=9), uleb128
+   0  The user did not permit this entity to use Thumb instructions
+   1  (deprecated) The user permitted this entity to use 16-bit Thumb instructions (including BL)
+   2  (deprecated) 32-bit Thumb instructions were permitted (implies 16-bit instructions permitted)
+   3  The user permitted this entity to use Thumb code. The set of permitted instructions can be determined by the setting of Tag_CPU_arch and Tag_CPU_arch_profile
+
+   Note: The historical use of values 1 and 2 date to a time when there was
+   a clear separation between implementations using 16-bit only Thumb
+   instructions and those using the extended set of instructions. The
+   introduction of Armv8-M.baseline has blurred this distinction to the
+   point where it is no-longer useful. Arm recommends that in future all
+   toolchains emit a value of 3 when use of Thumb was intended by the user
+   and 0 (or omitting the tag entirely) when use of Thumb was not intended.
+
+Tag_FP_arch, (=10), uleb128 (formerly Tag_VFP_arch = 10)
+   0  The user did not permit this entity to use instructions requiring FP hardware
+   1  The user permitted use of instructions from v1 of the floating point (FP) ISA
+   2  Use of the v2 FP ISA was permitted (implies use of the v1 FP ISA)
+   3  Use of the v3 FP ISA was permitted (implies use of the v2 FP ISA)
+   4  Use of the v3 FP ISA was permitted, but only citing registers D0-D15, S0-S31
+   5  Use of the v4 FP ISA was permitted (implies use of the non-vector v3 FP ISA)
+   6  Use of the v4 FP ISA was permitted, but only citing registers D0-D15, S0-S31
+   7  Use of the Arm v8-A FP ISA was permitted
+   8  Use of the Arm v8-A FP ISA was permitted, but only citing registers D0-D15, S0-S31
+
+Tag_WMMX_arch, (=11), uleb128
+   0  The user did not permit this entity to use WMMX
+   1  The user permitted this entity to use WMMX v1
+   2  The user permitted this entity to use WMMX v2
+
+Tag_Advanced_SIMD_arch, (=12), uleb128
+   0  The user did not permit this entity to use the Advanced SIMD Architecture (Neon)
+   1  Use of the Advanced SIMDv1 Architecture (Neon) was permitted
+   2  Use of Advanced SIMDv2 Architecture (Neon) (with half-precision floating-point and fused MAC operations) was permitted
+   3  Use of the Arm v8-A Advanced SIMD Architecture (Neon) was permitted
+   4  Use of the Arm v8.1-A Advanced SIMD Architecture (Neon) was permitted
+
+Tag_FP_HP_extension (=36), uleb128 (formerly Tag_VFP_HP_extension = 36)
+   0  The user intended half-precision floating point instructions may be used if they exist in the available FP and ASIMD instruction sets as indicated by Tag_FP_arch and Tag_ASIMD_arch
+   1  Use of the half-precision instructions first added as an optional extension to VFPv3/Advanced SIMDv1 was permitted, in addition to those indicated by Tag_FP_arch and Tag_ASIMD_arch
+   2  Use of the half-precision instructions first added as an optional extension to Armv8.2-A Floating-Point and Advanced SIMD was permitted, in addition to those indicated by Tag_FP_arch and Tag_ASIMD_arch
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The following tag describes the unaligned data accesses the user
+permitted the producer to make.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_CPU_unaligned_access, (=34), uleb128
+   0  The user did not intend this entity to make unaligned data accesses
+   1  The user intended that this entity might make v6-style unaligned data accesses
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The following tags describe intended use of optional
+architectural extensions.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_T2EE_use, (=66), uleb128
+    0  No use of T2EE extension was permitted, or no information is available
+    1  Use of the T2EE extension was permitted
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In effect, <code>Tag_T2EE_use</code> describes the intended use
+of ENTERX and LEAVEX instructions. <code>Tag_T2EE_use</code> is
+deprecated from r2.09.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_Virtualization_use, (=68), uleb128
+    0  No use of any virtualization extension was permitted, or no information available
+    1  Use of the TrustZone extension was permitted
+    2  Use of the virtualization extensions (HVC, ERET) were permitted
+    3  Use of TrustZone and virtualization extensions were permitted
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In effect, <code>Tag_Virtualization_use</code> describes the
+intended use of the SMC instruction in bit 0 of the tag value and
+the intended use of HVC and ERET instructions in bit 1.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_MPextension_use, (=42), uleb128
+    0  No use of Arm v7 MP extension was permitted, or no information available.
+    1  Use of the Arm v7 MP extension was permitted.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>In effect, <code>Tag_MPextension_use</code> describes the
+intended use of the PLDW (preload write hint) instruction.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_DIV_use, (=44), uleb128
+    0  The user intended divide instructions may be used if they exist, or no explicit information recorded. This code was permitted to use SDIV and UDIV if the instructions are guaranteed present in the architecture, as indicated by Tag_CPU_arch and Tag_CPU_arch_profile.
+    1  This code was explicitly not permitted to use SDIV or UDIV.
+    2  This code was permitted to use SDIV and UDIV in the Arm and Thumb ISAs; the instructions are present as an optional architectural extension above the base architecture implied by Tag_CPU_arch and Tag_CPU_arch_profile.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>Value 1 records an explicit intention to not use
+divide instructions in this code, on targets where they would
+otherwise be permitted. This intention could be conveyed to the
+object producer by citing a "no divide" command-line option, or by
+other means. How a linker interprets this intention is QoI.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>Producers must emit value 2 if and only if the
+permission to use SDIV and UDIV cannot be conveyed using values 0
+and 1.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_DSP_extension, (=46), uleb128
+    0  The user intended DSP instructions may be used if they exist. This entity is permitted to use DSP instructions if they are guaranteed present in the architecuture as indicated by Tag_CPU_arch.
+    1  This code was permitted to use Thumb DSP functions as an optional architecture extension above the base architecture as indicated by Tag_CPU_arch.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="procedure-call-related-attributes">
+<h4>Procedure call-related attributes</h4>
+<div>
+<div>
+<div>
+<div id="about-procedure-call-related-attributes">
+<h5>About procedure call-related attributes</h5>
+<p>Procedure call-related attributes describe compatibility with
+the ABI. They summarize the features and facilities that must be
+agreed in an interface contract between functions defined in this
+relocatable file and elsewhere. We call the functions subject to
+such interface contracts <em>public functions</em>.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Aside</p>
+<p>In C/C++ terminology, all public functions have
+extern linkage but not all extern functions are public. In ELF
+terminology, all public symbols are global, but not all global
+symbols are public.</p>
+</div>
+</div>
+</div>
+</div>
+<p>For a public function defined in this relocatable file,
+attributes describe what the user intended the producer to
+guarantee about the function.</p>
+<p>For a public function used by code in this relocatable file,
+attributes describe what the user intended the producer to assume
+about the function.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="the-procedure-call-related-attributes">
+<h5>The procedure call-related attributes</h5>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_PCS_config, (=13), uleb128
+    0  No standard configuration used, or no information recorded
+    1  Bare platform configuration
+    2  Linux application configuration
+    3  Linux DSO configuration
+    4  Palm OS 2004 configuration
+    5  Reserved to future Palm OS configuration
+    6  Symbian OS 2004 configuration
+    7  Reserved to future Symbian OS configuration
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><code>Tag_PCS_config</code> summarizes the user intention behind
+the procedure-call standard configuration used. Its value must be
+consistent with the values given to the tags below, and must not be
+used as a macro in place of them.</p>
+<p>The following four tags summarize how the user intended the
+attributed entity to address static data.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_PCS_R9_use, (=14), uleb128
+    0  R9 used as V6 (just another callee-saved register, implied by omitting the tag)
+    1  R9 used as SB, a global Static Base register
+    2  R9 used as a Thread Local Storage (TLS) pointer
+    3  R9 not used at all by code associated with the attributed entity
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>has a role in some variants of the PCS.
+<code>Tag_ABI_PCS_R9_use</code> describes the user's chosen PCS
+variant.</p>
+<p>When R9 is used as a Thread Local Storage (TLS) pointer
+(<code>Tag_ABI_PCS_R9_use</code> = 2), R9 plays the role that would
+otherwise be played by one of the three Software Thread ID
+Registers <code>TPIDRURW</code>, <code>TPIDRURO</code>,
+<code>TPIDRPRW</code> defined in section B3.12.46, CP15 c13
+Software Thread ID registers, of the Arm Architecture Reference
+Manual Arm v7-A and Arm v7-R edition [Arm DDI 0406].</p>
+<p>The role played by that <code>TPID*</code> register is defined
+by the software platform's ABI.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_PCS_RW_data, (=15), uleb128
+    0  RW static data was permitted to be addressed absolutely
+    1  RW static data was only permitted to be addressed PC-relative
+    2  RW static data was only permitted to be addressed SB-relative
+    3  The user did not permit this entity to use RW static data
+
+Tag_ABI_PCS_RO_data, (=16), uleb128
+    0  RO static data was permitted to be addressed absolutely
+    1  RO static data was only permitted to be addressed PC-relative
+    2  The user did not permit this entity to use RO static data
+
+Tag_ABI_PCS_GOT_use, (=17), uleb128
+    0  The user did not permit this entity to import static data
+    1  The user permitted this entity to address imported data directly
+    2  The user permitted this entity to address imported data indirectly (e.g. via a GOT)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Compatibility among shared objects and their clients is affected
+by whether imported data are addressed directly or indirectly.
+Linux imported data must be addressed indirectly (via the Global
+Object Table, or GOT). Symbian OS (2004) imported data must be
+addressed directly.</p>
+<p>The following two tags describe the permitted sizes of a wide
+character and an enumerated data item.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_PCS_wchar_t, (=18), uleb128
+    0  The user prohibited the use of wchar_t when building this entity
+    2  The user intended the size of wchar_t to be 2
+    4  The user intended the size of wchar_t to be 4
+
+Tag_ABI_enum_size, (=26), uleb128
+    0  The user prohibited the use of enums when building this entity
+    1  Enum values occupy the smallest container big enough to hold all their values
+    2  The user intended Enum containers to be 32-bit
+    3  The user intended that every enumeration visible across an ABI-complying interface contains a value needing 32 bits to encode it; other enums can be containerized The following pair of tags summarizes the alignment contract across an interface.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The following pair of tags summarizes the alignment contract
+across an interface.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_align_needed, (=24), uleb128
+    0  The user did not permit code to depend the alignment of 8-byte data or data with extended (&gt; 8-byte) alignment
+    1  Code was permitted to depend on the 8-byte alignment of 8-byte data items
+    2  Code was permitted to depend on the 4-byte alignment of 8-byte data items
+    3  Reserved
+    n (in 4..12) Code was permitted to depend on the 8-byte alignment of 8-byte data items and the alignment of data items having up to 2n-byte extended alignment
+
+Tag_ABI_align_preserved, (=25), uleb128
+    0  The user did not require code to preserve 8-byte alignment of 8-byte data objects
+    1  Code was required to preserve 8-byte alignment of 8-byte data objects
+    2  Code was required to preserve 8-byte alignment of 8-byte data objects and to ensure (SP MOD 8) = 0 at all instruction boundaries (not just at function calls)
+    3  Reserved
+    n (in 4..12) Code was required to preserve the alignments of case 2 and the alignment of data items having up to 2n-byte extended alignment.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The following five tags summarize the requirements code
+associated with this attributed entity was permitted to place on
+floating-point arithmetic.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_FP_rounding, (=19), uleb128
+    0  The user intended this code to use the IEEE 754 round to nearest rounding mode
+    1  The user permitted this code to choose the IEEE 754 rounding mode at run time
+
+Tag_ABI_FP_denormal, (=20), uleb128
+    0  The user built this code knowing that denormal numbers might be flushed to (+) zero
+    1  The user permitted this code to depend on IEEE 754 denormal numbers
+    2  The user permitted this code to depend on the sign of a flushed-to-zero number being preserved in the sign of 0
+
+Tag_ABI_FP_exceptions, (=21), uleb128
+    0  The user intended that this code should not check for inexact results
+    1  The user permitted this code to check the IEEE 754 inexact exception
+
+Tag_ABI_FP_user_exceptions, (=22), uleb128
+    0  The user intended that this code should not enable or use IEEE user exceptions
+    1  The user permitted this code to enables and use IEEE 754 user exceptions
+
+Tag_ABI_FP_number_model, (=23), uleb128
+    0  The user intended that this code should not use floating point numbers
+    1  The user permitted this code to use IEEE 754 format normal numbers only
+    2  The user permitted numbers, infinities, and one quiet NaN (see [:doc:`RTABI &lt;rtabi32&gt;`])
+    3  The user permitted this code to use all the IEEE 754-defined FP encodings
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>FP model hierarchies are difficult to specify. In practice,
+there is a large lattice of potentially useful models, depending on
+whether FP arithmetic is done by software or by hardware, and on
+the properties of that hardware. The tags above allow requirements
+to be specified using independent features. For example, code
+following the Java numerical model should record
+<code>Tag_ABI_FP_denormal = 1</code> and
+<code>Tag_ABI_FP_number_model = 2</code>, while graphics code
+concerned with speed above all other considerations might record
+<code>Tag_ABI_FP_number_model = 1</code> and
+<code>Tag_ABI_FP_optimization_goals = 2</code> (see below).</p>
+<p>The following tag summarizes use of 16-bit floating point
+numbers by the attributed entities.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_FP_16bit_format (=38), uleb128
+    0  The user intended that this entity should not use 16-bit floating point numbers
+    1  Use of IEEE 754 (draft, November 2006) format 16-bit FP numbers was permitted
+    2  Use of VFPv3/Advanced SIMD "alternative format" 16-bit FP numbers was permitted
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Options 1 and 2 are mutually incompatible.</p>
+<p>The next three tags record permitted use of the VFP extension
+and WMMX co-processor. Note that:</p>
+<ul>
+<li>Under the base variant of the procedure call standard [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>], FP
+parameters and results are passed the soft FP way, in core
+registers or on the stack. WMMX parameters and results are passed
+the same way.</li>
+<li>The VFP variant of [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>] uses VFP
+registers D0-D7 (s0-s15) to pass parameters and results.</li>
+<li>The Intel WMMX convention is to use wR0-wR9 to pass parameters
+and results.</li>
+</ul>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_HardFP_use, (=27), uleb128
+    0  The user intended that FP use should be implied by Tag_FP_arch
+    1  The user intended this code to execute on the single-precision variant derived from Tag_FP_arch
+    2  Reserved
+    3  The user intended that FP use should be implied by Tag_FP_arch (Note: This is a deprecated duplicate of the default encoded by 0)
+
+Tag_ABI_VFP_args, (=28), uleb128
+    0  The user intended FP parameter/result passing to conform to AAPCS, base variant
+    1  The user intended FP parameter/result passing to conform to AAPCS, VFP variant
+    2  The user intended FP parameter/result passing to conform to tool chain-specific conventions
+    3  Code is compatible with both the base and VFP variants; the user did not permit non-variadic functions to pass FP parameters/results
+
+Tag_ABI_WMMX_args, (=29), uleb128
+    0  The user intended WMMX parameter/result passing conform to the AAPCS, base variant
+    1  The user intended WMMX parameter/result passing conform to Intel's WMMX conventions
+    2  The user intended WMMX parameter/result passing conforms to tool chain-specific
+       conventions
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="miscellaneous-attributes">
+<h4>Miscellaneous attributes</h4>
+<div>
+<div>
+<div>
+<div id="optimization-attributes">
+<h5>Optimization attributes</h5>
+<p>The final pair of ABI-related tags record optimization goals.
+These are not required for reasoning about incompatibility, but
+assist with selecting appropriate variants of library members.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_optimization_goals, (=30), uleb128
+    0  No particular optimization goals, or no information recorded
+    1  Optimized for speed, but small size and good debug illusion preserved
+    2  Optimized aggressively for speed, small size and debug illusion sacrificed
+    3  Optimized for small size, but speed and debugging illusion preserved
+    4  Optimized aggressively for small size, speed and debug illusion sacrificed
+    5  Optimized for good debugging, but speed and small size preserved
+    6  Optimized for best debugging illusion, speed and small size sacrificed
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>With <code>Tag_ABI_optimization_goals</code> we capture one of
+three potentially conflicting intentions - high performance, small
+size, and easy debugging - at one of two levels.</p>
+<p>At the first level the goal is unambiguous, but pursuit of it is
+constrained. The conflicting goals still matter, but less than the
+primary goal.</p>
+<p>At the second level, the conflicting goals are insignificant in
+comparison to the primary goal. It is difficult to capture
+optimization intentions precisely, but to a significant degree what
+matters to a tool chain is the user's goal (speed, small size, or
+debug-ability), and whether or not the user is willing to sacrifice
+all other considerations to achieving that goal.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_ABI_FP_optimization_goals, (=31), uleb128
+    0  No particular FP optimization goals, or no information recorded
+    1  Optimized for speed, but small size and good accuracy preserved
+    2  Optimized aggressively for speed, small size and accuracy sacrificed
+    3  Optimized for small size, but speed and accuracy preserved
+    4  Optimized aggressively for small size, speed and accuracy sacrificed
+    5  Optimized for accuracy, but speed and small size preserved
+    6  Optimized for best accuracy, speed and small size sacrificed
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>With <code>Tag_ABI_FP_optimization_goals</code> we also capture
+one of three potentially conflicting goals at one of the same two
+levels as <code>Tag_ABI_optimization_goals</code> captures.</p>
+<p>Some accuracy sacrificed is intended to allow, for example,
+re-association of expressions in generated code. In library code it
+is intended to permit the assumption that value ranges will be
+reasonable. In particular, binary to decimal and decimal to binary
+conversion may meet only the minimum standards specified by IEEE
+754, and range reduction for trigonometric functions should be
+assumed to be naive.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="generic-compatibility-tag">
+<h5>Generic compatibility tag</h5>
+<p>The generic compatibility tag describes the limited
+compatibility this file might offer when no strong claim to conform
+to the ABI (<a href="index.html">Build attributes and
+conformance to the ABI</a>) has been made using
+<code>Tag_conformance</code> (<a href="index.html">Conformance tag</a>).</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_compatibility (=32), uleb128: flag, NTBS: vendor-name
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>An omitted tag implies flag = 0, vendor-name = "". An explicit
+flag value is not 0 and can be considered to be the first byte(s)
+of the vendor name for the purpose of skipping the entry. The
+default value of 0 describes the implicit claim made by files
+generated prior to v1.06 of this specification.</p>
+<p>The defined flag values and their meanings are as follows.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>  The tagged entity has no tool chain-specific requirements (and no vendor tag hides an ABI incompatibility)
+1   This entity can conform to the ABI if processed by the named tool chain. The ABI variant to which it conforms is described solely by public "aeabi" tags
+&gt;1  The tagged entity does not conform to the ABI but it can be processed by other tools under a private arrangement described by flag and vendor-name
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>A flag value &gt;1 identifies an arrangement, beyond the scope
+of the ABI, defined by the named vendor. A tool chain that
+recognizes the arrangement might successfully process this file.
+Note that a producer must use the name of the vendor defining the
+arrangement, not the name of the producing tool chain.</p>
+<p>(Versions of this specification through v1.05 stated:</p>
+<pre>
+&gt;1 The tagged entity is compatible only with identically tagged entities, and entities not tagged by this tool chain
+</pre>
+<p>The underlined part of that definition was a mistake that makes
+the definition useless. With the underlined part removed, the old
+definition is effectively compatible with, but more restrictive
+than, the new one).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="secondary-compatibility-tag">
+<h5>Secondary compatibility tag</h5>
+<p><code>Tag_CPU_arch</code> conceals a difficulty in relation to
+the 16-bit Thumb ISA: there is no way to tag an entity as
+compatible with both Arm7TDMI (architecture v4T) and Cortex-M1
+(architecture v6-M variant).The set of instructions compatible with
+both targets excludes the 16-bit Thumb SVC (formerly SWI)
+instruction. In effect we need a pseudo architecture v4T-no-SVC to
+describe such code, but no such architecture exists so it cannot
+simply be added to the <code>Tag_CPU_arch</code> enumeration.</p>
+<p>We have chosen to deal with this problem describing such code as
+v4T also compatible with v6-M (or as v6-M also compatible with v4T)
+using the following safely ignorable (<a href="index.html">Coding extensibility and
+compatibility</a>) tag.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_also_compatible_with (=65), NTBS: data
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The data string must be further interpreted as a ULEB128-encoded
+tag followed by a value of that tag. If that value is numerical
+(i.e. ULEB128), there is an additional NUL byte following it. Thus,
+the data string value of the <code>Tag_also_compatible_with</code>
+tag must be in one of the following two formats:</p>
+<ul>
+<li>ULEB128: tag, ULEB128: value, 0.</li>
+<li>ULEB128: tag, NBTS: data.</li>
+</ul>
+<p>The following byte sequence records the intention to also be
+compatible with architecture version v6-M.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_also_compatible_with (=65) Tag_CPU_arch (=6) v6-M (=11) 0
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>At this release of the ABI (2018Q4) there are only two defined
+uses of <code>Tag_also_compatible_with</code>:</p>
+<ul>
+<li>To express v4T also compatible with v6-M and v6-M also
+compatible with v4T.</li>
+<li>To express v8-A also compatible with v8-R and v8-R also
+compatible with v8-A.</li>
+</ul>
+<p>All other uses are RESERVED to the ABI. Future releases of the
+ABI may relax this constraint.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="conformance-tag">
+<h5>Conformance tag</h5>
+<p>The conformance tag describes the version of the ABI to which
+conformity is claimed by an entity.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_conformance (=67), string: ABI-version
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>This version of the ABI is "2018Q4". The minor version (dot-xy)
+is for information and does not affect the claim. Version "0"
+denotes no claim to conform and is the default if the tag is
+omitted.</p>
+<p>To simplify recognition by consumers in the common case of
+claiming conformity for the whole file, this tag should be emitted
+first in a file-scope sub-subsection of the first public subsection
+of the attributes section.</p>
+<p>In this case, the dot-ARM-dot-attributes section would begin
+"A~~~~aeabi01~~~~C2018Q4", where '~' denotes an unknown byte
+value.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="no-defaults-tag">
+<h5>No defaults tag</h5>
+<p>The occurrence of a no defaults tag in an attributes
+sub-subsection indicates that the tag values inherited (<a href="index.html">Default values for public tags</a>,
+<a href="index.html">Inheritance of public tag
+values</a>) by entities in enclosed scopes with no explicitly given
+tags are UNDEFINED rather than 0.</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>Tag_nodefaults (=64), uleb128: ignored (write as 0)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>consuming tool may take IMPLEMENTATION DEFINED action if any tag
+has an UNDEFINED value after a dot-ARM-dot-attributes section has
+been fully processed.</p>
+<p>Consumers that do not recognize this tag will default UNDEFINED
+values to 0.</p>
+<p>To make processing easy for consumers, this tag should be
+emitted before any other tag in an attributes sub-subsection other
+than the conformance tag (<a href="index.html">Conformance tag</a>).</p>
+<p>We expect the no defaults tag to be used only by linkers that
+merge attributed and un-attributed (legacy) relocatable files.</p>
+<div>
+<div>
+<div>
+<div>
+<p>Note</p>
+<p>From the 2.09 release, section and symbol
+attributes are deprecated and optional. Primary object producers
+are discouraged from generating them and consumers are permitted to
+ignore them. Hence from the 2.09 release use of this tag is
+deprecated.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="arm-cpu-names-recognized-by-arm-compiler-5-01-armcc">
+<h3>Arm CPU names recognized by Arm Compiler 5.01 (armcc)</h3>
+<p>Arm Compiler 5.01 armcc recognizes the following Arm processor
+product names.</p>
+<table>
+<tr>
+<td>
+<ul>
+<li>ARM7EJ-S</li>
+<li>ARM7TM</li>
+<li>ARM7TDM</li>
+<li>ARM7TDMI</li>
+<li>ARM710T</li>
+<li>ARM720T</li>
+<li>ARM740T</li>
+<li>ARM7TM-S</li>
+<li>ARM7TDMI-S</li>
+<li>ARM810</li>
+<li>ARM9TDMI</li>
+<li>ARM920T</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>ARM922T</li>
+<li>ARM940T</li>
+<li>ARM9E-S</li>
+<li>ARM9EJ-S</li>
+<li>ARM926EJ-S</li>
+<li>ARM946E-S</li>
+<li>ARM966E-S</li>
+<li>ARM968E-S</li>
+<li>ARM1020E</li>
+<li>ARM1022E</li>
+<li>ARM1026EJ-S</li>
+<li>ARM1136J-S</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>ARM1136JF-S</li>
+<li>ARM1156T2-S</li>
+<li>ARM1156T2F-S</li>
+<li>ARM1176JZ-S</li>
+<li>ARM1176JZF-S</li>
+<li>MPCore</li>
+<li>Cortex-M0</li>
+<li>Cortex-M0plus</li>
+<li>Cortex-M1</li>
+<li>Cortex-M3</li>
+<li>Cortex-M4</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>SC000</li>
+<li>SC300</li>
+<li>Cortex-R4</li>
+<li>Cortex-R4F</li>
+<li>Cortex-R5</li>
+<li>Cortex-R7</li>
+<li>Cortex-A5</li>
+<li>Cortex-A7</li>
+<li>Cortex-A8</li>
+<li>Cortex-A9</li>
+<li>Cortex-A15</li>
+</ul>
+</td>
+</tr>
+</table>
+<p>(Many of these names are trademarks of Arm Limited. For details
+see <a href="http://www.arm.com/legal.html">http://www.arm.com/legal.html</a>).</p>
+<p>The following pseudo processor names are recognized as
+architecture version names.</p>
+<table>
+<tr>
+<td>
+<ul>
+<li>4</li>
+<li>4T</li>
+<li>5T</li>
+<li>5TE</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>5TEJ</li>
+<li>6</li>
+<li>6K</li>
+<li>6T2</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>6Z</li>
+<li>6-M</li>
+<li>6S-M</li>
+<li>7</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>7-A</li>
+<li>7-R</li>
+<li>7-M</li>
+<li>7E-M</li>
+</ul>
+</td>
+</tr>
+</table>
+<p>(Other Arm product version names and non-Arm product names are
+also recognized).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="attributes-summary-and-history">
+<h3>Attributes summary and history</h3>
+<p><a href="index.html">Table 1, Summary and history of
+individual attributes</a> lists the public attribute tag names and
+for each tag its numerical value, its parameter type, the ABI
+revision in which it was introduced, and the revisions in which its
+parameter values or meaning were amended.</p>
+<p>program claiming conformance to revision r2.x of this ABI must
+comprehend tags with values less than 64 (<a href="index.html">Coding extensibility and
+compatibility</a>) defined in revisions r2.x and earlier, and all
+parameter values defined for those tags by those revisions.</p>
+<p><a href="index.html">Table 2, History of attributes in
+ABI revisions and ABI-Addenda document versions</a> summarizes
+amendments to the specification of build attributes ABI revision by
+ABI revision.</p>
+<table id="id23">
+<caption>Table 1, Summary and history of individual
+attributes</caption>
+<colgroup>
+<col width="25%"/>
+<col width="6%"/>
+<col width="13%"/>
+<col width="11%"/>
+<col width="45%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Tag</th>
+<th>Value</th>
+<th>Parameter type</th>
+<th>ABI revision</th>
+<th>Amendments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>Tag_File</td>
+<td>1</td>
+<td>uint32</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_Section</td>
+<td>2</td>
+<td>uint32</td>
+<td>r2.0</td>
+<td>r2.09: Use deprecated.</td>
+</tr>
+<tr>
+<td>Tag_Symbol</td>
+<td>3</td>
+<td>uint32</td>
+<td>r2.0</td>
+<td>r2.09: Use deprecated.</td>
+</tr>
+<tr>
+<td>Tag_CPU_raw_name</td>
+<td>4</td>
+<td>NTBS</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_CPU_name</td>
+<td>5</td>
+<td>NTBS</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td rowspan="3">Tag_CPU_arch</td>
+<td rowspan="3">6</td>
+<td rowspan="3">uleb128</td>
+<td rowspan="3">r2.0</td>
+<td>r2.06: Added enum values for v6-M, v6S-M;</td>
+</tr>
+<tr>
+<td>r2.08: Added enum value for v7E-M.</td>
+</tr>
+<tr>
+<td>r2.09: Added enum value for v8.</td>
+</tr>
+<tr>
+<td>Tag_CPU_arch_profile</td>
+<td>7</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td>r2.05: Added 'S' denoting 'A' or 'R' (don't care)</td>
+</tr>
+<tr>
+<td>Tag_ARM_ISA_use</td>
+<td>8</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_THUMB_ISA_use</td>
+<td>9</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td rowspan="4">
+<p>Tag_FP_arch</p>
+<p>(formerly Tag_VFP_arch)</p>
+</td>
+<td rowspan="4">10</td>
+<td rowspan="4">uleb128</td>
+<td rowspan="4">r2.0</td>
+<td>r2.04: Added enum value for VFPv3</td>
+</tr>
+<tr>
+<td>r2.06: Added enum value for VFPv3 restricted to D0-D15</td>
+</tr>
+<tr>
+<td>r2.08: Renamed; added enum value for VFPv4 (adds fused MAC +
+16-bit FP data in memory).</td>
+</tr>
+<tr>
+<td>r2.09: Added enum value for v8-A FP</td>
+</tr>
+<tr>
+<td>Tag_WMMX_arch</td>
+<td>11</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td>r2.02: Added enum value for wireless MMX v2.</td>
+</tr>
+<tr>
+<td rowspan="2">Tag_Advanced_SIMD_arch</td>
+<td rowspan="2">12</td>
+<td rowspan="2">uleb128</td>
+<td rowspan="2">r2.0</td>
+<td>r2.08: Added enum value for Neon with fused MAC</td>
+</tr>
+<tr>
+<td>r2.09: Clarified existing usages and added enum value for v8-A
+ASIMD</td>
+</tr>
+<tr>
+<td>Tag_PCS_config</td>
+<td>13</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_PCS_R9_use</td>
+<td>14</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td>r2.08: Clarified that value = 2 denotes using R9 to emulate one
+of the architecturally defined thread ID registers in CP15
+c13.</td>
+</tr>
+<tr>
+<td>Tag_ABI_PCS_RW_data</td>
+<td>15</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_PCS_RO_data</td>
+<td>16</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_PCS_GOT_use</td>
+<td>17</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_PCS_wchar_t</td>
+<td>18</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_FP_rounding</td>
+<td>19</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_FP_denormal</td>
+<td>20</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_FP_exceptions</td>
+<td>21</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td>r2.09: fixed typo (missing 'permitted')</td>
+</tr>
+<tr>
+<td>Tag_ABI_FP_user_exceptions</td>
+<td>22</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_FP_number_model</td>
+<td>23</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>
+<p>Tag_ABI_align_needed</p>
+<p>(formerly ..._align8_needed)</p>
+</td>
+<td>24</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td>r2.08: Generalized to extended alignment of 2<sup>n</sup> bytes
+for n in 4..12</td>
+</tr>
+<tr>
+<td>
+<p>Tag_ABI_align8_preserved</p>
+<p>(formerly ..align8_preserved)</p>
+</td>
+<td>25</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td>r2.08: Generalized to extended alignment of 2<sup>n</sup> bytes
+for n in 4..12</td>
+</tr>
+<tr>
+<td>Tag_ABI_enum_size</td>
+<td>26</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_HardFP_use</td>
+<td>27</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td>r2.09: Clarified use of existing values and removed DP-only
+option</td>
+</tr>
+<tr>
+<td>Tag_ABI_VFP_args</td>
+<td>28</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td>r2.09: Added enum value for code compatible with both the base
+and VFP variants</td>
+</tr>
+<tr>
+<td>Tag_ABI_WMMX_args</td>
+<td>29</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_optimization_goals</td>
+<td>30</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_ABI_FP_optimization_goals</td>
+<td>31</td>
+<td>uleb128</td>
+<td>r2.0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_compatibility</td>
+<td>32</td>
+<td>NTBS</td>
+<td>r2.0</td>
+<td>r2.05: Revised the ineffective definition. The new one is
+compatible with the old one if a nonsensical clause in the old one
+is ignored.</td>
+</tr>
+<tr>
+<td>Tag_CPU_unaligned_access</td>
+<td>34</td>
+<td>uleb128</td>
+<td>r2.02</td>
+<td> </td>
+</tr>
+<tr>
+<td rowspan="2">
+<p>Tag_FP_HP_extension</p>
+<p>(was Tag_VFP_HP_extension)</p>
+</td>
+<td rowspan="2">36</td>
+<td rowspan="2">uleb128</td>
+<td rowspan="2">r2.06</td>
+<td>r2.08: Renamed (VFP → FP)</td>
+</tr>
+<tr>
+<td>r2.09: Clarified use of existing values.</td>
+</tr>
+<tr>
+<td>Tag_ABI_FP_16bit_format</td>
+<td>38</td>
+<td>uleb128</td>
+<td>r2.06</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_MPextension_use</td>
+<td>42</td>
+<td>uleb128</td>
+<td>r2.08</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_DIV_use</td>
+<td>44</td>
+<td>uleb128</td>
+<td>r2.08</td>
+<td>r2.09: Changed wording to clarify meaning.</td>
+</tr>
+<tr>
+<td rowspan="2">Tag_nodefaults</td>
+<td rowspan="2">64</td>
+<td rowspan="2">uleb128</td>
+<td rowspan="2">r2.06</td>
+<td>r2.07: Re-specified tag value inheritance more precisely
+(<a href="index.html">Inheritance of public tag
+values</a> and <a href="index.html">No defaults
+tag</a>). In the absence of Tag_nodefaults the specification
+reduces to that used before its introduction. We believe that only
+Arm tools are affected.</td>
+</tr>
+<tr>
+<td>r2.09: Use deprecated as Tag_Section and Tag_Symbol are
+deprecated.</td>
+</tr>
+<tr>
+<td rowspan="2">Tag_also_compatible_with</td>
+<td rowspan="2">65</td>
+<td rowspan="2">NTBS</td>
+<td rowspan="2">r2.05</td>
+<td>r2.06: Restricted usage as noted in <a href="index.html">Secondary compatibility tag</a>.</td>
+</tr>
+<tr>
+<td>r2.09: Clarified data format.</td>
+</tr>
+<tr>
+<td>Tag_conformance</td>
+<td>67</td>
+<td>NTBS</td>
+<td>r2.05</td>
+<td> </td>
+</tr>
+<tr>
+<td>Tag_T2EE_use</td>
+<td>66</td>
+<td>uleb128</td>
+<td>r2.07</td>
+<td>r2.09: Deprecated as not useful</td>
+</tr>
+<tr>
+<td>Tag_Virtualization_use</td>
+<td>68</td>
+<td>uleb128</td>
+<td>r2.07</td>
+<td>r2.08: Added two enumeration values to support the 2009
+virtualization extensions.</td>
+</tr>
+<tr>
+<td>Tag_MPextension_use</td>
+<td>70</td>
+<td>uleb128</td>
+<td>r2.07</td>
+<td>r2.08: Recoded to 42 (must be recognized by tool chains). PLDW
+is a user-mode instruction, undefined in architecture v7 w/o MP
+extensions.</td>
+</tr>
+</tbody>
+</table>
+<table id="id24">
+<caption>Table 2, History of attributes in ABI revisions and
+ABI-Addenda document versions</caption>
+<colgroup>
+<col width="10%"/>
+<col width="6%"/>
+<col width="26%"/>
+<col width="58%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>ABI Revision</th>
+<th>Doc vsn</th>
+<th>Date</th>
+<th>Amendments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>r2.0</td>
+<td>v1.0</td>
+<td>March 2005</td>
+<td>Initial release of the build attributes specification.</td>
+</tr>
+<tr>
+<td>r2.01</td>
+<td>v1.01</td>
+<td>5<sup>th</sup> July 2005</td>
+<td>Added extensibility and compatibility rules (now <a href="index.html">Coding extensibility and
+compatibility</a>).</td>
+</tr>
+<tr>
+<td>r2.02</td>
+<td>v1.03</td>
+<td>13<sup>th</sup> October 2005</td>
+<td>
+<p>Added wMMX v2 to <code>Tag_WMMX_arch</code>
+enumeration.</p>
+<p>Added <code>Tag_CPU_unaligned_access</code>.</p>
+</td>
+</tr>
+<tr>
+<td>r2.03</td>
+<td>v1.04</td>
+<td>6<sup>th</sup> January 2006</td>
+<td>No changes to the specification of build attributes.</td>
+</tr>
+<tr>
+<td>r2.04</td>
+<td>v1.05</td>
+<td>8<sup>th</sup> May 2006</td>
+<td>Added VFPv3 to Tag_FP_arch enumeration.</td>
+</tr>
+<tr>
+<td>r2.05</td>
+<td>v1.06</td>
+<td>25<sup>th</sup> January 2007</td>
+<td>
+<p>Added introductory <a href="index.html">Introduction to build attributes</a>.</p>
+<p>Clarified that all current uleb128 values are also plain byte
+values.</p>
+<p>Clarified inheritance of default values through nested
+scopes.</p>
+<p>Clarified the definitionof conformance.</p>
+<p>Added 'S' to the <code>Tag_CPU_arch_profile</code>
+enumeration.</p>
+<p>Corrected the previously useless definition of
+<code>Tag_compatibility</code>.</p>
+<p>Added <code>Tag_also_compatible_with</code> and
+<code>Tag_conformance</code>.</p>
+<p>Added <a href="index.html">Procedure call-related
+attributes</a> about combining attribute values.</p>
+<p>Many minor editorial improvements.</p>
+</td>
+</tr>
+<tr>
+<td>r2.06</td>
+<td>A</td>
+<td>October 2007</td>
+<td>
+<p>Major re-write of material with emphasis on clear
+presentation.</p>
+<p>Added v6-M and v6S-M to <code>Tag_CPU_arch</code>
+enumeration.</p>
+<p>Added VFPv3 restricted to D0-D15 to <code>Tag_FP_arch</code>
+enumeration.</p>
+<p>Added Tag_FP_HP_extension, <code>Tag_ABI_FP_16bit_format</code>,
+and</p>
+<p>Tag_nodefaults. Restricted the use of
+<code>Tag_also_compatible_with</code> in the face of persistent
+difficulties with its formal definition.</p>
+</td>
+</tr>
+<tr>
+<td>r2.07</td>
+<td>B</td>
+<td>October 2008</td>
+<td>Added <code>Tag_T2EE_use</code>,
+<code>Tag_Virtualization_use</code> and
+<code>Tag_MPextension_use</code>. Clarified tag value inheritance
+and the use of <code>Tag_Nodefaults</code>; clarified the meaning
+of <code>Tag_CPU_name</code> and
+<code>Tag_CPU_raw_name</code>.</td>
+</tr>
+<tr>
+<td>r2.08</td>
+<td>C</td>
+<td>October 2009</td>
+<td>Added Tag_CPU_arch enum value V7E-M =13; renamed
+<code>Tag_VFP_arch</code> to <code>Tag_FP_arch</code>, added values
+for VFPv4; renamed <code>Tag_VFP_HP_extension</code> to
+<code>Tag_FP_HP_extension</code>; added value to
+<code>Tag_Advanced_SIMD_arch</code> for Neon with fused MAC; added
+values to <code>Tag_Virtualization_use</code> describing use of the
+virtualization extensions; recoded <code>Tag_MPextension</code> use
+to catch potential user-mode faults; added <code>Tag_DIV_use</code>
+to describe use of UDIV/SDIV in code for v7A. Clarified the role of
+R9 when used as a TLS (<code>Tag_ABI_PCS_R9_use = 2</code>).
+Renamed Tag_ABI_align8_needed,
+<code>Tag_ABI_align8_preserved</code> and extended them to extended
+2<sup>n</sup>-byte alignment (for n in 4-12).</td>
+</tr>
+<tr>
+<td>r2.09</td>
+<td>D</td>
+<td>November 2012</td>
+<td>Changed <code>Tag_DIV_use wording</code> to clarify meaning.
+Clarified <code>Tag_also_compatible_with</code> data format.
+Deprecated <code>Tag_Section</code>, <code>Tag_Symbol</code> and
+<code>Tag_nodefaults</code>. Added architecture v8 values to
+<code>Tag_CPU_arch</code>, <code>Tag_FP_arch</code>,
+<code>Tag_Advanced_SIMD_arch</code>. Clarified use of existing
+<code>Tag_Advanced_SIMD_arch</code> and
+<code>Tag_FP_HP_extension</code> values. Deprecated
+<code>Tag_T2EE_use</code>. Clarified use of
+<code>Tag_ABI_HardFP_use</code> values and removed DP-only option.
+Fixed typo (missing 'permitted') in
+<code>Tag_ABI_FP_exceptions</code>. Added enum value to
+<code>Tag_ABI_VFP_args</code> for code compatible with both the
+base and VFP variants.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addendum-thread-local-storage">
+<h2>ADDENDUM: Thread Local Storage</h2>
+<div>
+<div>
+<div>
+<div id="introduction-to-thread-local-storage">
+<h3>Introduction to thread local storage</h3>
+<p>Thread Local Storage (TLS) is a class of own data (static
+storage) that - like the stack - is instanced once for each thread
+of execution. It fits into the abstract storage hierarchy as
+follows.</p>
+<ul>
+<li>(Most global) Program-own data (static and extern variables,
+instanced once per program/process).</li>
+<li>Thread local storage (variables instanced once per thread,
+shared between all accessing function activations).</li>
+<li>(Most local) Automatic data (stack variables, instanced once
+per function activation, per thread).</li>
+</ul>
+<p>Thread local storage generates a number of issues at a number of
+levels, not all of which affect an ABI.</p>
+<ul>
+<li>
+<p>How to denote TLS in source programs.</p>
+<p>Gcc uses <code>__tls T t...</code>; Microsoft use
+<code>__declspec(thread) T t...</code>; this is Q-o-I.</p>
+</li>
+<li>
+<p>How to represent the initializing images of TLS in
+object files, and how to define symbols in TLS.</p>
+<p>The rules for ELF are well established (see
+<code>SHF_TLS</code>, <code>STT_TLS</code> in [<a href="http://www.sco.com/developers/gabi/">GELF</a>])</p>
+</li>
+<li>
+<p>How a loader or run-time system creates instances
+of TLS per-thread at execution time.</p>
+<p>This is part of ABI for the platform or execution
+environment.</p>
+</li>
+<li>
+<p>How to relocate, statically and dynamically, with
+respect to symbols defined in TLS (for details of relocations
+relevant to Arm Linux see [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>]).</p>
+</li>
+<li>
+<p>How code must address variables allocated in TLS
+(the subject of the notes below).</p>
+</li>
+</ul>
+<p>It is the last two bullet points that are the subject of this
+ABI.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="introduction-to-tls-addressing">
+<h3>Introduction to TLS addressing</h3>
+<p>In the most general form supported by Linux, Windows, and
+similar platforms, a program is constructed dynamically from an
+application and a number of shared libraries (called, respectively,
+DSOs or DLLs). Each component (application or shared library) can
+be mapped into multiple processes. Additionally, a DSO or DLL can
+be loaded dynamically by a program, rather than being part of the
+initial process image constructed when the program is first
+loaded.</p>
+<p>For the purpose of addressing TLS, both Linux and Windows
+identify the components of an application using indexes. On both
+platforms, indexes are allocated dynamically when a process is
+created, or when a DSO or DLL is loaded dynamically. The details of
+how indexes are allocated are specific to a platform and differ
+significantly between Linux and Windows.</p>
+<p>component can have a different TLS index in two different
+processes, so its thread index must be part of its program-own
+state (or be queried dynamically). The run-time system is
+responsible for maintaining a per-thread vector of pointers to
+allocated TLS regions indexed by these component indexes. Under
+both Linux and the Win32 API, access to the vector is hidden behind
+run-time functions.</p>
+<p>There is a system resource (such as a dedicated register) called
+the <em>thread pointer</em> that, typically, points to a control
+block for the currently executing thread which, in turn, points to
+the TLS vector for that thread.</p>
+<p>At this stage, the details of TLS addressing become quite
+platform specific. In the next subsection we describe the concepts
+appropriate to Linux for Arm, which is all that this revision of
+the ABI supports.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="linux-for-arm-tls-addressing">
+<h3>Linux for Arm TLS addressing</h3>
+<p><a href="index.html">Linux for Arm TLS addressing
+architecture</a> depicts the fundamental components of the TLS
+addressing architecture used by Linux for Arm.</p>
+<div class="documents-docsimg-container" id="id25"><img alt="addenda32-linux-tls.png" src="addenda32-linux-tls.png"/>
+<p>Linux for Arm TLS addressing architecture</p>
+</div>
+<p>In the most general case, the location of an imported thread
+local datum - or an exported datum that might be pre-empted - is
+represented by a pair of GOT entries that give:</p>
+<ul>
+<li>The index in the dynamic thread vector of the pointer to the
+TLS block containing the datum (the application itself has index 1
+and index 0 is reserved to the run-time system).</li>
+<li>The offset of the datum in the pointed-to TLS block.</li>
+</ul>
+<p>In the most general case the expression to address a thread
+local symbol S is:</p>
+<div>
+<div>
+<div>
+<div>
+<div>(tp[0])[GOT<sub>S</sub>[0]] + GOT<sub>S</sub>[1]</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="linux-for-arm-general-dynamic-model">
+<h4>Linux for Arm general dynamic model</h4>
+<p>In the <em>general dynamic model</em>, the addressing expression
+is packaged by a call to <code>__tls_get_addr</code> that takes a
+single parameter, the address of GOT<sub>S</sub>. The code sequence
+and required relocations are shown in <a href="index.html">Table 3, General dynamic model (time
+optimized)</a>, below.</p>
+<p>space-optimized version of the general dynamic model that calls
+<code>___tls_get_addr</code> (triple-underscore) is shown in
+<a href="index.html">Table 4, General dynamic model (space
+optimized)</a>, below. The parameter passed to
+<code>___tls_get_addr</code> is the offset of GOT<sub>S</sub> from
+lr.</p>
+<p>The Linux for Arm TLS model has two local dynamic variants.
+These are used to address component-local thread-local variables
+more efficiently, but it can still be used in a dynamically loaded
+DSO. (A variable is local if its symbol S has
+<code>STB_LOCAL</code> binding or non-<code>STV_DEFAULT</code>
+visibility). In these variants the offset of variable in the
+component's TLS segment in known at link time and only the
+component index must be loaded from the GOT. Specimen code
+sequences and relocations are given in <a href="index.html">Table 5, Local dynamic models</a>, below. This
+model is advantageous whenever a function accesses more than one
+variable (the address of the TLS block can be a common
+sub-expression).</p>
+<table id="id26">
+<caption>Table 3, General dynamic model (time optimized)</caption>
+<colgroup>
+<col width="17%"/>
+<col width="83%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Location</th>
+<th>General dynamic model code sequence</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.text
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>     ldr r0, .Lt0
+.L1  add r0, pc, r0
+     bl  __tls_get_addr              ; R_ARM_CALL(__tls_get_addr)
+     ldr rS, [r0]                    ; Load S...
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>literal_pool
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.Lt0 .word S(tlsgd) + [. - .L1 - 8]  ; R_ARM_TLS_GD32(S)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>GOT[S]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.word                           ;  R_ARM_TLS_DTPMOD32(S)
+.word                           ;  R_ARM_TLS_DTPOFF32(S)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table id="id27">
+<caption>Table 4, General dynamic model (space optimized)</caption>
+<colgroup>
+<col width="17%"/>
+<col width="83%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Location</th>
+<th>General dynamic model (space optimized)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.text
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>     ldr r0, .Lt0
+.L1  bl  __tls_get_addr                 ; R_ARM_CALL(__tls_get_addr)
+     ldr rS, [r0]                       ; Load S...
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>literal pool
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.Lt0 .word S(tlsgd) + [. - .L1 - 4]     ; R_ARM_TLS_GD32(S)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>GOT[S]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.word                              ; R_ARM_TLS_DTPMOD32(S)
+.word                              ; R_ARM_TLS_DTPOFF32(S)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table id="id28">
+<caption>Table 5, Local dynamic models</caption>
+<colgroup>
+<col width="16%"/>
+<col width="84%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Location</th>
+<th>Local dynamic model Relocation Symbol</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.text
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>     ldr r0, .Lt0
+.L1  add r0, pc, r0
+     bl  __tls_get_addr                     ; R_ARM_CALL(__tls_get_addr)
+
+      ... r0 points to my TLS, a CSE ...
+
+     ldr r1, .Lt1
+     ldr rX, [r0, r1] ; long offset to X
+
+     ...       ; but a short offset to Y
+
+     ldr rY, [r0, #Y(tlsldo)]               ; R_ARM_TLS_LDO12(Y)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>literal pool
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.Lt0 .word X(tlsldm) + [. - .L1 - 8]        ; R_ARM_TLS_LDM32(X)
+.Lt1 .word Y(tlsldo)                        ; R_ARM_TLS_LDO32(Y)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>GOT[X]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.word                                  ; R_ARM_TLS_DTPMOD32(X)
+.word 0
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p><code>R_ARM_TLS_LDM32</code> sets the first element of the GOT
+pair to the symbol's dynamic TLS vector index, as does
+<code>R_ARM_TLS_GD32</code>, but sets the second element to 0 (as
+shown in <a href="index.html">Table 5, Local dynamic
+models</a>, above).</p>
+<p>TLS-related relocations for Linux for Arm are described further
+in [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>].</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="linux-for-arm-static-initial-exec-model">
+<h4>Linux for Arm static (initial exec) model</h4>
+<p>If DSOs need not be loaded dynamically, more efficient
+addressing modes can be constructed if the run-time system
+allocates TLS at process creation time. As depicted in Figure 3 1,
+the offset from the thread pointer tp to a component's TLS is then
+known at process creation time (dynamic link time), so a component
+can address its thread local variables relative to tp, without
+indexing the dynamic thread vector.</p>
+<p>Below, $tp denotes a general purpose register containing the
+result of reading tp.</p>
+<p><a href="index.html">Table 6, General initial exec
+model</a>, below, shows the general model. It works for DSOs and
+the root application, in Arm and Thumb state.</p>
+<p><a href="index.html">Table 7, Initial exec model, DSO
+with GOT pointer and small FPIC addressing (DSO only)</a>, below,
+shows an optimized model for DSOs If the compiler uses a GOT
+pointer (denoted by $gp) and small PIC (12-bit PC-relative)
+addressing. This model works only in Arm state.</p>
+<p>Finally, <a href="index.html">Table 8, Initial exec
+model, access to an application's local thread-local variables</a>
+shows the code to access an application's local thread-local
+variables. Because an application's TLS is allocated first in the
+initial TLS vector for the process, the offsets of its variables
+from tp are known at static link time and do not need to be read
+from the GOT. The 12-bit model works only in Arm state.</p>
+<table id="id29">
+<caption>Table 6, General initial exec model</caption>
+<colgroup>
+<col width="19%"/>
+<col width="81%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Location</th>
+<th>Initial exec model code sequence</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.text
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>     ldr r0, .Lt0
+.L1  ldr r0, [pc, r0]
+     ...
+     ldr rS, [$tp, r0] ; Load S...
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>literal pool
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.Lt0 .word S(tpoff) + [. - .L1 - 8]    ; R_ARM_TLS_IE32(S)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>GOT[S]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.word                             ; R_ARM_TLS_TPOFF32(S)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table id="id30">
+<caption>Table 7, Initial exec model, DSO with GOT pointer and
+small FPIC addressing (DSO only)</caption>
+<colgroup>
+<col width="19%"/>
+<col width="81%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Location</th>
+<th>Initial exec model code sequence</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.text
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>ldr r0, [$gp, #S(gottpoff)]       ; R_ARM_TLS_IE12GP(S)
+...
+ldr rS, [$tp, r0]  ; Load S...
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>GOT[S]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.word                             ; R_ARM_TLS_TPOFF32(S)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table id="id31">
+<caption>Table 8, Initial exec model, access to an application's
+local thread-local variables</caption>
+<colgroup>
+<col width="18%"/>
+<col width="82%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Location</th>
+<th>Initial exec model code sequence</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.text
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>ldr r0, .Lt0
+...
+ldr rX, [$tp, r0]        ; Load X
+...
+ldr rY, [$tp, #Y(tpoff)] ; Load Y     ; R_ARM_TLS_LE12(Y)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>literal pool
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>.Lt0 .word S(tpoff)                        ; R_ARM_TLS_LE32(X)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>TLS-related relocations for Linux for Arm are described further
+in [<a href="https://developer.arm.com/docs/ihi0044/latest">AAELF</a>].</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="reserved-names">
+<h2>Reserved Names</h2>
+<p>For external symbols defined/required by the C++ ABI there are
+already agreed names - either the standard mangling of C++ names or
+names like <code>__cxa_acquire_guard</code>.</p>
+<p>The ABI for the Arm Architecture also needs a space of global
+symbol names private to each compiler vendor - external names
+guaranteed not to clash with other vendors - and a C++ name space
+private to each vendor.</p>
+<p>Many of these names have C or assembly language linkage, so we
+propose to reserve names of the form
+<code>__vendor-name_name</code>, for example:</p>
+<table>
+<tr>
+<td>
+<ul>
+<li><code>__ARM_foo</code></li>
+</ul>
+</td>
+<td>
+<ul>
+<li><code>__gnu_foobar</code></li>
+</ul>
+</td>
+<td>
+<ul>
+<li><code>__cxa_foobaz</code></li>
+</ul>
+</td>
+</tr>
+</table>
+<p>In each case, namespace <code>__vendor-name[vn]</code> is also
+reserved in C++, for example:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>namespace __ARM {...}                namespace __ARMv2 {...}
+namespace __gnuv1 {...}              namespace __aeabi {...}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>We also reserve the corresponding upper case vendor name with a
+single leading underscore to use by the vendor for C macro names,
+for example:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>#if _AEABI_... != 0
+#if _ARM_... == 2
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Prefix names themselves must not contain underscore ('_') or
+dollar ('$'). The following prefixes are registered.</p>
+<table id="id32">
+<caption>Registered Vendors</caption>
+<colgroup>
+<col width="20%"/>
+<col width="80%"/></colgroup>
+<thead valign="bottom">
+<tr>
+<th>Name</th>
+<th>Vendor</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td><code>ADI</code></td>
+<td>Analog Devices</td>
+</tr>
+<tr>
+<td><code>acle</code></td>
+<td>Reserved for use by Arm C Language Extensions.</td>
+</tr>
+<tr>
+<td><code>aeabi</code></td>
+<td>Reserved to the ABI for the Arm Architecture (EABI
+pseudo-vendor)</td>
+</tr>
+<tr>
+<td><code>Anon</code><em>Xyz</em>
+<code>anon</code><em>Xyz</em></td>
+<td>Reserved to private experiments by the Xyz vendor. Guaranteed
+not to clash with any registered vendor name.</td>
+</tr>
+<tr>
+<td><code>ARM</code></td>
+<td>Arm Ltd (Note: the company, not the processor).</td>
+</tr>
+<tr>
+<td><code>cxa</code></td>
+<td>C++ ABI pseudo-vendor</td>
+</tr>
+<tr>
+<td><code>FSL</code></td>
+<td>Freescale Semiconductor Inc.</td>
+</tr>
+<tr>
+<td><code>GHS</code></td>
+<td>Green Hills Systems</td>
+</tr>
+<tr>
+<td><code>gnu</code></td>
+<td>GNU compilers and tools (Free Software Foundation)</td>
+</tr>
+<tr>
+<td><code>iar</code></td>
+<td>IAR Systems</td>
+</tr>
+<tr>
+<td><code>icc</code></td>
+<td>ImageCraft Creations Inc (<em>ImageCraft C Compiler</em>)</td>
+</tr>
+<tr>
+<td><code>intel</code></td>
+<td>Intel Corporation</td>
+</tr>
+<tr>
+<td><code>ixs</code></td>
+<td>Intel Xscale</td>
+</tr>
+<tr>
+<td><code>llvm</code></td>
+<td>The LLVM/Clang projects</td>
+</tr>
+<tr>
+<td><code>PSI</code></td>
+<td>PalmSource Inc.</td>
+</tr>
+<tr>
+<td><code>RAL</code></td>
+<td>Rowley Associates Ltd</td>
+</tr>
+<tr>
+<td><code>SEGGER</code></td>
+<td>SEGGER Microcontroller GmbH</td>
+</tr>
+<tr>
+<td><code>somn</code></td>
+<td>SOMNIUM Technologies Limited.</td>
+</tr>
+<tr>
+<td><code>TASKING</code></td>
+<td>Altium Ltd.</td>
+</tr>
+<tr>
+<td><code>TI</code></td>
+<td>TI Inc.</td>
+</tr>
+<tr>
+<td><code>tls</code></td>
+<td>Reserved for use in thread-local storage routines.</td>
+</tr>
+<tr>
+<td><code>WRS</code></td>
+<td>Wind River Systems.</td>
+</tr>
+</tbody>
+</table>
+<p>To register a vendor prefix with Arm, please E-mail your request
+to arm.eabi at arm.com.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="errata-and-minor-addenda">
+<h2>Errata and Minor Addenda</h2>
+<p>This section details errors found in the ABI for the Arm
+Architecture after publication of version 2.0 and minor additions
+made since then.</p>
+<div>
+<div>
+<div>
+<div id="dwarf-for-the-arm-architecture">
+<h3>DWARF for the Arm Architecture</h3>
+<div>
+<div>
+<div>
+<div id="clarifications">
+<h4>Clarifications</h4>
+<p>(v2.01, r2.02) The ABI-v2.0 DWARF register numbering scheme for
+VFP registers (S0-S31 → 64-95) has been declared obsolescent. It
+will become obsolete in the next major release of the ABI for the
+Arm Architecture.</p>
+<p>(B, r2.09) <a href="https://developer.arm.com/docs/ihi0040/latest#aadwarf32-section3-5">
+Common information entries</a>: Clarify CIE descriptions of
+registers that are unused by intention of the user, for example as
+a consequence of the chosen procedure call standard.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="errors-fixed">
+<h4>Errors fixed</h4>
+<p>(v2.02, r2.04) <a href="https://developer.arm.com/docs/ihi0040/latest#aadwarf32-section3-3">
+Describing other endian data</a>, suggested that DW_AT_endianness,
+coded as 0x5b, might be approved by the DWARF3.0 standardization
+committee. In fact, 0x5b was used for another purpose and
+DW_AT_endianity, coded as 0x65, has been approved. The parametric
+values of this attribute have also changed their names and
+encodings.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="additions-and-omissions-fixed">
+<h4>Additions and omissions fixed</h4>
+<p>(v2.01, r2.02) <a href="https://developer.arm.com/docs/ihi0040/latest#aadwarf32-section3-1-1">
+VFP-v3 and Neon register descriptions</a>, specifies how to
+describe the VFP-v3/Neon SIMD register file. There is a new range
+of DWARF register numbers allocated to D0-D31 and new schemes for
+describing Neon Q registers and VFP S registers. The new numbering
+should also be used for VFP-v2.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="elf-for-the-arm-architecture">
+<h3>ELF for the Arm Architecture</h3>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-2-1">
+<h4>Clarifications</h4>
+<p>(v1.02, r2.03) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-2">ELF
+Header</a>: Corrected the wording of the description of
+e_entry.</p>
+<p>(v1.03, r2.04) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-2">ELF
+Header</a>: Clarified that bit[0] of [e_entry] controls the
+instruction set selection on entry.</p>
+<p>(v1.02, r2.03) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-5-4">
+Symbol names</a>: Clarified the necessary restrictions on local
+symbol removal in relocatable files.</p>
+<p>(v1.04, r2.05) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>: Clarified that 'Pa' is the adjusted address
+of the place being relocated, with the Thumb-bit stripped (defined
+as P &amp; 0xFFFFFFFE), for Thumb state LDR- and ADR-type
+relocations.</p>
+<p>(v1.04, r2.05) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-4">
+Static Arm relocations</a>: Clarified that R_ARM_LDR_PC_G0 applies
+equally to LDRB, STRB.</p>
+<p>(v1.04, r2.05) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-6">
+Static Thumb32 relocations</a>: Added this section explicitly
+tabulating the relocations specific to 32-bit Thumb
+instructions.</p>
+<p>(v1.05, r2.06) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-1-1">
+Registered Vendor Names</a>:: Inserted the complete table of
+registered vendor names, now shared among AAELF, CLIBABI, and
+RTABI.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section5-1">Introduction</a>,
+<a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section5-3">Program
+Loading</a>: Added small remarks to previously empty sections to
+remove any doubt that the sections might be accidentally empty.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-4">
+Static Arm relocations</a>, subsection <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-rubric1">Call
+and Jump relocations</a>: Listed R_ARM_PC24, R_ARM_CALL,
+R_ARM_JUMP24, R_ARM_THM_CALL, R_ARM_THM_JUMP24, and
+R_ARM_THM_JUMP19 as the only relocations that might cause an intra
+procedure call veneer to be generated.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-7">
+Static miscellaneous relocations</a>: Clarified the definition of
+the R_ARM_V4BX relocation and use of the null symbol (index 0) by
+it.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-10">
+Dynamic relocations</a>: Added additional text to table 4-16 for
+R_ARM_TLS_DTPMOD32 and R_ARM_TLS_TPOFF32 clarifying the meaning of
+relocating with respect to the null symbol (index = 0).</p>
+<p>(vD, r2.08) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section1-2">References</a>:
+Updated references to the Arm ARM to refer to the latest version
+published on <a href="http://infocenter.arm.com">http://infocenter.arm.com</a>.</p>
+<p>(vD, r2.08) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-6">
+Static Thumb32 relocations</a>: Referenced the text in <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-4">
+Static Arm relocations</a> (under the subheading <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-rubric1">Call
+and Jump relocations</a>) that describes the conditions under which
+a relocation is permitted to generate an ip-corrupting intra-call
+or long jump veneer.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-6">
+Static Thumb32 relocations</a>: Clarified/extended note on what the
+<a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-4">
+Static Arm relocations</a> text deals with.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6">Relocation</a>:
+Standardized instruction descriptions to use Arm ARM
+terminology.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-1">
+Addends and PC-bias compensation</a>: Clarified initial addend
+formulation for MOVW/MOVT and R_ARM_THM_PC8.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-10">
+Dynamic relocations</a>: In <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-16">Table
+4-16, Proxy generating relocations</a>, clarified the wording for
+R_ARM_RELATIVE.</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>: Clarified relocation expression values are
+computed mod 2^32.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-2-2">
+<h4>Errors fixed</h4>
+<p>(v1.01, r2.01) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-3-2">
+Section Types</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-4">Table
+4-4, Processor specific section types</a>: The definition of
+SHT_ARM_ATTRIBUTES was given the value 0x70000002, already
+allocated to SHT_ARM_PREEMPTMAP (used by RVCT 2.2 and others). The
+correct value of SHT_ARM_ATTRIBUTES is 0x70000003.</p>
+<p>(v1.04, r2.05) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>: Corrected the relocation formulae for the
+R_ARM_ALU_{PC|SB}_GN_NC relocations so that they uniformly include
+the obligation to set the T bit when this is required.</p>
+<p>(v1.05, r2.06) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>: Corrected the definition of Pa (introduced in
+r2.05) which had the wrong mask.</p>
+<p>(v1.05, r2.06) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-9">
+Relocations for thread-local storage</a>: Corrected the text
+following <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-15">Table
+4-15 Thumb relocation actions by instruction type</a>, which
+misspelled R_ARM_TLS_LE32 (relocation #108) and R_ARM_TLS_LE12
+(relocation #110).</p>
+<p>(vB, r2.06) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-6">
+Static Thumb32 relocations</a>: Corrected an error in <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-13">Table
+4-13, Static Thumb-16 Relocations</a> where the instructions to
+which R_ARM_THM_PC12 and R_ARM_THM_ALU_PREL_11_0 apply had been
+transposed.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-4">
+Static Arm relocations</a>: Changed the behaviour of jump
+relocations to unresolved weak references to be
+implementation-defined rather than undefined.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-6">
+Static Thumb32 relocations</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-13">Table
+4-13, Static Thumb-16 Relocations</a>: Corrected Result Mask for
+R_ARM_THM_PC12.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section5-2-1-1">
+Platform architecture compatibility data (ABI format)</a>:
+Corrected off-by-one error in size of array.</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>: <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-9">Table
+4-9, Relocation codes</a>: Renumbered R_ARM_IRELATIVE from 140 to
+160 (the number agreed with stakeholders; publication as 140 was
+incorrect). <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-11">Table
+4-11, Static Arm instruction relocations</a>: Removed incorrect
+overflow check on R_ARM_MOVT_ABS, R_ARM_MOVT_PREL and
+R_ARM_MOVT_BREL.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-2-3">
+<h4>Additions and omissions fixed</h4>
+<p>(v1.01, r2.01) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-3-2">
+Section Types</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-4">Table
+4-4, Processor specific section types</a>: The definition of
+SHT_ARM_PREEMPTMAP was omitted. The correct value is
+0x70000002.</p>
+<p>(v1.03, r2.04) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-3-3-1">
+Merging of objects in sections with SHF_MERGE</a>, Merging of
+objects in sections with SHF_MERGE: Rules governing SHF_MERGE
+optimizations are needed to support inter-operation between tool
+chains (omitted from release 1.02 and earlier).</p>
+<p>(v1.01, r2.01) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-3-4">
+Special Sections</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-5">Table
+4-5, Processor specific section attribute flags</a>: The definition
+and explanation of .ARM.preemptmap were omitted.</p>
+<p>(v1.03, r2.04) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-1">
+Addends and PC-bias compensation</a>, Addends and PC-bias
+compensation: Release 1.03 makes explicit the rules describing the
+required initial addends for REL-type relocations.</p>
+<p>(v1.04, r2.05) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>: Added additional relocations to support a
+new, experimental Linux TLS addressing model described in <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-9">
+Relocations for thread-local storage</a>, Relocations for
+thread-local storage.</p>
+<p>(v1.02, r2.03) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-9">
+Relocations for thread-local storage</a>: Added a definition of
+R_ARM_RELATIVE when S = 0; described the new, experimental, Linux
+TLS addressing model.</p>
+<p>(v1.02, r2.03) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section5-2-1">
+Platform architecture compatibility data</a>: Added a specification
+of architecture compatibility information for executable files.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-3-2">
+Section Types</a>: Added SHT_ARM_DEBUGOVERLAY and
+SHT_ARM_OVERLAYSECTION to <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-4">Table
+4-4, Processor specific section types</a>. These are new section
+types to support debugging overlaid programs.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-3-4">
+Special Sections</a>: Added .ARM.debug_overlay and
+.ARM.overlay_table to <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-5">Table
+4-5, Processor specific section attribute flags</a>. These are new
+special section names to support debugging overlaid programs.</p>
+<p>(vD, r2.08) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-5">
+Static Thumb16 relocations</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-12">Table
+4-12, Arm relocation actions by instruction type</a>: extended the
+range of R_ARM_THM_PC8 to ADR as well as LDR(literal)
+instructions.</p>
+<p>(vD, r2.08) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section5-2-1">
+Platform architecture compatibility data</a>: Updated and tidied
+the text and added <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section5-2-1-1">
+Platform architecture compatibility data (ABI format)</a>, as an
+informative proposal for recording executable file attributes.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-3">Sections</a>:
+Added e_flags EF_ARM_ABI_FLOAT_HARD and EF_ARM_ABI_FLOAT_SOFT to
+indicate floating point PCS conformance, and EF_ARM_GCCMASK as a
+mask for legacy bits.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-6">
+Static Thumb32 relocations</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-8">
+Proxy generating relocations</a>: added R_ARM_THM_GOT_BREL12.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-9">Table
+4-9, Relocation codes</a>: Reserved relocation 140 for a specific
+future use.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-4">
+Static Arm relocations</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-12">Table
+4-12, Arm relocation actions by instruction type</a>: Added entries
+for MOVW and MOVT.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-5">
+Static Thumb16 relocations</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-13">Table
+4-13, Static Thumb-16 Relocations</a>: Added Overflow column.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-6">
+Static Thumb32 relocations</a>: Added <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-15">Table
+4-15 Thumb relocation actions by instruction type</a>.</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6-1-2">
+Relocation types</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-9">Table
+4-9, Relocation codes</a>: Changed the subdivisions within the
+reserved/unallocated relocation space.</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-6">Relocation</a>,
+<a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-9">Table
+4-9, Relocation codes</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-13">Table
+4-13, Static Thumb-16 Relocations</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-15">Table
+4-15 Thumb relocation actions by instruction type</a>: Added
+R_ARM_THM_ALU_ABS_Gn[_NC] relocations.</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-section4-3-3">
+Section Attribute Flags</a>, <a href="https://developer.arm.com/docs/ihi0044/latest#aaelf32-table4-5">Table
+4-5, Processor specific section attribute flags</a>: Added
+SHF_ARM_NOREAD processor specific section attribute flag.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="procedure-call-standard-for-the-arm-architecture">
+<h3>Procedure Call Standard for the Arm Architecture</h3>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-3-1">
+<h4>Clarifications</h4>
+<p>(v2.05, r2.04) Added <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-1">Machine
+Registers</a>, clarifying the roles of core registers and
+co-processor registers in the AAPCS.</p>
+<p>(v2.03, r2.02) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-5">Parameter
+Passing</a>, clarified that a callee may overwrite an incoming
+parameter area on the stack.</p>
+<p>(v2.03, r2.02) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-1-1-1">
+Handling values larger than 32 bits</a>, described how VFP-v3
+d16-d31 are used.</p>
+<p>(v2.04, r2.04) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-3-1-1">
+Use of IP by the linker</a>, clarified when linking may insert
+intra-call veneers that may corrupt r12 and the condition
+flags.</p>
+<p>(v2.01, r2.01) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section7-1-3">
+Enumerated Types</a>, following <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-table5">Table
+5, Additional data types</a>: Clarified that if a platform chooses
+that all container types should be word sized, the type of the
+container is int unless the upper bound of the enumerator exceeds
+2147483647.</p>
+<p>(vB, r2.07) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1-2-1">
+VFP co-processor register candidates</a>: Simplified duplicated
+text and clarified that homogeneous aggregates of containerized
+vectors are limited to four members.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section4-3-5">
+Homogeneous Aggregates</a>: Minor clarifications and improvements
+to the terminology. Added a remark that source language access
+control does not affect the test for homogeneity.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1-2-3">
+Parameter passing</a>: Added a remark clarifying the requirement to
+'back fill' unused coprocessor register candidates when passing
+floating-point parameters using the VFP variant of AAPCS.</p>
+<p>(vD, r2.08) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section7-1-3">
+Enumerated Types</a>: Re-wrote the specification to better reflect
+the intentions for enumerated types in ABI-complying
+interfaces.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-appendixa">APPENDIX
+Support for Advanced SIMD Extensions</a>: Re-written to clarify
+requirements on Advanced SIMD types.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-3-2">
+<h4>Errors fixed</h4>
+<p>(v2.03, r2.02) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section7-1-7">
+Bit-fields</a>, retracted the requirement that the type of a plain
+bit-field be unsigned by default.</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-appendixa-2">
+Advanced SIMD data types</a>, corrected the element counts of
+poly16x4_t and poly16x8_t.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-3-3">
+<h4>Additions and omissions fixed</h4>
+<p>(v2.05, r2.05) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-1-1-1">
+Handling values larger than 32 bits</a>, added in support of the
+Advanced SIMD Architecture.</p>
+<p>(v2.05, r2.05) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-1-2-1">
+VFP register usage conventions (VFP v2, v3 and the Advanced SIMD
+Extension)</a>, extended in support of the Advanced SIMD
+Architecture.</p>
+<p>(v2.05, r2.05) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-4">Result
+Return</a>, extended in support of the Advanced SIMD
+Architecture.</p>
+<p>(v2.05, r2.05) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1-1">
+Mapping between registers and memory format</a>, added in support
+of the Advanced SIMD Architecture.</p>
+<p>(v2.05, r2.05) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1-2-1">
+VFP co-processor register candidates</a> and <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1-2-2">
+Result return</a>, extended in support of the Advanced SIMD
+Architecture.</p>
+<p>(v2.05, r2.05) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-appendixa">APPENDIX
+Support for Advanced SIMD Extensions</a>, added in support of the
+Advanced SIMD Architecture.</p>
+<p>(v2.06, r2.06) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section4-1">Fundamental
+Data Types</a>: Added half-precision floating point to the data
+type table.</p>
+<p>(v2.06, r2.06) Added <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section4-1-1">
+Half-precision Floating Point</a>.</p>
+<p>(v2.06, r2.06) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-4">Result
+Return</a>, <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1-2-1">
+VFP co-processor register candidates</a>: Extended the rules to
+half-precision floating point.</p>
+<p>(v2.06, r2.06) Added <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-4-4">
+Half-precision Format Compatibility</a>.</p>
+<p>(v2.06, r2.06) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section7-1-1">
+Arithmetic Types</a>: Added __f16 (as an Arm extension) to <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-table3">Table
+3, Mapping of C &amp; C++ built-in data types</a>.</p>
+<p>(v2.06, r2.06) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-appendixa-2">
+Advanced SIMD data types</a>: Added float16x4_t to <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-table7">Table
+7: Advanced SIMD data types using 128-bit containerized
+vectors</a>.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section7-1-1">
+Arithmetic Types</a>: Specified in <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-table3">Table
+3, Mapping of C &amp; C++ built-in data types</a> that the only
+values of _Bool/bool are 0 and 1.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section7-1-3">
+Enumerated Types</a>: Specified container types for enumerated
+values larger than 32 bits.</p>
+<p>(vC, r2.07) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section7-1-4">
+Additional Types</a>: Clarified that in C++ __va_list is in
+namespace std.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-4">Result
+Return</a>: Clarified that memory passed for a function result may
+be modified at any point during the function call.</p>
+<p>(vE, r2.09) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section7-1-1">
+Arithmetic Types</a>: Changed the illustrative source name of the
+half-precision float type from __f16 to __fp16 to match [<a href="https://developer.arm.com/products/software-development-tools/compilers/arm-compiler-5/docs/101028/latest/1-preface">ACLE</a>].</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-appendixa-2">
+Advanced SIMD data types</a>, added [u]int64x1_t, [u]int64x2_t,
+poly64x2_t. <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-4">Result
+Return</a>, <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-5">Parameter
+Passing</a>, <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1-1">
+Mapping between registers and memory format</a>, <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section6-1-2-1">
+VFP co-processor register candidates</a>: Allow half-precision
+floating point types as function parameter and return types, by
+specifying how half-precision floating point types are passed and
+returned in registers.</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section4-3">Composite
+Types</a>: Added definitions of member alignment and natural
+alignment.</p>
+<p>(vF, r2.10) <a href="https://developer.arm.com/docs/ihi0042/latest#aapcs32-section5-5">Parameter
+Passing</a>: Added parameter passing rules for over-aligned
+types.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="base-platform-abi-for-the-arm-architecture">
+<h3>Base Platform ABI for the Arm Architecture</h3>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-4-1">
+<h4>Clarifications</h4>
+<p>(vC, r2.09) <a href="https://developer.arm.com/docs/ihi0037/latest#bpabi32-section2-6-2-4">
+Adding export and import tables (if required)</a>: Clarify STB_WEAK
+definitions are treated as equivalent to STB_GLOBAL when generating
+a Windows-style export table.</p>
+<p>(vC, r2.09) <a href="https://developer.arm.com/docs/ihi0037/latest#bpabi32-section5-2">Post
+linking for DLL-like linkage</a>: Give more details on export
+rules.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-4-2">
+<h4>Errors fixed</h4>
+<p>(vB, r2.07) <a href="https://developer.arm.com/docs/ihi0037/latest#bpabi32-section2-4-3-7">
+The DLL model and indirect addressing of imported entities</a>:
+Made a minor correction to the dllimport example (does not affect
+the specification).</p>
+<p>(vB, r2.07) <a href="https://developer.arm.com/docs/ihi0037/latest#bpabi32-section3-6-2">
+Obligations on static linkers generating pre-emption maps</a>: (In
+the final bullet point of the section) Changed depth-first
+traversal to the intended breadth-first traversal.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="c-library-abi-for-the-arm-architecture">
+<h3>Library ABI for the Arm Architecture</h3>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-5-1">
+<h4>Clarifications</h4>
+<p>(v2.01, r2.01) General: When a library function is added to a
+header (e.g. following additions to the C standard), any inline
+(e.g. macro-implemented) version should be hidden when
+_AEABI_PORTABILITY_LEVEL != 0.</p>
+<p>(v2.01, r2.01) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-3-1-1">
+Encoding of ctype table entries and macros
+(_AEABI_PORTABILITY_LEVEL != 0)</a>: Names of macros (__A, __X,
+etc) are for illustration only and are not mandated by the
+specification.</p>
+<p>(v2.04, r2.06) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section3-4">
+Private names for private and AEABI-specific helper functions</a>:
+Inserted the complete table of registered vendor names, now shared
+among AAELF, CLIBABI, and RTABI.</p>
+<p>(v2.04, r2.06) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section4-2-4">
+Naming issues in C++ header files</a>: Added <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section4-2-4-2">
+C++ names of C library functions</a>, explaining why, when
+generating portable binary from C++, standard library functions
+should be used via extern "C" linkage.</p>
+<p>(vC, r2.09) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-2">
+assert.h</a>: Clarified the intended method of customizing
+assert().</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-5-2">
+<h4>Errors fixed</h4>
+<p>(v2.01, r2.01) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-9">
+locale.h</a>, <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-table6">struct
+__aeabi_lconv</a>: struct lconv should be struct __aeabi_lconv.</p>
+<p>(v2.01, r2.01) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-11">
+setjmp.h</a>, <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-table10">setjmp.h
+definitions</a>: The text "((__aeabi_JMP_BUF_SIZE))" at the end of
+the table is left over from a previous version and should be
+deleted.</p>
+<p>(v2.02, r2.02) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-3-1-1">
+Encoding of ctype table entries and macros
+(_AEABI_PORTABILITY_LEVEL != 0)</a>: The C99 isblank() function
+cannot be implemented as a macro within this framework because __B
+is required to exclude tab when used by the C89 function isprint()
+and to include it when used by isblank(). To fix this, we define
+isblank() out of line, but allow compilers to inline the obvious
+implementation that is excluded from being a macro because it
+evaluates its parameter twice.</p>
+<p>(v2.03, r2.04) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-12">
+signal.h</a>: Corrected misinformation suggesting that it might be
+possible to access 8-byte types using LDRD/STRD and LDM/STM.</p>
+<p>(vC, r2.09) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-11">
+setjmp.h</a>: Corrected calculation of minimum jmp_buf size
+(previously given as 24 double-words).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-5-3">
+<h4>Additions and omissions fixed</h4>
+<p>(v2.01, r2.01) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section4-1">
+Library overview</a>, <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-table1">library
+headers</a>: The C99 header stdbool.h is missing. There are no
+portability implications of providing it. A new 5.14, describes
+stdbool.h, and Table 19, Summary of conformance requirements when
+_AEABI_PORTABILITY_LEVEL != 0 in 6 has a new entry for
+stdbool.h.</p>
+<p>(v2.01, r2.01) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-3-1">
+ctype.h when _AEABI_PORTABILITY_LEVEL != 0 and isxxxxx inline</a>:
+The same character translations and locale bindings should be used
+for the implementations of the toxxxx macros and functions as are
+used for the isxxxx macros and functions.</p>
+<p>(vD, r2.10) <a href="https://developer.arm.com/docs/ihi0039/latest#clibabi32-section5-21">
+wchar.h</a>: Permit wint_t to be unsigned int.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="c-abi-for-the-arm-architecture">
+<h3>C++ ABI for the Arm Architecture</h3>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-6-1">
+<h4>Clarifications</h4>
+<p>(v2.02, r2.03) <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-5-5">
+Inter-DLL visibility rules for C++ ABI-defined symbols</a>: Clarify
+that entities defined in unnamed namespaces must not be exported
+(because unnamed namespaces do not have globally defined
+names).</p>
+<p>(v2.03, r2.04) In <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-2-3">
+Library helper functions</a>, <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-2-5">
+Code example for __aeabi_atexit</a>, <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-4-2">
+Static object destruction</a>: Clarified the use of __aeabi_atexit
+for registering atexit functions.</p>
+<p>(v2.04, r2.06) In <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section1-2">
+References</a>, Updated the base standard for C++ to ISO/IEC
+14882:2003.</p>
+<p>(vD, r2.09) <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-1">
+Summary of differences from and additions to the generic C++
+ABI</a>: Clarified handling of empty classes.</p>
+<p>(vE, r2.10) <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-1">
+Summary of differences from and additions to the generic C++
+ABI</a>: Again clarified handling of empty classes.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-6-2">
+<h4>Errors fixed</h4>
+<p>(v2.01, r2.01) <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-4">
+Static object construction and destruction</a>: The global
+constructor vector section (.init_array) of ELF type SHT_INITARRAY,
+was erroneously specified to be read-only. The generic ELF
+specification requires these sections to have the SHF_WRITE flag
+set. The C++ ABI for the Arm Architecture requires producers to
+generate these sections as if they were read-only. (Some execution
+environments require .init_array sections to be read-only and
+linkers targeting these environments may drop the SHF_WRITE flag.
+Doing so must not cause run-time failures).</p>
+<p>(vB, r2.07) In <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-1">
+Summary of differences from and additions to the generic C++
+ABI</a>, removed the Arm-specified mangling of the 16-bit FP type
+name added in r2.06 (Dh has been specified by the generic C++ ABI).
+Noted the mangling of std::va_list now that [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>] affirms
+that __va_list is in namespace std.</p>
+<p>(vC, r2.08) In <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-2-3">
+Library helper functions</a>: corrected typos in and the wording of
+the justification for defining __aeabi_vec_delete3 but not
+__aeabi_vec_delete2.</p>
+<p>(vC, r2.08) <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-2-3">
+Library helper functions</a>: In the definition of
+__aeabi_vec_ctor_nocookie_nodtor, corrected the order of size and
+count parameters to __aeabi_vec_ctor_cookie_nodtor().</p>
+<p>(vC, r2.08) In <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-5-5">
+Inter-DLL visibility rules for C++ ABI-defined symbols</a>:
+corrected broken class export syntax and corrected comments about
+entities declared in unnamed namespaces and those derived from
+them.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-6-3">
+<h4>Additions and omissions fixed</h4>
+<p>(v2.04, r2.06) In <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-1">
+Summary of differences from and additions to the generic C++
+ABI</a>, specified the name mangling (GC++ABI 5.1.5) for the 16-bit
+FP type added to [<a href="https://developer.arm.com/docs/ihi0042/latest">AAPCS</a>].</p>
+<p>(v2.04, r2.06) In <a href="https://developer.arm.com/docs/ihi0041/latest#cppabi32-section3-2-6">
+ELF binding of static data guard variable symbols</a>, added an
+Arm-specific rule for the ELF binding of guard variable
+symbols.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="exception-handling-abi-for-the-arm-architecture">
+<h3>Exception Handling ABI for the Arm Architecture</h3>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-7-1">
+<h4>Clarifications</h4>
+<p>(v2.04, r2.05) In paragraph 5 in <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-4">Phase
+2 unwinding</a>, clarified that an unwinder must in general restore
+all the machine registers listed in the VRS.</p>
+<p>(v2.02, r2.02) In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-7">Implications
+for implementations</a>, and <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4-1">
+Compiler helper functions</a>, we clarify that _Unwind_Complete may
+overwrite UCB fields specific to the exception propagation that has
+just completed, and make clear the consequences of this. In
+<a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4-1">
+Compiler helper functions</a> we are less prescriptive about which
+of__cxa_allocate_exception and __cxa_throw initialize the UCB and
+LEO fields.</p>
+<p>(vB, r2.10) Throughout, use UAL instruction mnemonics where
+possible.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-7-2">
+<h4>Errors fixed</h4>
+<p>(v2.02, r2.02) In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4-1">
+Compiler helper functions</a>, we have added the specification of
+__cxa_get_exception_ptr. Adding this function and having compilers
+generate calls to it, corrects a non-conformance with the C++
+Standard. This function was recently added to the Itanium ABI, from
+which the Arm EHABI is derived. There are consequential changes to
+<a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-2">Data
+structures</a>, bullet 1 to mandate that
+barrier_cache.bitpattern[0] is valid on catch handler entry and to
+<a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4-1">
+Compiler helper functions</a> in the definition of
+__cxa_begin_catch, regarding initialisation of
+barrier_cache.bitpattern[0]. <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-5-4">
+Handlers and landing pads</a> adds an example of using
+__cxa_get_exception_ptr in a handler entry sequence.</p>
+<p>Detailed rationale: The C++ Standard states that
+std::uncaught_exception() should return true after completing
+evaluation of the object to be thrown until completing the
+initialization of the exception-declaration in the matching catch
+handler. Thus for example:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre> try {
+   // .......
+   throw S();
+   // ........
+ } catch (S s) {
+   // ......
+}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>uncaught_exception() should return true between the end of the
+S() call and the end of the initialization of s. This has not been
+the case in several implementations, such as g++ and RVCT 2.2,
+where uncaught_exception() was incorrectly false during any copy
+construction of s. Version 2.0 of the EHABI cannot handle this case
+correctly.</p>
+<p>The original Itanium spec declared void __cxa_begin_catch(void
+*exceptionObject) and required it be called on entry to a catch
+handler, and in some other circumstances, to perform some
+housekeeping including updating the uncaught_exception count. The
+void *exceptionObject is really intended to be a pointer to (IA_64
+terminology) an _Unwind_Exception object, the language-independent
+sub-object within a propagated exception object. The handler code
+itself (as Arm understands it) was supposed to obtain a pointer to
+the matched C++ object by being passed such a pointer in a machine
+register, or by some other unspecified means. In EHABI terminology,
+_Unwind_Exception is _Unwind_Control_Block.</p>
+<p>The g++ community, HP, and Arm all changed __cxa_begin_catch to
+return the pointer to the matched C++ object, thus avoiding the
+need to save the register containing the matched object pointer
+over the call to __cxa_begin_catch. On return from
+__cxa_begin_catch, initialization of the catch parameter then
+proceeds. In other words, the code sequence is BL
+__cxa_begin_catch, initialize catch parameter if there is one.</p>
+<p>Unfortunately, because __cxa_begin_catch has updated the
+uncaught_exception count, uncaught_exception() will return the
+wrong value if it is called during the initialization - as is
+possible if the catch parameter is a class type with non-trivial
+copy constructor. This is corrected by using the new routine, when
+the code sequence for catches with a parameter of class type with a
+non-trivial copy constructor becomes:</p>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<div>
+<pre>save r0 somewhere
+BL __cxa_get_exception_ptr
+initialize catch parameter
+recover r0
+BL __cxa_begin_catch
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The wording change in <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section8-4-1">
+Compiler helper functions</a> precludes the unlikely (and
+undesirable) possibility that handler code received the matched
+object pointer in some other place, then copied it to
+barrier_cache.bitpattern[0], without overly constraining the
+implementation.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-7-3">
+<h4>Additions and omissions fixed</h4>
+<p>(v2.02, r2.02) In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-2">Language-independent
+unwinding types and functions</a>, we have added
+_Unwind_DeleteException whose behaviour is described in <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-6">Cross-language
+support, and object deletion</a>. This function is present in the
+Itanium ABI and is a convenience function with no cost if not used
+by an implementation. Some vendors have requested Arm add this to
+remove a need for conditional compilation when targeting the Arm
+ABI verses other ABIs. The Arm definition is compatible with the
+Itanium requirements.</p>
+<p>(v2.02, r2.02) In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-5-2">
+Assignment to VRS registers</a>, <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-5-3">
+Reading from VRS registers</a>, <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-5-4">
+Moving from stack to VRS</a>, and <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section9-3">Frame
+unwinding instructions</a>, we have added support for VFPv3. The
+Arm VFP v3 adds 16 double precision registers, D16-D31. It should
+be possible to restore these during unwinding but because the
+registers are intended for scratch use, this is expected to be
+uncommon. Specifically:</p>
+<ul>
+<li>In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-5-2">
+Assignment to VRS registers</a>, we extend the register range for
+_UVRSC_VFP/_UVRSD_DOUBLE to 0-31.</li>
+<li>In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-5-3">
+Reading from VRS registers</a>, we extend the register range for
+_UVRSC_VFP/_UVRSD_DOUBLE to 0-31.</li>
+<li>In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section7-5-4">
+Moving from stack to VRS</a>, we clarify that
+_UVRSC_VFP/_UVRSD_DOUBLE undoes the effect or one or more FSTMD
+instructions.</li>
+<li>In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section9-3">Frame
+unwinding instructions</a> we allocate unwinding instruction
+"11001000 sssscccc" to popping D[16+ssss]-D[16+ssss+cccc], to
+permit recovery of a range of the new registers (including any
+range containing just one register).</li>
+<li>In <a href="https://developer.arm.com/docs/ihi0038/latest#ehabi32-section9-3">Frame
+unwinding instructions</a> Update the remarks (split remark d and
+add extra words) to clarify the limitations of VFP unwinding
+instructions (No incompatible change)</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="run-time-abi-for-the-arm-architecture">
+<h3>Run-time ABI for the Arm Architecture</h3>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-8-1">
+<h4>Clarifications</h4>
+<p>(v2.03, r2.06) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section3-8">Private
+names for private and AEABI-specific helper functions</a>: Inserted
+the complete table of registered vendor names, now shared among
+AAELF, CLIBABI, and RTABI.</p>
+<p>(v2.03, r2.06) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-3-1">
+Integer (32/32 → 32) division functions</a>: Clarified the meaning
+of signed integer division when the result cannot be represented
+(MIN_INT/-1).</p>
+<p>(vB, r2.07) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-4-3-2">
+Helper functions defined by the C++ ABI for the Arm
+Architecture</a>: Add return value comments to each of the
+__aeabi_* helper functions.</p>
+<p>(vC, r2.08) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section3">Introduction</a>:
+added <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section3-10">
+__hardfp_ name mangling</a>, to explain legacy, deprecated
+__hardfp_ name mangling implemented by some compilers, notably
+armcc.</p>
+<p>(vC, r2.08) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-1-2">
+The floating-point helper functions</a>: improved text specifying
+the registers maybe affected by a call to an FP helper.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="errors-fixed-and-features-withdrawn-or-deprecated">
+<h4>Errors fixed and features withdrawn or deprecated</h4>
+<p>(v2.02, r2.05) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-1-2">
+The floating-point helper functions</a>, deprecated use of fneg and
+dneg because inlining these functions is always more efficient,
+even with the Thumb-1 ISA. Conforming library implementations must
+still provide implementations.</p>
+<p>(vC, r2.08) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-1-2">
+The floating-point helper functions</a>: declared fneg/dneg
+obsolete (withdrawn).</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-8-3">
+<h4>Additions and omissions fixed</h4>
+<p>(v2.01, r2.02) In (new) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-3-5">
+Thread-local storage (new in v2.01)</a>, we define
+__aeabi_read_tp() that returns the thread pointer denoted by $tp in
+<a href="index.html">Linux for Arm static (initial
+exec) model</a>, of this specification.</p>
+<p>(v2.01, r2.02) In <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-4-7">
+Exception-handling support</a>, brought the list of __cxa_
+functions up to date and in line with [<a href="https://developer.arm.com/docs/ihi0038/latest">EHABI</a>].</p>
+<p>(vC, r2.08) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-1-2">
+The floating-point helper functions</a>: added to <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-table7">Standard
+conversions between floating types</a>, conversion helpers between
+VFPv3 half-precision memory format and float.</p>
+<p>(vD, r2.09) <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-section4-1-2">
+The floating-point helper functions</a>: added to <a href="https://developer.arm.com/docs/ihi0043/latest#rtabi32-table7">Standard
+conversions between floating types</a>, conversion helpers from
+double to VFPv3 half-precision memory format.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div id="abi-for-the-arm-architecture-the-base-standard">
+<h3>ABI for the Arm Architecture - The Base Standard</h3>
+<div>
+<div>
+<div>
+<div id="addenda32-section5-9-1">
+<h4>Clarifications</h4>
+<p>(vB, r2.07) <a href="https://developer.arm.com/docs/ihi0036/latest#bsabi32-section3-9">note
+about ar format</a>, A note about ar format: Fixed one minor
+typographical error and added a newly found Wikipedia reference to
+ar format.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
