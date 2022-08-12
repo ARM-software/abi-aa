@@ -395,10 +395,10 @@ Absolute addressing is suitable for most bare-metal code, including
 the Linux kernel, as well as for normal GNU/Linux executables which –
 while dynamically linked – are loaded at a fixed address.
 
-Position independent addressing
+Position-independent addressing
 -------------------------------
 
-In position independent code (PIC) the virtual addresses of
+In position-independent code (PIC) the virtual addresses of
 instructions and static data are not known until dynamic link
 time.
 
@@ -416,8 +416,8 @@ linker to create the GOT entry. The address of symbol definitions that
 cannot be pre-empted at dynamic link time can have their address
 taken so no GOT generating relocation is required.
 
-PIC can also be used to build position independent executables. A
-variant of PIC called PIE (position independent executable) can be
+PIC can also be used to build position-independent executables. A
+variant of PIC called PIE (position-independent executable) can be
 used to build an executable. PIE assumes that global symbols cannot be
 pre-empted, which means that an indirection via the GOT is not needed.
 
@@ -462,7 +462,7 @@ syntax is of the form ``#:<operator>:<symbol name>``
   | ``abs_g3``            | ``mov[nz]`` | R_AARCH64_MOVW_UABS_G3     |
   +-----------------------+-------------+----------------------------+
 
-.. table:: Position independent operators
+.. table:: Position-independent operators
 
   +-----------------------+-------------+-------------------------------+
   | Operator              | Instruction | Relocation                    |
@@ -737,7 +737,7 @@ The convention for command-line option to select code model is
 ``-mcmodel=<model>`` where code model is one of ``tiny``, ``small``,
 ``medium`` or ``large``.
 
-The convention for command-line option to select position independent
+The convention for command-line option to select position-independent
 code is ``-fpic`` for pic ``-fPIC`` for PIC. When compiling for an
 executable ``-fpie`` and ``-fPIE`` have the same GOT size limitations
 as ``-fpic`` and ``-fPIC`` respectively.
@@ -807,8 +807,8 @@ effects on code-generation of the code-models.
 Get the address of a symbol defined in the same ELF file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Code that is not position independent may use the absolute address of
-the symbol. Code that is position independent may use a pc-relative
+Code that is not position-independent may use the absolute address of
+the symbol. Code that is position-independent may use a pc-relative
 offset to the symbol if the definition of the symbol is not
 pre-emptible. If the symbol is pre-emptible the address must be loaded
 from the GOT.
@@ -933,8 +933,8 @@ page is mapped into physical memory depends on the execution behaviour
 of the program and the working set that it requires for its correct
 execution. To minimize the number of such reads from the physical
 medium containing the program, executables and shared objects must
-have program segments whose file offsets and virtual addresses are
-congruent modulo the page size.
+have loadable program segments whose file offsets and virtual
+addresses are congruent modulo the page size.
 
 Since the architecture supports a maximum page size of 64KiB the page
 size should be set to 64KiB for compatibility with systems that use
@@ -961,17 +961,19 @@ the other for mapping as data.
 Shared objects are always built with a base virtual address of 0,
 while executables with an ELF ``e_type`` of ``ET_EXEC`` are built with
 a fixed virtual address. The underlying operating system maps shared
-objects in at different virtual addresses, utilizing the fact that the
-code and data addressing within such a shared object is position
-independent. The position independence relies on the principle that
-the distance between any two points within the image is identical at
-static link time and at run time.
+objects at different virtual addresses, utilizing the fact that the
+code and data addressing within such a shared object is
+position-independent. The position independence relies on the
+principle that the offset between loadable program segments is fixed
+at static link time. This permits code to access data in another
+loadable program segment using a pc-relative offset that will not
+change at run time.
 
 Program segments for executables built with a fixed virtual address
 have to be mapped identically to the virtual addresses used to create
 the executable file.
 
-Position independent executables are mapped in the same way as shared
+Position-independent executables are mapped in the same way as shared
 objects. They have an ELF ``e_type`` of ``ET_DYN``.
 
 Dynamic Section
@@ -988,13 +990,13 @@ Section.
 Global Offset Table (GOT)
 -------------------------
 
-Position independent code cannot, in general, contain absolute (fixed)
+Position-independent code cannot, in general, contain absolute (fixed)
 virtual addresses. Global offset tables hold absolute addresses in
 private data, thus making the addresses available without compromising
-the position independence and shareability of a program's text
+the position-independence and shareability of a program's text
 segment. A program references its global offset table using
-position independent addressing and extracts the absolute values from
-it, thereby redirecting position independent references to their
+position-independent addressing and extracts the absolute values from
+it, thereby redirecting position-independent references to their
 actual locations.
 
 The global offset table (GOT) is created by the static linker in
@@ -1011,20 +1013,26 @@ AArch64 splits the global offset table (GOT) into two sections:
 Both the ``.got`` and ``.got.plt`` sections are aligned to a minimum
 of 8 bytes. They both contain 8-byte sized entries.
 
-If a program requires direct access to the absolute address of a
-symbol, that symbol will have a GOT entry. Because the executable and
-shared objects have their own independent GOTs, a symbol's address may
-appear in several tables. The dynamic linker processes all of the
-relocations in the ``.got`` section before giving control to any code
-in the process image, thus ensuring the absolute addresses are
-available during execution.
+If a position-independent program requires direct access to the
+absolute address of a symbol, that symbol will have a GOT
+entry. Because the executable and shared objects have their own
+independent GOTs, a symbol's address may appear in several tables. The
+dynamic linker processes all of the relocations in the ``.got``
+section before giving control to any code in the process image, thus
+ensuring the absolute addresses are available during execution. Code
+in the process that runs as part of a GNU indirect function resolver
+is an exception to this rule. See `GNU Indirect Functions`_ for the
+restrictions on what addresses can be accessed from a resolver
+function.
 
 By convention the ``.got`` section's first entry (number zero) is
 reserved to hold the address of the dynamic structure, referenced with
-the linker defined symbol ``_DYNAMIC``. Some dynamic linker's use this
-address or another reserved symbol to find its own dynamic structure
-without without having yet processed their own relocation entries. For
-AArch64 entries one and two in the ``.got`` are also reserved.
+the linker defined symbol ``_DYNAMIC``. Versions of glibc prior to
+version 2.35 use this address to find its own dynamic structure
+without without having yet processed their own relocation entries.
+
+AArch64 entries one and two in the ``.got.plt`` are reserved for the
+dynamic linker.
 
 For AArch64 the linker defined ``_GLOBAL_OFFSET_TABLE_`` symbol should
 be the address of the first global offset table entry in the ``.got``
@@ -1037,14 +1045,15 @@ Function Addresses
 ^^^^^^^^^^^^^^^^^^
 
 Direct function calls are those where the name of the called function
-is known at compile time. The PC-relative BL instruction may be used
-for all direct function calls, whether absolute or position
-independent.
+is known at compile time. The PC-relative direct branch instructions
+may be used for all direct function calls, whether absolute or
+position-independent.
 
 Indirect function calls are those where the address of the function is
 in a pointer. Appropriate code is used to load the value of the
-pointer into a register, as for other data, and then a BLR instruction
-is used.
+pointer into a register, as for other data, and then an indirect
+branch instruction is used with the register as an operand to the
+instruction.
 
 In statically linked code the address of a function is always its real
 address. However in dynamically linked environments references to the
@@ -1055,23 +1064,24 @@ References from within shared objects to a function address will
 normally be resolved by the dynamic linker to the virtual address of
 the function itself.
 
-References from within a non position independent executable file to a
+References from within a non-position-independent executable file to a
 function address defined in a shared object will normally be resolved
 by the static linker to the address of the `Procedure Linkage Table`_
-(PLT) for that function within the executable file. If the address is
-in a writeable location the linker may use a dynamic relocation
-instead.
+(PLT) entry for that function within the executable file. If the
+address is in a writeable location the linker may use a dynamic
+relocation instead.
 
-When both shared objects and a non position independent executable use
+When both shared objects and a non-position-independent executable use
 the address of a function both the shared library and the application
-must use the same address for the functions for address comparisons to
-work as expected. If the static linker uses a PLT entry for a function
-as the address for a function then it must place the address of the
-PLT for the function in the dynamic symbols table entry for the
-function. This will result in a dynamic symbol table entry with a
-section index of ``SHN_UNDEF``, a type ``STT_FUNC`` and a non-zero
-``st_value``. A reference to this symbol will be resolved by the
-dynamic linker to the address PLT for the function in the executable.
+must use the same address for the functions in order for address
+comparisons to work as expected. If the static linker uses a PLT entry
+for a function as the address for a function then it must place the
+address of the PLT for the function in the dynamic symbols table entry
+for the function. This will result in a dynamic symbol table entry
+with a section index of ``SHN_UNDEF``, a type ``STT_FUNC`` and a
+non-zero ``st_value``. A reference to this symbol will be resolved by
+the dynamic linker to the address PLT for the function in the
+executable.
 
 The ``R_<CLS>_JUMP_SLOT`` relocations defined in AAELF64_ are
 associated with PLT entries. These entries are used for direct
@@ -1079,28 +1089,37 @@ function calls rather than for references to function addresses. These
 relocations do not use the special symbol value described
 above. Otherwise a very tight endless loop would result.
 
-In a position independent executable all function addresses have
-dynamic relocations so no indirection via the PLT entry is necessary.
+In a position-independent executable all non-local function addresses
+are accessed via the GOT so no indirection via the PLT entry is
+necessary.
 
 Shared objects may implement direct function calls to non-pre-emptable
-symbols using the BL instruction. A symbol is not pre-emptable if:
+symbols using a direct branch instruction. A static linker will
+consider a symbol not pre-emptable if:
 
- * It has ``STB_LOCAL`` binding.
+ * The symbol has ``STB_LOCAL`` binding.
 
- * It has a symbol visibility that is not ``STV_DEFAULT``.
+ * The symbol has a symbol visibility that is not ``STV_DEFAULT``.
 
- * It has been given the ``local`` symbol version, defined in
+ * The symbol has been given the ``local`` symbol version, defined in
    SYM-VER_.
 
-All function calls to pre-emptable symbols must be indirected through
-the static linker created Procedure Linkage Table.
+ * The static linker adds the dynamic tag ``DT_FLAGS`` with the
+   ``DF_SYMBOLIC`` flag set. This makes all symbols non-pre-emptable.
+
+ * Some other implementation defined linker feature such as
+   ``--dynamic-list`` is used.
+
+Shared objects must indirect all function calls to pre-emptable
+symbols must be indirected through the static linker created Procedure
+Linkage Table.
 
 Procedure Linkage Table
 -----------------------
 
-Much as the global offset table (GOT) redirects position independent
+Much as the global offset table (GOT) redirects position-independent
 address calculations to absolute locations, the Procedure Linkage
-Table (PLT) redirects position independent function calls to absolute
+Table (PLT) redirects position-independent function calls to absolute
 locations. The static linker cannot resolve execution transfers (such
 as function calls) from one executable or shared object to
 another. Consequently, the static linker arranges to have the program
@@ -1109,18 +1128,18 @@ PLTs reside in the shared text segment, but they in turn use addresses
 in the per-process global offset table section ``.got.plt``. The
 dynamic linker determines the destinations' absolute addresses and
 modifies the global offset table entry accordingly. The dynamic linker
-can thus redirect the entries without compromising the position
-independence and shareability of the program's text. Executable files
-and shared objects have their own separate procedure linkage
-tables. The same procedure linkage table format is used for both
-executables and shared objects.
+can thus redirect the entries without compromising the
+position-independence and shareability of the program's
+text. Executable files and shared objects have their own separate
+procedure linkage tables. The same procedure linkage table format is
+used for both executables and shared objects.
 
 Following the steps below, the dynamic linker and the program
 cooperate to resolve symbolic references to functions through the
 procedure linkage table and the global offset table.
 
  * When first creating the memory image of the program, the dynamic
-   linker sets the second and the third entries in the global offset
+   linker sets the second and the third entries in the ``.got.plt``
    table to special values. The steps below explain more about these
    values.
 
@@ -1128,97 +1147,92 @@ procedure linkage table and the global offset table.
    control transfers to a PLT entry only from within the same ELF
    module.
 
- * For illustration, assume the program calls ``name1``, which transfers
-   control to the Nth PLT entry in ``PLT[N]``.
+ * For illustration, assume the program calls ``name1``, which
+   transfers control to the Nth PLT entry in ``PLT[N]``. If the order
+   of the non-reserved entries in the ``.got.plt`` match the order of
+   the entries in the PLT then ``PLT[N]`` will be ``.got.plt[N + 3]``
+   as there are 3 reserved entries.
 
- * The ``PLT[N]`` entry loads the address of the GOT entry for
-   ``name1`` (``.got.plt[N]``) into register ``ip0``, and then loads
+ * The ``PLT[N]`` entry loads the address of the ``.got.plt`` entry for
+   ``name1`` into register ``ip0``, and then loads
    and jumps to the address held in that table entry using a ``BR``
-   instruction. Initially the GOT entry holds the address of the
+   instruction. Initially the ``.got.plt`` entry holds the address of the
    ``PLT[0] entry``, the first entry in the PLT, not the real address
    of ``name1``.
 
  * Now the ``PLT[0]`` entry pushes the ``ip0`` and ``lr`` registers
    onto the stack.  The dynamic linker will later use the stacked
    value of ``ip0`` to compute a relocation index by subtracting the
-   base of the ``GOT`` The index will be used to select an entry from
-   the table of relocation entries addressed by the ``DT_JMPREL``
+   base of the ``.got.plt`` The index will be used to select an entry
+   from the table of relocation entries addressed by the ``DT_JMPREL``
    dynamic section entry. The designated relocation entry must have
-   type ``R_AARCH64_JUMP_SLOT``, and its offset will specify the
-   global offset table entry used by the branch instruction in
+   type ``R_AARCH64_JUMP_SLOT``, and its ``r_offset`` field will
+   specify the ``.got.plt`` table entry used by the PLT entry in
    ``PLT[N]``, and also a symbol table index that references the
    appropriate symbol, i.e. ``name1`` in this example.
 
- * The ``PLT[0]`` entry then loads the adress of the third GOT entry
-   (``.got.plt[2]``) into ``ip0``, and the loads and jumps to the
+ * The ``PLT[0]`` entry then loads the adress of the third
+   ``.plt.got`` entry into ``ip0``, and then loads and jumps to the
    address in the third table entry, which transfers control to the
-   dynamic linker.
+   dynamic linker's lazy resolver function.
 
  * The value in ``ip0`` is used by the dynamic linker's entrypoint to
-   load the second GOT entry (``.got.plt[2]``) using ``[ip0,#-8]``,
-   which gives it one word of private information with which to
-   identify the calling module.
+   load the second ``.plt.got`` entry using ``[ip0,#-8]``, which gives
+   it one 64-bit word of private information with which to identify
+   the calling module.
 
  * The dynamic linker unwinds the stack, looks at the designated
    relocation entry, finds the symbol's value, stores the actual
-   address of ``name1`` in ``.got.plt[N]`` , then transfers control to
-   the desired destination.  Subsequent executions of ``PLT[N]`` will
-   transfer control directly to ``name1``, without calling the dynamic
-   linker a second time. That is the ``BR`` instruction in ``PLT[N]``
-   will transfer to ``name1``, instead of ``PLT[0]``.
+   address of ``name1`` in the ``.got.plt`` entry for ``name1``, then
+   transfers control to the desired destination.  Subsequent
+   executions of ``PLT[N]`` will transfer control directly to
+   ``name1``, without calling the dynamic linker a second time. That
+   is the ``BR`` instruction in ``PLT[N]`` will transfer to ``name1``,
+   instead of ``PLT[0]``.
 
-The ``LD_BIND_NOW`` environment variable can change the dynamic linking
-behavior. If its value is non-null, the dynamic linker evaluates all
-procedure linkage table entries before transferring control to the
-program. That is, the dynamic linker processes relocation entries of
-type ``R_AARCH64_JUMP_SLOT`` during process initialization. Otherwise, the
-dynamic linker evaluates procedure linkage table entries lazily,
-delaying symbol resolution and relocation until the first call to a
-table entry.
+The steps above assume that the dynamic linker resolves
+``R_AARCH64_JUMP_SLOT`` relocations in the ``.got.plt`` lazily. The
+``DF_BIND_NOW`` flag in the ``DT_FLAGS`` dynamic tag can be used to
+instruct the dynamic linker to resolve ``R_AARCH64_JUMP_SLOT`` for the
+ELF file containing the tag prior to transferring control to the
+program. When lazy loading is not required the static linker can make
+the ``.got.plt`` relocation-read-only (RELRO).
+
+At run-time the ``LD_BIND_NOW`` environment variable can change the
+dynamic linking behavior. If its value is non-null, the dynamic linker
+evaluates all procedure linkage table entries before transferring
+control to the program. That is, the dynamic linker processes
+relocation entries of type ``R_AARCH64_JUMP_SLOT`` during process
+initialization. Otherwise, the dynamic linker evaluates procedure
+linkage table entries lazily, delaying symbol resolution and
+relocation until the first call to a table entry.
 
 The ``PLT[0]`` entry calls the dynamic linker's entrypoint, stored in
 ``.got.plt[2]``, with the following calling convention:
 
-+---------------+-------------------------+
-| Location      |    Contents             |
-+===============+=========================+
-| ``ip0``       |   ``&.got.plt[2]``      |
-+---------------+-------------------------+
-| ``ip1``       | DL Resolver Entry point |
-+---------------+-------------------------+
-| ``[sp, #0]``  |  ``&.got.plt[N]``       |
-+---------------+-------------------------+
-| ``[sp, #8]``  | ``lr``                  |
-+---------------+-------------------------+
++---------------+-----------------------------------------------------------------------------+
+| Location      |    Contents                                                                 |
++===============+=============================================================================+
+| ``ip0``       | address of DL Resolver entry point  ``&.got.plt[2]``                        |
++---------------+-----------------------------------------------------------------------------+
+| ``ip1``       | DL Resolver Entry point                                                     |
++---------------+-----------------------------------------------------------------------------+
+| ``[sp, #0]``  | address of ``.got.plt`` entry for ``PLT[N]`` typically ``&.got.plt[N + 3]`` |
++---------------+-----------------------------------------------------------------------------+
+| ``[sp, #8]``  | ``lr``                                                                      |
++---------------+-----------------------------------------------------------------------------+
 
 Sample PLT sequences
 ^^^^^^^^^^^^^^^^^^^^
 
-The following section shows some examples of PLT sequences suitable
-for the small code model. There is an assumption that the ``.plt.got``
-section is within +- 4 GiB from the ``.plt`` section.
+The following section shows some examples of PLT sequences. The
+sequences assume that the ``.plt.got`` section is within +- 4 GiB from
+the ``.plt`` section.
 
-In the code samples below the following relocation operations are used
-to describe the immediates:
-
- - ``Page(expr)`` is the page address of the expression expr, defined
-   as (expr & ~0xFFF). (This applies even if the machine page size
-   supported by the platform has a different value.)
-
- - ``G(expr)`` is the address of the GOT (``.got.plt``) entry for the
-   expression expr.
-
- - ``GOTPLT`` is the address of ``.got.plt`` section.
-
- - ``.got.plt[N]`` is the Nth entry of the ``.got.plt`` section.
-
-In combination:
-
- - ``G(.plt.got[N]`` is the address of the Nth entry of the
-   ``.got.plt`` section.
-
- - ``G(.plt.got[N]`` - ``GOTPLT`` is the offset from the base of the
-   .got.plt section to the entry in ``.plt.got[N]``.
+In the code samples below we assume that the entries in the
+``.got.plt`` are in the same order as the entries in the PLT so that
+code in ``PLT[N]`` loads from ``.got.plt[N + 3]`` where the + 3
+accounts for the 3 reserved entries.
 
 Standard
 ~~~~~~~~
@@ -1226,23 +1240,23 @@ Standard
 This can be used on all Arm platforms when there are no additional
 security features enabled.
 
-PLT header ``.got.plt[0]``
+PLT header ``PLT[0]``
 
 .. code-block:: asm
 
     stp    x16, x30, [sp,#-16]!
-    adrp   x16, Page(G(.plt.got[2]))
-    ldr    x17, [x16, G(.plt.got[2]) - GOTPLT]
-    add    x16, x16, G(.plt.got[2]) - GOTPLT)
+    adrp   x16, :page: &.got.plt[2]
+    ldr    x17, [x16, (&.got.plt[2] - &.got.plt[0])]
+    add    x16, x16, (&got.plt[2] - &got.plt[0])
     br     x17
 
-PLT entry ``.got.plt[N]``
+Nth PLT entry ``PLT[N]``
 
 .. code-block:: asm
 
-    adrp x16, Page(G(.plt.got[N]))
-    ldr  x17, [x16, G(.plt.got[N]) - GOTPLT]
-    add  x16, x16, G(.plt.got[N]) - GOTPLT
+    adrp x16, :page: &.plt.got[N + 3]
+    ldr  x17, [x16, (&.got.plt[N + 3] - &.got.plt[0])
+    add  x16, x16, (&.got.plt[N + 3] - &.got.plt[0])
     br   x17
 
 BTI
@@ -1256,25 +1270,25 @@ indirectly. This is always true for the lazy resolver in
 The static linker must set the dynamic tag ``DT_AARCH64_BTI_PLT`` as
 defined in AAELF64_ when a BTI compliant PLT has been generated.
 
-PLT header ``.got.plt[0]``
+PLT header ``PLT[0]``
 
 .. code-block:: asm
 
     bti  c
     stp  x16, x30, [sp,#-16]!
-    adrp x16, Page(G(.plt.got[2]))
-    ldr  x17, [x16, G(.plt.got[2]) - GOTPLT]
-    add  x16, x16, G(.plt.got[2]) - GOTPLT
+    adrp   x16, :page: &.got.plt[2]
+    ldr    x17, [x16, (&.got.plt[2] - &.got.plt[0])]
+    add    x16, x16, (&got.plt[2] - &got.plt[0])
     br   x17
 
-PLT entry ``.got.plt[N]``
+Nth PLT entry ``PLT[N]``
 
 .. code-block:: asm
 
     bti  c
-    adrp x16, Page(G(.plt.got[N]))
-    ldr  x17, [x16, G(.plt.got[N]) - GOTPLT]
-    add  x16, x16, G(.plt.got[N]) - GOTPLT
+    adrp x16, :page: &.plt.got[N + 3]
+    ldr  x17, [x16, (&.got.plt[N + 3] - &.got.plt[0])
+    add  x16, x16, (&.got.plt[N + 3] - &.got.plt[0])
     br   x17
 
 PAC
@@ -1282,23 +1296,24 @@ PAC
 
 The ``.got.plt`` entries can be signed by the dynamic linker and
 authenticated by the code in the PLT entry. Note that when these PLT
-sequences are used the dynamic linker must sign the entries in
-``.plt.got[N]``. On platforms that support `Relocation Read Only
-(RELRO)`_ the ``.got.plt`` can be made read-only after dynamic
-relocation, which already provides good protection.
+sequences are used the dynamic linker must sign the non reserved
+entries in ``.got.plt``. When lazy binding is disabled, on platforms
+that support `Relocation Read Only (RELRO)`_ the ``.got.plt`` can be
+made read-only after dynamic relocation, which already provides good
+protection.
 
 The static linker must set the dynamic tag ``DT_AARCH64_PAC_PLT`` as
 defined in AAELF64_ when signed .got.plt[N] entries are required.
 
-There is no change to the PLT header ``.got.plt[0]``
+There is no change to the PLT header ``PLT[0]``
 
-PLT entry ``.got.plt[N]``
+Nth PLT entry ``PLT[N]``
 
 .. code-block:: asm
 
-    adrp x16, Page(G(.plt.got[N]))
-    ldr  x17, [x16, G(.plt.got[N]) - GOTPLT]
-    add  x16, x16, G(.plt.got[N]) - GOTPLT
+    adrp x16, :page: &.plt.got[N + 3]
+    ldr  x17, [x16, (&.got.plt[N + 3] - &.got.plt[0])
+    add  x16, x16, (&.got.plt[N + 3] - &.got.plt[0])
     autia1716
     br   x17
 
@@ -1310,28 +1325,28 @@ PAC + BTI
 
 This is a combination of the PAC and the BTI PLT entries. The static
 linker must set both ``DT_AARCH64_BTI_PLT`` and ``DT_AARCH64_PAC_PLT``
-when BTI compliant PLT entries requiring signed ``.got.plt[N]``
+when BTI compliant PLT entries requiring signed ``.got.plt``
 entries are used.
 
-PLT header ``.got.plt[0]``
+PLT header ``PLT[0]``
 
 .. code-block:: asm
 
     bti  c
     stp  x16, x30, [sp,#-16]!
-    adrp x16, Page(G(.plt.got[2]))
-    ldr  x17, [x16, G(.plt.got[2]) - GOTPLT]
-    add  x16, x16, G(.plt.got[2]) - GOTPLT
+    adrp   x16, :page: &.got.plt[2]
+    ldr    x17, [x16, (&.got.plt[2] - &.got.plt[0])]
+    add    x16, x16, (&got.plt[2] - &got.plt[0])
     br   x17
 
-PLT entry ``.got.plt[N]``
+Nth PLT entry ``PLT[N]``
 
 .. code-block:: asm
 
     bti  c
-    adrp x16, Page(G(.plt.got[N]))
-    ldr  x17, [x16, G(.plt.got[N]) - GOTPLT]
-    add  x16, x16, G(.plt.got[N]) - GOTPLT
+    adrp x16, :page: &.plt.got[N + 3]
+    ldr  x17, [x16, (&.got.plt[N + 3] - &.got.plt[0])
+    add  x16, x16, (&.got.plt[N + 3] - &.got.plt[0])
     autia1716
     br   x17
 
@@ -1423,73 +1438,77 @@ additional restrictions on what they can contain.
    called from a signal handler or multi-threaded process.
 
 The order of dynamic relocation resolution across an executable and
-all its shared libraries is dependent on the implementation details of
-the dynamic linker. To avoid relocation ordering problems causing
-crashes in cross platform software the following restrictions are
-recommended:
+all its shared libraries is platform specific. The following
+recommendations for writing IFUNC resolvers apply to the GNU glibc
+dynamic loader. Other dynamic linkers may have fewer requirements.
 
- * IFUNC resolvers must not call a function that may require IFUNC
-   initialization. If the IFUNC initialization for the called function
-   has not occured then undefined behavior results.
+ * IFUNC resolver functions must not call a function that may require
+   IFUNC initialization. If the IFUNC initialization for the called
+   function has not occured then undefined behavior results.
 
- * IFUNC resolvers must not call a function that requires a PLT
-   entry. If the address of the IFUNC is taken the dynamic relocation
-   will be in the ``.got`` so the resolver may be called prior to
-   relocation of the ``.got.plt`` entries. In a shared library or
-   position independent executable, transferring to control to the
-   address stored in an unrelocated ``.got.plt`` entry will result in
-   undefined behavior.
+ * In position-independent code an IFUNC resolver functions must not
+   call a function that requires a PLT entry. If the IFUNC resolver
+   runs as a result of a relocation in ``.rela.dyn`` then the
+   relocations in ``rela.plt`` will not have been resolved. This means
+   that addresses in the ``.got.plt`` will be unchanged from their
+   static link time value.
 
- * IFUNC resolvers for a given function must be defined in the same
-   translation unit as the implementations of the function.
+ * The IFUNC resolver function for a given function must be defined in
+   the same translation unit as the implementations of the function.
+
+ * IFUNC resolver functions must be idempotent. There can be
+   relocations in both ``.rela.dyn`` and ``.rela.plt`` to the same
+   IFUNC resolver function.
 
 IFUNC requirements for static linkers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Relocations to pre-emptable symbols of type ``STT_GNU_IFUNC`` are
-handled in the same way as symbols of type ``STT_FUNC``.
+handled in the same way as symbols of type ``STT_FUNC``. The symbol
+type ``STT_GNU_IFUNC`` is propagated into the dynamic symbol table.
 
-Non pre-empatable symbols of type ``STT_GNU_FUNC`` require the
-creation of PLT entry that loads the value of:
+Relocations to non-pre-empatable symbols of type ``STT_GNU_IFUNC`` are
+resolved to a PLT entry that loads the value of:
 
- * A ``.got`` entry for a non-branch relocation such as
+ * A ``.got.plt`` entry for a non-branch relocation such as
    ``R_AARCH64_ABS64``. The entry has an ``R_AARCH64_IRELATIVE``
    dynamic relocation in ``.rela.dyn``.
 
- * Either a ``.got`` or ``.got.plt`` entry or a for a branch
-   relocation such as ``R_AARCH64_CALL``. A ``R_AARCH64_IRELATIVE``
-   dynamic relocation is added to ``.rela.dyn`` or ``rela.plt``
-   respectively.
+ * A ``.got.plt`` entry for a branch relocation such as
+   ``R_AARCH64_CALL``. A ``R_AARCH64_IRELATIVE`` dynamic relocation is
+   added to ``.rela.dyn`` or ``rela.plt``.
+
+Due to the ordering requirements on IFUNC resolvers the PLT entry and
+associated ``.got.plt`` entry are by often implemented in a separate
+``.iplt`` and ``.iplt.got`` sections so that they placed after the
+``.plt`` and ``.plt.got`` sections respectively.
 
 Like ``R_AARCH64_RELATIVE`` the ``R_AARCH64_IRELATIVE`` relocation
-does not require a symbol.
-
-The static linker sets the initial contents of a ``.got`` or
-``.got.plt`` entry for a non pre-empatable IFUNC resolver to the
-address of the IFUNC resolver function.
+does not require a symbol. For ``RELA`` type relocations the addend of
+the ``R_AARCH64_IRELATIVE`` relocation contains the address of the
+IFUNC resolver function.
 
 To make address equivalence of functions with IFUNC resolvers work, if
-the address of a non-preemptable ``STT_GNU_FUNC`` symbol is taken in a
-non-position independent executable. The static linker must use the
-address of the PLT for the address of the symbol. If the symbol is
-exported to the dynamic symbol table the ``st_value`` of the symbol
-must be set to the address of the PLT entry and the dynamic symbol
-table type must be set to ``STT_FUNC``.
+the address of a non-preemptable ``STT_GNU_IFUNC`` symbol is taken in
+a non-position-independent executable. The static linker must use the
+address of the corresponding PLT entry for the address of the
+function. If the symbol is exported to the dynamic symbol table the
+``st_value`` of the symbol must be set to the address of the PLT entry
+and the dynamic symbol table type must be set to ``STT_FUNC``.
 
-The ``.rela.dyn`` and ``rela.plt`` relocation entries for IFUNCs must
-be sorted after all non-IFUNCs. This means that for a given executable
-or shared-library the following ordering can be relied on:
+Relocations of type ``R_AARCH64_IRELATIVE`` relocation must be sorted
+after all other relocation types. This means that for a given
+executable or shared-library the following ordering can be relied on:
 
- * All non IFUNC ``.rela.dyn`` relocation entries will be resolved
-   before any IFUNC resolvers.
+ * All non ``R_AARCH64_IRELATIVE`` relocations in ``.rela.dyn`` will be resolved
+   before any ``R_AARCH_IRELATIVE`` relocations.
 
  * ALL IFUNC resolvers with ``R_AARCH64_IRELATIVE`` relocations in
    ``.rela.dyn`` will be run before the ``.rela.plt`` relocations are
    resolved.
 
- * All non IFUNC ``.rela.plt`` relocation entries will be resolved
-   before any IFUNC resolvers with ``R_AARCH64_IRELATIVE`` resolvers in
-   ``.rela.plt``.
+ * All non ``R_AARCH64_IRELATIVE`` relocations in ``.rela.plt`` will be resolved
+   before any ``R_AARCH64_IRELATIVE`` relocations.
 
  * All IFUNC resolvers with ``R_AARCH64_IRELATIVE`` relocations in
    ``.rela.plt`` will be run last.
@@ -1497,9 +1516,10 @@ or shared-library the following ordering can be relied on:
 When static linking, the dynamic relocation section containing
 ``R_AARCH64_IRELATIVE`` relocations are output as if dynamic
 linking. The static linker must define the symbols
-``__rela_iplt_start`` and ``__rela_iplt_end`` so that startup code can
-find and resolve the ``R_AARCH64_IRELATIVE`` relocations. These linker
-defined symbols should not be defined if there are any dynamic tags.
+``__rela_iplt_start`` and ``__rela_iplt_end`` at the start and end of
+the dynamic relocations so that startup code can find and resolve the
+``R_AARCH64_IRELATIVE`` relocations. These linker defined symbols
+should not be defined if there are any dynamic tags present.
 
 IFUNC requirements for dynamic linkers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1514,9 +1534,7 @@ The implementation is responsible for executing the initialization
 functions specified by ``DT_INIT`` , ``DT_INIT_ARRAY`` , and
 ``DT_PREINIT_ARRAY`` entries in the executable file and shared object
 files for a process, and the termination (or finalization) functions
-specified by ``DT_FINI`` and ``DT_FINI_ARRAY``. The user program plays
-no further part in executing the initialization and termination
-functions specified by these dynamic tags
+specified by ``DT_FINI`` and ``DT_FINI_ARRAY``.
 
 Relocation Read Only (RELRO)
 ----------------------------
