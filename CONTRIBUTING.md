@@ -135,3 +135,9 @@ under the same terms as those in the [LICENSE](LICENSE.md) file.
 
 We _do not_ require copyright assignment. The original contributor
 will retain the copyright.
+
+When adding content for the first time to an existing ABI specification or when
+creating a new one, you should add the copyright owner (presumably either
+yourself or your organization) to the list of copyright owners in the copyright
+notices section at the top of the document. Add a copyright notice in the same
+style as the other copyright notices already present.
