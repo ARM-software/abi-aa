@@ -1111,8 +1111,7 @@ consider a symbol not pre-emptable if:
    ``--dynamic-list`` is used.
 
 Shared objects must indirect all function calls to pre-emptable
-symbols must be indirected through the static linker created Procedure
-Linkage Table.
+symbols through the static linker created Procedure Linkage Table.
 
 Procedure Linkage Table
 -----------------------
@@ -1168,16 +1167,16 @@ procedure linkage table and the global offset table.
    dynamic section entry. The designated relocation entry must have
    type ``R_AARCH64_JUMP_SLOT``, and its ``r_offset`` field will
    specify the ``.got.plt`` table entry used by the PLT entry in
-   ``PLT[N]``, and also a symbol table index that references the
-   appropriate symbol, i.e. ``name1`` in this example.
+   ``PLT[N]``, the ``r_info`` encodes a symbol table index that
+   references the appropriate symbol, i.e. ``name1`` in this example.
 
  * The ``PLT[0]`` entry then loads the adress of the third
-   ``.plt.got`` entry into ``ip0``, and then loads and jumps to the
+   ``.got.plt`` entry into ``ip0``, and then loads and jumps to the
    address in the third table entry, which transfers control to the
    dynamic linker's lazy resolver function.
 
  * The value in ``ip0`` is used by the dynamic linker's entrypoint to
-   load the second ``.plt.got`` entry using ``[ip0,#-8]``, which gives
+   load the second ``.got.plt`` entry using ``[ip0,#-8]``, which gives
    it one 64-bit word of private information with which to identify
    the calling module.
 
@@ -1226,7 +1225,7 @@ Sample PLT sequences
 ^^^^^^^^^^^^^^^^^^^^
 
 The following section shows some examples of PLT sequences. The
-sequences assume that the ``.plt.got`` section is within +- 4 GiB from
+sequences assume that the ``.got.plt`` section is within +- 4 GiB from
 the ``.plt`` section.
 
 In the code samples below we assume that the entries in the
@@ -1246,17 +1245,17 @@ PLT header ``PLT[0]``
 
     stp    x16, x30, [sp,#-16]!
     adrp   x16, :page: &.got.plt[2]
-    ldr    x17, [x16, (&.got.plt[2] - &.got.plt[0])]
-    add    x16, x16, (&got.plt[2] - &got.plt[0])
+    ldr    x17, [x16, :lo12: &.got.plt[2]]
+    add    x16, x16, :lo12: &got.plt[2]
     br     x17
 
 Nth PLT entry ``PLT[N]``
 
 .. code-block:: asm
 
-    adrp x16, :page: &.plt.got[N + 3]
-    ldr  x17, [x16, (&.got.plt[N + 3] - &.got.plt[0])
-    add  x16, x16, (&.got.plt[N + 3] - &.got.plt[0])
+    adrp x16, :page: &.got.plt[N + 3]
+    ldr  x17, [x16, :lo12: &.got.plt[N + 3]]
+    add  x16, x16, :lo12: &.got.plt[N + 3]]
     br   x17
 
 BTI
@@ -1277,8 +1276,8 @@ PLT header ``PLT[0]``
     bti  c
     stp  x16, x30, [sp,#-16]!
     adrp   x16, :page: &.got.plt[2]
-    ldr    x17, [x16, (&.got.plt[2] - &.got.plt[0])]
-    add    x16, x16, (&got.plt[2] - &got.plt[0])
+    ldr    x17, [x16, :lo12: &.got.plt[2]]
+    add    x16, x16, :lo12: &got.plt[2]
     br   x17
 
 Nth PLT entry ``PLT[N]``
@@ -1286,9 +1285,9 @@ Nth PLT entry ``PLT[N]``
 .. code-block:: asm
 
     bti  c
-    adrp x16, :page: &.plt.got[N + 3]
-    ldr  x17, [x16, (&.got.plt[N + 3] - &.got.plt[0])
-    add  x16, x16, (&.got.plt[N + 3] - &.got.plt[0])
+    adrp x16, :page: &.got.plt[N + 3]
+    ldr  x17, [x16, :lo12: &.got.plt[N + 3]]
+    add  x16, x16, :lo12: &.got.plt[N + 3]
     br   x17
 
 PAC
@@ -1311,9 +1310,9 @@ Nth PLT entry ``PLT[N]``
 
 .. code-block:: asm
 
-    adrp x16, :page: &.plt.got[N + 3]
-    ldr  x17, [x16, (&.got.plt[N + 3] - &.got.plt[0])
-    add  x16, x16, (&.got.plt[N + 3] - &.got.plt[0])
+    adrp x16, :page: &.got.plt[N + 3]
+    ldr  x17, [x16, :lo12: &.got.plt[N + 3]]
+    add  x16, x16, :lo12: &.got.plt[N + 3]
     autia1716
     br   x17
 
@@ -1335,8 +1334,8 @@ PLT header ``PLT[0]``
     bti  c
     stp  x16, x30, [sp,#-16]!
     adrp   x16, :page: &.got.plt[2]
-    ldr    x17, [x16, (&.got.plt[2] - &.got.plt[0])]
-    add    x16, x16, (&got.plt[2] - &got.plt[0])
+    ldr    x17, [x16, :lo12: &.got.plt[2]]
+    add    x16, x16, :lo12: &got.plt[2]
     br   x17
 
 Nth PLT entry ``PLT[N]``
@@ -1344,9 +1343,9 @@ Nth PLT entry ``PLT[N]``
 .. code-block:: asm
 
     bti  c
-    adrp x16, :page: &.plt.got[N + 3]
-    ldr  x17, [x16, (&.got.plt[N + 3] - &.got.plt[0])
-    add  x16, x16, (&.got.plt[N + 3] - &.got.plt[0])
+    adrp x16, :page: &.got.plt[N + 3]
+    ldr  x17, [x16, :lo12: &.got.plt[N + 3]]
+    add  x16, x16, :lo12: &.got.plt[N + 3]
     autia1716
     br   x17
 
@@ -1358,7 +1357,7 @@ implementation of a function to be chosen from multiple candidates,
 with the choice taken by an IFUNC resolver function.
 
 GNU Indirect Functions require static and dynamic linker support. They
-are known to be supported on GNU/Linux, Android and many of the BSD
+are known to be supported on GNU/Linux, Android, and many of the BSD
 operating systems.
 
 GNU Indirect Functions are called via a PLT entry that loads the
@@ -1414,10 +1413,10 @@ the GCC and Clang compilers an attribute can be used to achieve this.
   /* make symbol ifunc type STT_GNU_IFUNC using resolver as the IFUNC resolver. */
   int ifunc(void) __attribute__((ifunc("resolver")));
 
-The first ``uint64`` parameter is ``AT_HWCAP``. If the
+The first ``uint64_t`` parameter is ``AT_HWCAP``. If the
 ``_IFUNC_ARG_HWCAP`` flag is set the second parameter is present. The
 second parameter is a structure ``__ifunc_arg_t`` defined in
-``sys/ifunc.h`` it provides access to all of the flags in HWCAP_ via
+``sys/ifunc.h``, it provides access to all of the flags in HWCAP_ via
 fields of the structure.
 
 The IFUNC resolver function returns the address of the function
@@ -1433,10 +1432,6 @@ additional restrictions on what they can contain.
 
  * IFUNC resolvers must not have a symbol binding of ``STB_WEAK``.
 
- * IFUNC resolvers that may be called via lazy-binding must be
-   asynchronous-signal safe and thread-safe as the resolver may be
-   called from a signal handler or multi-threaded process.
-
 The order of dynamic relocation resolution across an executable and
 all its shared libraries is platform specific. The following
 recommendations for writing IFUNC resolvers apply to the GNU glibc
@@ -1449,7 +1444,7 @@ dynamic loader. Other dynamic linkers may have fewer requirements.
  * In position-independent code an IFUNC resolver functions must not
    call a function that requires a PLT entry. If the IFUNC resolver
    runs as a result of a relocation in ``.rela.dyn`` then the
-   relocations in ``rela.plt`` will not have been resolved. This means
+   relocations in ``.rela.plt`` will not have been resolved. This means
    that addresses in the ``.got.plt`` will be unchanged from their
    static link time value.
 
@@ -1481,7 +1476,7 @@ resolved to a PLT entry that loads the value of:
 Due to the ordering requirements on IFUNC resolvers the PLT entry and
 associated ``.got.plt`` entry are by often implemented in a separate
 ``.iplt`` and ``.iplt.got`` sections so that they placed after the
-``.plt`` and ``.plt.got`` sections respectively.
+``.plt`` and ``.got.plt`` sections respectively.
 
 Like ``R_AARCH64_RELATIVE`` the ``R_AARCH64_IRELATIVE`` relocation
 does not require a symbol. For ``RELA`` type relocations the addend of
@@ -1539,7 +1534,7 @@ specified by ``DT_FINI`` and ``DT_FINI_ARRAY``.
 Relocation Read Only (RELRO)
 ----------------------------
 
-Several sections in an exectuable or shared-library are logically
+Several sections in an executable or shared-library are logically
 read-only but they require dynamic relocation which forces them to be
 writeable. Relocation Read Only (RELRO) is a GNU extension to ELF that
 permits a dynamic linker to remap the pages described by the RELRO
