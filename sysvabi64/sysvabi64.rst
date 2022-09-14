@@ -1437,9 +1437,9 @@ all its shared libraries is platform specific. The following
 recommendations for writing IFUNC resolvers apply to the GNU glibc
 dynamic loader. Other dynamic linkers may have fewer requirements.
 
- * IFUNC resolver functions must not call a function that may require
-   IFUNC initialization. If the IFUNC initialization for the called
-   function has not occured then undefined behavior results.
+ * An IFUNC resolver function must not call a function that may itself
+   require IFUNC initialization. If the IFUNC initialization for the
+   called function has not occured then undefined behavior results.
 
  * In position-independent code an IFUNC resolver functions must not
    call a function that requires a PLT entry. If the IFUNC resolver
@@ -1474,8 +1474,8 @@ resolved to a PLT entry that loads the value of:
    added to ``.rela.dyn`` or ``rela.plt``.
 
 Due to the ordering requirements on IFUNC resolvers the PLT entry and
-associated ``.got.plt`` entry are by often implemented in a separate
-``.iplt`` and ``.iplt.got`` sections so that they placed after the
+associated ``.got.plt`` entry are often implemented in a separate
+``.iplt`` and ``.iplt.got`` sections so that they are placed after the
 ``.plt`` and ``.got.plt`` sections respectively.
 
 Like ``R_AARCH64_RELATIVE`` the ``R_AARCH64_IRELATIVE`` relocation
