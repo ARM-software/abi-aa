@@ -1496,7 +1496,7 @@ after all other relocation types. This means that for a given
 executable or shared-library the following ordering can be relied on:
 
  * All non ``R_AARCH64_IRELATIVE`` relocations in ``.rela.dyn`` will be resolved
-   before any ``R_AARCH_IRELATIVE`` relocations.
+   before any ``R_AARCH64_IRELATIVE`` relocations.
 
  * ALL IFUNC resolvers with ``R_AARCH64_IRELATIVE`` relocations in
    ``.rela.dyn`` will be run before the ``.rela.plt`` relocations are
