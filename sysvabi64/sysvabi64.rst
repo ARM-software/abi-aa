@@ -193,7 +193,7 @@ Change History
  +============+==============================+=======================================================+
  | 00Alpha    | 1\ :sup:`st` November 2021   | Alpha release containing Code Model only              |
  +------------+------------------------------+-------------------------------------------------------+
- | 01Alpha    | 14\ :sup:`th` July 2022      | Add Program Loading and Dynamic Linking section       |
+ | 01Alpha    | 28\ :sup:`th` September 2022 | Add Program Loading and Dynamic Linking section       |
  +------------+------------------------------+-------------------------------------------------------+
 
 
@@ -695,7 +695,7 @@ along with the assumptions that the code model may make.
   are in separate consecutive ELF segments then the text segment is
   the maximum combined span of the ELF segments.
 
-  3. The data segment contains the statically defined, writeable,
+  3. The data segment contains the statically defined, writable,
   per-process data sections. In all models dynamically allocated data
   and stack can make use of the full virtual address space, dependent
   on operating system addressing limits. If the components are in
@@ -1025,11 +1025,13 @@ is an exception to this rule. See `GNU Indirect Functions`_ for the
 restrictions on what addresses can be accessed from a resolver
 function.
 
-By convention the ``.got`` section's first entry (number zero) is
-reserved to hold the address of the dynamic structure, referenced with
-the linker defined symbol ``_DYNAMIC``. Versions of glibc prior to
-version 2.35 use this address to find its own dynamic structure
-without without having yet processed their own relocation entries.
+In some dynamic linkers the ``.got`` section's first entry (number
+zero) is reserved to hold the address of the dynamic structure,
+referenced with the linker defined symbol ``_DYNAMIC``. The dynamic
+linker in versions of glibc prior to version 2.35 use this address to
+find its own dynamic structure without having yet processed their own
+relocation entries. Static linkers wishing to build versions of glibc
+older than 2.35 will need to define ``_DYNAMIC``.
 
 AArch64 entries one and two in the ``.got.plt`` are reserved for the
 dynamic linker.
@@ -1068,7 +1070,7 @@ References from within a non-position-independent executable file to a
 function address defined in a shared object will normally be resolved
 by the static linker to the address of the `Procedure Linkage Table`_
 (PLT) entry for that function within the executable file. If the
-address is in a writeable location the linker may use a dynamic
+address is in a writable location the linker may use a dynamic
 relocation instead.
 
 When both shared objects and a non-position-independent executable use
@@ -1170,7 +1172,7 @@ procedure linkage table and the global offset table.
    ``PLT[N]``, the ``r_info`` encodes a symbol table index that
    references the appropriate symbol, i.e. ``name1`` in this example.
 
- * The ``PLT[0]`` entry then loads the adress of the third
+ * The ``PLT[0]`` entry then loads the address of the third
    ``.got.plt`` entry into ``ip0``, and then loads and jumps to the
    address in the third table entry, which transfers control to the
    dynamic linker's lazy resolver function.
@@ -1246,7 +1248,7 @@ PLT header ``PLT[0]``
     stp    x16, x30, [sp,#-16]!
     adrp   x16, :page: &.got.plt[2]
     ldr    x17, [x16, :lo12: &.got.plt[2]]
-    add    x16, x16, :lo12: &got.plt[2]
+    add    x16, x16, :lo12: &.got.plt[2]
     br     x17
 
 Nth PLT entry ``PLT[N]``
@@ -1277,7 +1279,7 @@ PLT header ``PLT[0]``
     stp  x16, x30, [sp,#-16]!
     adrp   x16, :page: &.got.plt[2]
     ldr    x17, [x16, :lo12: &.got.plt[2]]
-    add    x16, x16, :lo12: &got.plt[2]
+    add    x16, x16, :lo12: &.got.plt[2]
     br   x17
 
 Nth PLT entry ``PLT[N]``
@@ -1335,7 +1337,7 @@ PLT header ``PLT[0]``
     stp  x16, x30, [sp,#-16]!
     adrp   x16, :page: &.got.plt[2]
     ldr    x17, [x16, :lo12: &.got.plt[2]]
-    add    x16, x16, :lo12: &got.plt[2]
+    add    x16, x16, :lo12: &.got.plt[2]
     br   x17
 
 Nth PLT entry ``PLT[N]``
@@ -1410,11 +1412,11 @@ the GCC and Clang compilers an attribute can be used to achieve this.
   /* Resolver function */
   static void* resolver(uint64_t, const __ifunc_arg_t *) { ... }
 
-  /* make symbol ifunc type STT_GNU_IFUNC using resolver as the IFUNC resolver. */
+  /* Make symbol ifunc type STT_GNU_IFUNC using resolver as the IFUNC resolver. */
   int ifunc(void) __attribute__((ifunc("resolver")));
 
 The first ``uint64_t`` parameter is ``AT_HWCAP``. If the
-``_IFUNC_ARG_HWCAP`` flag is set the second parameter is present. The
+``_IFUNC_ARG_HWCAP`` flag is set, the second parameter is present. The
 second parameter is a structure ``__ifunc_arg_t`` defined in
 ``sys/ifunc.h``, it provides access to all of the flags in HWCAP_ via
 fields of the structure.
@@ -1439,7 +1441,7 @@ dynamic loader. Other dynamic linkers may have fewer requirements.
 
  * An IFUNC resolver function must not call a function that may itself
    require IFUNC initialization. If the IFUNC initialization for the
-   called function has not occured then undefined behavior results.
+   called function has not occurred then undefined behavior results.
 
  * In position-independent code an IFUNC resolver functions must not
    call a function that requires a PLT entry. If the IFUNC resolver
@@ -1479,9 +1481,9 @@ associated ``.got.plt`` entry are often implemented in a separate
 ``.plt`` and ``.got.plt`` sections respectively.
 
 Like ``R_AARCH64_RELATIVE`` the ``R_AARCH64_IRELATIVE`` relocation
-does not require a symbol. For ``RELA`` type relocations the addend of
-the ``R_AARCH64_IRELATIVE`` relocation contains the address of the
-IFUNC resolver function.
+does not require a symbol and may be given a symbol index of 0. For
+``RELA`` type relocations the addend of the ``R_AARCH64_IRELATIVE``
+relocation contains the address of the IFUNC resolver function.
 
 To make address equivalence of functions with IFUNC resolvers work, if
 the address of a non-preemptable ``STT_GNU_IFUNC`` symbol is taken in
@@ -1495,26 +1497,32 @@ Relocations of type ``R_AARCH64_IRELATIVE`` relocation must be sorted
 after all other relocation types. This means that for a given
 executable or shared-library the following ordering can be relied on:
 
- * All non ``R_AARCH64_IRELATIVE`` relocations in ``.rela.dyn`` will be resolved
-   before any ``R_AARCH64_IRELATIVE`` relocations.
+ * All non ``R_AARCH64_IRELATIVE`` relocations in ``.rela.dyn`` will
+   be resolved before any ``R_AARCH64_IRELATIVE`` relocations.
 
  * ALL IFUNC resolvers with ``R_AARCH64_IRELATIVE`` relocations in
    ``.rela.dyn`` will be run before the ``.rela.plt`` relocations are
    resolved.
 
- * All non ``R_AARCH64_IRELATIVE`` relocations in ``.rela.plt`` will be resolved
-   before any ``R_AARCH64_IRELATIVE`` relocations.
+ * All ``R_AARCH64_JUMP_SLOT`` relocations in ``.rela.plt`` will be
+   resolved before any ``R_AARCH64_IRELATIVE`` relocations in
+   ``.rela.plt``. When lazy binding is in use resolution is limited to
+   adjusting the address in the ``.got.plt`` for any load bias caused
+   by position-independence.
 
  * All IFUNC resolvers with ``R_AARCH64_IRELATIVE`` relocations in
-   ``.rela.plt`` will be run last.
+   ``.rela.plt`` will be run after all ``R_AARCH64_JUMP_SLOT``
+   relocations have been resolved.
 
 When static linking, the dynamic relocation section containing
 ``R_AARCH64_IRELATIVE`` relocations are output as if dynamic
-linking. The static linker must define the symbols
-``__rela_iplt_start`` and ``__rela_iplt_end`` at the start and end of
-the dynamic relocations so that startup code can find and resolve the
-``R_AARCH64_IRELATIVE`` relocations. These linker defined symbols
-should not be defined if there are any dynamic tags present.
+linking. For non-position-independent executable the static linker
+must define the symbols ``__rela_iplt_start`` and ``__rela_iplt_end``
+at the start and end of the dynamic relocations so that startup code
+can find and resolve the ``R_AARCH64_IRELATIVE`` relocations. These
+linker defined symbols should not be defined if there are any dynamic
+tags present. For static position-independent executables the startup
+code finds the relocations via the dynamic section.
 
 IFUNC requirements for dynamic linkers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1536,14 +1544,14 @@ Relocation Read Only (RELRO)
 
 Several sections in an executable or shared-library are logically
 read-only but they require dynamic relocation which forces them to be
-writeable. Relocation Read Only (RELRO) is a GNU extension to ELF that
+writable. Relocation Read Only (RELRO) is a GNU extension to ELF that
 permits a dynamic linker to remap the pages described by the RELRO
 program segment as read-only after relocation.
 
 The RELRO program segment is described by a program header with type
 ``PT_GNU_RELRO``, defined in LSB_. The number of supported RELRO
 segments is a contract between the static and dynamic linker. The GNU
-C library only supports one RELRO segement per ELF file.
+C library only supports one RELRO segment per ELF file.
 
 RELRO sections in relocatable objects are identified by a combination
 of section flags and naming convention. Platforms may extend the
@@ -1568,7 +1576,8 @@ following conditions holds the section is considered RELRO:
    ``.jcr``, ``.eh_frame``, ``.fini_array``, ``.init_array``,
    ``.preinit_array``.
 
-The size of the RELRO segment should be extended so that is a multiple of the page size.
+The size of the RELRO segment should be extended so that it is a
+multiple of the page size.
 
 .. raw:: pdf
 
