@@ -929,7 +929,7 @@ The address space may consist of one or more disjoint regions. No region
 may span address zero (although one region may start at zero).
 
 The use of tagged addressing is platform specific and does not apply to
-32-bit pointers. When tagged addressing is disabled all 64 bits of an
+32-bit pointers. When tagged addressing is disabled, all 64 bits of an
 address are passed to the translation system. When tagged addressing is
 enabled, the top eight bits of an address are ignored for the purposes
 of address translation. See also `Pointers`_, above.
@@ -953,16 +953,16 @@ Each category of memory can contain multiple individual regions.
 These individual regions do not need to be contiguous and regions of one
 memory class can be interspersed with regions of another memory class.
 
-Writable static data may be further sub-divided into initialized, zero-initialized and uninitialized data.
+Writable static data may be further sub-divided into initialized, zero-initialized, and uninitialized data.
 
-The heap is an area (or areas) of memory that are managed by the process itself (for example, with the C malloc function). It is typically used for the creation of dynamic data objects.
+The heap is an area (or areas) of memory that the process manages itself (for example, with the C malloc function). It is typically to create dynamic data objects.
 
 Each individual stack must occupy a single, contiguous region of memory.
 However, as noted above, multiple stacks do not need to be organized
 contiguously.
 
-A process must always have access to code and stacks, but need not have
-access to any of the other categories of memory.
+A process must always have access to code and stacks, but does not need
+to have access to any of the other categories of memory.
 
 A conforming program must only execute instructions that are in areas of memory designated to contain code.
 
@@ -982,12 +982,12 @@ The stack is defined in terms of three values:
 
 * the special-purpose register SP
 
-The SP moves from the base to the limit as the stack grows and from the
+The SP moves from the base to the limit as the stack grows, and from the
 limit to the base as the stack shrinks. In practice, an application might
 not be able to determine the value of either the base or the limit.
 
 In the description below, the base, limit and SP for a thread T are
-denoted T.base, T.limit and T.SP respectively.
+denoted T.base, T.limit, and T.SP respectively.
 
 The stack implementation is full-descending, so that for each thread T:
 
