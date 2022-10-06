@@ -905,13 +905,14 @@ The AAPCS64 applies to a single _`thread` of execution.  Each thread is in
 turn part of a _`process`.  A process might contain one thread or several
 threads.
 
-The exact definition of “thread” and “process” depends on the platform.
-If the platform is a traditional multi-threaded operating system,
-“thread” and “process” generally have their usual meaning for that
-operating system. If the platform supports multiple processes but has
-no separate concept of threads, “thread” is synonymous with “process”.
-If a platform has no concurrency or preemption then it will generally
-have a single “thread” and “process” that executes all instructions.
+The exact definitions of the terms “thread” and “process” depend on the
+platform. For example, if the platform is a traditional multi-threaded
+operating system, the terms generally have their usual meaning for
+that operating system. If the platform supports multiple processes
+but has no separate concept of threads, each process will have a single
+thread of execution. If a platform has no concurrency or preemption
+then there will be a single thread and process that executes all
+instructions.
 
 Each thread has its own register state, defined by the contents of the
 underlying machine registers. A process has a program state defined by
@@ -925,8 +926,8 @@ Memory and the Stack
 Memory addresses
 ^^^^^^^^^^^^^^^^
 
-The address space may consist of one or more disjoint regions. No region
-may span address zero (although one region may start at zero).
+The address space may consist of one or more disjoint regions. Regions
+must not span address zero (although one region may start at zero).
 
 The use of tagged addressing is platform specific and does not apply to
 32-bit pointers. When tagged addressing is disabled, all 64 bits of an
@@ -955,14 +956,14 @@ memory class can be interspersed with regions of another memory class.
 
 Writable static data may be further sub-divided into initialized, zero-initialized, and uninitialized data.
 
-The heap is an area (or areas) of memory that the process manages itself (for example, with the C malloc function). It is typically to create dynamic data objects.
+The heap is an area (or areas) of memory that the process manages itself (for example, with the C malloc function). It is typically used to create dynamic data objects.
 
 Each individual stack must occupy a single, contiguous region of memory.
 However, as noted above, multiple stacks do not need to be organized
 contiguously.
 
-A process must always have access to code and stacks, but does not need
-to have access to any of the other categories of memory.
+A process must always have access to code and stacks, and it may have
+access to any of the other categories of memory.
 
 A conforming program must only execute instructions that are in areas of memory designated to contain code.
 
@@ -980,7 +981,7 @@ The stack is defined in terms of three values:
 
 * a limit
 
-* the special-purpose register SP
+* the current stack extent, stored in the special-purpose register SP
 
 The SP moves from the base to the limit as the stack grows, and from the
 limit to the base as the stack shrinks. In practice, an application might
@@ -1015,9 +1016,8 @@ constraints must hold for its stack S:
 - T.limit ≤ T.SP ≤ T.base. T's stack pointer must lie within the extent
   of the memory occupied by S.
 
-- A conforming program must not access (for reading or writing) the
-  inactive region of S. This is true regardless of whether the access
-  is performed by T or by some other thread.
+- No thread is permitted to access (for reading or for writing) the
+  inactive region of S.
 
 - If MTE is enabled, then the tag stored in T.SP must match the tag set
   on the inactive region of S.
