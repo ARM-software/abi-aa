@@ -926,7 +926,7 @@ Memory and the Stack
 Memory addresses
 ^^^^^^^^^^^^^^^^
 
-The address space may consist of one or more disjoint regions. Regions
+The address space consists of one or more disjoint regions. Regions
 must not span address zero (although one region may start at zero).
 
 The use of tagged addressing is platform specific and does not apply to
