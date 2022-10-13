@@ -2652,8 +2652,19 @@ The encoding has been designed to meet the following criteria.
      address upon function exit. The Return Address Authentication Code is an
      unsigned integer with the same size as a general-purpose register. Upon
      completion of the unwinding instructions, the Return Address Authentication
-     Code can be used to validate the content of VRS[r15], using vsp as a
+     Code can be used to validate the content of VRS[r15] and if code 0xb5 is
+     encountered before completion of the unwinding, the effective VSP value at
+     code 0xb5 will be used as modifier, otherwise the CFA is used as the
      modifier.
+
+  h) In a very small number of cases (for example, nested functions when a
+     closure pointer is passed as an additional argument), the inter-procedural
+     scratch register (IP) may be live on entry to the function. In this
+     situation the return address cannot be signed until IP has been copied
+     somewhere else (for example, by saving it onto the stack). When Return
+     Address Authentication is needed in this situation, code 0xb5 indicates
+     the effective VSP value to use for the authentication as modifier instead
+     of the CFA.
 
 .. _ehabi32-table4:
 
@@ -2703,7 +2714,9 @@ The encoding has been designed to meet the following criteria.
   +---------------------------+--------------------------------------------------------------------------------------------------------------+
   | ``10110100``              | Pop Return Address Authentication Code pseudo-register (see **remark g**)                                    |
   +---------------------------+--------------------------------------------------------------------------------------------------------------+
-  | ``101101nn``              | Spare (nn != 00, was Pop FPA)                                                                                |
+  | ``10110101``              | Use current vsp as modifier in Return Addresss Authentication (see **remark h**)                             |
+  +---------------------------+--------------------------------------------------------------------------------------------------------------+
+  | ``1011011n``              | Spare (was Pop FPA)                                                                                          |
   +---------------------------+--------------------------------------------------------------------------------------------------------------+
   | ``10111nnn``              | Pop VFP double-precision registers D[8]-D[8+nnn] saved (as if) by FSTMFDX (see **remark d**)                 |
   +---------------------------+--------------------------------------------------------------------------------------------------------------+
