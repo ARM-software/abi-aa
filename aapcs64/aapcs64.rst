@@ -987,8 +987,8 @@ The SP moves from the base to the limit as the stack grows, and from the
 limit to the base as the stack shrinks. In practice, an application might
 not be able to determine the value of either the base or the limit.
 
-In the description below, the base, limit and SP for a thread T are
-denoted T.base, T.limit, and T.SP respectively.
+In the description below, the base, limit, and current stack extent
+for a thread T are denoted T.base, T.limit, and T.SP respectively.
 
 The stack implementation is full-descending, so that for each thread T:
 
