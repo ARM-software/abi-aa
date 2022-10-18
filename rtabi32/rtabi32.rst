@@ -3,8 +3,8 @@
    reserved. CC-BY-SA-4.0 AND Apache-Patent-License See LICENSE file
    for details
 
-.. |release| replace:: 2022Q1
-.. |date-of-issue| replace:: 01\ :sup:`st` April 2022
+.. |release| replace:: 2022Q3
+.. |date-of-issue| replace:: 20\ :sup:`th` October 2022
 .. |copyright-date| replace:: 2003, 2007-2009, 2012, 2015, 2018, 2020-2022
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.

@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2022Q1
-.. |date-of-issue| replace:: 01\ :sup:`st` April 2022
+.. |release| replace:: 2022Q3
+.. |date-of-issue| replace:: 20\ :sup:`th` October 2022
 .. |copyright-date| replace:: 2011, 2013, 2018-2022
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -255,6 +255,17 @@ changes to the content of the document for that release.
   | 2022Q1        | 1\ :sup:`st`       | - In `Program Property`_, Soft-deprecate|
   |               | April 2022         |   GNU_PROPERTY_AARCH64_FEATURE_1_PAC    |
   +---------------+--------------------+-----------------------------------------+
+  | 2022Q3        | 20\ :sup:`th`      | - In `Dynamic relocations`_, include the|
+  |               | October 2022       |   ABS64 and ABS32 relocations in Dynamic|
+  |               |                    |   relocations.                          |
+  |               |                    | - In `Relocation optimization`_, ADRP + |
+  |               |                    |   LDR GOT relaxation symbol should not  |
+  |               |                    |   be absolute.                          |
+  |               |                    | - In `Program Loading and Dynamic       |
+  |               |                    |   Linking`_, document new               |
+  |               |                    |   PT_AARCH64_MEMTAG_MTE segment.        |
+  +---------------+--------------------+-----------------------------------------+
+
 
 References
 ----------
