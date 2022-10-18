@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2022Q1
-.. |date-of-issue| replace:: 01\ :sup:`st` April 2022
+.. |release| replace:: 2022Q3
+.. |date-of-issue| replace:: 20\ :sup:`th` October 2022
 .. |copyright-date| replace:: 2011, 2013, 2018, 2020-2022
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -243,9 +243,11 @@ changes to the content of the document for that release.
 |            | 2021               |   is an overaligned HFA.                                         |
 |            |                    | - Minor formatting changes.                                      |
 +------------+--------------------+------------------------------------------------------------------+
-| 2021Q3     |                    | - Add support for Decimal-floating-point formats                 |
+| 2021Q3     | 1\ :sup:`st`       | - Add support for Decimal-floating-point formats                 |
+|            | November 2021      |                                                                  |
 +------------+--------------------+------------------------------------------------------------------+
-|            |                    | - Add support for SME                                            |
+| 2022Q3     | 20\ :sup:`th`      | - Add alpha-level support for SME.                               |
+|            | October 2022       | - Across the document, use “thread” rather than “process”.       |
 +------------+--------------------+------------------------------------------------------------------+
 
 References

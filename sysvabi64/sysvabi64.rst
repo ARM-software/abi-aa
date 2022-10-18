@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2022Q1
-.. |date-of-issue| replace:: 01\ :sup:`st` April 2022
+.. |release| replace:: 2022Q3
+.. |date-of-issue| replace:: 20\ :sup:`th` October 2022
 .. |copyright-date| replace:: 2021-2022
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -193,7 +193,7 @@ Change History
  +============+==============================+=======================================================+
  | 00Alpha    | 1\ :sup:`st` November 2021   | Alpha release containing Code Model only              |
  +------------+------------------------------+-------------------------------------------------------+
- | 01Alpha    | 28\ :sup:`th` September 2022 | Add Program Loading and Dynamic Linking section       |
+ | 01Alpha    | 20\ :sup:`th` October 2022   | Add Program Loading and Dynamic Linking section.      |
  +------------+------------------------------+-------------------------------------------------------+
 
 
