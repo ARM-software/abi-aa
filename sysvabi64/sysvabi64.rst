@@ -16,6 +16,7 @@
 .. _GCABI: https://itanium-cxx-abi.github.io/cxx-abi/abi.html
 .. _HWCAP: https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_5.0.0/LSB-Core-generic/LSB-Core-generic/book1.html
+.. _SCO-ELF: http://www.sco.com/developers/gabi
 .. _SYM-VER: http://www.akkadia.org/drepper/symbol-versioning
 .. _SYSVABI: https://github.com/ARM-software/abi-aa/releases
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
@@ -222,6 +223,8 @@ This document refers to, or is referred to by, the following documents.
   | HWCAP_      | https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html | Linux Kernel HWCAPs interface                                               |
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | LSB_        | https://refspecs.linuxbase.org/lsb.shtml                     | Linux Standards Base Core Functional Area                                   |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SCO-ELF_    | http://www.sco.com/developers/gabi/                          | System V Application Binary Interface – DRAFT                               |
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | SYM-VER_    | http://people.redhat.com/drepper/symbol-versioning           | GNU Symbol Versioning                                                       |
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
@@ -984,8 +987,14 @@ static linker and the dynamic linker. There are a number of entries
 that help locate various dynamic relocation tables and other aspects
 that are architecture independent.
 
+The generic dynamic tags are defined in SCO-ELF_ Dynamic Section.
+
 The AArch64 specific dynamic tags are defined in AAELF64_ Dynamic
 Section.
+
+The generic tag ``DT_PLTGOT`` has a processor specific
+implementation. On AArch64 it is defined to be the address of the
+``.got.plt`` section.
 
 Global Offset Table (GOT)
 -------------------------
