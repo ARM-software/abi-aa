@@ -819,11 +819,11 @@ one status register (CPSR) that is available for use in conforming code.
    +----------+---------+---------+-----------------------------------------+
    | r10      | v7      |         | Variable-register 7.                    |
    +----------+---------+---------+-----------------------------------------+
-   | r9       |         | v6      | Platform register.                      |
-   |          |         |         |                                         |
-   |          |         | SB      | The meaning of this register is defined |
-   |          |         |         | by the platform standard.               |
+   | r9       | v6      | SB      | Platform register or Variable-register  |
+   |          |         |         | 6.                                      |
    |          |         | TR      |                                         |
+   |          |         |         | The meaning of this register is defined |
+   |          |         |         | by the platform standard.               |
    +----------+---------+---------+-----------------------------------------+
    | r8       | v5      |         | Variable-register 5.                    |
    +----------+---------+---------+-----------------------------------------+
