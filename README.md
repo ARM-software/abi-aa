@@ -88,6 +88,13 @@ specification                                               | latest            
 PAuth ABI Extension to ELF for the Arm 64-bit Architecture  | [pauthabielf64](pauthabielf64/pauthabielf64.rst) | -
 
 
+### Memtag ABI Extension
+
+specification                                                | latest on Github                                    | last on developer site
+---                                                          | ---                                                 | ---
+Memtag ABI Extension to ELF for the Arm 64-bit Architecture  | [memtagabielf64](memtagabielf64/memtagabielf64.rst) | -
+
+
 ### Morello Extension
 
 specification                                                                     | latest                                                       | last legacy release
