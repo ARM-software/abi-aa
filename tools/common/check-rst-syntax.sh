@@ -30,6 +30,9 @@ declare -a docs=(
     # pauth extension
     "pauthabielf64"
 
+    # memtag extension
+    "memtagabielf64"
+
     # morello
     "aadwarf64-morello" "aaelf64-morello" "aapcs64-morello"
 
