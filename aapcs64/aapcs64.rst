@@ -2646,7 +2646,7 @@ The bit-address of ``F``, ``BA(F)``, can now be defined as:
 
     BA(F) = CA(F) * 8 + K(F)
 
-For a bit address ``BA`` falling in a container of width ``C`` and alignment ``A (<=  C)`` (both expressed in bits), define the unallocated container bits (UCB) to be:
+For a bit address ``BA`` falling in a container of width ``C`` and alignment ``A (<=  C)`` (both expressed in bits), define the unallocated container bits (``UCB``) to be:
 
 .. parsed-literal::
 
@@ -2668,7 +2668,7 @@ We can now define the next container bit address (``NCBA``) which will be used w
 
 At each stage in the laying out of a sequence of bit-fields there is:
 
-- A current bit address (CBA)
+- A current bit address (``CBA``)
 
 - A container size, ``C``, and alignment, ``A``, determined by the type of the field about to be laid out (8, 16, 32, …)
 
