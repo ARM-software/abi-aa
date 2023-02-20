@@ -879,10 +879,10 @@ For a value of ``VLEN``, the ``ADVSIMD_MAP(P)`` is build as follows:
    type ``T(P)``.
 4. An optional ``{not}inbrach`` clause defines whether or not a vector
    mask parameter is added as the last input parameter of ``F``,
-   according to the rules in table 1 in chapter 4. The vector mask
+   according to the rules in the table in `Masking`_. The vector mask
    type is selected by building a vector of ``VLEN`` elements
    consisting of unsigned integers of ``NDS(f)`` bytes. The generation
-   of the values in the mask parameter is described in section 4.1.
+   of the values in the mask parameter is described in `Advanced SIMD masking`_.
 
 SVE-specific rules
 ------------------
@@ -917,7 +917,7 @@ Whether targeting VLA SVE or VLS SVE, the rules for mapping ``<P>`` to
 3. Otherwise ``SVE_MAP(P)`` is a scalable vector of ``T(P)``.
 4. An additional ``svbool_t`` mask parameter is added as the last
    parameter of ``F``. The generation of the mask values is described
-   in section 4.2.
+   in `Generating the predicate value of the mask parameter`_.
 
 Unpacked parameters / return value
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
