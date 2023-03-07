@@ -328,7 +328,7 @@ run-time support code to:
    exception, and call it if it does.
 
 There are several different implementation strategies for exception
-handling offering a trade off among:
+handling offering a trade-off among:
 
 -  The impact of the catching exceptions on the size and performance of
    non-exceptional execution paths.
