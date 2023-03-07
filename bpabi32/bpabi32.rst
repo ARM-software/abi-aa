@@ -305,7 +305,7 @@ Q-o-I
    Quality of Implementation – a quality, behavior, functionality, or
    mechanism not required by this standard, but which might be provided
    by systems conforming to it. Q-o-I is often used to describe the
-   tool-chain-specific means by which a standard requirement is met.
+   toolchain-specific means by which a standard requirement is met.
 
 VFP
    The Arm architecture’s Floating Point architecture and instruction
@@ -428,7 +428,7 @@ The base platform ABI tool flow
 -------------------------------
 
 This base platform ABI sets a standard for executable and shared object
-files – in effect, a standard for the tool chains that produce them. This
+files – in effect, a standard for the toolchains that produce them. This
 ABI is based on the tool flow depicted below.
 
 A simple post-linker (see `Simple post linking`_ for our definition of
@@ -584,7 +584,7 @@ The SVr4 model attempts to maintain precisely the same environment for
 application relocatable objects whether they are linked statically with
 their libraries or dynamically with DSOs containing library code. By
 default, all extern entities are imported and exported unless the producing
-tool chain is told otherwise (by Q-o-I means). In general, programmers do
+toolchain is told otherwise (by Q-o-I means). In general, programmers do
 not need to be aware of import and export issues.
 
 In contrast, DLL models usually make import and export explicit and
@@ -2121,7 +2121,7 @@ to their versions via indexes with bit 15 set. In effect, all but one of the
 definitions of X will be hidden from static binding.
 
 (Aside: In general it is only possible to bind statically to the latest
-version of a symbol X exported by an executable file. Any other tool chain
+version of a symbol X exported by an executable file. Any other toolchain
 behavior is Q-o-I. If the executable file exporting X is subsequently
 updated creating a new version of X and preserving the old version, this
 executable will nonetheless be linked dynamically to the old version X. An
@@ -2242,7 +2242,7 @@ symbol shared by all callers from the same executable file.
 (Aside: Support for executable files containing larger than 4MB Thumb-1 code
 regions is Q-o-I. End aside).
 
-In SVr4-style tool chains there is a clear convention that a static linker
+In SVr4-style toolchains there is a clear convention that a static linker
 must generate veneers – called procedure linkage table (PLT) entries – on
 calls to imported code symbols. The writable location corresponding to an
 SVr4 PLT entry is called a PLTGOT entry.

@@ -318,7 +318,7 @@ Q-o-I
    Quality of Implementation – a quality, behavior, functionality, or
    mechanism not required by this standard, but which might be provided
    by systems conforming to it.  Q-o-I is often used to describe the
-   tool-chain-specific means by which a standard requirement is met.
+   toolchain-specific means by which a standard requirement is met.
 
 VFP
    The Arm architecture’s Floating Point architecture and instruction
@@ -782,8 +782,8 @@ The run-time helper-function ABI is described in the document
 :title-reference:`Run-time ABI for the Arm Architecture` [RTABI32_].
 
 The run-time helper-function ABI specifies how relocatable files produced by
-one tool chain must inter-operate with the run-time library from a different
-tool chain or execution environment. It gives a simple model of what a
+one toolchain must inter-operate with the run-time library from a different
+toolchain or execution environment. It gives a simple model of what a
 producer may assume of its output’s eventual static linking and execution
 environments.  It defines the following.
 
@@ -820,12 +820,12 @@ ABI for the Arm Architecture` [CLIBABI32_].
 The C library ABI specifies:
 
 * A binary interface to the C89 run-time library that allows a
-  C-library-using function built by one tool chain to use the C library
+  C-library-using function built by one toolchain to use the C library
   implementation provided by another.
 
-* Constraints on language library headers necessary to allow tool chain X to
-  use its own headers, or tool chain Y’s headers, when building an object
-  that must interface to tool chain Y's run-time library.
+* Constraints on language library headers necessary to allow toolchain X to
+  use its own headers, or toolchain Y’s headers, when building an object
+  that must interface to toolchain Y's run-time library.
 
 Compliance with this specification is a header-by-header **quality
 of implementation** issue. Compliance is not required in order to claim

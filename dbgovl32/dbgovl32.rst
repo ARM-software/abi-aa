@@ -49,7 +49,7 @@ Abstract
 --------
 
 This specification defines an extension to the *ABI for the Arm
-Architecture* to support debugging overlaid programs. No tool chain is
+Architecture* to support debugging overlaid programs. No toolchain is
 required to support this extension but tools that support debugging
 overlaid programs should do so in one of the ways specified in
 `The ABI Extension`_.
@@ -548,7 +548,7 @@ The ABI Extension
 =================
 
 We extend the *ABI for the Arm Architecture* (ABI) as noted in this
-section. The extension is optional and no tool chain is required to
+section. The extension is optional and no toolchain is required to
 support in order to claim conformance to the ABI. However, tools that
 support debugging overlaid programs should do so in one of the ways
 specified here.
