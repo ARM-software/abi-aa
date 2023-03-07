@@ -384,7 +384,7 @@ Q-o-I
    Quality of Implementation – a quality, behavior, functionality, or
    mechanism not required by this standard, but which might be provided
    by systems conforming to it. Q-o-I is often used to describe the
-   tool-chain-specific means by which a standard requirement is met.
+   toolchain-specific means by which a standard requirement is met.
 
 VFP
    The Arm architecture’s Floating Point architecture and instruction
@@ -427,13 +427,13 @@ attributes are important.
 
 In this depiction there are two principal uses of build attributes.
 
-*  Within a tool chain, build attributes generate rich opportunities for a
+*  Within a toolchain, build attributes generate rich opportunities for a
    linker to diagnose incompatibility, enforce compatibility, and select
    library members intelligently according to its compatibility model.
 
-*  Between tool chains, build attributes describe the intended compatibility
+*  Between toolchains, build attributes describe the intended compatibility
    of a relocatable file and the entities it defines in terms independent of
-   either tool chain, promoting safe exchange of portable code in binary
+   either toolchain, promoting safe exchange of portable code in binary
    form.
 
 Attribute values are based on user intentions
@@ -443,7 +443,7 @@ We base attribute values on user intentions to avoid the values being an
 unpredictable (effectively random) function of a compiler’s code generation
 algorithms and to support using attributes with assembly language without
 overburdening programmers. Where attributes support exchanging portable
-relocatable files among tool chains, predictability is worth more than
+relocatable files among toolchains, predictability is worth more than
 precision.
 
 Capturing a user’s compile-time intentions about compatibility is also
@@ -501,13 +501,12 @@ interpretation of compatibility among their values, and it is an obvious
 one.
 
 For a minority – mostly associated with procedure-call compatibility between
-functions – this is not the case and it is reasonable for different tool
-chains to take different positions according to the markets they serve.
+functions – this is not the case and it is reasonable for different toolchains
+to take different positions according to the markets they serve.
 
-Thus it is entirely reasonable that a relocatable file produced by tool
-chain A and accepted by tool chain B’s linker might be rejected by tool
-chain C’s linker when targeting exactly the same environment as tool chain
-B.
+Thus it is entirely reasonable that a relocatable file produced by toolchain A
+and accepted by toolchain B’s linker might be rejected by toolchain C’s linker
+when targeting exactly the same environment as toolchain B.
 
 Our hope and intention for attributes is that they might prevent C’s linker
 from accepting the output of A and silently generating a non functioning
@@ -549,7 +548,7 @@ their size, and so on.
 We can also understand procedure call-related compatibility in terms of sets
 of demands placed on an execution environment, but the modeling is more
 difficult. In this case the environment is less obvious, more abstract, and
-elements of it can depend on an operating system or the tool chain itself.
+elements of it can depend on an operating system or the toolchain itself.
 
 Mathematically, A *compatible with* B can be understood as: {demands
 made by A} ⊆ {demands made by B}.
@@ -563,7 +562,7 @@ understand T16\@v4T compatible with T16\@v5TE as {T16\@v4T} ⊂
 The scope of build attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Unless :c:`#pragma` or other mechanisms specific to a tool chain are used, it is
+Unless :c:`#pragma` or other mechanisms specific to a toolchain are used, it is
 usual for all parts of a relocatable file to be built the same way with the
 same compatibility intentions. So, usually, build attributes are given file
 scope and apply to all entities defined in the file to which they can apply.
@@ -700,7 +699,7 @@ There are the following combination rules.
 In this second sub-case it is a matter of notational taste whether a1 + a2
 is defined to have a value such as error or Top, or defined to have no
 value. Either way, in practice we expect an attempted combination to fail in
-a way specific to a tool chain’s compatibility model (for example by
+a way specific to a toolchain’s compatibility model (for example by
 provoking a link-time diagnostic).
 
 Representing build attributes in ELF files
@@ -772,7 +771,7 @@ in `Formal syntax of a public (“aeabi”) attributes subsection`_.
 
 We expect a dot-ARM-dot-attributes section in a relocatable file will most
 typically contain one vendor subsection from the "aeabi" pseudo-vendor and
-possibly one from the generating tool chain (e.g. "ARM", "gnu", "WRS", etc).
+possibly one from the generating toolchain (e.g. "ARM", "gnu", "WRS", etc).
 
 Formally, there are no constraints on the order or number of vendor
 subsections. A consumer can collect the public ("aeabi") attributes in a
@@ -852,17 +851,17 @@ When a producer does not explicitly claim compatibility to the ABI, it may
 nonetheless publicly describe the effect on compatibility of its private
 attributes by using generic compatibility tags
 (`Generic compatibility tag`_). These must record a safe approximation.
-The producer can record precise information that only its own tool chain
+The producer can record precise information that only its own toolchain
 comprehends in a private vendor subsection.
 
-*  We intend that another tool chain should not mistakenly link incompatible
-   files. The price of safety is that a tool chain might sometimes diagnose
+*  We intend that another toolchain should not mistakenly link incompatible
+   files. The price of safety is that a toolchain might sometimes diagnose
    incompatibility between files that could be safely linked, because their
    compatibility has been approximated.
 
-*  We do not expect that a tool chain should be able to comprehend the
-   private data of a different tool chain (other than through private
-   agreement among tool chains).
+*  We do not expect that a toolchain should be able to comprehend the
+   private data of a different toolchain (other than through private
+   agreement among toolchains).
 
 Coding extensibility and compatibility
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1019,7 +1018,7 @@ be:
 *  The name of a generic part (such as Arm946E-S) or architecture (such as
    v5TE).
 
-*  Any other name acceptable to the tool chain.
+*  Any other name acceptable to the toolchain.
 
 The value "" denotes that the raw name is identical to the CPU name
 (described immediately below) and records that the user built for a generic
@@ -1459,7 +1458,7 @@ co-processor.  Note that:
    Tag_ABI_VFP_args, (=28), uleb128
        0  The user intended FP parameter/result passing to conform to AAPCS, base variant
        1  The user intended FP parameter/result passing to conform to AAPCS, VFP variant
-       2  The user intended FP parameter/result passing to conform to tool chain-specific
+       2  The user intended FP parameter/result passing to conform to toolchain-specific
           conventions
        3  Code is compatible with both the base and VFP variants; the user did not permit
           non-variadic functions to pass FP parameters/results
@@ -1467,7 +1466,7 @@ co-processor.  Note that:
    Tag_ABI_WMMX_args, (=29), uleb128
        0  The user intended WMMX parameter/result passing conform to the AAPCS, base variant
        1  The user intended WMMX parameter/result passing conform to Intel’s WMMX conventions
-       2  The user intended WMMX parameter/result passing conforms to tool chain-specific
+       2  The user intended WMMX parameter/result passing conforms to toolchain-specific
           conventions
 
 The following tag summarizes the level of conformance to the rules for
@@ -1541,7 +1540,7 @@ goal.
 
 At the second level, the conflicting goals are insignificant in comparison
 to the primary goal. It is difficult to capture optimization intentions
-precisely, but to a significant degree what matters to a tool chain is the
+precisely, but to a significant degree what matters to a toolchain is the
 user’s goal (speed, small size, or debug-ability), and whether or not the
 user is willing to sacrifice all other considerations to achieving that
 goal.
@@ -1591,23 +1590,23 @@ The defined flag values and their meanings are as follows.
 
    0   The tagged entity has no toolchain-specific requirements
        (and no vendor tag hides an ABI incompatibility)
-   1   This entity can conform to the ABI if processed by the named tool chain.
+   1   This entity can conform to the ABI if processed by the named toolchain.
        The ABI variant to which it conforms is described solely by public “aeabi” tags
    >1  The tagged entity does not conform to the ABI but it can be processed by other
        tools under a private arrangement described by flag and vendor-name
 
 A flag value >1 identifies an arrangement, beyond the scope of the ABI,
-defined by the named vendor. A tool chain that recognizes the arrangement
+defined by the named vendor. A toolchain that recognizes the arrangement
 might successfully process this file. Note that a producer must use the name
-of the vendor defining the arrangement, not the name of the producing tool
-chain.
+of the vendor defining the arrangement, not the name of the producing
+toolchain.
 
 (Versions of this specification through v1.05 stated:
 
 .. parsed-literal ::
 
    >1  The tagged entity is compatible only with identically tagged entities,
-       *and entities not tagged by this tool chain*
+       *and entities not tagged by this toolchain*
 
 The underlined part of that definition was a mistake that makes the
 definition useless. With the underlined part removed, the old definition is
@@ -1928,7 +1927,7 @@ revision by ABI revision.
    |                               |       |                |              | 2009 virtualization extensions.                        |
    +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
    | Tag_MPextension_use           | 70    | uleb128        | r2.07        | r2.08: Recoded to 42 (must be recognized by            |
-   |                               |       |                |              | tool chains). PLDW is a user-mode instruction,         |
+   |                               |       |                |              | toolchains). PLDW is a user-mode instruction,          |
    |                               |       |                |              | undefined in architecture v7 w/o MP extensions.        |
    +-------------------------------+-------+----------------+--------------+--------------------------------------------------------+
    | Tag_FramePointer_use          | 72    | uleb128        | 2019q2       |                                                        |
@@ -2546,7 +2545,7 @@ definition of SHT_ARM_PREEMPTMAP was omitted. The correct value is
 
 (v1.03, r2.04) aaelf32-section4-3-3-1, Merging of objects in sections
 with SHF_MERGE: Rules governing SHF_MERGE optimizations are needed to
-support inter-operation between tool chains (omitted from release 1.02 and
+support inter-operation between toolchains (omitted from release 1.02 and
 earlier).
 
 (v1.01, r2.01) aaelf32-section4-3-4, aaelf32-table4-5: The

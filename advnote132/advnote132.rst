@@ -290,7 +290,7 @@ Q-o-I
    Quality of Implementation – a quality, behavior, functionality, or
    mechanism not required by this standard, but which might be provided
    by systems conforming to it. Q-o-I is often used to describe the
-   tool-chain-specific means by which a standard requirement is met.
+   toolchain-specific means by which a standard requirement is met.
 
 .. raw:: pdf
 
@@ -444,7 +444,7 @@ an option (Q-o-I) to:
 *  Fault the use of 8-byte aligned, stack allocated data.
 
    (8-byte aligned parameters to variadic functions need not be faulted if
-   the tool chain implements the repair described in
+   the toolchain implements the repair described in
    `Repair of va_start and va_arg`_).
 
 *  Or, if that is too difficult, fault all uses of 8-byte data types.

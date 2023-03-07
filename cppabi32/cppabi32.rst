@@ -347,7 +347,7 @@ Q-o-I
    Quality of Implementation – a quality, behavior, functionality, or
    mechanism not required by this standard, but which might be provided
    by systems conforming to it.  Q-o-I is often used to describe the
-   tool-chain-specific means by which a standard requirement is met.
+   toolchain-specific means by which a standard requirement is met.
 
 VFP
    The Arm architecture’s Floating Point architecture and instruction
@@ -1644,7 +1644,7 @@ static link time, as follows.
 (If Y names an entity whose linkage is not vague, it will not be defined
 in a COMDAT group).
 
-Whether implemented at compile time or link time, support by tool chains
+Whether implemented at compile time or link time, support by toolchains
 is Q-o-I.
 
 ELF binding of static data guard variable symbols

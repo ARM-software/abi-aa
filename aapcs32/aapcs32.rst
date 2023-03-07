@@ -1681,7 +1681,7 @@ The variants described in `The Standard Variants`_ can produce code that is
 incompatible with the base standard.  Nevertheless, there still exist
 subsets of code that may be compatible across more than one variant.  This
 section describes the theoretical levels of compatibility between the
-variants; however, whether a tool-chain must accept compatible objects
+variants; however, whether a toolchain must accept compatible objects
 compiled to different base standards, or correctly reject incompatible
 objects, is implementation defined.
 

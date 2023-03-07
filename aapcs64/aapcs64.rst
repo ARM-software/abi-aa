@@ -318,7 +318,7 @@ Q-o-I
    Quality of Implementation – a quality, behavior, functionality, or
    mechanism not required by this standard, but which might be provided
    by systems conforming to it.  Q-o-I is often used to describe the
-   tool-chain-specific means by which a standard requirement is met.
+   toolchain-specific means by which a standard requirement is met.
 
 MTE
    The Arm architecture's Memory Tagging Extension.
@@ -3215,7 +3215,7 @@ Footnotes
    Data elements include: parameters to routines named in the interface, static data named in the interface, and all data addressed by pointers passed across the interface.
 
 .. [#aapcs64-f4]
-   The distinction between code and data pointers is carried forward from the AArch32 PCS where bit[0] of a code pointer determines the target instruction set state, A32 or T32. The presence of an ISA selection bit within a code pointer can require distinct handling within a tool chain, compared to data pointer.
+   The distinction between code and data pointers is carried forward from the AArch32 PCS where bit[0] of a code pointer determines the target instruction set state, A32 or T32. The presence of an ISA selection bit within a code pointer can require distinct handling within a toolchain, compared to data pointer.
 
    ISA selection does not exist within AArch64 state, where bits[1:0] of a code pointer must be zero.
 

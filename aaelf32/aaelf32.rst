@@ -498,7 +498,7 @@ Q-o-I
    Quality of Implementation – a quality, behavior, functionality, or
    mechanism not required by this standard, but which might be provided by
    systems conforming to it. Q-o-I is often used to describe the
-   tool-chain-specific means by which a standard requirement is met.
+   toolchain-specific means by which a standard requirement is met.
 
 VFP
    The Arm architecture’s Floating Point architecture and instruction set.
@@ -1271,7 +1271,7 @@ defined.  Attributes that cannot apply to the smaller entity are not inherited.
    up applying to a section if sections from distinct relocatable files are
    combined into a single relocatable file by "partial linking". Similar
    exceptions may occur at the function level through use of #pragma and other
-   Q-o-I tool chain behavior.
+   Q-o-I toolchain behavior.
 
    Explicit per-section and per-symbol data should be generated only when it
    cannot be implied by this inheritance.  Being explicit is more verbose, and the
@@ -1308,7 +1308,7 @@ names begining “Anon” or “anon” are reserved to unregistered private use
 .. note::
    In general, a ``.ARM.attributes`` section in a relocatable file will contain a
    vendor subsection from the "aeabi" pseudo vendor and, optionally, one from
-   the generating tool chain (e.g. "Arm", "gnu", "WRS", etc) as listed in
+   the generating toolchain (e.g. "Arm", "gnu", "WRS", etc) as listed in
    `Registered Vendor Names`_.
 
 It is required that:
@@ -1321,12 +1321,12 @@ It is required that:
   unless that is recorded in the "aeabi" subsection using generic compatibility
   tags.
 
-* Generic compatibility tags must record a "safe" approximation. A tool chain
-  may record more precise information that only that tool chain comprehends.
+* Generic compatibility tags must record a "safe" approximation. A toolchain
+  may record more precise information that only that toolchain comprehends.
 
 .. note::
-   The intent is that a "foreign" tool chain should not mistakenly link
-   incompatible binary files. The consequence is that a foreign tool chain
+   The intent is that a "foreign" toolchain should not mistakenly link
+   incompatible binary files. The consequence is that a foreign toolchain
    might sometimes refuse to link files that could be safely linked, because
    their incompatibility has been crudely approximated.
 
@@ -1536,7 +1536,7 @@ specification:
 Note that global symbols beginning with ``__vendor_`` (double ``_`` at start),
 where vendor is listed in `Registered Vendor Names`_, Registered Vendor Names,
 are reserved to the named vendor for the purpose of providing vendor-specific
-tool-chain support functions.
+toolchain support functions.
 
 Conventions for reserved symbols for which support is not required by this ABI
 are described in `Appendix: Conventions for symbols containing $`_.
@@ -3286,7 +3286,7 @@ An SVr4 executable does not need be position independent, its writable segment
 can be relocated dynamically, and it is compact and rigid. Therefore, its PLT
 entries can use the simple, absolute code sketched in `DLL-like, multiple virtual address space, PLT linkage`_
 or the more complex, pc-relative, versions sketched in
-`SVr4 DSO-like PLT linkage`_, as the tool chain chooses.
+`SVr4 DSO-like PLT linkage`_, as the toolchain chooses.
 
 In both cases, ip must address the corresponding PLTGOT slot at the point where
 the PLT calls through it.
