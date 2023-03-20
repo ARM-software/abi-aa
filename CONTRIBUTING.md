@@ -103,7 +103,7 @@ document | owner | Github handle
 [DWARF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/main/aadwarf64) | Keith Walker | @walkerkd
 [PAUTH Extension to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/pauthabielf64) | Peter Smith | @smithp35
 [Exception Handling ABI for the Arm Architecture](https://github.com/ARM-software/abi-aa/tree/master/ehabi32) | Victor Campos | @vhscampos
-[Vector Function Application Binary Interface Specification for AArch64](https://github.com/ARM-software/abi-aa/tree/master/vfabia64) | Francesco Petrogalli / Richard Sandiford | @fpetrogalli / @rsandifo-arm
+[Vector Function Application Binary Interface Specification for AArch64](https://github.com/ARM-software/abi-aa/tree/master/vfabia64) | Richard Sandiford | @rsandifo-arm
 [System V ABI for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/sysvabi64) | Peter Smith | @smithp35
 [Morello extensions to Procedure Call Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aapcs64-morello) | Silviu Baranga | @sbaranga-arm
 [Morello extensions to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aaelf64-morello) | Silviu Baranga | @sbaranga-arm
