@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2022, Google LLC
+   Copyright (c) 2022-2023, Google LLC
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2022Q3
-.. |date-of-issue| replace:: 14\ :sup:`th` July 2022
-.. |copyright-date| replace:: 2022
+.. |release| replace:: 2023Q1
+.. |date-of-issue| replace:: 06\ :sup:`th` April 2023
+.. |copyright-date| replace:: 2022-2023
 
 
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -203,11 +203,11 @@ changes to the content of the document for that release.
 
 .. table::
 
-  +------------+-----------------------------+----------------------+
-  | Issue      | Date                        | Change               |
-  +============+=============================+======================+
-  | 0.1        | 14\ :sup:`th` July 2022     | Alpha draft release. |
-  +------------+-----------------------------+----------------------+
+  +------------+-----------------------------+----------------------------------------------------------------+
+  | Issue      | Date                        | Change                                                         |
+  +============+=============================+================================================================+
+  | 0.1        | 6\ :sup:`th` March 2023     | Alpha draft release.                                           |
+  +------------+-----------------------------+----------------------------------------------------------------+
 
 References
 ----------
