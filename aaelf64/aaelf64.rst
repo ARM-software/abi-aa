@@ -1001,20 +1001,27 @@ See also table `GOT-relative data relocations`_.
   | ELF64   | ELF32   | Name                 | Operation | Comment                                                          |
   | Code    | Code    |                      |           |                                                                  |
   +=========+=========+======================+===========+==================================================================+
-  | 257     | \-      | R\_<CLS>\_ABS64      | S + A     | No overflow check                                                |
+  | 257     | \-      | R\_<CLS>\_ABS64      | S + A     | Write bits [63:0] of X at byte-aligned place P.                  |
+  |         |         |                      |           | No overflow check.                                               |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 258     | 1       | R\_<CLS>\_ABS32      | S + A     | Check that -2\ :sup:`31` <= X < 2\ :sup:`32`                     |
+  | 258     | 1       | R\_<CLS>\_ABS32      | S + A     | Write bits [31:0] of X at byte-aligned place P.                  |
+  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`32`.                    |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 259     | 2       | R\_<CLS>\_ABS16      | S + A     | Check that -2\ :sup:`15` <= X < 2\ :sup:`16`                     |
+  | 259     | 2       | R\_<CLS>\_ABS16      | S + A     | Write bits [15:0] of X at byte-aligned place P.                  |
+  |         |         |                      |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`16`.                    |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 260     | \-      | R\_<CLS>\_PREL64     | S + A - P | No overflow check                                                |
+  | 260     | \-      | R\_<CLS>\_PREL64     | S + A - P | Write bits [63:0] of X at byte-aligned place P.                  |
+  |         |         |                      |           | No overflow check.                                               |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 261     | 3       | R\_<CLS>\_PREL32     | S + A - P | Check that -2\ :sup:`31` <= X < 2\ :sup:`32`                     |
+  | 261     | 3       | R\_<CLS>\_PREL32     | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
+  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`32`.                    |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 262     | 4       | R\_<CLS>\_PREL16     | S + A - P | Check that -2\ :sup:`15` <= X < 2\ :sup:`16`                     |
+  | 262     | 4       | R\_<CLS>\_PREL16     | S + A - P | Write bits [15:0] of X at byte-aligned place P.                  |
+  |         |         |                      |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`16`.                    |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 314     | 29      | R\_<CLS>\_PLT32      | S + A - P | Check that -2\ :sup:`31` <= X < 2\ :sup:`31` see call and jump   |
-  |         |         |                      |           | relocations                                                      |
+  | 314     | 29      | R\_<CLS>\_PLT32      | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
+  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31` see call and jump   |
+  |         |         |                      |           | relocations.                                                     |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
 
 These overflow ranges permit either signed or unsigned narrow values to be created from the intermediate result viewed as a 64-bit signed integer. If the place is intended to hold a narrow signed value and ``INTn_MAX < X <= UINTn_MAX``, no overflow will be detected but the positive result will be interpreted as a negative value.
@@ -1194,13 +1201,14 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: GOT-relative data relocations
 
-  +------------+------------+--------------------+------------+-----------------------------------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name               | Operation  | Comment                                                                                                         |
-  +============+============+====================+============+=================================================================================================================+
-  | 307        | \-         | R\_<CLS>\_GOTREL64 | S+A-GOT    | Set the data to a 64-bit offset relative to the GOT.                                                            |
-  +------------+------------+--------------------+------------+-----------------------------------------------------------------------------------------------------------------+
-  | 308        | \-         | R\_<CLS>\_GOTREL32 | S+A-GOT    | Set the data to a 32-bit offset relative to GOT, treated as signed; check that -2\ :sup:`31` <= X < 2\ :sup:`31`|
-  +------------+------------+--------------------+------------+-----------------------------------------------------------------------------------------------------------------+
+  +------------+------------+--------------------+------------+-------------------------------------------------------------------------------------------------------------------------+
+  | ELF64 Code | ELF32 Code | Name               | Operation  | Comment                                                                                                                 |
+  +============+============+====================+============+=========================================================================================================================+
+  | 307        | \-         | R\_<CLS>\_GOTREL64 | S+A-GOT    | Write bits [63:0] of X at byte-aligned place P.  This represents a 64-bit offset relative to the GOT.                   |
+  +------------+------------+--------------------+------------+-------------------------------------------------------------------------------------------------------------------------+
+  | 308        | \-         | R\_<CLS>\_GOTREL32 | S+A-GOT    | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT, treated as signed;    |
+  |            |            |                    |            | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                                           |
+  +------------+------------+--------------------+------------+-------------------------------------------------------------------------------------------------------------------------+
 
 .. _GOT-relative instruction relocations:
 
