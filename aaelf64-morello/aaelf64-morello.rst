@@ -1053,7 +1053,7 @@ symbol in the next 8 bytes:
 
   ``tlsoffset(sym)`` denotes the offset in the static TLS block of the symbol
   ``sym``, while sizeof(sym) denotes the size of the symbol ``sym``. These are
-  not valid assebler directives.
+  not valid assembler directives.
 
 The relaxation is performed by:
 
@@ -1124,7 +1124,7 @@ symbol in the next 8 bytes:
 
   ``tlsoffset(sym)`` denotes the offset in the static TLS block of the symbol
   ``sym``, while sizeof(sym) denotes the size of the symbol ``sym``. These are
-  not valid assebler directives.
+  not valid assembler directives.
 
 The relaxed sequence is:
 
