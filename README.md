@@ -118,8 +118,9 @@ Please find contribution guidelines in https://github.com/ARM-software/abi-aa/bl
 
 ## License
 
-The ABI document sources themselves are not dependent on any assets outside of their own directory and all have their own license file included in the directory. The ABI documents are currently licensed under the Creative Commons Attribution-ShareAlike 4.0 International License + grant of Patent License. Contributions to these files are accepted under the same license.
+All the open-source ABI documents are licensed under the Creative
+Commons Attribution-ShareAlike 4.0 International License + grant
+of Patent License.
 
-All the ABI documents in the `legacy-specifications' folder are licensed under an Arm proprietary license. These predate the new license of the current versions of the documents. The license is contained within the documents themselves, so for more information, consult the individual documents.
-
-The files in the sub-directories of the tools directory are provided under the Apache 2.0 license. Contributions to these files are accepted under the same license.
+For more information on licensing in this repository, see the license file:
+[LICENSE](LICENSE.md).
