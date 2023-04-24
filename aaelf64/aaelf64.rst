@@ -18,6 +18,7 @@
 .. _SYM-VER: http://www.akkadia.org/drepper/symbol-versioning
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
 .. _MTEEXTENSIONS: https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support
+.. _VFABI64: https://github.com/ARM-software/abi-aa/releases
 
 ELF for the Arm® 64-bit Architecture (AArch64)
 **********************************************
@@ -684,14 +685,54 @@ The defined processor-specific ``st_other`` flag values are listed below:
 
 A symbol table entry that is marked with the ``STO_AARCH64_VARIANT_PCS``
 flag set in its ``st_other`` field may be associated with a function that
-follows a variant procedure call standard with different register usage
-convention from the one defined in the base procedure call standard for
-the list of argument, caller-saved and callee-saved registers [AAPCS64_].
-The rules in the `Call and Jump relocations`_ section still apply to such functions.
+follows a variant procedure call standard under which:
+
+* the caller and callee exchange information in registers that are not set
+  aside for that purpose in the base procedure call standard [AAPCS64_]; or
+
+* the processor is guaranteed or allowed to be in a certain state on
+  entry or return from the function, beyond or in conflict with the state
+  guaranteed or allowed by the base procedure call standard.
+
+For example:
+
+* The function might take arguments in registers that are not normally
+  argument registers.
+
+* The function might return values in registers that are not normally
+  return value registers.
+
+* The function might guarantee that extra register state is preserved
+  by the call.
+
+* PSTATE on entry to the function might be different from normal.
+
+* PSTATE on return from the function might be different from normal.
+
+The following types of function must be marked with
+``STO_AARCH64_VARIANT_PCS``, although the list is not intended
+to be exhaustive:
+
+* vector PCS functions [VFABI64_]
+
+* functions that take arguments in SVE registers or return values
+  in SVE registers
+
+* streaming and streaming-compatible functions [AAPCS64_]
+
+* shared-ZA functions [AAPCS64_]
+
+The rules in the `Call and Jump relocations`_ section still apply to
+variant PCS functions.
+
 If a subroutine is called via a symbol reference that is marked with
 ``STO_AARCH64_VARIANT_PCS``, then code that runs between the calling routine
 and the called subroutine must preserve the contents of all registers except
-for IP0, IP1, and the condition code flags [AAPCS64_].
+for IP0, IP1, and the condition code flags [AAPCS64_].  It must also
+preserve the processor execution mode, such as PSTATE.SM and PSTATE.ZA.
+It is not possible to provide a definitive list of which state must be
+preserved, since the intention is to allow it to grow as the architecture
+evolves.
 
 Static linkers must preserve the marking and propagate it to the dynamic
 symbol table if any reference or definition of the symbol is marked with
@@ -703,10 +744,6 @@ tag if required by the `Dynamic Section`_ section.
     In particular, when a call is made via the PLT entry of a symbol marked with
     ``STO_AARCH64_VARIANT_PCS``, a dynamic linker cannot assume that the call
     follows the register usage convention of the base procedure call standard.
-
-    An example of a function that follows a variant procedure call standard
-    with different register usage convention is one that takes parameters
-    in scalable vector or predicate registers.
 
 Weak Symbols
 ------------
