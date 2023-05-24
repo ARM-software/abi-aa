@@ -380,7 +380,7 @@ Additionally, a stack-pointer register, SP in a 64-bit context or CSP in a capab
     +------------+----------+----------------------------------------------------------------------------------------------------+
     | r10-r15    |          | Temporary registers.                                                                               |
     +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r9         |          | Parameter register for variadic calls, temporary register otherwise.                               |
+    | r9         |          | Parameter register for memory-passed arguments, temporary register otherwise.                      |
     +------------+----------+----------------------------------------------------------------------------------------------------+
     | r8         |          | The capability indirect result location register.                                                  |
     +------------+----------+----------------------------------------------------------------------------------------------------+
@@ -420,7 +420,7 @@ Additionally, a stack-pointer register, SP in a 64-bit context or CSP in a capab
 
 The first eight registers, r0-r7, are used to pass argument values into a subroutine and to return result values from a function. They may also be used to hold intermediate values within a routine (but, in general, only between subroutine calls).
 
-In AAPCS64-cap the r9 register is used to pass anonymous arguments in variadic calls.
+In AAPCS64-cap the r9 register is used to pass arguments through memory.
 
 Registers r16 (IP0/CIP0) and r17 (IP1/CIP1) may be used by a linker as a scratch register between a routine and any subroutine it calls (for details, see `Use of CIP0 and CIP1 by the linker`_). They can also be used within a routine to hold intermediate values between subroutine calls.
 
@@ -446,7 +446,7 @@ Processes, Memory and the Stack
 The Stack in AAPCS64-cap
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The stack is a contiguous area of memory that may be used for storage of local variables and, when there are insufficient argument registers available, for passing additional arguments to subroutines .
+The stack is a contiguous area of memory that may be used for storage of local variables. Memory-passed arguments may be allocated on the stack, although this is not mandatory.
 
 The stack implementation is full-descending, with the current extent of the stack held in the special-purpose register CSP. The stack will  have both a base and a limit, and an application can get these values by observing the base and limit of CSP.
 
@@ -496,7 +496,25 @@ The A64 and C64 branch instructions are unable to reach every destination in the
 Parameter Passing
 -----------------
 
-The base standard provides for passing arguments in general-purpose registers (r0-r7), SIMD/floating-point registers (v0-v7) and on the stack. For subroutines that take a small number of small parameters, only registers are used.
+The base standard provides for passing arguments in general-purpose registers (r0-r7), SIMD/floating-point registers (v0-v7) and in memory. For subroutines that take a small number of small parameters, only registers are used.
+
+Memory-passed parameters
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+We define an argument as being memory-passed if it copied to memory as part of Stage C from `Parameter Passing Rules`_. The address of a memory-passed argument is the address of the memory location where the argument was copied to as part of Stage C from `Parameter Passing Rules`_.
+
+Arguments Capability
+^^^^^^^^^^^^^^^^^^^^
+
+In AAPCS64-cap if there are any memory-passed parameters the Arguments Memory Area is allocated.
+
+The Memory Arguments Length (MAL) is the number of bytes required for memory-passed arguments. This can be obtained by subtracting the final and initial values of NMAA as part of Stage C from `Parameter Passing Rules`_.
+
+The Rounded Memory Arguments Length (RMAL) is the least representable capability length greater or equal to MAL.
+
+The size of the Arguments Memory Area is equal to RMAL. The minimal alignment of the Arguments Memory Area is 16 bytes. The alignment of the Arguments Memory Area is large enough to allow the bounds of the Arguments Memory Area to be exactly representable by a capability.
+
+The Arguments Capability is the capability that has the bounds of the Arguments Memory Area and an offset of RMAL-MAL rounded down to the first multiple of 16.
 
 Parameter Passing Rules
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -521,19 +539,11 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     |                              |                                                                                          |
     | A.2                          |                                                                                          |
     +------------------------------+------------------------------------------------------------------------------------------+
-    |                              | The next stacked argument address (NSAA) is set to the current stack-pointer value (SP). |
-    |                              |                                                                                          |
-    | A.3                          |                                                                                          |
+    |                              | If any parameters are memory-passed in AAPCS64-cap, the Arguments Capability is copied   |
+    | A 3                          | to C9. If there are no Anonymous arguments and the callee is variadic, C9 is set to NULL |
     +------------------------------+------------------------------------------------------------------------------------------+
-    |                              | If the callee is variadic in AAPCS64-cap, the Anonymous Arguments Memory area is         |
-    |                              | allocated in memory with a size of at least 16 * (number of Anonymous arguments) bytes.  |
-    |                              | The Anonymous Arguments Memory area is 16-byte aligned. The Anonymous Arguments          |
-    |                              | Capability points to the Anonymous Arguments Memory area and is copied to C9. If there   |
-    | A.4                          | are no Anonymous arguments passed, C9 is set to NULL.                                    |
-    +------------------------------+------------------------------------------------------------------------------------------+
-    |                              | The Anonymous Arguments Index (AArgsIdx) is set to zero.                                 |
-    |                              |                                                                                          |
-    | A.5                          |                                                                                          |
+    |                              | The next memory argument address (NMAA) is set to the value of the Arguments Capability  |
+    | A.4                          | in AAPCS64-cap or the current stack-pointer value (SP) otherwise.                        |
     +------------------------------+------------------------------------------------------------------------------------------+
 
 
@@ -593,7 +603,7 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     +------------------------------+----------------------------------------------------------------------------------------+
 
 
-.. rubric:: Stage C – Assignment of arguments to registers and stack
+.. rubric:: Stage C – Assignment of arguments to registers and memory
 
 .. class:: aapcs64-morello-parameter-passing
 
@@ -605,9 +615,9 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     |                               | to the least significant bits of a 128-bit register and the remaining bits filled with |
     |                               | unspecified values.                                                                    |
     +-------------------------------+----------------------------------------------------------------------------------------+
-    |                               | If the argument is Anonymous in AAPCS64-cap the argument is copied to memory at an     |
-    | C.2                           | offset of (AArgsIdx * 16) bytes into the Anonymous Arguments Memory area. The          |
-    |                               | Anonymous Arguments Index is incremented by one. The argument has now been allocated.  |
+    |                               | If the argument is Anonymous in AAPCS64-cap NMAA is rounded up by 16. The argument is  |
+    | C.2                           | copied to memory at the adjusted NMAA. The NMAA is incremented by 16. The argument has |
+    |                               | now been allocated.                                                                    |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a Half-, Single-, Double- or Quad- precision Floating-point or      |
     |                               | Short Vector Type and the NSRN is less than 8, then the argument is allocated to the   |
@@ -625,7 +635,7 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     | C.5                           |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an HFA, an HVA, a Quad-precision Floating-point or Short Vector     |
-    |                               | Type then the NSAA is rounded up to the larger of 8 or the Natural Alignment of the    |
+    |                               | Type then the NMAA is rounded up to the larger of 8 or the Natural Alignment of the    |
     | C.6                           | argument type.                                                                         |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a Half- or Single- precision Floating Point type, then the size of  |
@@ -635,7 +645,7 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an HFA, an HVA, a Half-, Single-, Double- or Quad- precision        |
     |                               | Floating-point or Short Vector Type, then the argument is copied to memory at the      |
-    | C.8                           | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
+    | C.8                           | adjusted NMAA. The NMAA is incremented by the size of the argument. The argument has   |
     |                               | now been allocated.                                                                    |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is an Integral or Pointer Type, the size of the argument is less than  |
@@ -674,26 +684,28 @@ The differences in language bindings used for AAPCS64 and AAPCS64-cap are descri
     |                               |                                                                                        |
     | C.14                          |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
-    |                               | The NSAA is rounded up to the larger of 8 or the Natural Alignment of the argument's   |
+    |                               | The NMAA is rounded up to the larger of 8 or the Natural Alignment of the argument's   |
     |                               | type.                                                                                  |
     | C.15                          |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the argument is a composite type then the argument is copied to memory at the       |
-    |                               | adjusted NSAA. The NSAA is incremented by the size of the argument. The argument has   |
+    |                               | adjusted NMAA. The NMAA is incremented by the size of the argument. The argument has   |
     | C.16                          | now been allocated.                                                                    |
     +-------------------------------+----------------------------------------------------------------------------------------+
     |                               | If the size of the argument is less than 8 bytes then the size of the argument is set  |
     |                               | to 8 bytes. The effect is as if the argument was copied to the least significant bits  |
     | C.17                          | of a 64-bit register and the remaining bits filled with unspecified values.            |
     +-------------------------------+----------------------------------------------------------------------------------------+
-    |                               | The argument is copied to memory at the adjusted NSAA.  The NSAA is incremented by the |
+    |                               | The argument is copied to memory at the adjusted NMAA.  The NMAA is incremented by the |
     |                               | size of the argument. The argument has now been allocated.                             |
     | C.18                          |                                                                                        |
     +-------------------------------+----------------------------------------------------------------------------------------+
 
 .. note::
+    In AAPCS64-cap all Anonymous arguments are memory-passed.
 
-    In AAPCS64-cap if the callee is variadic and there are fewer than 4096 Anonymous arguments, the length of C9 divided by 16 is equal to the number of Anonymous arguments. The length of C9 divided by 16 is always greater or equal to the number of Anonymous arguments.
+.. note::
+    In AAPCS64-cap if the callee is variadic the number of Anonymous arguments is equal to (length(C)-offset(C)/16) where C is the adjusted value of the Arguments capability that has the address of the first Anonymous Argument.
 
 Result Return
 -------------
@@ -799,7 +811,7 @@ Languages such as C and C++ permit routines that take a variable number of argum
 The va_list type
 ----------------
 
-The ``va_list`` type may refer to any parameter in a parameter list. All Anonymous parameters are passed on the stack in AAPCS64-cap.
+The ``va_list`` type may refer to any parameter in a parameter list. All Anonymous parameters are passed in memory in AAPCS64-cap.
 
 .. code-block:: c
 
@@ -808,7 +820,7 @@ The ``va_list`` type may refer to any parameter in a parameter list. All Anonymo
 The va_start() macro
 --------------------
 
-The ``va_start`` macro shall initialize the ``va_list`` argument to the value of C9 as seen in the entry of the callee.
+The ``va_start`` macro shall initialize the ``va_list`` argument to the value derived from the Arguments capability  with the address of the first Anonymous argument.
 
 The va_arg() macro
 ------------------
