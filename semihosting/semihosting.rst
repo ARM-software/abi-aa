@@ -1325,6 +1325,11 @@ Returns the number of seconds since 00:00 January 1, 1970.
 
 This value is real-world time, regardless of any debug agent configuration.
 
+The returned value should be interpreted as unsigned. There is no
+representation for times before 1970. On 32-bit implementations, this
+allows times after the year 2038 to be represented, by using values
+greater than `0x80000000`.
+
 Entry
 ^^^^^
 
