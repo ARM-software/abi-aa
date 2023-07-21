@@ -2848,7 +2848,7 @@ All of this remapping and rebasing is straightforward. Constructing the GOT,
 PLTGOT, and their corresponding dynamic relocations is trickier and we
 sketch that here.
 
-.. code-block:: none
+.. code-block::
 
    for each PLTGOT-generating relocation Type[Place](Symbol) in increasing place order
        if (not exists GOT(Symbol)) {
@@ -2965,7 +2965,7 @@ Import data tables are a little trickier to construct.
   * The processing of dynamic relocations now reduces to something like
     the following.
 
-.. code-block:: none
+.. code-block::
 
    for each DLL imported from
        for each GOT-generating relocation Type[Place](Symbol)

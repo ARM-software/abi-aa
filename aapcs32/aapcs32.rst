@@ -1176,7 +1176,7 @@ address is loaded back into the PC (see `Interworking`_).
 A subroutine call can be synthesized by any instruction sequence that has
 the effect:
 
-.. code-block:: none
+.. code-block::
 
       LR[31:1] ← return address
       LR[0]    ← code type at return address (0 Arm, 1 Thumb)

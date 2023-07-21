@@ -1924,7 +1924,7 @@ The C++ exception semantics library must define the following routines
 which are part of the C++ Standard Library but which require knowledge
 of the implementation:
 
-.. code-block:: none
+.. code-block::
 
   bool std::uncaught_exception(void)
   void std::terminate(void)
@@ -1943,7 +1943,7 @@ Compiler helper functions
 Compiled C++ application code calls the following generic routines to
 implement C++ exception handling semantics.
 
-.. code-block:: none
+.. code-block::
 
   void *__cxa_allocate_exception(size_t size);
   void __cxa_free_exception(void *p);
@@ -2334,7 +2334,7 @@ behavior might depend on whether an exception propagation is in progress
 std::uncaught\_exception – must be performed *before* the call to
 \_\_cxa\_begin\_catch, and the handler code will then be of the form:
 
-.. code-block:: none
+.. code-block::
 
   Save UCB pointer somewhere (and move it to r0 if not already there)
   BL __cxa_get_exception_ptr
@@ -2345,7 +2345,7 @@ std::uncaught\_exception – must be performed *before* the call to
 Constructions whose behavior is independent of whether an exception
 propagation is in progress can use the shorter sequence:
 
-.. code-block:: none
+.. code-block::
 
   Move UCB pointer to r0 if it is not already there
   BL __cxa_begin_catch
