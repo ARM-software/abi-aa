@@ -615,7 +615,7 @@ To describe data that is explicitly declared big-endian or little-endian (by
 whatever means), use the DWARF 3.0 attribute ``DW_AT_endianity`` (0x65). It takes a
 single LEB128 constant argument value that is one of the following:
 
-.. code-block:: none
+.. code-block::
 
   DW_END_default (= 0)
   DW_END_big (= 1)		(Was 0 prior to the DWARF 3.0 standard)

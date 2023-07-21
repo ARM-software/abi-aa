@@ -848,7 +848,7 @@ whole group become link-time constants when \_AEABI\_PORTABILITY\_LEVEL != 0.
 
 A general template for managing this is:
 
-.. code-block:: none
+.. code-block::
 
   #if _AEABI_PORTABILITY_LEVEL == 0
   #  define XXXX ....

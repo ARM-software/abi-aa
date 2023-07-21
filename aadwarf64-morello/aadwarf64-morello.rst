@@ -539,7 +539,7 @@ Capability pointer: C++ source
 
 Capability pointer: DWARF description
 
-.. code-block:: none
+.. code-block::
 
    1$: DW_TAG_base_type
            DW_AT_name("char")
@@ -577,7 +577,7 @@ Intcap types: C++ source
 
 Intcap types: DWARF description
 
-.. code-block:: none
+.. code-block::
 
    1$: DW_TAG_base_type
            DW_AT_name("__intcap_t")
@@ -621,7 +621,7 @@ Capability pointers: C++ source
 
 Capability pointers: DWARF Version 5 description
 
-.. code-block:: none
+.. code-block::
 
    ! *** Section .debug_abbrev content
    a$h: 1

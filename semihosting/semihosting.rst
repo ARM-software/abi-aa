@@ -414,7 +414,7 @@ Semihosting feature bit reporting sequence format
 
 Feature bits are reported using a sequence of bytes, which are accessed by using the `SYS_OPEN (0x01)`_ call with the special path name ``:semihosting-features``. The byte sequence has the following format:
 
-.. code-block:: none
+.. code-block::
 
   byte 0: SHFB_MAGIC_0 0x53
   byte 1: SHFB_MAGIC_1 0x48
@@ -474,7 +474,7 @@ Example pseudocode function for querying feature bits
 
 The following C-like pseudocode describes one possible simple implementation of a check for a specific feature bit:
 
-.. code-block:: none
+.. code-block::
 
     #define MAGICLEN 4
     bool sh_feature_supported(int bytenum, int bitnum)
@@ -945,7 +945,7 @@ Entry
 
 On entry, the PARAMETER REGISTER contains the address of a pointer to a four-field data block. The contents of the data block are filled by the function. The following C-like pseudocode describes the layout of the block:
 
-.. code-block:: none
+.. code-block::
 
     struct block {
         void* heap_base;
