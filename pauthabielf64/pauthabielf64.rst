@@ -231,6 +231,9 @@ changes to the content of the document for that release.
   | 2021q3     | 1\ :sup:`st` November 2021  | Clarify the concepts of a default and alternate PAuth elf signing|
   |            |                             | schemes.                                                         |
   +------------+-----------------------------+------------------------------------------------------------------+
+  | 2023q3     | 16\ :sup:`th` August 2023   | Update tags in `Dynamic Section`_ to avoid conflict with         |
+  |            |                             | DT_AARCH64_VARIANT_PCS.                                          |
+  +------------+-----------------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -741,11 +744,11 @@ The PAuth ABI adds the following processor-specific dynamic array tags.
   +----------------------------+------------+--------+------------+---------------+
   | Name                       | Value      | d\_un  | Executable | Shared Object |
   +============================+============+========+============+===============+
-  | DT\_AARCH64\_AUTH\_RELRSZ  | 0x70000005 | d\_val | optional   | optional      |
+  | DT\_AARCH64\_AUTH\_RELRSZ  | 0x70000011 | d\_val | optional   | optional      |
   +----------------------------+------------+--------+------------+---------------+
-  | DT\_AARCH64\_AUTH\_RELR    | 0x70000006 | d\_ptr | optional   | optional      |
+  | DT\_AARCH64\_AUTH\_RELR    | 0x70000012 | d\_ptr | optional   | optional      |
   +----------------------------+------------+--------+------------+---------------+
-  | DT\_AARCH64\_AUTH\_RELRENT | 0x70000007 | d\_val | optional   | optional      |
+  | DT\_AARCH64\_AUTH\_RELRENT | 0x70000013 | d\_val | optional   | optional      |
   +----------------------------+------------+--------+------------+---------------+
 
 Description:
