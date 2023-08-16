@@ -15,6 +15,8 @@
 .. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
 .. _GCABI: https://itanium-cxx-abi.github.io/cxx-abi/abi.html
 .. _LINUX_ABI: https://github.com/hjl-tools/linux-abi/wiki
+.. _MemTagABIELF64: https://github.com/ARM-software/abi-aa/releases
+.. _PAuthABIELF64: https://github.com/ARM-software/abi-aa/releases
 .. _HWCAP: https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_5.0.0/LSB-Core-generic/LSB-Core-generic/book1.html
 .. _SCO-ELF: http://www.sco.com/developers/gabi
@@ -206,6 +208,10 @@ Change History
  |            |                              | Added Dynamic linking content for GCS including       |
  |            |                              | GNU_PROPERTY_AARCH64_FEATURE_1_GCS Feature Bit        |
  +------------+------------------------------+-------------------------------------------------------+
+ | 2024Q1     | 15\ :sup:`th` March 2024     | - In `Dynamic Section Tags`_, reserve tags            |
+ |            |                              |   used by `PAuthABIELF64`_ and                        |
+ |            |                              | - `MemTagABIELF64`_.                                  |
+ +---------------+--------------------+--------------------------------------------------------------+
 
 References
 ----------
@@ -214,31 +220,35 @@ This document refers to, or is referred to by, the following documents.
 
 .. table::
 
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | Ref         | External reference or URL                                    | Title                                                                       |
-  +=============+==============================================================+=============================================================================+
-  | SYSVABI_    | Source for this document                                     | System V Application Binary Interface (ABI) for the Arm 64-bit architecture |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | ARMARM_     | DDI 0487                                                     | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile    |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | AAPCS64_    | IHI 0055                                                     | Procedure Call Standard for the Arm 64-bit Architecture                     |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | AAELF64_    | IHI 0056                                                     | ELF for the Arm 64-bit Architecture (AArch64).                              |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | CPPABI64_   | IHI 0059                                                     | C++ ABI for the Arm 64-bit Architecture                                     |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | GCABI_      | https://itanium-cxx-abi.github.io/cxx-abi/abi.html           | Generic C++ ABI                                                             |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | HWCAP_      | https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html | Linux Kernel HWCAPs interface                                               |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | LINUX_ABI_  | https://github.com/hjl-tools/linux-abi/wiki                  | Linux Extensions to gABI                                                    |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | LSB_        | https://refspecs.linuxbase.org/lsb.shtml                     | Linux Standards Base Core Functional Area                                   |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | SCO-ELF_    | http://www.sco.com/developers/gabi/                          | System V Application Binary Interface – DRAFT                               |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | SYM-VER_    | http://people.redhat.com/drepper/symbol-versioning           | GNU Symbol Versioning                                                       |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | Ref             | External reference or URL                                    | Title                                                                       |
+  +=================+==============================================================+=============================================================================+
+  | SYSVABI_        | Source for this document                                     | System V Application Binary Interface (ABI) for the Arm 64-bit architecture |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | ARMARM_         | DDI 0487                                                     | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile    |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | AAPCS64_        | IHI 0055                                                     | Procedure Call Standard for the Arm 64-bit Architecture                     |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | AAELF64_        | IHI 0056                                                     | ELF for the Arm 64-bit Architecture (AArch64).                              |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | CPPABI64_       | IHI 0059                                                     | C++ ABI for the Arm 64-bit Architecture                                     |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | GCABI_          | https://itanium-cxx-abi.github.io/cxx-abi/abi.html           | Generic C++ ABI                                                             |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | HWCAP_          | https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html | Linux Kernel HWCAPs interface                                               |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LINUX_ABI_      | https://github.com/hjl-tools/linux-abi/wiki                  | Linux Extensions to gABI                                                    |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LSB_            | https://refspecs.linuxbase.org/lsb.shtml                     | Linux Standards Base Core Functional Area                                   |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | MemTagABIELF64_ | memtagabielf64                                               | MemTag Extension to ELF for the Arm 64-bit Architecture                     |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | PAuthABIELF64_  | pauthabielf64                                                | PAuth Extension to ELF for the Arm 64-bit Architecture                      |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SCO-ELF_        | http://www.sco.com/developers/gabi/                          | System V Application Binary Interface – DRAFT                               |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SYM-VER_        | http://people.redhat.com/drepper/symbol-versioning           | GNU Symbol Versioning                                                       |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
 
 Terms and Abbreviations
 -----------------------
@@ -1710,8 +1720,8 @@ Custom PLTs
   instructions, it must add both ``DT_AARCH64_BTI_PLT`` and
   ``DT_AARCH64_PAC_PLT`` tags to the dynamic section.
 
-Dynamic Section
-^^^^^^^^^^^^^^^
+Dynamic Section Tags
+^^^^^^^^^^^^^^^^^^^^
 
 AArch64 specifies the following processor-specific dynamic array tags.
 
@@ -1719,15 +1729,31 @@ AArch64 specifies the following processor-specific dynamic array tags.
 
 .. table:: AArch64 specific dynamic array tags
 
-    +---------------------------+------------+--------+-------------------+-------------------+
-    | Name                      | Value      | d\_un  | Executable        | Shared Object     |
-    +===========================+============+========+===================+===================+
-    | DT\_AARCH64\_BTI\_PLT     | 0x70000001 | d\_val | Platform specific | Platform Specific |
-    +---------------------------+------------+--------+-------------------+-------------------+
-    | DT\_AARCH64\_PAC\_PLT     | 0x70000003 | d\_val | Platform specific | Platform Specific |
-    +---------------------------+------------+--------+-------------------+-------------------+
-    | DT\_AARCH64\_VARIANT\_PCS | 0x70000005 | d\_val | Platform specific | Platform Specific |
-    +---------------------------+------------+--------+-------------------+-------------------+
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | Name                           | Value      | d\_un  | Executable        | Shared Object     |
+    +================================+============+========+===================+===================+
+    | DT\_AARCH64\_BTI\_PLT          | 0x70000001 | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_PAC\_PLT          | 0x70000003 | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_VARIANT\_PCS      | 0x70000005 | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `MemTagABIELF64`_ | 0x70000009 | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `MemTagABIELF64`_ | 0x7000000b | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `MemTagABIELF64`_ | 0x7000000c | d\_ptr | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `MemTagABIELF64`_ | 0x7000000d | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `MemTagABIELF64`_ | 0x7000000f | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `PAuthABIELF64`_  | 0x70000011 | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `PAuthABIELF64`_  | 0x70000012 | d\_ptr | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `PAuthABIELF64`_  | 0x70000013 | d\_val | Platform specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
 
 ``DT_AARCH64_BTI_PLT`` indicates PLTs enabled with Branch Target Identification
 mechanism.
@@ -1741,6 +1767,8 @@ Pointer Authentication.
 ``DT_AARCH64_VARIANT_PCS`` must be present if there are ``R_<CLS>_JUMP_SLOT``
 relocations that reference symbols marked with the ``STO_AARCH64_VARIANT_PCS``
 flag set in their ``st_other`` field.
+
+See `MemTagABIELF64`_ and `PAuthABIELF64`_ for details of reserved tags.
 
 .. raw:: pdf
 
