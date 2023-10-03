@@ -17,7 +17,7 @@ bit-precise integral types defined in C2x.  These are ``_BitInt(N)`` and
 ``unsigned _BitInt(N)``.  These are defined for integral ``N`` and each ``N`` is
 a different type.
 
-The proposal for these types can be found in following link.
+The proposal for these types can be found in the following link:
 https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2763.pdf
 
 As the rationale in that proposal mentioned, some applications have uses for a
@@ -38,20 +38,20 @@ The main trade-offs we have identified in this case are:
 - Size cost of storing values in memory.
 - General familiarity of programmers with the representation.
 
-Since this is a new type there is large uncertainty on how it will be used by
+Since this is a new type, there is large uncertainty on how it will be used by
 programmers in the future.  Decisions we make here may also influence future
-usage.  Nonetheless we must make trade-off decisions with this uncertainty.  The
-below attempts to analyze possible use-cases to make our best guess as to how
-these types may be used when targeting Arm CPU's.
+usage.  We must make trade-off decisions within this uncertainty.  The below
+attempts to analyze possible use-cases to make our best guess as to how these
+types may be used when targeting Arm CPUs.
 
 
 Use-cases known of so far
 -------------------------
 
-There seem to be two different regimes for these types.  The "small" regime
-where bit-precise types could be stored in a single general-purpose register,
-and the "large" regime where bit-precise types must span multiple
-general-purpose registers.
+We believe there are two regimes for these types.  The "small" regime where
+bit-precise types could be stored in a single general-purpose register, and the
+"large" regime where bit-precise types must span multiple general-purpose
+registers.
 
 Here we discuss the use-cases for bit-precise integer types that we have
 identified or been alerted to so far.
@@ -72,19 +72,19 @@ to write code which directly expresses what is needed.  This can ensure the FPGA
 description generated saves space and has better performance.
 
 The notable thing about this use-case is that though the C code may be run on an
-Arm architecture (e.g. for testing), the most critical use is when transferred
-to an FPGA (i.e. not an Arm architecture).
+Arm architecture for testing, the most critical use is when transferred to an
+FPGA (that is, not an Arm architecture).
 
-That said, if the operation that this FPGA performs becomes popular there may be
-a need to run the code directly on CPU's in the future.
+However, if the operation that this FPGA performs becomes popular there may be a
+need to run the code directly on CPUs in the future.
 
-The requirements on Arm ABI's from this use-case are relatively small since the
-main focus is around running on an FPGA.  We believe it adds weight to both the
-need for performance and familiarity of programmers.  This belief comes from the
-estimate that this may lead to bit-precise types being used in performance
-critical code in the future, and that it may mean that bit-precise types are
-used on Arm architectures when testing FPGA descriptions (where ease of
-debugging can be prioritized).
+The requirements on the Arm ABI from this use-case are relatively small since
+the main focus is around running on an FPGA.  We believe the use-case adds
+weight to both the need for performance and familiarity of programmers.  This
+belief comes from the estimate that this may lead to bit-precise types being
+used in performance critical code in the future, and that it may mean that
+bit-precise types are used on Arm architectures when testing FPGA descriptions
+(where ease of debugging can be prioritized).
 
 
 24-bit Color
@@ -119,8 +119,8 @@ performed.
 
 One negative of using bit-precise integral types for networking code would be
 that idioms like ``if (x + y > max_representable)`` where ``x`` and ``y`` have
-been loaded from small bit-fields would no longer be viable.  We have seen such
-idioms for small values in networking code in the Linux kernel.  These are
+been loaded from small bit-fields, would no longer be viable.  We have seen
+such idioms for small values in networking code in the Linux kernel.  These are
 intuitive to write but if ``x`` and ``y`` were to bit-precise types would not
 work as expected.
 
@@ -134,8 +134,8 @@ Hence we believe that ease of debugging of values in registers may be more
 critical than performance concerns in this use-case.
 
 
-To help the compiler optimize (e.g. for auto vectorization)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To help the compiler optimize (possibly for auto vectorization)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The behavior that bit-precise types do not automatically promote to an ``int``
 during operations could remove some casts which are necessary for C semantics
@@ -146,11 +146,11 @@ casts in order to identify the operations being performed.
 The incentive for this use-case is an increased likelihood of the compiler
 generating optimal autovectorized code.
 
-Points which might imply less take-up of this use-case are that the option to
-use compiler intrinsics are there for programmers which want to put in extra
-effort to ensure good vectorization of a loop.  This means that using
-bit-precise types would be a mid-range option providing less-guaranteed codegen
-improvement for less effort.
+One point which might imply less take-up of this use-case is that programmers
+willing to put in extra effort to ensure good vectorization of a loop have the
+option to use compiler intrinsics.  This means that using bit-precise types
+would be a mid-range option providing less-guaranteed codegen improvement for
+less effort.
 
 The ABI should not have much of an affect on this use-case directly, since the
 optimization would be done in the target-independent part of compilers and the
@@ -165,7 +165,7 @@ choosing performance concerns.
 
 In this use-case the programmer would be converting a codebase using either 8
 bit integers or 16 bit integers to a bit-precise type of the same size.  Such a
-codebase may include calls to variadic functions (like ``printf``) in
+codebase may include calls to variadic functions (such as ``printf``) in
 surrounding code.  Variadic functions like this may be missed when changing
 types in a codebase, so it would be helpful if the bit-precise machine types
 passed matched what the relevant standard integral types looked like in order to
@@ -176,8 +176,7 @@ would benefit from having the representation of ``_BitInt(8)`` in the PCS match
 that of ``int`` and similar for the ``16`` bit and unsigned variants (which
 implies having them sign- or zero-extended).
 
-One further point around this use-case, is that decisions which do not affect 8
-and 16 bit types would not affect this use-case.
+Decisions which do not affect 8 and 16 bit types would not affect this use-case.
 
 
 For representing cryptography algorithms
@@ -222,9 +221,10 @@ We have heard of interest in using the new bit-precise integer types to
 implement transparent BigNum libraries in C.
 
 Such a use-case unfortunately does not directly correspond to what kind of code
-will be using this (e.g. would this be algorithmic code or I/O bound code).
-Given the mention of 512x512 matrices in the comment where we heard of this we
-assume that in general such a library would be CPU-bound code.
+will be using this (for example it doesn't indicate whether this code would be
+algorithmic or I/O bound).  Given the mention of 512x512 matrices in the
+discussion where we heard this use-case we assume that in general such a library
+would be CPU-bound code.
 
 Hence we assume that the main consideration here would be performance.
 
@@ -279,9 +279,9 @@ greater than or equal to the size of the object in memory):
 
 - Avoid a performance hit since loading and storing of these "small" sized
   ``_BitInt``'s will not cross cache boundaries.
-- Atomic loads and stores can be made on these objects.
 - The representation of bit-precise types of the same size as standard integer
   types will have the same alignment and size in memory.
+- Atomic loads and stores can be made on these objects.
 
 In the use-cases we have identified above we did not notice any special need for
 tight packing.  All of the use-cases we identified would benefit from better
@@ -309,33 +309,33 @@ Option ``A`` has the following benefits:
 - This would mean that the alignment of a ``_BitInt(128)`` on AArch64 matches
   that of other architectures which have already defined their ABI.  This could
   reduce surprises when writing portable code.
-- Less space used for half of the values of ``N``.
-- Multiplications on large ``_BitInt(N)`` can be logically done on the limbs of
-  size ``M``, which should result in a neater compiler implementation.  E.g.
-  for AArch64 there is a ``SMULH`` which could be used as part of a
-  multiplication on an entire limb.
+- Less space used for half of the large values of ``N``.
+- Multiplications on large ``_BitInt(N)`` can be performed using chunks of size
+  ``M``, which should result in a neater compiler implementation.  For example
+  AArch64 has an ``SMULH`` instruction which could be used as part of a
+  multiplication of an entire chunk.
 
 Option ``B`` has the following benefit:
 
-- Would allow atomic operations on types in the range between register
-  and double-register sizes.
-  This is due to the associated extra alignment allowing operations like
-  ``CASP`` on aarch64 and ``LDRD`` on aarch32.  Similarly this would allow
-  ``LDP`` and ``STP`` single-copy atomicity on architectures with the LSE2
-  extension.
 - On AArch32 a ``_BitInt(64)`` would have the same alignment and size as an
   ``int64_t``, and on AArch64 a ``_BitInt(128)`` would have the same alignment
   and size as a ``__int128``.
 - Double-register sized integers match the largest Fundamental Data Types
-  defined in the relevant PCS architectures for both platforms.  We believe
-  that that developers familiar with the AArch64 ABI would find this mapping
-  less surprising and hence make less mistakes.  This also includes those
-  working at FFI boundaries interfacing to the C ABI.
+  defined in the relevant PCS architectures for both platforms.  We believe that
+  that developers familiar with the Arm ABI would find this mapping less
+  surprising and hence make less mistakes.  This includes those working at FFI
+  boundaries interfacing to the C ABI.
+- Would allow atomic operations on types in the range between register
+  and double-register sizes.
+  This is due to the associated extra alignment allowing operations like
+  ``CASP`` on AArch64 and ``LDRD`` on AArch32.  Similarly this would allow
+  ``LDP`` and ``STP`` single-copy atomicity on architectures with the LSE2
+  extension.
 
 The "large" size use-cases we have identified so far are of power-of-two sizes.
 These sizes would not benefit greatly from the positives of either of the
-options presented here, with the only difference being around the implementation
-of multiplication.
+options presented here, with the only difference being in the implementation of
+multiplication.
 
 Our estimate is that the benefits of option ``B`` are more useful for sizes
 between register and double-register than those from option ``A``.  This is not
@@ -344,9 +344,10 @@ being a smaller difference from other architectures psABI choices.
 
 Other variants are available, such as choosing alignment and size based on
 register sized chunks except for the special case of the double-register sized
-_BitInt.  Though such variants can provide a good combination of the properties
-above we judge them to have an extra complexity of definition and associated
-increased likelyhood of mistakes when developers code relies on ABI choices.
+``_BitInt``.  Though such variants can provide a good combination of the
+properties above we judge the extra complexity of definition to have an
+associated increased likelyhood of mistakes when developers code relies on ABI
+choices.
 
 Based on the above reasoning, we would choose to define the size and alignment
 of ``_BitInt(N > [register-size])`` types by treating them "as if" they are an
@@ -358,9 +359,9 @@ Representation in bits
 There are two decisions around the representation of a "small" ``_BitInt`` that
 we have identified.  (1) Whether required bits are stored in the least
 significant end or most significant end of a register or region in memory. (2)
-Whether the "remaining" bits after rounding up to the size specified in
-`Alignment and sizes`_ are specified or not.  The choice of *how* "remaining"
-bits would be specified would tie in to the choice made for (1).
+Whether the "remaining" bits are specified after rounding up to the size
+specified in `Alignment and sizes`_.  The choice of *how* "remaining" bits would
+be specified would tie in to the choice made for (1).
 
 
 Options and their trade-offs
@@ -400,20 +401,20 @@ require updating every "chunk" in memory, hence we assume large values of option
 
 Option ``A`` has the following benefits:
 
+- Operations ``+,-,%,==,<=,>=,<,>,<<`` all work without any extra instructions
+  (which is more of the common operations than other representations).
+
 - For small values in memory, on AArch64, the operations like ``LDADD`` and
   ``LD{S,U}MAX`` both work (assuming the relevant register operand is
   appropriately shifted).
-
-- Operations ``+,-,%,==,<=,>=,<,>,<<`` all work without any extra instructions
-  (which is more of the common operations than other representations).
 
 It has the following negatives:
 
 - This would be a less familiar representation to programmers.  Especially the
   fact that a ``_BitInt(8)`` would not have the same representation in a
-  register as a ``char`` could cause confusion (e.g. when debugging, or writing
-  assembly code).  This would likely be increased if other architectures that
-  programmers may use have a more familiar representation.
+  register as a ``char`` could cause confusion (we imagine when debugging, or
+  writing assembly code).  This would likely be increased if other
+  architectures that programmers may use have a more familiar representation.
 
 - Operations ``*,/``, saving and loading values to memory, and casting to
   another type would all require extra cost.
@@ -427,19 +428,17 @@ It has the following negatives:
 
 Option ``B`` has the following benefits:
 
-- For small values in memory, the AArch64 ``LDADD`` operations work naturally.
-
 - Operations ``+,-,*,<<``, narrowing conversions, and loading/storing to memory
   would all naturally work.
 
 - On AArch64 this would most likely match the expectation of developers, and
-  e.g. a ``_BitInt(8)`` would have the same representation as a ``char`` in
-  registers.
+  small power-of-two sizes would have the same representation as standard types
+  in registers.  For example a ``_BitInt(8)`` would have the same representation
+  as a ``char`` in registers.
+
+- For small values in memory, the AArch64 ``LDADD`` operations work naturally.
 
 It has the following negatives:
-
-- The AArch64 ``LD{S,U}MAX`` operations would not work naturally on small values
-  of this representation.
 
 - Operations ``/,%,==,<,>,<=,>=,>>`` and widening conversions on operands coming
   from an ABI boundary would require masking the operands.
@@ -452,11 +451,11 @@ It has the following negatives:
 - If used in calls to variadic functions which were written for standard
   integral types this can give surprising results.
 
+- The AArch64 ``LD{S,U}MAX`` operations would not work naturally on small values
+  of this representation.
+
 
 Option ``C`` has the following benefits:
-
-- For small values in memory, the AArch64 ``LD{S,U}MAX`` operations work
-  naturally.
 
 - Operations ``==,<,<=,>=,>,>>``, widening conversions, and loading/storing to
   memory would all naturally work.
@@ -467,9 +466,10 @@ Option ``C`` has the following benefits:
 - If used in variadic function calls, mismatches between ``_BitInt`` types and
   standard integral types would not cause as much of a problem.
 
-It has the following negatives:
+- For small values in memory, the AArch64 ``LD{S,U}MAX`` operations work
+  naturally.
 
-- The AArch64 ``LDADD`` operations would not work naturally.
+It has the following negatives:
 
 - Operations ``+,-,*,<<`` would all cause the need for masking at an ABI
   boundary.
@@ -477,23 +477,26 @@ It has the following negatives:
 - On AArch64 this would not match the expectation of developers, with
   ``_BitInt(8)`` not matching the representation of a ``char``.
 
+- The AArch64 ``LDADD`` operations would not work naturally.
+
 Summary, suggestion, and reasoning
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Overall it seems that option ``A`` is more performant for operations on small
-values.  However, when acting on "large" values (i.e. greater than the size of
-one register) it loses some of that benefit.  Storing to and from memory would
-also come at a cost for this representation.  This is also likely to be the most
-surprising representation for developers on an Arm platform.
+values.  However, when acting on "large" values (here defined as greater than
+the size of one register) it loses some of that benefit.  Storing to and from
+memory would also come at a cost for this representation.  This is also likely
+to be the most surprising representation for developers on an Arm platform.
 
 Between option ``B`` and option ``C`` there is not a great difference in
 performance characteristics.  However it should be noted that option ``C`` is
 the most natural extension of the AArch32 PCS rules for unspecified bits in a
 register containing a small Fundamental Data Type, while option ``B`` is the
-most natural extension of the similar rules in AArch64 PCS.  Furthermore, option
-``C`` would mean that accidental misuse of a bit-precise type instead of a
-standard integral type should not cause problems, while ``B`` could give strange
-values.  This would be most visible with variadic functions.
+most natural extension of the similar rules in AArch64 PCS.  Another distinction
+between the two is that option ``C`` would mean that accidental misuse of a
+bit-precise type instead of a standard integral type should not cause problems,
+while ``B`` could give strange values.  This would be most visible with variadic
+functions.
 
 As mentioned above, both performance concerns and a familiar representation are
 valuable in the use-cases that we have identified.  This has made the decision
