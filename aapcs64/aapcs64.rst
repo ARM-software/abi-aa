@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q1
-.. |date-of-issue| replace:: 06\ :sup:`th` April 2023
+.. |release| replace:: 2023Q3
+.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
 .. |copyright-date| replace:: 2011, 2013, 2018, 2020-2023
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -248,6 +248,9 @@ changes to the content of the document for that release.
 +------------+--------------------+------------------------------------------------------------------+
 | 2022Q3     | 20\ :sup:`th`      | - Add alpha-level support for SME.                               |
 |            | October 2022       | - Across the document, use “thread” rather than “process”.       |
++------------+--------------------+------------------------------------------------------------------+
+| 2023Q3     | 6\ :sup:`th`       | In `Data Types`_  include _BitInt(N) in language mapping.        |
+|            | October 2023       |                                                                  |
 +------------+--------------------+------------------------------------------------------------------+
 
 References

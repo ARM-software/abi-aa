@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q1
-.. |date-of-issue| replace:: 06\ :sup:`th` April 2023
+.. |release| replace:: 2023Q3
+.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
 .. |copyright-date| replace:: 2016, 2020-2023
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -208,6 +208,9 @@ changes to the content of the document for that release.
   |         | December 2020    | - new Licence_: CC-BY-SA-4.0                         |
   |         |                  | - new sections on Contributions_,                    |
   |         |                  |   `Trademark notice`_, and Copyright_                |
+  +---------+------------------+------------------------------------------------------+
+  |  2023Q3 | 6\ :sup:`st`     | Specify SYS_TIME return value as unsigned            |
+  |         | October 2023     |                                                      |
   +---------+------------------+------------------------------------------------------+
 
 Terms and abbreviations

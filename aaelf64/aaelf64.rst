@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q1
-.. |date-of-issue| replace:: 06\ :sup:`th` April 2023
+.. |release| replace:: 2023Q3
+.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
 .. |copyright-date| replace:: 2011, 2013, 2018-2023
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -266,7 +266,11 @@ changes to the content of the document for that release.
   |               |                    |   Linking`_, document new               |
   |               |                    |   PT_AARCH64_MEMTAG_MTE segment.        |
   +---------------+--------------------+-----------------------------------------+
-
+  | 2023Q3        | 6\ :sup:`th`       | - In `Symbol Table`_, Expand            |
+  |               | October 2023       |   STO_AARCH64_VARIANT_PCS documentation |
+  |               |                    | - In `Program Loading`_, Relax BTI PLT  |
+  |               |                    |   requirement                           |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------

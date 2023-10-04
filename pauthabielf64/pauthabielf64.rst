@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q1
-.. |date-of-issue| replace:: 06\ :sup:`th` April 2023
+.. |release| replace:: 2023Q3
+.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
 .. |copyright-date| replace:: 2020-2023
 
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
@@ -228,10 +228,10 @@ changes to the content of the document for that release.
   |            |                             | Provide details for the ELF marking scheme.                      |
   |            |                             | description of SHT_AUTH_RELR.                                    |
   +------------+-----------------------------+------------------------------------------------------------------+
-  | 2021q3     | 1\ :sup:`st` November 2021  | Clarify the concepts of a default and alternate PAuth elf signing|
+  | 2021Q3     | 1\ :sup:`st` November 2021  | Clarify the concepts of a default and alternate PAuth elf signing|
   |            |                             | schemes.                                                         |
   +------------+-----------------------------+------------------------------------------------------------------+
-  | 2023q3     | 16\ :sup:`th` August 2023   | Update tags in `Dynamic Section`_ to avoid conflict with         |
+  | 2023Q3     | 6\ :sup:`th` October 2023   | Update tags in `Dynamic Section`_ to avoid conflict with         |
   |            |                             | DT_AARCH64_VARIANT_PCS.                                          |
   +------------+-----------------------------+------------------------------------------------------------------+
 
