@@ -366,12 +366,29 @@ MemtagABI adds the following processor-specific dynamic array tags:
   +---------------------------------+------------+--------+-------------------+-------------------+
   | ``DT_AARCH64_MEMTAG_HEAP``      | 0x7000000b | d\_val | Platform specific | Platform Specific |
   +---------------------------------+------------+--------+-------------------+-------------------+
-  | ``DT_AARCH64_MEMTAG_STACK``     | 0x7000000c | d\_ptr | Platform specific | Platform Specific |
+  | ``DT_AARCH64_MEMTAG_STACK``     | 0x7000000c | d\_val | Platform specific | Platform Specific |
   +---------------------------------+------------+--------+-------------------+-------------------+
-  | ``DT_AARCH64_MEMTAG_GLOBALS``   | 0x7000000d | d\_val | Platform specific | Platform Specific |
+  | ``DT_AARCH64_MEMTAG_GLOBALS``   | 0x7000000d | d\_ptr | Platform specific | Platform Specific |
   +---------------------------------+------------+--------+-------------------+-------------------+
   | ``DT_AARCH64_MEMTAG_GLOBALSSZ`` | 0x7000000f | d\_val | Platform specific | Platform Specific |
   +---------------------------------+------------+--------+-------------------+-------------------+
+
+.. warning::
+
+  Earlier revisions of this document had ``DT_AARCH64_MEMTAG_STACK`` and
+  ``DT_AARCH64_MEMTAG_GLOBALS`` with incorrect ``d_un`` (``d_ptr`` and ``d_val``
+  respectively). Binaries compiled with clang-17 and lld-17 produced the dynamic
+  entries with ``DT_AARCH64_MEMTAG_STACK`` as ``d_val`` and
+  ``DT_AARCH64_MEMTAG_GLOBALS`` as ``d_ptr`` as this was the intended semantics,
+  and they were shipped on Android devices. The values were thus updated to
+  their more fitting semantic types (without updating the ``Value``), but this
+  does mean that ``DT_AARCH64_MEMTAG_STACK`` is a ``d_val`` with an even
+  ``Value``, and ``DT_AARCH64_MEMTAG_GLOBALS`` is a ``d_ptr`` with an odd
+  ``Value`` (where the normal semantics are ``odd == d_val``, and ``even ==
+  d_ptr``). Implementations of dynamic loaders need to be careful to apply these
+  semantics correctly - notably the load bias should not be applied to
+  ``DT_AARCH64_MEMTAG_STACK``, as it's a ``d_val``, even though the ``Value`` is
+  even.
 
 ``DT_AARCH64_MEMTAG_MODE`` indicates the initial MTE mode that should be set. It
 has two possible values: ``0``, indicating that the desired MTE mode is
