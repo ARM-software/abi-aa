@@ -277,6 +277,9 @@ changes to the content of the document for that release.
   |               |                    |   `Dynamic Linking`. Move description to|
   |               |                    |   `SYSVABI64`_                          |
   +---------------+--------------------+-----------------------------------------+
+  | 2024Q1        | 18\ :sup: `th`     | - Move relocation codes from            |
+  |               | March 2024         |   `PAUTHABIELF64`_ into reserved space  |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------
@@ -1675,6 +1678,22 @@ Thread-local storage descriptors
 Relocation codes ``R_<CLS>_TLSDESC_LDR``, ``R_<CLS>_TLSDESC_ADD`` and ``R_<CLS>_TLSDESC_CALL`` are needed to permit linker optimization of TLS descriptor code sequences to use Initial-exec or Local-exec TLS sequences; this can only be done if all relevant uses of TLS descriptors are marked to permit accurate relaxation. Object producers that are unable to satisfy this requirement must generate traditional General-dynamic TLS
 sequences using the relocations described in `General Dynamic thread-local storage model`_. The details of TLS descriptors are beyond the scope of this specification; a general introduction can be found in [TLSDESC_].
 
+Relocations for PAuth ABI Extension
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The PAuth ABI Extension defines a number of static and dynamic relocations.
+The information in this document is sufficient to reserve the relocation types.
+For details on the relocations and operations see `PAUTHABIELF64`_.
+
+.. class:: aaelf64-pauth-descriptor-relocations
+
+.. table:: PAuthABI static relocations
+
+  +------------+------------+---------------------------------+----------------------------------+-----------------------------------------------------+
+  | ELF64 Code | ELF32 Code | Name                            | Operation                        | Comment                                             |
+  +============+============+=================================+==================================+=====================================================+
+  | 580        | \-         | R\_<CLS\_AUTH\_ABS64            | PAUTH(S+A)                       | See `PAUTHABIELF64`_                                |
+  +------------+------------+---------------------------------+----------------------------------+-----------------------------------------------------+
 
 Dynamic relocations
 ^^^^^^^^^^^^^^^^^^^
@@ -1685,36 +1704,41 @@ The dynamic relocations for those execution environments that support only a lim
 
 .. table:: Dynamic relocations
 
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                    | Operation              | Comment                                   |
-  +============+============+=========================+========================+===========================================+
-  | 257        | \-         | R\_<CLS>\_ABS64         | S + A                  | See note below.                           |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | \-         | 1          | R\_<CLS>\_ABS32         | S + A                  | See note below.                           |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1024       | 180        | R\_<CLS>\_COPY          |                        | See note below.                           |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1025       | 181        | R\_<CLS>\_GLOB\_DAT     | S + A                  | See note below                            |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1026       | 182        | R\_<CLS>\_JUMP\_SLOT    | S + A                  | See note below                            |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1027       | 183        | R\_<CLS>\_RELATIVE      | Delta(S) + A           | See note below                            |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1028       | 184        | R\_<CLS>\_TLS\_IMPDEF1  |                        | See note below                            |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1029       | 185        | R\_<CLS>\_TLS\_IMPDEF2  |                        | See note below                            |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  |            |            | R\_<CLS>\_TLS\_DTPREL   | DTPREL(S+A)            | See note below                            |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  |            |            | R\_<CLS>\_TLS\_DTPMOD   | LDM(S)                 | See note below                            |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1030       | 186        | R\_<CLS>\_TLS\_TPREL    | TPREL(S+A)             |                                           |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1031       | 187        | R\_<CLS>\_TLSDESC       | TLSDESC(S+A)           | Identifies a TLS descriptor to be filled  |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-  | 1032       | 188        | R\_<CLS>\_IRELATIVE     | Indirect(Delta(S) + A) | See note below.                           |
-  +------------+------------+-------------------------+------------------------+-------------------------------------------+
-
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | ELF64 Code | ELF32 Code | Name                     | Operation                       | Comment                                   |
+  +============+============+==========================+=================================+===========================================+
+  | 257        | \-         | R\_<CLS>\_ABS64          | S + A                           | See note below.                           |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | \-         | 1          | R\_<CLS>\_ABS32          | S + A                           | See note below.                           |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 580        | \-         | R\_<CLS\_AUTH\_ABS64     | PAUTH(S + A)                    | See note below.                           |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1024       | 180        | R\_<CLS>\_COPY           |                                 | See note below.                           |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1025       | 181        | R\_<CLS>\_GLOB\_DAT      | S + A                           | See note below                            |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1026       | 182        | R\_<CLS>\_JUMP\_SLOT     | S + A                           | See note below                            |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1027       | 183        | R\_<CLS>\_RELATIVE       | Delta(S) + A                    | See note below                            |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1028       | 184        | R\_<CLS>\_TLS\_IMPDEF1   |                                 | See note below                            |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1029       | 185        | R\_<CLS>\_TLS\_IMPDEF2   |                                 | See note below                            |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  |            |            | R\_<CLS>\_TLS\_DTPREL    | DTPREL(S+A)                     | See note below                            |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  |            |            | R\_<CLS>\_TLS\_DTPMOD    | LDM(S)                          | See note below                            |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1030       | 186        | R\_<CLS>\_TLS\_TPREL     | TPREL(S+A)                      |                                           |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1031       | 187        | R\_<CLS>\_TLSDESC        | TLSDESC(S+A)                    | Identifies a TLS descriptor to be filled  |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1032       | 188        | R\_<CLS>\_IRELATIVE      | Indirect(Delta(S) + A)          | See note below.                           |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1040       | \-         | R\_<CLS>\_AUTH\_ABS64    | SIGN(S + A, SCHEMA(\*P))        | See note below.                           |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
+  | 1041       | \-         | R\_<CLS>\_AUTH\_RELATIVE | SIGN(DELTA(S) + A, SCHEMA(\*P)) | See note below.                           |
+  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
 
 With the exception of ``R_<CLS>_COPY`` all dynamic relocations require that the place being relocated is an 8-byte aligned 64-bit data location in ELF64 or a 4-byte aligned 32-bit data location in ELF32.
 
@@ -1746,6 +1770,7 @@ Relocations ``R_AARCH64_TLS_DTPREL``, ``R_AARCH64_TLS_DTPMOD`` and ``R_AARCH64_T
 
 It is implementation defined whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPREL`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPMOD`` or whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPMOD`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
 
+``R\_<CLS\_AUTH\_ABS64``, ``R\_<CLS>\_AUTH\_ABS64`` and ``R\_<CLS>\_AUTH\_RELATIVE`` are part of the PAuth ABI Extension. For details on the relocations and operations see `PAUTHABIELF64`_.
 
 Private and platform-specific relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
