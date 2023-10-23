@@ -236,6 +236,7 @@ changes to the content of the document for that release.
   |            |                             | DT_AARCH64_VARIANT_PCS.                                          |
   +------------+-----------------------------+------------------------------------------------------------------+
   | 2024Q1     | 29\ :sup:`th` January 2024  | Update preferred ELF marking scheme to be GNU property based     |
+  | 2023Q4     | 18\ :sup:`th` March 2024    | Update relocation codes to move out of private experiments space.|
   +------------+-----------------------------+------------------------------------------------------------------+
 
 References
@@ -704,7 +705,7 @@ Static Data relocations
   |             |                          |                |                                                     |
   |             |                          |                |                                                     |
   +=============+==========================+================+=====================================================+
-  | 0xE100      | R\_AARCH64\_AUTH\_ABS64  | ``PAUTH(S+A)`` | Signing schema encoded in the contents of the place |
+  | 0x244       | R\_AARCH64\_AUTH\_ABS64  | ``PAUTH(S+A)`` | Signing schema encoded in the contents of the place |
   +-------------+--------------------------+----------------+-----------------------------------------------------+
 
 In the static context, this is the equivalent of the arm64e
@@ -731,9 +732,9 @@ relocation.
   +--------------------+------------------------------+------------------------------------+
   | Relocation code    | Name                         | Operation                          |
   +====================+==============================+====================================+
-  | 0xE100             | R\_AARCH64\_AUTH\_ABS64      | SIGN(S + A, SCHEMA(\*P))           |
+  | 0x244              | R\_AARCH64\_AUTH\_ABS64      | SIGN(S + A, SCHEMA(\*P))           |
   +--------------------+------------------------------+------------------------------------+
-  | 0xE200             | R\_AARCH64\_AUTH\_RELATIVE   | SIGN(DELTA(S) + A, SCHEMA(\*P))    |
+  | 0x411              | R\_AARCH64\_AUTH\_RELATIVE   | SIGN(DELTA(S) + A, SCHEMA(\*P))    |
   +--------------------+------------------------------+------------------------------------+
 
 .. raw:: pdf
