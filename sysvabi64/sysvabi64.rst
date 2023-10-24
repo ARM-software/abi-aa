@@ -14,6 +14,7 @@
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
 .. _GCABI: https://itanium-cxx-abi.github.io/cxx-abi/abi.html
+.. _LINUX_ABI: https://github.com/hjl-tools/linux-abi/wiki
 .. _HWCAP: https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_5.0.0/LSB-Core-generic/LSB-Core-generic/book1.html
 .. _SCO-ELF: http://www.sco.com/developers/gabi
@@ -199,7 +200,9 @@ Change History
  | 02Alpha    | 6\ :sup:`th` April 2023      | Define the processor specific interpretation for      |
  |            |                              | DT_PLTGOT                                             |
  +------------+------------------------------+-------------------------------------------------------+
-
+ | 2023Q4     | 24\ :sup:`th` 2023           | Added Program Property, Program Loading and           |
+ |            |                              | Dynamic Linking contents from `AAELF64`_              |
+ +------------+------------------------------+-------------------------------------------------------+
 
 References
 ----------
@@ -224,6 +227,8 @@ This document refers to, or is referred to by, the following documents.
   | GCABI_      | https://itanium-cxx-abi.github.io/cxx-abi/abi.html           | Generic C++ ABI                                                             |
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | HWCAP_      | https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html | Linux Kernel HWCAPs interface                                               |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LINUX_ABI_  | https://github.com/hjl-tools/linux-abi/wiki                  | Linux Extensions to gABI                                                    |
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | LSB_        | https://refspecs.linuxbase.org/lsb.shtml                     | Linux Standards Base Core Functional Area                                   |
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
@@ -1590,6 +1595,119 @@ following conditions holds the section is considered RELRO:
 
 The size of the RELRO segment should be extended so that it is a
 multiple of the page size.
+
+Program Property
+----------------
+
+The following processor-specific program property types [LINUX_ABI_] are
+defined:
+
+.. table:: Program Property Type
+
+    +-----------------------------------------+------------+
+    | Name                                    | Value      |
+    +=========================================+============+
+    | GNU\_PROPERTY\_AARCH64\_FEATURE\_1\_AND | 0xc0000000 |
+    +-----------------------------------------+------------+
+
+``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` describes a set of processor features
+with which an ELF object or executable image is compatible, but does not
+require in order to execute correctly.  It has a single 32-bit value for the
+``pr_data`` field.  Each bit represents a separate feature.
+
+Static linkers processing ELF relocatable objects must set the feature bit in
+the output object or image only if all the input objects have the corresponding
+feature bit set. For each feature bit set in an ELF executable or shared library,
+a loader may enable the corresponding processor feature for that ELF file.
+
+The following bits are defined for GNU_PROPERTY_AARCH64_FEATURE_1_AND:
+
+.. table:: GNU_PROPERTY_AARCH64_FEATURE_1_AND Bit Flags
+
+    +-----------------------------------------+------------+
+    | Name                                    | Value      |
+    +=========================================+============+
+    | GNU\_PROPERTY\_AARCH64\_FEATURE\_1\_BTI | 1U << 0    |
+    +-----------------------------------------+------------+
+    | GNU\_PROPERTY\_AARCH64\_FEATURE\_1\_PAC | 1U << 1    |
+    +-----------------------------------------+------------+
+
+``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` This indicates that all executable
+sections are compatible with Branch Target Identification mechanism. An
+executable or shared object with this bit set is required to generate
+`Custom PLTs`_ with BTI instruction.
+
+``GNU_PROPERTY_AARCH64_FEATURE_1_PAC`` This indicates that all
+executable sections have been protected with Return Address Signing.
+Its use is optional, meaning that an ELF file where this feature bit
+is unset can still have Return Address signing enabled in some or all of
+its executable sections.
+
+Program Loading
+---------------
+
+Process ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If Branch Target Identification mechanism is enabled on a processor then
+the Guard Page (GP) bit must be disabled on the memory image of loaded
+executable segments of executables and shared objects that do not have
+``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` set, before execution is transferred
+to them.
+
+Dynamic Linking
+---------------
+
+Custom PLTs
+^^^^^^^^^^^^
+
+- To support Branch Target Identification mechanism, in the presence
+  of a ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` all PLT entries
+  generated by the linker that can be called indirectly must have a
+  BTI instruction as the first instruction. The linker must add the
+  ``DT_AARCH64_BTI_PLT`` (`AArch64 specific dynamic array tags`_) tag
+  to the dynamic section.
+
+- To support Pointer Authentication, PLT entries generated
+  by the linker can have an authenticating instruction as the final
+  instruction before branching back. The linker must add the
+  ``DT_AARCH64_PAC_PLT`` (`AArch64 specific dynamic array tags`_) tag to the dynamic section.
+
+- If the linker generates custom PLT entries with both BTI and PAC
+  instructions, it must add both ``DT_AARCH64_BTI_PLT`` and
+  ``DT_AARCH64_PAC_PLT`` tags to the dynamic section.
+
+Dynamic Section
+^^^^^^^^^^^^^^^
+
+AArch64 specifies the following processor-specific dynamic array tags.
+
+.. _`AArch64 specific dynamic array tags`:
+
+.. table:: AArch64 specific dynamic array tags
+
+    +---------------------------+------------+--------+-------------------+-------------------+
+    | Name                      | Value      | d\_un  | Executable        | Shared Object     |
+    +===========================+============+========+===================+===================+
+    | DT\_AARCH64\_BTI\_PLT     | 0x70000001 | d\_val | Platform specific | Platform Specific |
+    +---------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_PAC\_PLT     | 0x70000003 | d\_val | Platform specific | Platform Specific |
+    +---------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_VARIANT\_PCS | 0x70000005 | d\_val | Platform specific | Platform Specific |
+    +---------------------------+------------+--------+-------------------+-------------------+
+
+``DT_AARCH64_BTI_PLT`` indicates PLTs enabled with Branch Target Identification
+mechanism.
+
+``DT_AARCH64_PAC_PLT`` indicates PLTs enabled with Pointer Authentication.
+
+The presence of both ``DT_AARCH64_BTI_PLT`` and ``DT_AARCH64_PAC_PLT``
+indicates PLTs enabled with both Branch Target Identification mechanism and
+Pointer Authentication.
+
+``DT_AARCH64_VARIANT_PCS`` must be present if there are ``R_<CLS>_JUMP_SLOT``
+relocations that reference symbols marked with the ``STO_AARCH64_VARIANT_PCS``
+flag set in their ``st_other`` field.
 
 .. raw:: pdf
 
