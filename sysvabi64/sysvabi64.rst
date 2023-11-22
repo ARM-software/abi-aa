@@ -200,8 +200,11 @@ Change History
  | 02Alpha    | 6\ :sup:`th` April 2023      | Define the processor specific interpretation for      |
  |            |                              | DT_PLTGOT                                             |
  +------------+------------------------------+-------------------------------------------------------+
- | 2023Q4     | 24\ :sup:`th` 2023           | Added Program Property, Program Loading and           |
+ | 2023Q4     | 22\ :sup:`nd` November 2023  | Added Program Property, Program Loading and           |
  |            |                              | Dynamic Linking contents from `AAELF64`_              |
+ |            |                              |                                                       |
+ |            |                              | Added Dynamic linking content for GCS including       |
+ |            |                              | GNU_PROPERTY_AARCH64_FEATURE_1_GCS Feature Bit        |
  +------------+------------------------------+-------------------------------------------------------+
 
 References
@@ -1631,6 +1634,8 @@ The following bits are defined for GNU_PROPERTY_AARCH64_FEATURE_1_AND:
     +-----------------------------------------+------------+
     | GNU\_PROPERTY\_AARCH64\_FEATURE\_1\_PAC | 1U << 1    |
     +-----------------------------------------+------------+
+    | GNU\_PROPERTY\_AARCH64\_FEATURE\_1\_GCS | 1U << 2    |
+    +-----------------------------------------+------------+
 
 ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` This indicates that all executable
 sections are compatible with Branch Target Identification mechanism. An
@@ -1643,11 +1648,25 @@ Its use is optional, meaning that an ELF file where this feature bit
 is unset can still have Return Address signing enabled in some or all of
 its executable sections.
 
+``GNU_PROPERTY_AARCH64_FEATURE_1_GCS`` This indicates that all
+executable sections are compatible with the Guarded control stack
+(GCS) mechanism. Minimum requirements for setting this feature bit
+include:
+
+* The number of ``procedure return address push operations`` and the
+  number of ``procedure return address pop operations`` are balanced
+  on program exit. This means that ``procedure return`` instructions
+  are only used for function returns, and not as an indirect branch.
+
+* Any functions used by the program that manipulate the stack such as
+  ``setjmp`` and ``longjmp``, must be aware of GCS.
+
+
 Program Loading
 ---------------
 
 Process ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If Branch Target Identification mechanism is enabled on a processor then
 the Guard Page (GP) bit must be disabled on the memory image of loaded
@@ -1657,6 +1676,18 @@ to them.
 
 Dynamic Linking
 ---------------
+
+Process ``GNU_PROPERTY_AARCH64_FEATURE_1_GCS``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For the Guarded control stack mechanism to be enabled for a process.
+The feature bit ``GNU_PROPERTY_AARCH64_FEATURE_1_GCS`` must be set on
+the executable and all shared libraries loaded by the program.
+
+In a program that is running with the Guarded control stack mechanism enabled,
+the action taken when ``dlopen`` is used to load a shared library without
+the feature bit ``GNU_PROPERTY_AARCH64_FEATURE_1_GCS`` set is defined by the
+platform.
 
 Custom PLTs
 ^^^^^^^^^^^^
