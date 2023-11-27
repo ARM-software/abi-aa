@@ -1653,10 +1653,12 @@ executable sections are compatible with the Guarded control stack
 (GCS) mechanism. Minimum requirements for setting this feature bit
 include:
 
-* The number of ``procedure return address push operations`` and the
-  number of ``procedure return address pop operations`` are balanced
-  on program exit. This means that ``procedure return`` instructions
-  are only used for function returns, and not as an indirect branch.
+* Each function that is called using a BL instruction (or other
+  instruction that is a GCS ``procedure return address push
+  operation``) returns using a RET instruction (or other instruction
+  that is a GCS ``procedure return address pop operation``). This
+  means that RET instructions are only used for function returns, and
+  never as an indirect branch.
 
 * Any functions used by the program that manipulate the stack such as
   ``setjmp`` and ``longjmp``, must be aware of GCS.
