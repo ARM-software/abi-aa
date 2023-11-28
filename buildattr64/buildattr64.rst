@@ -362,9 +362,10 @@ Introduction
 About build attributes and compatibility
 ----------------------------------------
 
-Build attributes record data that a linker needs to reason mechanically
-about the compatibility, or incompatibility, of a set of relocatable files.
-Other tools that consume relocatable files may find the data useful.
+Build attributes record data that a linker needs to reason
+mechanically about the compatibility, or incompatibility, of a set of
+relocatable object files.  Other tools that consume relocatable object
+files may find the data useful.
 
 Build attributes are designed to have long-term invariant
 meaning. They record choices to which there is long term public
@@ -373,9 +374,9 @@ the ABI for the Arm Architecture (of which this document is a
 component), vendor data sheets, and similar long lived publications.
 
 Build attributes approximate the intentions the user of a compiler or
-assembler has for the compatibility of the relocatable file produced
-by the compiler or assembler (`Attribute values are based on user
-intentions`_).
+assembler has for the compatibility of the relocatable object file
+produced by the compiler or assembler (`Attribute values are based on
+user intentions`_).
 
 The figure below depicts the software development flows in which build
 attributes are important.
@@ -392,9 +393,9 @@ In this depiction there are two principal uses of build attributes.
   compatibility model.
 
 * Between tool chains, build attributes describe the intended
-  compatibility of a relocatable file and the entities it defines in
-  terms independent of either tool chain, promoting safe exchange of
-  portable code in binary form.
+  compatibility of a relocatable object file and the entities it
+  defines in terms independent of either tool chain, promoting safe
+  exchange of portable code in binary form.
 
 Attribute values are based on user intentions
 ---------------------------------------------
@@ -403,7 +404,7 @@ We base attribute values on user intentions to avoid the values being
 an unpredictable (effectively random) function of a compiler’s code
 generation algorithms and to support using attributes with assembly
 language without overburdening programmers. Where attributes support
-exchanging portable relocatable files among tool chains,
+exchanging portable relocatable object files among tool chains,
 predictability is worth more than precision.
 
 Capturing user intentions about compatibility
@@ -422,10 +423,10 @@ GUI configuration options – that present choices similar to those
 revealed in such documentation and modeled by ABI-defined
 compatibility tags.
 
-The challenge for a tool that generates relocatable files is to select
-the set of build attributes – giving a value to each compatibility tag
-– that best approximates the user’s intentions implicit in its
-invocation options.
+The challenge for a tool that generates relocatable object files is to
+select the set of build attributes – giving a value to each
+compatibility tag – that best approximates the user’s intentions
+implicit in its invocation options.
 
 This part of the problem of managing compatibility does not have a
 perfect solution. A user’s intentions are imperfectly approximated by
@@ -447,10 +448,10 @@ between functions – this is not the case and it is reasonable for
 different tool chains to take different positions according to the
 markets they serve.
 
-Thus it is entirely reasonable that a relocatable file produced by
-tool chain A and accepted by tool chain B’s linker might be rejected
-by tool chain C’s linker when targeting exactly the same environment
-as tool chain
+Thus it is entirely reasonable that a relocatable object file produced
+by tool chain A and accepted by tool chain B’s linker might be
+rejected by tool chain C’s linker when targeting exactly the same
+environment as tool chain
 B.
 
 The kinds of compatibility modeled by build attributes
@@ -474,8 +475,8 @@ unconditionally try to execute is a subset of the set of instructions
 implemented by the processor.
 
 Target-related attributes describe the hardware-related demands a
-relocatable file will place on an execution environment through being
-included in an executable file for that environment.
+relocatable object file will place on an execution environment through
+being included in an executable file for that environment.
 
 For example, target-related attributes could record whether use of the
 ``FEAT_MEMTAG`` extension is permitted, and at what architectural
@@ -520,8 +521,8 @@ requirement for ``FEAT_SVE`` to be present.
 Combining attribute values
 --------------------------
 
-Suppose E1 and E2 are entities (for example, relocatable files) with
-attribute values a1 and a2 for an attribute tag T. This section
+Suppose E1 and E2 are entities (for example, relocatable object files)
+with attribute values a1 and a2 for an attribute tag T. This section
 discusses how to generate the correct value of T for the entity formed
 by combining E1 and E2 (for example, the executable file formed by
 linking E1 with E2)
@@ -543,8 +544,6 @@ Using Arm architecture versions as an example, Armv8.0-A ≤ Armv9.0-A,
 because the set of instructions conforming to architecture Armv8.0-A is
 a subset of the set conforming to architecture Armv9.0-A. Stated more
 precisely, it is the case that {ISA\@Armv8.0-A} ⊆ {ISA\@Armv9.0-A}.
-
-With the attribute value of the tag
 
 This partial order of the attributes often differs from the arithmetic
 order of the enumerated values of the tag. In many cases the partial
@@ -605,8 +604,8 @@ is set to 'M'.
 The specification will note known forcing functions. Implementation of
 forcing functions is Q-o-I.
 
-Representing build attributes in a relocatable ELF file
-=======================================================
+Representing build attributes in a relocatable ELF Object file
+==============================================================
 
 Encoding
 --------
@@ -625,20 +624,22 @@ String values are encoded using NUL-terminated byte strings (NTBS).
 Encoding of meta data in a loadable-unit
 ----------------------------------------
 
-Build attributes are only defined for relocatable objects.  The
+Build attributes are only defined for relocatable object files.  The
 encoding of metadata in a loadable-unit (executable or shared-library)
 is platform specific.  For example a platform may choose to use GNU
 program properties as defined in (LINUX_ABI_). This document specifies
-the meaning of build attributes for relocatable objects only.  The
+the meaning of build attributes for relocatable object files only.  The
 presence of ``.ARM.attributes`` sections in a loadable-unit is
 permitted, but the interpretation of the contents of the section is
-outside the scope of this document.
+outside the scope of this document. The use of ``.note.gnu.property``
+sections for loadable-units is recommended for SysVr4 platforms,
+see (SYSVABI64_) for details.
 
 .. raw:: pdf
 
    PageBreak
 
-Formal Syntax of an ELF Attributes Section
+Formal syntax of an ELF Attributes Section
 ==========================================
 
 An ELF Attributes section uses a processor specific section with details
@@ -770,7 +771,7 @@ aeabi-feature-and-bits subsection
 The full vendor name is "aeabi-feature-and-bits"
 
 This subsection contains tags that describe the same optional feature
-bits as the "GNU_PROPERTY_AARCH64_FEATURE_1_AND" as described in
+bits as the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` as described in
 (AAELF64_).
 
 header contents
@@ -780,11 +781,11 @@ header contents
 
 *parameter type* is 0 (ULEB128)
 
-Combining attribute values
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Combining attribute values of aeabi-feature-and-bits
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-With reference to Combining attribute values in (ADDENDA32_). The
-partial order for all of the tags in this subsection is reversed.
+With reference to Combining attribute values. The partial order for
+all of the tags in this subsection is reversed.
 
 +-------+---------------+
 + Value + Partial Order |
@@ -822,7 +823,7 @@ The (PAUTHABI64_) defines an extension to ELF in which code pointers
 are signed using instructions in the FEAT_PAuth extension. The
 pointers that are signed as well as the modifiers and key used for
 each type of pointer are known as the signing schema. To make use of
-(PAuthABI64_) all relocatable objects and shared-library dependencies
+(PAuthABI64_) all relocatable object files and shared-library dependencies
 must use the same signing schema.
 
 While the requirement for the ``FEAT_PAuth`` extension is recorded in
@@ -842,17 +843,17 @@ Where the *<id>* is one of a number of registered platforms.
      <id> The version number of the Schema.
 
 Where the *<id>* is the version number in the context of
-Tag_PAuth_Platform.
+``Tag_PAuth_Platform``.
 
 The signing schema is not optional.
 
 The parameter type is ULEB128.
 
-The lattice value is custom. Two entities are compabitible if both
-Tag_PAuth_Platform and Tag_PAuth_Schema are identical.
+The partial order is custom. Two entities are compabitible if both
+``Tag_PAuth_Platform`` and ``Tag_PAuth_Schema`` are identical.
 
-The compatibility between an entity with Tag_PAuth_Platform = 0,
-Tag_PAuth_Schema = 0, and Tag_Pauth_Platform != 0, Tag_PAuth_Schema !=
+The compatibility between an entity with ``Tag_PAuth_Platform`` = 0,
+``Tag_PAuth_Schema`` = 0, and ``Tag_Pauth_Platform`` != 0, ``Tag_PAuth_Schema`` !=
 0 is implementation defined.
 
 aeabi-feature-and-bits and GNU Program Properties
@@ -860,35 +861,36 @@ aeabi-feature-and-bits and GNU Program Properties
 
 GNU Program Properties as defined by [LINUX_ABI_] are a similar
 concept to Build Attributes. Program properties are encoded in
-.note.gnu.property sections. A static linker combines the program
+``.note.gnu.property`` sections. A static linker combines the program
 properties according to the rules for each program property type. The
-combined .note.gnu.property section is written to the loadable-unit.
+combined ``.note.gnu.property`` section is written to the loadable-unit.
 
 Build attributes replace the use of GNU program properties for
-relocatable objects.  A platform may choose to use GNU program
+relocatable object files.  A platform may choose to use GNU program
 properties to represent properties in loadable-units with static
 linkers translating from a merged build attribute value to a GNU
 program property.
 
-Many existing relocatable objects have a .note.gnu.property section
-with the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` program property.
+Many existing relocatable object files have a ``.note.gnu.property``
+section with the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` program
+property.
 
-A relocatable object may have a .note.gnu.property section and
-``.ARM.attributes`` sections. When both program properties and build
-attributes exist, the program properties must be translated into build
-attributes using the mapping below. The relocatable object is not well
-formed if a build attribute from the ``.ARM.attributes`` has a
-different value when translated from .note.gnu.property.
+A relocatable object file may have a ``.note.gnu.property`` section
+and ``.ARM.attributes`` sections. When both program properties and
+build attributes exist, the program properties must be translated into
+build attributes using the mapping below. The relocatable object file
+is not well formed if a build attribute from the ``.ARM.attributes``
+has a different value when translated from ``.note.gnu.property``.
 
-+---------------------------------------+---------------------------+
-+ Feature bit set in relocatable object | Equivalent  tag = value   |
-+=======================================+===========================+
-+ *GNU_PROPERTY_AARCH64_FEATURE_1_BTI*  | Tag_Feature_BTI = 1       |
-+---------------------------------------+---------------------------+
-+ *GNU_PROPERTY_AARCH64_FEATURE_1_PAC*  | Tag_Feature_PAC = 1       |
-+---------------------------------------+---------------------------+
-+ *GNU_PROPERTY_AARCH64_FEATURE_1_GCS*  | Tag_Feature_GCS = 1       |
-+---------------------------------------+---------------------------+
++--------------------------------------------+---------------------------+
++ Feature bit set in relocatable object file | Equivalent  tag = value   |
++============================================+===========================+
++ *GNU_PROPERTY_AARCH64_FEATURE_1_BTI*       | Tag_Feature_BTI = 1       |
++--------------------------------------------+---------------------------+
++ *GNU_PROPERTY_AARCH64_FEATURE_1_PAC*       | Tag_Feature_PAC = 1       |
++--------------------------------------------+---------------------------+
++ *GNU_PROPERTY_AARCH64_FEATURE_1_GCS*       | Tag_Feature_GCS = 1       |
++--------------------------------------------+---------------------------+
 
 For a platform that uses GNU Program Properties in loadable-units the
 mapping table above can be used to translate build attributes back to
