@@ -819,6 +819,8 @@ attributes
 Pointer Authentication Signing Schema
 -------------------------------------
 
+The full vendor name is "aeabi-pauthabi"
+
 The (PAUTHABI64_) defines an extension to ELF in which code pointers
 are signed using instructions in the FEAT_PAuth extension. The
 pointers that are signed as well as the modifiers and key used for
