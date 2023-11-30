@@ -253,6 +253,7 @@ changes to the content of the document for that release.
 |            | October 2023       |                                                                  |
 +------------+--------------------+------------------------------------------------------------------+
 |            |                    | - Change the status of the SME support from Alpha to Beta.       |
+|            |                    | - Add soft-float PCS variant.                                    |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -2027,6 +2028,21 @@ size\_t, ptrdiff\_t
 -------------------
 
 See `Arm C and C++ language mappings`_.
+
+Soft-float
+----------
+
+The soft-float variant is defined for Arm v8-R implementations that do not have floating-point instructions or registers. This variant is incompatible with the base procedure call standard and toolchains are not required to support it.
+
+The soft-float variant is defined identically to the base variant, with these changes:
+
+* All floating-point types are passed as if they are an Integral machine type with the same byte-size and alignment.
+
+* No types are considered to be HFAs or HVAs.
+
+* The definition of ``va_list`` is unchanged. The ``__vr_top`` and ``__vr_offs`` fields may be left uninitialised by ``va_start``, and their values must not be relied on by ``va_arg``.
+
+* The calling convention for Short Vector, Scalable Vector and Scalable Predicate machine types is left undefined.
 
 .. raw:: pdf
 
