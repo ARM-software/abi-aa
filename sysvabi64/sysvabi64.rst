@@ -200,8 +200,10 @@ Change History
  | 02Alpha    | 6\ :sup:`th` April 2023      | Define the processor specific interpretation for      |
  |            |                              | DT_PLTGOT                                             |
  +------------+------------------------------+-------------------------------------------------------+
- | 2023Q4     | 24\ :sup:`th` 2023           | Added Program Property, Program Loading and           |
+ | 2023Q4     | 24\ :sup:`th` November 2023  | Added Program Property, Program Loading and           |
  |            |                              | Dynamic Linking contents from `AAELF64`_              |
+ |            |                              |                                                       |
+ |            |                              | Require hard-float ABI for sysvabi platforms          |
  +------------+------------------------------+-------------------------------------------------------+
 
 References
@@ -362,6 +364,16 @@ AArch64 system.
 
 Low Level Information
 =====================
+
+Hardware Requirements
+---------------------
+
+The AArch64 System V ABI requires the presence of SIMD and FP registers.
+
+Procedure call standard requirements
+------------------------------------
+
+The AArch64 System V ABI uses The Base Procedure Call Standard from (AAPCS64_).
 
 Not available for this Alpha release.
 
