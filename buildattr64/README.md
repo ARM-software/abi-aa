@@ -6,7 +6,9 @@
 
 ## About this document
 
-The [Build Attributes for the Arm 64-bit Architecture](buildattr64.rst) describes the
+The [Build Attributes for the Arm 64-bit Architecture](buildattr64.rst)
+describes the implementation of build attributes for the 64-bit
+Arm Architecture.
 
 ## About the license
 
