@@ -292,7 +292,7 @@ attributes can have advantages when modelling properties that:
   multiple feature bits with forcing functions. A concrete example is
   ``FEAT_LSE2`` which can only exist if ``FEAT_LSE`` exists.
 
-- require more then one attribute to describe. For example the
+- require more than one attribute to describe. For example the
   (PAUTHABI64_) describes signing schema as a tuple of (vendor,
   version). This would require two attributes to completely describe.
 
@@ -543,5 +543,3 @@ There are several downsides:
 - Humans make textual errors, requiring validation and error handling.
 
 - Textual formats are slower to parse and take up more space.
-
-
