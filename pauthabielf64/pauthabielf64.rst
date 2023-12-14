@@ -856,9 +856,16 @@ A new section named ``.note.AARCH64-PAUTH-ABI-tag`` of type
 as documented in SCO-ELF_, and its attribute flag ``SHF_ALLOC`` must
 be set.
 
-The name field (``namesz`` / ``name``) contains the string "ARM". The
-type field shall be 1, and the ``descsz`` field must be at least 16.
-The first 16 bytes of the description must contain 2 64-bit words, with
+The ``namesz`` field shall be 4
+
+The ``descsz`` field must be at least 16. See ``desc`` below.
+
+The type field shall be ``NT_ARM_TYPE_PAUTH_ABI_TAG``, defined to the
+value 1.
+
+The ``name`` field shall be the null-terminated string ``ARM``.
+
+The first 16 bytes of the ``desc`` contain 2 64-bit words, with
 the first 64-bit word being a platform identifier, and the second
 64-bit word being a version number for the ABI for the platform
 identified for the first word. When ``descsz`` is larger than 16 the
