@@ -178,7 +178,7 @@ The following support level definitions are used by the Arm ABI specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-Parts related to SME are at **Alpha** release quality.
+Parts related to SME are at **Beta** release quality.
 
 The ILP32 variant is at **Beta** release quality.
 
@@ -251,6 +251,8 @@ changes to the content of the document for that release.
 +------------+--------------------+------------------------------------------------------------------+
 | 2023Q3     | 6\ :sup:`th`       | In `Data Types`_  include _BitInt(N) in language mapping.        |
 |            | October 2023       |                                                                  |
++------------+--------------------+------------------------------------------------------------------+
+|            |                    | - Change the status of the SME support from Alpha to Beta.       |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -924,7 +926,7 @@ it need not preserve any scalable predicate register contents.
 SME state
 ---------
 
-**(Alpha)**
+**(Beta)**
 
 `SME`_ defines the following pieces of processor state:
 
@@ -987,7 +989,7 @@ of address translation. See also `Pointers`_, above.
 Properties of a thread
 ^^^^^^^^^^^^^^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 The AAPCS64 classifies `threads`_ as follows, with the classification being
 invariant for the lifetime of a given thread:
@@ -1019,7 +1021,7 @@ the current thread has access to SME or TPIDR2_EL0.
 TPIDR2_EL0
 ^^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 This section only applies to threads that have `access to TPIDR2_EL0`_.
 
@@ -1216,7 +1218,7 @@ Normal returns
 .. _`returns normally`:
 .. _`returned normally`:
 
-**(Alpha)**
+**(Beta)**
 
 The AAPCS64 uses “\ _`normal return`\ ” to refer to the act of causing
 execution to resume at a caller-supplied address after a subroutine call,
@@ -1249,7 +1251,7 @@ The ZA lazy saving scheme
 Overview
 ^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 SME provides a piece of storage called “ZA” that can be enabled and
 disabled using a processor state bit called “\ `PSTATE.ZA`_\ ”.  This storage
@@ -1307,7 +1309,7 @@ and restore ZA after the call.
 ZA save buffers
 ^^^^^^^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 A “\ _`ZA save buffer`\ “ is an area of memory of size W×16×\ `SVL.B`_
 bytes for some cardinal W.  The value of W is a property of the save
@@ -1322,7 +1324,7 @@ slice is laid out in the same order as for the ZA STR instruction.
 ZA states
 ^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 The AAPCS64 uses the term “\ _`ZA_LIVE`\ ” to refer the number of leading
 horizontal slices of ZA that might have useful contents.  That is,
@@ -1476,7 +1478,7 @@ Setting up a lazy save buffer
 .. _`set up a lazy save buffer`:
 .. _`sets up a lazy save buffer`:
 
-**(Alpha)**
+**(Beta)**
 
 If ZA is active, a thread can “set up a lazy save buffer” for the current
 ZA contents by using the following procedure:
@@ -1500,7 +1502,7 @@ Abandoning a lazy save
 .. _`abandon the lazy save`:
 .. _`abandons the lazy save`:
 
-**(Alpha)**
+**(Beta)**
 
 If ZA is dormant and the current contents of ZA are no longer needed,
 the thread can “abandon the lazy save” and free up ZA for other operations
@@ -1514,7 +1516,7 @@ Committing a lazy save
 .. _`commit the lazy save`:
 .. _`commits the lazy save`:
 
-**(Alpha)**
+**(Beta)**
 
 If ZA is dormant, a thread can “commit the lazy save” and free up ZA for
 other operations by using the following procedure:
@@ -1559,7 +1561,7 @@ Preserving ZA
 .. _`preserved ZA`:
 .. _`preserves ZA`:
 
-**(Alpha)**
+**(Beta)**
 
 If a call to a subroutine S `returns normally`_, the call is said to
 “preserve ZA” *for that particular return* if one of the following
@@ -1601,7 +1603,7 @@ Complying with the lazy saving scheme
 
 .. _`complies with the lazy saving scheme`:
 
-**(Alpha)**
+**(Beta)**
 
 A call to a subroutine S is said to “\ _`comply with the lazy saving scheme`\ ”
 if one of the following conditions is true:
@@ -1659,7 +1661,7 @@ become SME-aware.  Counterexamples include the C library subroutine
 Changes to the TPIDR2 block
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 If, for a particular call C to a subroutine S:
 
@@ -1698,7 +1700,7 @@ Types of subroutine interface
 PSTATE.SM interfaces
 ^^^^^^^^^^^^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 A subroutine's “PSTATE.SM interface” specifies the possible states of
 `PSTATE.SM`_ on entry to a subroutine and the possible states of `PSTATE.SM`_
@@ -1740,7 +1742,7 @@ If a subroutine has a streaming-compatible interface, it can call
 ZA interfaces
 ^^^^^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 As noted in `ZA states`_, there are three possible ZA states: off,
 dormant, and active.  A subroutine's “ZA interface” specifies the possible
@@ -2036,7 +2038,7 @@ Support routines
 SME support routines
 --------------------
 
-**(Alpha)**
+**(Beta)**
 
 Every platform that supports SME must provide the following runtime
 support routines:
@@ -2064,7 +2066,7 @@ support routines:
 
 .. |__arm_sme_state| replace:: ``__arm_sme_state``
 
-**(Alpha)**
+**(Beta)**
 
 Platforms that support SME must provide a function with the
 following properties:
@@ -2114,7 +2116,7 @@ following properties:
 ``__arm_tpidr2_save``
 ^^^^^^^^^^^^^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 Platforms that support SME must provide a subroutine to `commit a lazy save`_,
 with the subroutine having the following properties:
@@ -2172,7 +2174,7 @@ If ZA was dormant on entry then it remains dormant on return.
 
 .. _`turn ZA off`:
 
-**(Alpha)**
+**(Beta)**
 
 Platforms that support SME must provide a subroutine to set PSTATE.ZA to 0,
 with the subroutine having the following properties:
@@ -2206,7 +2208,7 @@ with the subroutine having the following properties:
 ``__arm_tpidr2_restore``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-**(Alpha)**
+**(Beta)**
 
 Platforms that support SME must provide a subroutine to restore data after
 a lazy save, with the subroutine having the following properties:
@@ -2257,7 +2259,7 @@ Pseudo-code examples
 SME pseudo-code examples
 ------------------------
 
-**(Alpha)**
+**(Beta)**
 
 This section gives examples of various sequences that conform
 to the SME PCS rules.  In each case, comments in the code give
@@ -2790,7 +2792,7 @@ The argument list is then processed according to the standard rules for procedur
 setjmp and longjmp
 ------------------
 
-**(Alpha)**
+**(Beta)**
 
 The C subroutines ``setjmp`` and ``longjmp`` have a `private-ZA`_
 `non-streaming interface`_.  In addition to the standard requirements
@@ -2825,7 +2827,7 @@ because not all calls to ``setjmp`` have a partnering call to
 Exceptions
 ----------
 
-**(Alpha)**
+**(Beta)**
 
 If:
 
