@@ -786,7 +786,7 @@ The syntactic structure of a public attributes subsection is::
 
    [   Tag_File    (=1) <uint32: byte-size> <attribute>*
      | Tag_Section (=2) <uint32: byte-size> <section number>* 0 <attribute>*
-     | Tag_Symbol  (=3) <unit32: byte-size> <symbol number>*  0 <attribute>*
+     | Tag_Symbol  (=3) <uint32: byte-size> <symbol number>*  0 <attribute>*
    ]+
 
 A public subsection contains any number of sub-subsections. Each records
