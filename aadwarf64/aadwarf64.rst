@@ -470,11 +470,19 @@ integers.
    .. _Note 8:
 
    8. The RA_SIGN_STATE pseudo-register records whether the return address has
-      been signed with a PAC. This information can be used when unwinding. It
-      is an unsigned integer with the same size as a general register. Only
-      bit[0] is meaningful and is initialized to zero. A value of 0 indicates
-      the return address has not been signed. A value of 1 indicates the return
-      address has been signed.
+      been signed with a PAC, and whether the value of PC has been used as a
+      diversifier for the return address signing. This information can be used
+      when unwinding. It is an unsigned integer with the same size as a general
+      register. Only bit[0] and bit[1] are meaningful and are initialized to zero.
+
+      Bit[0] indicates whether the return address has been signed. A value of 0
+      indicates the return address has not been signed. A value of 1 indicates
+      the return address has been signed.
+
+      Bit[1] indicates whether the value of PC has been used as a diversifier for
+      signing the return address. A value of 0 indicates the value of PC has not
+      been used for return address signing. A value of 1 indicates the value of PC
+      has been used for return address signing.
 
    .. _Note 9:
 
@@ -574,25 +582,33 @@ a CIE augmentation string.
 Call frame instructions
 -----------------------
 
-This ABI defines one vendor call frame instruction
-``DW_CFA_AARCH64_negate_ra_state``.
+This ABI defines two vendor call frame instructions:
+``DW_CFA_AARCH64_negate_ra_state`` and ``DW_CFA_AARCH64_negate_ra_state_with_pc``.
 
 .. class:: aadwarf64-vendor-cfa-operations
 
 .. table:: AArch64 vendor CFA operations
 
-   +------------------------------------+-------------+------------+-----------+-----------+
-   | Instruction                        | High 2 bits | Low 6 bits | Operand 1 | Operand 2 |
-   +====================================+=============+============+===========+===========+
-   | ``DW_CFA_AARCH64_negate_ra_state`` | 0           | ``0x2D``   | \-        | \-        |
-   +------------------------------------+-------------+------------+-----------+-----------+
+   +--------------------------------------------+-------------+------------+-----------+-----------+
+   | Instruction                                | High 2 bits | Low 6 bits | Operand 1 | Operand 2 |
+   +============================================+=============+============+===========+===========+
+   | ``DW_CFA_AARCH64_negate_ra_state``         | 0           | ``0x2D``   | \-        | \-        |
+   +--------------------------------------------+-------------+------------+-----------+-----------+
+   | ``DW_CFA_AARCH64_negate_ra_state_with_pc`` | 0           | ``0x2C``   | \-        | \-        |
+   +--------------------------------------------+-------------+------------+-----------+-----------+
 
 The ``DW_CFA_AARCH64_negate_ra_state`` operation negates bit[0] of the
 RA_SIGN_STATE pseudo-register. It does not take any operands.
-The ``DW_CFA_AARCH64_negate_ra_state`` must not be mixed with other DWARF
-Register Rule Instructions (GDWARF_, §6.4.2.3) on the RA_SIGN_STATE
-pseudo-register in one Common Information Entry (CIE) and Frame Descriptor
-Entry (FDE) program sequence.
+
+The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` operation negates bit[0] and
+bit[1] of the RA_SIGN_STATE pseudo-register, and instructs the unwinder capture
+the current code location. The code location information can be used for
+authenticating the return address.
+
+The ``DW_CFA_AARCH64_negate_ra_state`` and ``DW_CFA_AARCH64_negate_ra_state_with_pc``
+instructions must not be mixed with other DWARF Register Rule Instructions
+(GDWARF_, §6.4.2.3) on the RA_SIGN_STATE pseudo-register in one Common
+Information Entry (CIE) and Frame Descriptor Entry (FDE) program sequence.
 
 .. _DWARF expression operations:
 
