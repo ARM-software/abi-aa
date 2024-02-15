@@ -1262,7 +1262,7 @@ The following tables record single instruction relocations and relocations that 
   | 308        | \-         | R\_<CLS>\_GOTREL32   | S+A-GOT          | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT, treated as signed;    |
   |            |            |                      |                  | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                                           |
   +------------+------------+----------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
-  | 315        | \-         | R\_<CLS>\_GOTPCREL32 | G(GDAT(S+A))- P  | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT entry for an address,  |
+  | 315        | \-         | R\_<CLS>\_GOTPCREL32 | G(GDAT(S))+A-P   | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT entry for an address,  |
   |            |            |                      |                  | treated as signed; Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                        |
   +------------+------------+----------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
 
