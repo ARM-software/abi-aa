@@ -484,6 +484,18 @@ integers.
       been used for return address signing. A value of 1 indicates the value of PC
       has been used for return address signing.
 
+      +--------+--------+----------------------------------+
+      | Bit[1] | Bit[0] | State                            |
+      +========+========+==================================+
+      | 0      | 0      | Return address not signed        |
+      +--------+--------+----------------------------------+
+      | 0      | 1      | Return address signed with SP    |
+      +--------+--------+----------------------------------+
+      | 1      | 1      | Return address signed with SP+PC |
+      +--------+--------+----------------------------------+
+      | 1      | 0      | Invalid state                    |
+      +--------+--------+----------------------------------+
+
    .. _Note 9:
 
    9. Normally, the program counter is restored from the return address, however
@@ -582,7 +594,7 @@ a CIE augmentation string.
 Call frame instructions
 -----------------------
 
-This ABI defines two vendor call frame instructions:
+This ABI defines the following vendor call frame instructions:
 ``DW_CFA_AARCH64_negate_ra_state`` and ``DW_CFA_AARCH64_negate_ra_state_with_pc``.
 
 .. class:: aadwarf64-vendor-cfa-operations
@@ -601,9 +613,13 @@ The ``DW_CFA_AARCH64_negate_ra_state`` operation negates bit[0] of the
 RA_SIGN_STATE pseudo-register. It does not take any operands.
 
 The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` operation negates bit[0] and
-bit[1] of the RA_SIGN_STATE pseudo-register, and instructs the unwinder capture
-the current code location. The code location information can be used for
-authenticating the return address.
+bit[1] of the RA_SIGN_STATE pseudo-register, and instructs the unwinder to
+capture the current code location. The code location information can be used
+for authenticating the return address.
+
+The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` instruction must be placed within
+the debug frame in a position that refers to the exact code location of the
+signing/authenticating PAC instructions.
 
 The ``DW_CFA_AARCH64_negate_ra_state`` and ``DW_CFA_AARCH64_negate_ra_state_with_pc``
 instructions must not be mixed with other DWARF Register Rule Instructions
