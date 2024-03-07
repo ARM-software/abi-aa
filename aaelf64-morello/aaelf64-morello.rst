@@ -729,9 +729,11 @@ Dynamic Morello relocations
   address of a data symbol which must be resolved at load time when dynamic
   linking.
 
-  ``R_MORELLO_JUMP_SLOT`` instructs the dynamic loader to create a 16-byte capability
-  in the GOT entry identified by r_offset. The capability holds the address of a
-  function symbol which must be resolved at load time.
+  ``R_MORELLO_JUMP_SLOT`` instructs the dynamic loader to derive a 16-byte
+  capability in the GOT entry identified by ``r_offset``. Information needed to
+  derive the capability is encoded in the fragment identified by ``r_offset``.
+  The address and permissions must be written to the fragment. See `Dynamic
+  linking with Morello`_ for details.
 
   ``R_MORELLO_RELATIVE`` represents an optimization of ``R_MORELLO_GLOB_DAT``. It can be
   used when the symbol resolves to the current shared object or executable. ``S``
@@ -834,8 +836,8 @@ Dynamic linking with Morello
 
 When dynamic linking, capability initialization is done by the dynamic linker as
 a result of processing one of the dynamic relocations listed in
-`Dynamic relocations table`_. For ``R_MORELLO_RELATIVE`` and
-``R_MORELLO_IRELATIVE`` relocations, the static linker must write the following
+`Dynamic relocations table`_. For ``R_MORELLO_JUMP_SLOT``, ``R_MORELLO_RELATIVE``
+and ``R_MORELLO_IRELATIVE`` relocations, the static linker must write the following
 information to the fragment identified by ``r_offset``.
 
 +------------------+-----------------+----------------------+
