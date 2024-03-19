@@ -236,7 +236,9 @@ changes to the content of the document for that release.
   |            |                             | DT_AARCH64_VARIANT_PCS.                                          |
   +------------+-----------------------------+------------------------------------------------------------------+
   | 2024Q1     | 29\ :sup:`th` January 2024  | Update preferred ELF marking scheme to be GNU property based     |
-  | 2023Q4     | 18\ :sup:`th` March 2024    | Update relocation codes to move out of private experiments space.|
+  |            | 18\ :sup:`th` March 2024    | Update relocation codes to move out of private experiments space.|
+  |            | 19\ :sup:`th` March 2024    | Remove alternative ELF marking scheme. No implementation is      |
+  |            |                             | using it.                                                        |
   +------------+-----------------------------+------------------------------------------------------------------+
 
 References
@@ -852,13 +854,6 @@ This document defines the core information that any ELF marking
 scheme must contain and the base compatibility model that uses that
 information.
 
-The default ELF marking scheme uses the Program Property note format
-defined in (`LINUX_ABI`_). An alternative encoding that uses a Arm
-defined Note section called ``.note.AARCH64-PAUTH-ABI-tag`` is defined
-for platforms that do not support Program Properties, or have legacy
-binaries from earlier versions of this specification. This is described
-in `Appendix Alternative ELF Marking Using SHT_NOTE section`_.
-
 Core information
 ----------------
 
@@ -922,15 +917,10 @@ Base Compatibility Model
 A per-ELF file marking scheme permits a coarse way of reasoning about
 compatibility.
 
-* All reasoning about compatibility is done using the `Core Information`_.
-  This permits an ELF file using the ``.note.gnu.property`` ELF marking to
-  be compared to an ELF file using the ``.note.AARCH64-PAUTH-ABI-tag`` ELF
-  marking.
-
-* If an ELF file contains multiple ELF markings of the `Core
-  Information`_, for example it contains both a ``.note.gnu.property``
-  section and a ``.note.AARCH64-PAUTH-ABI-tag`` section, then all
-  must encode the same `Core Information`_.
+* All reasoning about compatibility is done using the `Core
+  Information`_.  This permits an ELF relocatable object file using
+  the ``.note.gnu.property`` ELF marking to be compared to an ELF file
+  using build attributes that encode the `Core Information`_.
 
 * The absence of any ELF marking means no information on how pointers
   are signed is available for this ELF file. When used in combination
@@ -1282,25 +1272,3 @@ Some observations:
 * When not dynamic linking a static linker may choose to encode the
   pointer signing information in a custom encoding understood by the
   start-up code used.
-
-Appendix Alternative ELF Marking Using SHT_NOTE section
-=======================================================
-
-A new section named ``.note.AARCH64-PAUTH-ABI-tag`` of type
-``SHT_NOTE`` is defined. This section is structured as a note section
-as documented in SCO-ELF_, and its attribute flag ``SHF_ALLOC`` must
-be set.
-
-The ``namesz`` field shall be 4
-
-The ``descsz`` field shall be 16. See ``desc`` below.
-
-The type field shall be ``NT_ARM_TYPE_PAUTH_ABI_TAG``, defined to the
-value 1.
-
-The ``name`` field shall be the null-terminated string ``ARM``.
-
-The ``desc`` contain 2 64-bit words. With the first 64-bit word being
-the ``platform identifier``, and the second 64-bit word being the
-``version number``. Both of these form the information required in
-`Core Information`_ above.
