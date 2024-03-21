@@ -828,9 +828,9 @@ Grey list items are a little more difficult. There are two options.
 
 -  Treat the consensus members as *white* and the remainder as *black*.
 
-Consider , ERANGE, and EILSEQ from errno.h. This is a grey list category
-because there is consensus that = 33 and ERANGE = 34, but no consensus
-(even among Unix-like implementations) about EILSEQ.
+Consider EDOM, ERANGE, and EILSEQ from errno.h. This is a grey list
+category because there is consensus that EDOM = 33 and ERANGE = 34,
+but no consensus (even among Unix-like implementations) about EILSEQ.
 
 In practice, these values will be rarely accessed by portable code, so
 there is no associated performance or size issue, and they should all be
@@ -1346,8 +1346,8 @@ We define it as shown in `errno.h definitions`_
    :class: note
 
    There seems to be general agreement on 33 and 34, the long established Unix
-   values of and ERANGE. There is little consensus about EILSEQ. 47 is claimed
-   to be the IEEE 1003.1 POSIX value.
+   values of EDOM and ERANGE. There is little consensus about EILSEQ. 47 is
+   claimed to be the IEEE 1003.1 POSIX value.
 
 float.h
 -------
@@ -2104,7 +2104,7 @@ Summary of requirements on C Libraries
   +--------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
   | ctype..h     | Yes            | Must define **is**\ xxxx(c) to be ((**is**\ xxxx)(c)) etc [no inline implementation] or implement the inline versions as described in `ctype.h when \_AEABI\_PORTABILITY\_LEVEL != 0 and isxxxxx inline`_.                                                                                                                           |
   +--------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | errno.h      | Yes            | errno is (\*\_\_aeabi\_errno()); , ERANGE, etc are link-time constants (`errno.h definitions`_)                                                                                                                                                                                                                                      |
+  | errno.h      | Yes            | errno is (\*\_\_aeabi\_errno()); EDOM, ERANGE, etc are link-time constants (`errno.h definitions`_)                                                                                                                                                                                                                                  |
   +--------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
   | float.h      | No             |                                                                                                                                                                                                                                                                                                                                      |
   +--------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
