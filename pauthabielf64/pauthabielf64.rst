@@ -1143,7 +1143,7 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   |             |                                        |                                  | check that –2\ :sup:`32` |
   |             |                                        |                                  | <= X < 2\ :sup:`32`      |
   +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x811A      | R\_AARCH64\_AUTH\_GOT\_LO12_NC         | G(ENCD(GDAT(S + A)))             | Set the LD/ST immediate  |
+  | 0x811A      | R\_AARCH64\_AUTH\_LD64\_GOT\_LO12_NC   | G(ENCD(GDAT(S + A)))             | Set the LD/ST immediate  |
   |             |                                        |                                  | field to bits [11:3] of  |
   |             |                                        |                                  | X. No overflow check;    |
   |             |                                        |                                  | check that X&7 = 0       |
