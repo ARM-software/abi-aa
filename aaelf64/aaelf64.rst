@@ -1702,7 +1702,7 @@ For details on the relocations and operations see `PAUTHABIELF64`_.
   +------------+------------+---------------------------------+----------------------------------+-----------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                            | Operation                        | Comment                                             |
   +============+============+=================================+==================================+=====================================================+
-  | 580        | \-         | R\_<CLS\_AUTH\_ABS64            | PAUTH(S+A)                       | See `PAUTHABIELF64`_                                |
+  | 580        | \-         | R\_<CLS>\_AUTH\_ABS64           | PAUTH(S+A)                       | See `PAUTHABIELF64`_                                |
   +------------+------------+---------------------------------+----------------------------------+-----------------------------------------------------+
 
 Dynamic relocations
@@ -1721,7 +1721,7 @@ The dynamic relocations for those execution environments that support only a lim
   +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
   | \-         | 1          | R\_<CLS>\_ABS32          | S + A                           | See note below.                           |
   +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
-  | 580        | \-         | R\_<CLS\_AUTH\_ABS64     | PAUTH(S + A)                    | See note below.                           |
+  | 580        | \-         | R\_<CLS>\_AUTH\_ABS64    | SIGN(S + A, SCHEMA(\*P))        | See note below.                           |
   +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
   | 1024       | 180        | R\_<CLS>\_COPY           |                                 | See note below.                           |
   +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
@@ -1744,8 +1744,6 @@ The dynamic relocations for those execution environments that support only a lim
   | 1031       | 187        | R\_<CLS>\_TLSDESC        | TLSDESC(S+A)                    | Identifies a TLS descriptor to be filled  |
   +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
   | 1032       | 188        | R\_<CLS>\_IRELATIVE      | Indirect(Delta(S) + A)          | See note below.                           |
-  +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
-  | 1040       | \-         | R\_<CLS>\_AUTH\_ABS64    | SIGN(S + A, SCHEMA(\*P))        | See note below.                           |
   +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
   | 1041       | \-         | R\_<CLS>\_AUTH\_RELATIVE | SIGN(DELTA(S) + A, SCHEMA(\*P)) | See note below.                           |
   +------------+------------+--------------------------+---------------------------------+-------------------------------------------+
@@ -1780,7 +1778,7 @@ Relocations ``R_AARCH64_TLS_DTPREL``, ``R_AARCH64_TLS_DTPMOD`` and ``R_AARCH64_T
 
 It is implementation defined whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPREL`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPMOD`` or whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPMOD`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
 
-``R\_<CLS\_AUTH\_ABS64``, ``R\_<CLS>\_AUTH\_ABS64`` and ``R\_<CLS>\_AUTH\_RELATIVE`` are part of the PAuth ABI Extension. For details on the relocations and operations see `PAUTHABIELF64`_.
+``R\_<CLS>\_AUTH\_ABS64`` and ``R\_<CLS>\_AUTH\_RELATIVE`` are part of the PAuth ABI Extension. For details on the relocations and operations see `PAUTHABIELF64`_. Note that ``R\_<CLS>\_AUTH\_ABS64`` is both a static and a dynamic relocation.
 
 Private and platform-specific relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
