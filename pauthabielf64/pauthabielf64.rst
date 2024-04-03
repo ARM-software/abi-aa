@@ -1167,7 +1167,6 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   |             |                                        |                                  | value to bits [11:0] of  |
   |             |                                        |                                  | X. No overflow check.    |
   +-------------+----------------------------------------+----------------------------------+--------------------------+
-
 .. raw:: pdf
 
    PageBreak
@@ -1181,7 +1180,9 @@ is the PAuth ABI equivalent of ``R_AARCH64_RELATIVE``. The underlying
 calculation performed by the dynamic linker is the same, the only
 difference is that the resulting pointer is signed. The dynamic linker
 reads the signing schema from the contents of the place of the dynamic
-relocation.
+relocation. The ``R_AARCH64_AUTH_GOT_ADD_LO12_NC`` relocation is an
+addition for the PAuth ABI and has no equivalent in (AAELF64_). It is
+used with the ``:got_auth_lo12:`` operator on an add instruction.
 
 .. table:: Additional AUTH Dynamic relocations
 
