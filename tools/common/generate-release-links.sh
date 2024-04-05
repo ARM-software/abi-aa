@@ -57,6 +57,7 @@ cat <<EOF
 - $(spec aadwarf64 "DWARF for the Arm 64-bit Architecture")
 - $(spec cppabi64 "C++ ABI for the Arm 64-bit Architecture")
 - $(spec vfabia64 "Vector Function ABI for the Arm 64-bit Architecture")
+- $(spec atomicsabi64 "C/C++ Atomics Application Binary Interface Standard for the Arm 64-bit Architecture")
 
 #### PAuth ABI Extension
 - $(spec pauthabielf64 "PAuth ABI Extension to ELF for the Arm 64-bit Architecture")
