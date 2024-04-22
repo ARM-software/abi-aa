@@ -1069,7 +1069,7 @@ GOT entry as the modifier. The static linker must encode the signing
 schema into the GOT slot. AUTH variant dynamic relocations must be
 used for signed GOT entries.
 
-Example Code to access a signed GOT entry
+Example Code to access a signed GOT entry with the small code model:
 
 .. code-block:: asm
 
@@ -1081,6 +1081,18 @@ Example Code to access a signed GOT entry
 
 In the example the :got_auth: and :got_auth_lo12: operators result in
 AUTH variant GOT generating relocations being used.
+
+Example Code to access a signed GOT entry with the tiny code model:
+
+.. code-block:: asm
+
+  adr x8, :got_auth: symbol
+  ldr x0, [x8]
+  // Authenticate to get unsigned pointer
+  autia x0, x8
+
+Compared to the tiny code model without pointer authentication an
+additonal adr is required to get the address of the GOT entry.
 
 AUTH variant GOT Generating Relocations
 ---------------------------------------
@@ -1157,6 +1169,11 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   |             |                                        |                                  | value to bits [11:0] of  |
   |             |                                        |                                  | X. No overflow check.    |
   +-------------+----------------------------------------+----------------------------------+--------------------------+
+  | 0x811D      | R\AARCH64\_AUTH\_GOT\_ADR\_PREL\_LO21  | G(ENCD(GDAT(S + A))) - P         | Set the immediate        |
+  |             |                                        |                                  | value to bits[20:0] of X;|
+  |             |                                        |                                  | check that -2 :sup:`20`  |
+  |             |                                        |                                  | <= 2 :sup: `20`          |
+  +-------------+----------------------------------------+----------------------------------+--------------------------+
 .. raw:: pdf
 
    PageBreak
@@ -1170,9 +1187,13 @@ is the PAuth ABI equivalent of ``R_AARCH64_RELATIVE``. The underlying
 calculation performed by the dynamic linker is the same, the only
 difference is that the resulting pointer is signed. The dynamic linker
 reads the signing schema from the contents of the place of the dynamic
-relocation. The ``R_AARCH64_AUTH_GOT_ADD_LO12_NC`` relocation is an
-addition for the PAuth ABI and has no equivalent in (AAELF64_). It is
-used with the ``:got_auth_lo12:`` operator on an add instruction.
+relocation.
+
+The ``R_AARCH64_AUTH_GOT_ADD_LO12_NC`` relocation is an addition for
+the PAuth ABI and has no equivalent in (AAELF64_). It is
+
+The ``R_AARCH64_AUTH_GOT_ADR_PREL_LO21`` relocation is used with the
+``:got_auth:`` operator on an adr instruction.
 
 .. table:: Additional AUTH Dynamic relocations
 
