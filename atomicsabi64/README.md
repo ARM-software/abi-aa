@@ -2,7 +2,7 @@
    <img src="Arm_logo_blue_RGB.svg" />
 </div>
 
-# Atomics ABI for the Arm® 64-bit Architecture (AArch64)
+# C/C++ Atomics ABI for the Arm® 64-bit Architecture (AArch64)
 
 
 ## About this document
