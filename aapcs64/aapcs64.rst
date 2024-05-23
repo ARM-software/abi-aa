@@ -2077,6 +2077,9 @@ support routines:
 ``__arm_tpidr2_restore``
    Provides a simple way of restoring lazily-saved ZA data.
 
+``__arm_get_current_vg``
+   Provides a safe way to detect the current value of VG.
+
 ``__arm_sme_state``
 ^^^^^^^^^^^^^^^^^^^
 
@@ -2268,6 +2271,38 @@ a lazy save, with the subroutine having the following properties:
 
 * The only memory modified by the subroutine (if any) is stack memory
   below the incoming SP.
+
+``__arm_get_current_vg``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+**(Beta)**
+
+Platforms that support SME must provide a subroutine to query the current
+value of VG, with the subroutine having the following properties:
+
+* The subroutine is called ``__arm_get_current_vg``.
+
+* The subroutine has a `private-ZA`_ `streaming-compatible interface`_ with the
+  following properties:
+
+  * X1-X15, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+  * the subroutine `preserves ZA`_.
+
+* The subroutine does not take any arguments.
+
+* The subroutine returns an unsigned double word in X0.
+
+* The subroutine behaves as follows:
+
+  * If the current thread has access to FEAT_SME and PSTATE.SM is 1, the
+    subroutine returns the value of the streaming VG in X0.
+
+  * Otherwise, if the current thread has access to FEAT_SVE, the subroutine
+    returns the value of VG in X0.
+
+  * Otherwise, the subroutine returns the value 0 in X0.
 
 Pseudo-code examples
 ====================
