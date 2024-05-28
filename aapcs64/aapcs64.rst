@@ -254,6 +254,7 @@ changes to the content of the document for that release.
 +------------+--------------------+------------------------------------------------------------------+
 |            |                    | - Change the status of the SME support from Alpha to Beta.       |
 |            |                    | - Add soft-float PCS variant.                                    |
+|            |                    | - Add the __arm_get_current_vg SME support routine.              |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
