@@ -1749,10 +1749,11 @@ ZA interfaces
 As noted in `ZA states`_, there are three possible ZA states: off,
 dormant, and active.  A subroutine's “ZA interface” specifies the possible
 states of ZA on entry to a subroutine and the possible states of ZA on a
-`normal return`_.  The AAPCS64 defines two types of ZA interface:
+`normal return`_.  The AAPCS64 defines three types of ZA interface:
 
 .. _`private-ZA`:
 .. _`shared-ZA`:
+.. _`compatible-ZA`:
 
 +-------------------+-------------------+---------------------------+
 | Type of interface | ZA state on entry | ZA state on normal return |
@@ -1760,6 +1761,9 @@ states of ZA on entry to a subroutine and the possible states of ZA on a
 | private ZA        | dormant or off    | unchanged or off          |
 +-------------------+-------------------+---------------------------+
 | shared ZA         | active            | active                    |
++-------------------+-------------------+---------------------------+
+| compatible ZA     | active, dormant   | unchanged                 |
+|                   | or off            |                           |
 +-------------------+-------------------+---------------------------+
 
 Every subroutine has exactly one ZA interface.  A subroutine's ZA interface
@@ -1776,8 +1780,12 @@ The shared-ZA interface is so called because it allows the subroutine
 to share ZA contents with its caller.  This can be useful if an SME
 operation is split into several cooperating subroutines.
 
-Subroutines with a `private-ZA`_ interface and subroutines with a `shared-ZA`_
-interface can both (at their option) choose to guarantee that they
+The compatible-ZA interface is intended to be called from any function
+without requiring a change to PSTATE.ZA and is generally used in conjunction
+with the expectation that it `preserves ZA`_.
+
+Subroutines with a `private-ZA`_ interface, `shared-ZA`_ interface or
+`compatible-ZA`_ interface can (at their option) choose to guarantee that they
 `preserve ZA`_.
 
 Parameter passing
@@ -2081,6 +2089,17 @@ support routines:
 ``__arm_get_current_vg``
    Provides a safe way to detect the current value of VG.
 
+``__arm_sme_state_size``
+   Provides a simple way to query the total size required to save the requested
+   state.
+
+``__arm_sme_save``
+   Provides a safe way to save all state enabled by PSTATE.ZA.
+
+``__arm_sme_restore``
+   Provides a safe way to restore all state enabled by PSTATE.ZA from a buffer.
+
+
 ``__arm_sme_state``
 ^^^^^^^^^^^^^^^^^^^
 
@@ -2304,6 +2323,233 @@ value of VG, with the subroutine having the following properties:
     returns the value of VG in X0.
 
   * Otherwise, the subroutine returns the value 0 in X0.
+
+
+``__arm_sme_state_size``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+**(Beta)**
+
+Platforms that support SME must provide a subroutine that returns a size
+that is large enough to represent all state enabled by PSTATE.ZA.
+
+* The subroutine is called ``__arm_sme_state_size``.
+
+* The subroutine has a `compatible-ZA`_ `streaming-compatible interface`_ with
+  the following properties:
+
+  * X1-X15, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+  * the subroutine `preserves ZA`_.
+
+* The subroutine takes the following argument:
+
+  OPTIONS
+    a 64-bit value passed in X0 describing the following options:
+
+    +--------+-----------------------------------------+
+    | bits   | Options                                 |
+    +========+=========================================+
+    | 63     | Preserve ZA using lazy save mechanism   |
+    +--------+-----------------------------------------+
+    | 62 - 3 | Zero for this revision of the AAPCS64,  |
+    |        | but reserved for future expansion       |
+    +--------+-----------------------------------------+
+    | 2      | Exclude TPIDR2_EL0                      |
+    +--------+-----------------------------------------+
+    | 1      | Exclude ZT0                             |
+    +--------+-----------------------------------------+
+    | 0      | Exclude ZA                              |
+    +--------+-----------------------------------------+
+
+    If bit 63 is 1, then the size calculation will include the allocation
+    of a TPIDR2 block.
+
+    A value of 0 means that all SME state will be considered in the size
+    calculation.
+
+* The subroutine returns an unsigned double word in X0 that represents
+  a size in bytes that is large enough to represent all state enabled by
+  PSTATE.ZA, predicated on the requirements specified in ``OPTIONS``.
+  The size is guaranteed to be a multiple of 16.
+
+  The layout that corresponds to the calculated size is unspecified,
+  but the assumption is that the size always matches the implementation
+  of the `__arm_sme_save`_ and `__arm_sme_restore`_ routines.
+
+* The subroutine behaves as follows:
+
+  * If both bit 0 and bit 63 of ``OPTIONS`` are 1, then the subroutine aborts
+    in some platform-specific manner.
+
+  * If the current thread has access to FEAT_SME and PSTATE.ZA is 1,
+    X0 contains the total size required to represent all SME state enabled
+    under PSTATE.ZA, with the exception of the state requested to be excluded
+    as described in ``OPTIONS``.
+
+  * Otherwise, X0 is 0.
+
+
+``__arm_sme_save``
+^^^^^^^^^^^^^^^^^^
+
+**(Beta)**
+
+Platforms that support SME must provide a subroutine to save any state enabled
+by PSTATE.ZA.
+
+* The subroutine is called ``__arm_sme_save``.
+
+* The subroutine has a `compatible-ZA`_ `streaming-compatible interface`_ with
+  the following properties:
+
+  * X2-X15, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+
+* The subroutine takes the following arguments:
+
+  OPTIONS
+    a 64-bit value passed in X0 describing the following options:
+
+    +--------+-----------------------------------------+
+    | bits   | Options                                 |
+    +========+=========================================+
+    | 63     | Preserve ZA using lazy save mechanism   |
+    +--------+-----------------------------------------+
+    | 62 - 3 | Zero for this revision of the AAPCS64,  |
+    |        | but reserved for future expansion       |
+    +--------+-----------------------------------------+
+    | 2      | Exclude TPIDR2_EL0                      |
+    +--------+-----------------------------------------+
+    | 1      | Exclude ZT0                             |
+    +--------+-----------------------------------------+
+    | 0      | Exclude ZA                              |
+    +--------+-----------------------------------------+
+
+    A value of 0 means all SME state will be saved.
+
+  PTR
+    a 64-bit data pointer passed in X1 that points to a buffer which is
+    guaranteed to be large enough to represent all SME state for the
+    requirements specified by ``OPTIONS``.
+
+* The subroutine does not return a value.
+
+* The subroutine behaves as follows:
+
+  * If PTR is null, then the subroutine does nothing.
+
+  * The subroutine aborts in some platform-specific manner if either of the
+    following conditions is true:
+
+    * the current thread does not have access to SME or PSTATE.ZA is 0.
+
+    * the current thread does not have access to TPIDR2_EL0 and bit 2 of
+      ``OPTIONS`` is 0.
+
+    * both bit 0 and bit 63 of ``OPTIONS`` are 1.
+
+  * For addresses ``PTR->BLK``, ``PTR->ZA_BUFFER``, ``PTR->ZA``, ``PTR->ZT0``
+    and ``PTR->TPIDR2_EL0`` at unspecified offsets in the buffer pointed to by
+    PTR:
+
+    * If bit 2 of ``OPTIONS`` is 0, the subroutine stores the contents of
+      TPIDR2_EL0 to ``PTR->TPIDR2_EL0``.
+
+    * If bit 63 of ``OPTIONS`` is 1, then the subroutine sets up a lazy-save by
+      storing the address ``PTR->ZA_BUFFER`` to ``PTR->BLK.za_save_buffer``,
+      storing the streaming vector length in bytes (``SVL.B``) to
+      ``PTR->BLK.num_za_save_slices`` and copying the address ``PTR->BLK`` to
+      ``TPIDR2_EL0``.
+
+    * If bit 0 of ``OPTIONS`` is 0, then the subroutine stores the entire
+      contents of ZA to ``PTR->ZA_BUFFER``.
+
+    * If bit 1 of ``OPTIONS`` is 0 and ZT0 is available, then the subroutine
+      stores the full contents of ZT0 to ``PTR->ZT0``.
+
+    * If bit 63 of ``OPTIONS`` is 0, then the subroutine disables PSTATE.ZA.
+
+
+``__arm_sme_restore``
+^^^^^^^^^^^^^^^^^^^^^
+
+**(Beta)**
+
+Platforms that support SME must provide a subroutine to restore any state
+enabled by PSTATE.ZA.
+
+* The subroutine is called ``__arm_sme_restore``.
+
+* The subroutine has a `compatible-ZA`_ `streaming-compatible interface`_ with
+  the following properties:
+
+  * X2-X15, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+
+* The subroutine takes the following arguments:
+
+  OPTIONS
+    a 64-bit value passed in X0 describing the following options:
+
+    +--------+-----------------------------------------+
+    | bits   | Options                                 |
+    +========+=========================================+
+    | 63     | Preserve ZA using lazy save mechanism   |
+    +--------+-----------------------------------------+
+    | 62 - 3 | Zero for this revision of the AAPCS64,  |
+    |        | but reserved for future expansion       |
+    +--------+-----------------------------------------+
+    | 2      | Exclude TPIDR2_EL0                      |
+    +--------+-----------------------------------------+
+    | 1      | Exclude ZT0                             |
+    +--------+-----------------------------------------+
+    | 0      | Exclude ZA                              |
+    +--------+-----------------------------------------+
+
+    A value of 0 means all SME state will be restored.
+
+  PTR
+    a 64-bit data pointer passed in X1 that points to a buffer which is
+    guaranteed to be large enough to represent all SME state for the
+    requirements specified by ``OPTIONS``.
+
+* The subroutine does not return a value.
+
+* The subroutine behaves as follows:
+
+  * If PTR is null, then the subroutine does nothing.
+
+  * The subroutine aborts in some platform-specific manner if either of the
+    following conditions is true:
+
+    * the current thread does not have access to SME or PSTATE.ZA is 0.
+
+    * the current thread does not have access to TPIDR2_EL0 and bit 2 of
+      ``OPTIONS`` is 0.
+
+    * both bit 0 and bit 63 of ``OPTIONS`` are 1.
+
+  * If PSTATE.ZA is 0, then the subroutine enables PSTATE.ZA.
+
+  * For addresses ``PTR->BLK``, ``PTR->ZA``, ``PTR->ZT0`` and
+    ``PTR->TPIDR2_EL0`` at unspecified offsets in the buffer pointed to by PTR:
+
+    * If bit 63 of ``OPTIONS`` is 1 and TPIDR2_EL0 is null, then the function
+      copies ``PTR->BLK`` to X0 and calls ``__arm_tpidr2_restore``.
+
+    * If bit 0 of ``OPTIONS`` is 0, then the subroutine restores the entire
+      contents of ZA from ``PTR->ZA``.
+
+    * If bit 1 of ``OPTIONS`` is 0 and ZT0 is available, then the subroutine
+      restores the entire contents of ZT0 from ``PTR->ZT0``.
+
+    * If bit 2 of ``OPTIONS`` is 0, the subroutine restores the contents of
+      TPIDR2_EL0 from ``PTR->TPIDR2_EL0``.
+
 
 Pseudo-code examples
 ====================
