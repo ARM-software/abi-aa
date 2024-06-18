@@ -252,9 +252,10 @@ changes to the content of the document for that release.
 | 2023Q3     | 6\ :sup:`th`       | In `Data Types`_  include _BitInt(N) in language mapping.        |
 |            | October 2023       |                                                                  |
 +------------+--------------------+------------------------------------------------------------------+
-|            |                    | - Change the status of the SME support from Alpha to Beta.       |
-|            |                    | - Add soft-float PCS variant.                                    |
+| 2024Q2     | 18\ :sup:'th'      | - Change the status of the SME support from Alpha to Beta.       |
+|            | June 2024          | - Add soft-float PCS variant.                                    |
 |            |                    | - Add the __arm_get_current_vg SME support routine.              |
+|            |                    | - Clarify use of it when preserving z and p registers.           |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -901,13 +902,14 @@ contents of a single Scalable Vector Type (see `Scalable vectors`_).
 That is, scalable vector register z0 is an extension of SIMD and
 Floating-Point register v0.
 
-z0-z7 are used to pass scalable vector arguments to a subroutine, and to
-return scalable vector results from a function. If a subroutine takes
-at least one argument in scalable vector registers or scalable predicate
-registers, or if it is a function that returns results in such registers,
-it must ensure that the entire contents of z8-z23 are preserved across
-the call. In other cases it need only preserve the low 64 bits of z8-z15,
-as described in `SIMD and Floating-Point registers`_.
+z0-z7 are used to pass scalable vector arguments to a subroutine, and
+to return scalable vector results from a function. If a subroutine
+takes at least one argument in scalable vector registers or scalable
+predicate registers, or returns results in such regisers, the
+subroutine must ensure that the entire contents of z8-z23 are
+preserved across the call. In other cases it need only preserve the
+low 64 bits of z8-z15, as described in `SIMD and Floating-Point
+registers`_.
 
 Scalable Predicate Registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -918,12 +920,13 @@ the scalable vector registers are available (see `Scalable vector registers`_).
 Each register can store the contents of a Scalable Predicate Type
 (see `Scalable Predicates`_).
 
-p0-p3 are used to pass scalable predicate arguments to a subroutine and
-to return scalable predicate results from a function. If a subroutine takes
-at least one argument in scalable vector registers or scalable predicate
-registers, or if it is a function that returns results in such registers,
-it must ensure that p4-p15 are preserved across the call. In other cases
-it need not preserve any scalable predicate register contents.
+p0-p3 are used to pass scalable predicate arguments to a subroutine
+and to return scalable predicate results from a function. If a
+subroutine takes at least one argument in scalable vector registers or
+scalable predicate registers, or returns results in such registers,
+the subroutine must ensure that p4-p15 are preserved across the
+call. In other cases it need not preserve any scalable predicate
+register contents.
 
 SME state
 ---------
