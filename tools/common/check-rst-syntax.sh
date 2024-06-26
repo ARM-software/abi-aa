@@ -38,6 +38,9 @@ declare -a docs=(
 
     # semihosting
     "semihosting"
+
+    # atomics
+    "atomicsabi64"
 )
 
 for doc in "${docs[@]}"; do
