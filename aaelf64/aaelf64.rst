@@ -940,6 +940,15 @@ A ``RELA`` format relocation must be used if the initial addend cannot be encode
 
 There is no PC bias to accommodate in the relocation of a place containing an instruction that formulates a PC- relative address. The program counter reflects the address of the currently executing instruction.
 
+There are two special cases for forming the initial addend of REL-type relocations where the immediate field cannot normally hold small signed integers:
+
+* For relocations processing MOVZ and MOVK instructions (including the "MOV (wide immediate)" alias), the initial addend is formed by interpreting the 16-bit literal field of the instruction as a 16-bit signed value in the range -32768 <= A < 32768. The interpretation is the same whether or not the instruction applies a left shift to its immediate: the addend is never treated as shifted.
+
+* For relocations processing the ADRP instruction, the initial addend is similarly formed by interpreting the literal field of the instruction as a 21-bit signed integer, in the range -1048576 <= A < 1048576. The ADRP instruction's implicit left shift of 12 bits is not applied.
+
+These special cases permit a sequence of instructions to each add the same small constant to a symbol's value, and extract separate ranges of bits from the sum, so that the instruction sequence as a whole consistently loads the full result of the addition.
+
+In the case of a sequence using ADRP followed by a 12-bit ADD to set up the low bits of the offset, you can express an offset up to 1048576 in either direction, by writing the full offset in the ADRP's immediate field, and repeating its low 12 bits in the ADD's immediate field. A linker resolving the R_AARCH64_ADD_ABS_LO12_NC relocation on the ADD will not compute the correct overall 64-bit value, but the error will only be in the higher bits, which are discarded by that relocation.
 
 Relocation types
 ^^^^^^^^^^^^^^^^
