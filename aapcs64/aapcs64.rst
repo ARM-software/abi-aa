@@ -1952,8 +1952,8 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   |                       |                                                                                        |
   | C.13                  |                                                                                        |
   +-----------------------+----------------------------------------------------------------------------------------+
-  |                       | The NSAA is rounded up to the larger of 8 or the Natural Alignment of the argument’s   |
-  |                       | type.                                                                                  |
+  |                       | The NSAA is rounded up to the nearest multiple of the larger of 8 or the Natural       |
+  |                       | Alignment of the argument’s type.                                                      |
   | C.14                  |                                                                                        |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is a composite type then the argument is copied to memory at the       |
