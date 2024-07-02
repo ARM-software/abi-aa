@@ -1036,6 +1036,7 @@ In ELF32 **(Beta)** relocations additional care must be taken when relocating an
     R_<CLS>_TLSIE_ADR_GOTTPREL_PAGE21,
     R_<CLS>_TLSDESC_ADR_PAGE21
 
+Relocations using the ``GDAT(S)`` operation must have a zero addend. Previous versions of this document included the addend ``A`` in ``GDAT(S + A)`` resulting in a GOT entry for ``S + A``. With a zero addend ``GDAT(S + 0)`` is equivalent to ``GDAT(S)`` and ``GDAT(S) + 0``.
 
 Static miscellaneous relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1240,19 +1241,19 @@ The following tables record single instruction relocations and relocations that 
   +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                           | Operation         | Comment                                                              |
   +============+============+================================+===================+======================================================================+
-  | 300        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G0     | G(GDAT(S+A)) -GOT | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)  |
+  | 300        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G0     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)  |
   +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 301        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G0\_NC | G(GDAT(S+A)) -GOT | Set a MOVK immediate field to bits [15:0] of X. No overflow check    |
+  | 301        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G0\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate field to bits [15:0] of X. No overflow check    |
   +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 302        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G1     | G(GDAT(S+A)) -GOT | Set a MOV[NZ] immediate value to bits [31:16] of X (see notes below) |
+  | 302        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G1     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [31:16] of X (see notes below) |
   +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 303        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G1\_NC | G(GDAT(S+A)) -GOT | Set a MOVK immediate value to bits [31:16] of X. No overflow check   |
+  | 303        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G1\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate value to bits [31:16] of X. No overflow check   |
   +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 304        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G2     | G(GDAT(S+A)) -GOT | Set a MOV[NZ] immediate value to bits [47:32] of X (see notes below) |
+  | 304        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G2     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [47:32] of X (see notes below) |
   +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 305        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G2\_NC | G(GDAT(S+A)) -GOT | Set a MOVK immediate value to bits [47:32] of X. No overflow check   |
+  | 305        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G2\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate value to bits [47:32] of X. No overflow check   |
   +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 306        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G3     | G(GDAT(S+A)) -GOT | Set a MOV[NZ] immediate value to bits [63:48] of X (see notes below) |
+  | 306        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G3     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [63:48] of X (see notes below) |
   +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
 
 .. note::
@@ -1274,7 +1275,7 @@ The following tables record single instruction relocations and relocations that 
   | 308        | \-         | R\_<CLS>\_GOTREL32   | S+A-GOT          | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT, treated as signed;    |
   |            |            |                      |                  | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                                           |
   +------------+------------+----------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
-  | 315        | \-         | R\_<CLS>\_GOTPCREL32 | G(GDAT(S+A))- P  | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT entry for an address,  |
+  | 315        | \-         | R\_<CLS>\_GOTPCREL32 | G(GDAT(S))- P    | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT entry for an address,  |
   |            |            |                      |                  | treated as signed; Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                        |
   +------------+------------+----------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
 
@@ -1287,19 +1288,19 @@ The following tables record single instruction relocations and relocations that 
   +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
   | ELF64 Code  | ELF32 Code | Name                          | Operation                  | Comment                                                                                              |
   +=============+============+===============================+============================+======================================================================================================+
-  | 309         | 25         | R\_<CLS>\_GOT\_LD\_PREL19     | G(GDAT(S+A))- P            | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`      |
+  | 309         | 25         | R\_<CLS>\_GOT\_LD\_PREL19     | G(GDAT(S))- P              | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`      |
   +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 310         | \-         | R\_<CLS>\_LD64\_GOTOFF\_LO15  | G(GDAT(S+A))- GOT          | Set a LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0           |
+  | 310         | \-         | R\_<CLS>\_LD64\_GOTOFF\_LO15  | G(GDAT(S))- GOT            | Set a LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0           |
   +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 311         | 26         | R\_<CLS>\_ADR\_GOT\_PAGE      | Page(G(GDAT(S+A)))-Page(P) | Set the immediate value of an ADRP to bits [32:12] of X; check that –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  | 311         | 26         | R\_<CLS>\_ADR\_GOT\_PAGE      | Page(G(GDAT(S)))-Page(P)   | Set the immediate value of an ADRP to bits [32:12] of X; check that –2\ :sup:`32` <= X < 2\ :sup:`32`|
   +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 312         | \-         | R\_<CLS>\_LD64\_GOT\_LO12\_NC | G(GDAT(S+A))               | Set the LD/ST immediate field to bits [11:3] of X. No overflow check; check that X&7 = 0             |
+  | 312         | \-         | R\_<CLS>\_LD64\_GOT\_LO12\_NC | G(GDAT(S))                 | Set the LD/ST immediate field to bits [11:3] of X. No overflow check; check that X&7 = 0             |
   +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | \-          | 27         | R\_<CLS>\_LD32\_GOT\_LO12\_NC | G(GDAT(S+A))               | Set the LD/ST immediate field to bits [11:2] of X. No overflow check; check that X&3 = 0             |
+  | \-          | 27         | R\_<CLS>\_LD32\_GOT\_LO12\_NC | G(GDAT(S))                 | Set the LD/ST immediate field to bits [11:2] of X. No overflow check; check that X&3 = 0             |
   +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 313         | \-         | R\_<CLS>\_LD64\_GOTPAGE\_LO15 | G(GDAT(S+A))-Page(GOT)     | Set the LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0         |
+  | 313         | \-         | R\_<CLS>\_LD64\_GOTPAGE\_LO15 | G(GDAT(S))-Page(GOT)       | Set the LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0         |
   +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | \-          | 28         | R\_<CLS>\_LD32\_GOTPAGE\_LO14 | G(GDAT(S+A))-Page(GOT)     | Set the LD/ST immediate field to bits [13:2] of X; check that 0 <= X < 2\ :sup:`14`, X&3 = 0         |
+  | \-          | 28         | R\_<CLS>\_LD32\_GOTPAGE\_LO14 | G(GDAT(S))-Page(GOT)       | Set the LD/ST immediate field to bits [13:2] of X; check that 0 <= X < 2\ :sup:`14`, X&3 = 0         |
   +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
 
 
