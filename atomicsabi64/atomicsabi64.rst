@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2024Q1
-.. |date-of-issue| replace:: 5\ :sup:`th` April 2024
+.. |date-of-issue| replace:: 5\ :sup:`th` July 2024
 .. |copyright-date| replace:: 2024
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -79,6 +79,11 @@ Acknowledgement
 This document came about in the process of Luke Geeson’s PhD on testing the
 compilation of concurrent C/C++ with assistance from Wilco Dijkstra from Arm's
 Compiler Teams.
+
+This ABI arises from a paper to appear at OOPSLA 2024:
+*Mix Testing: Specifying and Testing ABI Compatibility Of C/C++ Atomics Implementations*
+by Luke Geeson, James Brotherston, Wilco Dijkstra, Alastair Donaldson, Lee Smith,
+Tyler Sorensen, and John Wickerson.
 
 
 
@@ -213,7 +218,7 @@ changes to the content of the document for that release.
   +---------+------------------------------+-------------------------------------------------------------------+
   | Issue   | Date                         | Change                                                            |
   +=========+==============================+===================================================================+
-  | 00alp0  | 5\ :sup:`th` April 2024.     | Alpha release.                                                    |
+  | 00alp0  | 5\ :sup:`th` July 2024.      | Beta release.                                                     |
   +---------+------------------------------+-------------------------------------------------------------------+
   
 
@@ -1187,10 +1192,6 @@ Where ``X1`` contains the address of ``loc``.
 
 We annotate Mappings affected with ``*`` in section 4.2.
 
-Please refer to 
-`Appendix: Read-Modify-Write Destination Register Semantics`_ for information on why
-this example must be documented.
-
 Const-Qualified 128-bit Atomic Loads Should Be Marked Mutable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1212,9 +1213,7 @@ aforementioned Mappings. We test if there is a compiled program that exhibits
 an outcome of execution according to the AArch64 Memory Model contained in §B2
 of the Arm Architecture Reference Manual [ARMARM_] that is not an outcome of
 execution of the source program under the ISO C model. In this section we
-define the process by which we test compatibility. Please refer to 
-`Appendix: Mix Testing`_ for information on how ABI-compatibility is tested.
-
+define the process by which we test compatibility. 
 
 Definition of ABI-Compatibility for Atomic Operations
 -----------------------------------------------------
@@ -1250,164 +1249,5 @@ Appendix: Mix Testing
 The status of this appendix is informative.
 
 
-The Mix Testing Process
------------------------
 
-We test for Compiler bugs, a Compiler Bug is defined as an outcome of a
-compiled program execution (under the AArch64 Memory Model contained in
-§B2 of the Arm Architecture Reference Manual [ARMARM_]) that is not 
-an outcome of execution of the source Concurrent Program (under the 
-ISO C memory model). Consider the hypothetical example where a source
-Concurrent Program finishes execution in one of three possible outcomes
-(a reference for this notation is found here [PAPER_])::
-
-  { thread_0:r0=0, thread_1:r0=1 }
-  { thread_0:r0=1, thread_1:r0=0 }
-  { thread_0:r0=1, thread_1:r0=1 }
-
-and one possible compiled program outcome has the following according to the
-AArch64 Memory Model contained in §B2 of the Arm Architecture Reference Manual
-[ARMARM_]::
-
-  { thread_0:X3=0, thread_1:X3=0 } <--- Forbidden by source model, Compiler Bug!
-  { thread_0:X3=0, thread_1:X3=1 }
-  { thread_0:X3=1, thread_1:X3=0 }
-  { thread_0:X3=1, thread_1:X3=1 }
-
-By comparing ``X3`` and the local variable ``r0`` of the original Concurrent
-Program in this example we see there is one additional outcome of executing the
-compiled program that is not an outcome of executing the source program (under
-the respective models). This suggests the Mappings under question are
-incompatible, and a compiler that implements them exhibits a Compiler Bug. To
-ensure compatibility we therefore test for the absence of such outcomes of the
-compiled programs when mixing all combinations of the above Mappings. We define
-the *Mix Testing* process as follows:
-
-#. Take an arbitrary Concurrent Program, when executed on the C/C++ memory
-   model will produce outcomes *S*.
-#. Split out the individual Atomic Operations from the initial concurrent
-   program into individual source files.
-#. Compile each individual source file containing an Atomic Operation 
-   using each Compiler Profile under test that generates Assembly Sequences
-   under a given Mapping.
-#. Combine the Assembly Sequences from above into *multiple* possible Compiled
-   Programs.
-#. Compute the outcomes of each compiled program under the AArch64 Memory Model
-   contained in §B2 of the Arm Architecture Reference Manual [ARMARM_]. Get a
-   *set* of compiled program outcomes *C*.
-#. If any compiled program set of outcomes *c* in *C* exhibits a Compiler Bug
-   (Check that *c* is a subset of *S*) with then the given Mappings are not
-   interoperable. 
-
-
-Appendix: Read-Modify-Write Destination Register Semantics
-==========================================================
-
-We elaborate on why in the following example.
-
-Consider the following Concurrent Program:
-
-code-block::
-
-  // Shared-Memory Locations
-  _Atomic int* x;
-  _Atomic int* y;
-
-  // Memory Order Parameter
-  #define relaxed memory_order_relaxed
-  #define release memory_order_release
-  #define acquire memory_order_acquire
-
-  // Threads of Execution
-  void thread_0 () {
-    atomic_store_explicit(x,1,relaxed);
-    atomic_thread_fence(release);
-    atomic_store_explicit(y,1,relaxed);
-  }
-
-  void thread_1 () {
-    atomic_exchange_explicit(y,2,release);
-    atomic_thread_fence(acquire);
-    int r0 = atomic_load_explicit(x,relaxed);
-  }
-
-
-Under ISO C, the above Concurrent Program finishes execution in one of three
-possible outcomes (a reference for this notation is found here [PAPER_])::
-
-  { thread_1:r0=0; y=1; }
-  { thread_1:r0=1; y=1; }
-  { thread_1:r0=1; y=2; }
-
-In this case the value read by the exchange on ``thread_1`` is not used, and a
-compiler is free to remove references to unused data. It is not legal according
-to this ABI for a compliant implementation piler to translate the program into
-the following Assembly Sequences::
-
-  thread_0:
-    MOV W9,#1
-    STR W9,[X2]
-    DMB ISH
-    STR W3,[X4]
-
-  thread_1:
-    MOV W9,#2
-    SWP W9, WZR, [X2]
-    DMB ISHLD
-    LDR W3,[X4]
-
-where ``thread_0:X2`` contains the address of ``x``, ``thread_0:X4`` contains
-the address of ``y``, and ``thread_1:X2`` contains the address of ``y``,
-``thread_1:X4`` contains the address of ``x``.
-
-The ``exchange`` Atomic Operation is compiled to a ``SWP`` Assembly
-Instruction, where its destination register is the zero register ``WZR``. The 
-``acquire`` fence on ``thread_1`` is compiled to the ``DMB ISHLD`` Assembly 
-Instruction.
-
-Executing the compiled program on an Arm-based machine from a fixed initial
-state (where ``x`` and ``y`` are ``0``) produces one of the following outcomes,
-according to the AArch64 Memory Model contained in §B2 of the Arm Architecture
-Reference Manual [ARMARM_]::
-
-  { thread_1:r0=0; [y]=1; }
-  { thread_1:r0=0; [y]=2; } <-- Forbidden by source model, a bug!
-  { thread_1:r0=1; [y]=1; }
-  { thread_1:r0=1; [y]=2; }
-
-By comparing ``W3`` and the local variable ``r0`` of the original Concurrent
-Program we see there is one additional outcome of executing the compiled
-program that is not an outcome of executing the Concurrent Program. This is due
-to the fact that according to the Arm Architecture Reference Manual [ARMARM_] 
-*instructions where the destination register is WZR or XZR, are not regarded as
-doing a read for the purpose of a DMB LD barrier.*
-
-In this case the compiler introduces another outcome of Execution. To fix this
-issue, a compiler is not permitted to rewrite the destination register to be the
-zero register in this case::
-
-  thread_0:
-    MOV W9,#1
-    STR W9,[X2]
-    DMB ISH
-    STR W3,[X4]
-
-  thread_1:
-    MOV W9,#2
-    SWP W9, W10, [X2]
-    DMB ISHLD
-    LDR W3,[X4]
-
-Executing the compiled program on an Arm-based machine from a fixed initial
-state (where ``x`` and ``y`` are ``0``) produces one of the following outcomes,
-according to the AArch64 Memory Model contained in §B2 of the Arm Architecture
-Reference Manual [ARMARM_]::
-
-  { thread_1:r0=0; [y]=1; }
-  { thread_1:r0=1; [y]=1; }
-  { thread_1:r0=1; [y]=2; }
-
-As such the unexpected outcome has disappeared. There are multiple Mappings
-that exhibit this behaviour, those affected make use of ``SWP`` and ``LD<OP>``
-Assembly instructions.
 
