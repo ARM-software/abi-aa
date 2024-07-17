@@ -1218,9 +1218,8 @@ define the process by which we test compatibility.
 Definition of ABI-Compatibility for Atomic Operations
 -----------------------------------------------------
 
-*A compiler that implements the above set of Mappings is ABI-Compatible with
-respect to other compilers that implement the Mappings, if Mix Testing their
-code generation finds no Compiler Bugs.*
+*A compiler that implements the above set of Mappings and special cases is ABI-Compatible with
+respect to other compilers that implement the Mappings and special cases.*
 
 We impose some constraints on this definition:
 
