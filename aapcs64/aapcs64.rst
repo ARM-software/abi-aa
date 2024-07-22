@@ -892,7 +892,10 @@ thread-local storage on platforms where multi-threaded code is
 supported.  The exact location of such information is platform
 specific.
 
-The FPMR is system register that controls behaviors of the FP8 instructions. It is a temporary register. The state of the register must be held in thread-local storage on platforms where multi-threaded code is supported.
+The FPMR is system register that controls behaviors of the FP8 instructions. It
+is a temporary register. The state of the register must be held in thread-local
+storage on platforms where multi-threaded code is supported. The exact location
+of that storage is platform specific.
 
 Scalable vector registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
