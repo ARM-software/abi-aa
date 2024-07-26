@@ -43,6 +43,41 @@ changes.
 If you want to make ABI changes that for some reason can't be discussed in
 public, you can send an email to arm.eabi@arm.com.
 
+### Extension documents
+While the majority of new proposals can be added to existing
+documents. Proposals that extend the ABI, but are not yet stable are
+placed in an extension document. An example of an extension document
+is the PAuth Extension to ELF for Arm 64-bit Architecture. Extension
+documents have the following requirements:
+
+1. The document status must be Alpha.
+2. The document has an owner recorded in the table below. The owner
+   need not be from Arm.
+3. The document must not clash with other ABI extension documents, or
+   both extensions must be marked as being incompatible.
+
+
+The Arm approval process for accepting the extension is as follows:
+
+1. At least one person within Arm has reviewed and accepted the pull
+   request.
+2. There is a consensus within Arm that the extension can be added to
+   the ABI.
+
+Extension documents can move into the main ABI when the following conditions hold:
+
+1. The information in the document is stable.
+2. There is an implementation of the extension.
+3. The boundaries of when the extension applies are clear.
+
+An extension document that moves into the main ABI will add the
+necessary information to the main documents. In addition any design
+and rationale in the extension document will be moved to a new
+document in the design-documents folder.
+
+When the extension has either moved into the main ABI or has been
+withdrawn it will be moved to an archive folder.
+
 ## Manual checking of the PDF documents and Continuous Integration
 
 To check the outcome of your changes, run the `tools/rst2pdf/generate-pdfs.sh`
