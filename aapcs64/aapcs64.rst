@@ -2046,7 +2046,7 @@ The soft-float variant is defined identically to the base variant, with these ch
 
 * The definition of ``va_list`` is unchanged. The ``__vr_top`` and ``__vr_offs`` fields may be left uninitialised by ``va_start``, and their values must not be relied on by ``va_arg``.
 
-* The calling convention for Short Vector, Scalable Vector and Scalable Predicate machine types is left undefined.
+* The calling convention for Short Vector, Scalable Vector, and Scalable Predicate machine types is left undefined.
 
 .. raw:: pdf
 
