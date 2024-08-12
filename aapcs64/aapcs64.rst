@@ -2282,7 +2282,7 @@ a lazy save, with the subroutine having the following properties:
 **(Beta)**
 
 Platforms that support SME must provide a subroutine to query the current
-value of VG, with the subroutine having the following properties:
+value of VG, and the subroutine must have the following properties:
 
 * The subroutine is called ``__arm_get_current_vg``.
 

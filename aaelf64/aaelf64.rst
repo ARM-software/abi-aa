@@ -1870,27 +1870,27 @@ At this time this ABI specifies no generic platform architecture compatibility d
 Program Property
 ----------------
 
-The information on Program Property has been moved to [SYSVABI64_].
+The information on Program Property has moved to [SYSVABI64_].
 
 Program Loading
 ---------------
 
-The information on program loading has been moved to [SYSVABI64_].
+The information on program loading has moved to [SYSVABI64_].
 
 Dynamic Linking
 ---------------
 
-The information on Dynamic Linking has been moved to [SYSVABI64_].
+The information on Dynamic Linking has moved to [SYSVABI64_].
 
 Dynamic Section
 ---------------
 
-The information on the Dynamic Section has been moved to [SYSVABI64_].
+The information on the Dynamic Section has moved to [SYSVABI64_].
 
 Custom PLTs
 ^^^^^^^^^^^^
 
-The information on custom PLTs has been moved to [SYSVABI64_].
+The information on custom PLTs has moved to [SYSVABI64_].
 
 .. raw:: pdf
 
