@@ -380,21 +380,24 @@ MemtagABI adds the following processor-specific dynamic array tags:
   respectively). Binaries compiled with clang-17 and lld-17 produced the dynamic
   entries with ``DT_AARCH64_MEMTAG_STACK`` as ``d_val`` and
   ``DT_AARCH64_MEMTAG_GLOBALS`` as ``d_ptr`` as this was the intended semantics,
-  and they were shipped on Android devices. The values were thus updated to
+  and they were shipped on Android devices. The values were updated to
   their more fitting semantic types (without updating the ``Value``), but this
   does mean that ``DT_AARCH64_MEMTAG_STACK`` is a ``d_val`` with an even
   ``Value``, and ``DT_AARCH64_MEMTAG_GLOBALS`` is a ``d_ptr`` with an odd
   ``Value`` (where the normal semantics are ``odd == d_val``, and ``even ==
-  d_ptr``). Implementations of dynamic loaders need to be careful to apply these
+  d_ptr``). Implementations of dynamic loaders should be careful to apply these
   semantics correctly - notably the load bias should not be applied to
   ``DT_AARCH64_MEMTAG_STACK``, as it's a ``d_val``, even though the ``Value`` is
   even.
 
 ``DT_AARCH64_MEMTAG_MODE`` indicates the initial MTE mode that should be set. It
-has two possible values: ``0``, indicating that the desired MTE mode is
-Synchronous, and ``1``, indicating that the desired mode is Asynchronous. This
-entry is only valid on the main executable, usage in dynamically loaded objects
-is ignored.
+has two possible values:
+
+* ``0``, indicating that the desired MTE mode is Synchronous
+* ``1``, indicating that the desired mode is Asynchronous.
+
+This entry is only valid on the main executable, usage in dynamically loaded
+objects is ignored.
 
 The presence of the ``DT_AARCH64_MEMTAG_HEAP`` dynamic array entry indicates
 that heap allocations should be protected with memory tagging. Implementation of
