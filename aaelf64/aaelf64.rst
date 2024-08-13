@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2011, 2013, 2018-2023, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2011, 2013, 2018-2024, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q3
-.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
-.. |copyright-date| replace:: 2011, 2013, 2018-2023
+.. |release| replace:: 2024Q3
+.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
+.. |copyright-date| replace:: 2011, 2013, 2018-2024
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
@@ -272,13 +272,14 @@ changes to the content of the document for that release.
   |               |                    | - In `Program Loading`_, Relax BTI PLT  |
   |               |                    |   requirement                           |
   +---------------+--------------------+-----------------------------------------+
-  | 2023Q4        | 24\ :sup:`th`      | - In `Program Property`_,               |
-  |               | October 2023       |   `Program Loading`_ and                |
-  |               |                    |   `Dynamic Linking`. Move description to|
-  |               |                    |   `SYSVABI64`_                          |
-  +---------------+--------------------+-----------------------------------------+
-  | 2024Q1        | 18\ :sup: `th`     | - Move relocation codes from            |
-  |               | March 2024         |   `PAUTHABIELF64`_ into reserved space  |
+  | 2024Q3        | 5\ :sup:`th`       | - In `Program Property`_,               |
+  |               | September 2024     |   `Program Loading`_, and               |
+  |               |                    |   `Dynamic Linking`_, move description  |
+  |               |                    |   to `SYSVABI64`_.                      |
+  |               |                    | - Move relocation codes from            |
+  |               |                    |   `PAUTHABIELF64`_ into reserved space. |
+  |               |                    | - Clarify use of addends in MOVZ, MOVK, |
+  |               |                    |    and ADRP                             |
   +---------------+--------------------+-----------------------------------------+
 
 References

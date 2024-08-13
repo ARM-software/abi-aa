@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2024Q1
-.. |date-of-issue| replace:: 19\ :sup:`th` August 2024
+.. |release| replace:: 2024Q3
+.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
 .. |copyright-date| replace:: 2024
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -211,14 +211,12 @@ Change History
 If there is no entry in the change history table for a release, there are no
 changes to the content of the document for that release.
 
-.. class:: atomicsabi64-change-history
-
-.. table::
+.. class:: atomicsabi64-change
 
   +---------+------------------------------+-------------------------------------------------------------------+
   | Issue   | Date                         | Change                                                            |
   +=========+==============================+===================================================================+
-  | 00alp0  | 19\ :sup:`th` August 2024.   | Alpha Release.                                                    |
+  | 00alp0  | 5\ :sup:`th` September 2024  | Alpha Release.                                                    |
   +---------+------------------------------+-------------------------------------------------------------------+
 
 
@@ -227,7 +225,7 @@ References
 
 This document refers to, or is referred to by, the following documents.
 
-.. table::
+.. class :: atomicsabi64-refs
 
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | Ref         | External reference or URL                                    | Title                                                                       |

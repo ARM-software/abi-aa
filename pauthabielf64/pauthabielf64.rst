@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2020-2023, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2020-2024, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q3
-.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
-.. |copyright-date| replace:: 2020-2023
+.. |release| replace:: 2024Q3
+.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
+.. |copyright-date| replace:: 2020-2024
 
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -235,10 +235,13 @@ changes to the content of the document for that release.
   | 2023Q3     | 6\ :sup:`th` October 2023   | Update tags in `Dynamic Section`_ to avoid conflict with         |
   |            |                             | DT_AARCH64_VARIANT_PCS.                                          |
   +------------+-----------------------------+------------------------------------------------------------------+
-  | 2024Q1     | 29\ :sup:`th` January 2024  | Update preferred ELF marking scheme to be GNU property based     |
-  |            | 18\ :sup:`th` March 2024    | Update relocation codes to move out of private experiments space.|
-  |            | 19\ :sup:`th` March 2024    | Remove alternative ELF marking scheme. No implementation is      |
-  |            |                             | using it.                                                        |
+  | 2024Q3     | 5\ :sup:`th` September 2024 | - Update preferred ELF marking scheme to be GNU property based.  |
+  |            |                             | - Update relocation codes to move out of private experiments     |
+  |            |                             |   space.                                                         |
+  |            |                             | - Remove alternative ELF marking scheme. No implementation is    |
+  |            |                             |   using it.                                                      |
+  |            |                             | - Add R_AARCH64_AUTH_GOT_ADR_PREL_LO21 relocation.               |
+  |            |                             | - Remove addend in GDAT relocation operation.                    |
   +------------+-----------------------------+------------------------------------------------------------------+
 
 References

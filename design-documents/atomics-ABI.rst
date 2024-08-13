@@ -1,5 +1,5 @@
 ..
-   Copyright (c) 2023, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2024, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
@@ -60,7 +60,7 @@ References
 
 This document refers to, or is referred to by, the following documents.
 
-.. table::
+.. class :: atomicsabi64-refs
 
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
   | Ref         | External reference or URL                                    | Title                                                                                         |

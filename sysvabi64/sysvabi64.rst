@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2021-2023, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2021-2024, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q3
-.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
-.. |copyright-date| replace:: 2021-2023
+.. |release| replace:: 2024Q3
+.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
+.. |copyright-date| replace:: 2021-2024
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
@@ -202,15 +202,13 @@ Change History
  | 02Alpha    | 6\ :sup:`th` April 2023      | Define the processor specific interpretation for      |
  |            |                              | DT_PLTGOT                                             |
  +------------+------------------------------+-------------------------------------------------------+
- | 2023Q4     | 22\ :sup:`nd` November 2023  | Added Program Property, Program Loading and           |
- |            |                              | Dynamic Linking contents from `AAELF64`_              |
- |            |                              |                                                       |
- |            |                              | Added Dynamic linking content for GCS including       |
- |            |                              | GNU_PROPERTY_AARCH64_FEATURE_1_GCS Feature Bit        |
- +------------+------------------------------+-------------------------------------------------------+
- | 2024Q1     | 15\ :sup:`th` March 2024     | - In `Dynamic Section Tags`_, reserve tags            |
+ | 2024Q3     | 5\ :sup:`th` September 2024  | - Added Program Property, Program Loading and         |
+ |            |                              |   Dynamic Linking contents from `AAELF64`_.           |
+ |            |                              | - Added Dynamic linking content for GCS including     |
+ |            |                              |   GNU_PROPERTY_AARCH64_FEATURE_1_GCS Feature Bit.     |
+ |            |                              | - In `Dynamic Section Tags`_, reserve tags            |
  |            |                              |   used by `PAuthABIELF64`_ and                        |
- |            |                              | - `MemTagABIELF64`_.                                  |
+ |            |                              |   `MemTagABIELF64`_.                                  |
  +---------------+--------------------+--------------------------------------------------------------+
 
 References
