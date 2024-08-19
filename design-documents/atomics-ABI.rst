@@ -106,8 +106,7 @@ engineers with such issues.
 Backwards Compatibility and New Architecture Features
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Put another way, a baseline ABI assists in deciding whether new mappings are compatible
-with compiler implementations targeting older versions of the Armv8 architecture.
+Put another way, A baseline ABI helps with the decisions of compatibility of new mappings.
 Certain instructions (such as Load/Store-Pair instructions [ARMARM_]) have different
 single-copy atomicity guarantees with respect to different architecture versions. A baseline
 decides which assembly sequences can be composed correctly (at least as far as testing can decide).
@@ -119,21 +118,17 @@ Compatibility Between Compilers and Runtimes
 The above issues also apply when ensuring object files compiled with different compilers can be mixed. 
 For instance LLVM and GCC code should be interoperable. At the time of writing we identified a number of
 places where this does not apply, both when compiling to target the same architecture version, and when mixing
-different (compatible) architecture versions. Further, the above is not limited to statically compiled code. We found
-one instance where proposed mappings implemented in a JiT compiler would not be interoperable with statically 
-compiled code the runtime links against. Even if a JiT compiles under one set of mappings, and is not subject to 
-an ABI, it may still depend on other libraries or components that do have an ABI.
+different (compatible) architecture versions. Further, the above issues are not limited to statically compiled 
+code. We found one instance where proposed mappings implemented in a JiT compiler would not be interoperable 
+with statically compiled code the runtime links against. Even if a JiT compiles under one set of mappings, and 
+is not subject to an ABI, it may still depend on other libraries or components that do have an ABI.
 
 
 Constrain optimisations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-There have been several instances where optimisations have been incorrectly applied,
-or attempts to apply optimisations to atomic code generation that induce unexpected
-concurrent program behaviour. This has happened frequently enough that we need to
-collect these cases together to outline why they should not occur. For example
-
-Consider the following Concurrent Program::
+The frequency of this behaviour justifies collecting these cases together to outline why they should not occur. 
+For example, consider the following Concurrent Program::
 
   // Shared-Memory Locations
   _Atomic int* x;
@@ -203,10 +198,10 @@ Reference Manual [ARMARM_]::
 
 By comparing ``W3`` and the local variable ``r0`` of the original Concurrent
 Program we see there is one additional outcome of executing the compiled
-program that is not an outcome of executing the Concurrent Program. The Arm 
-Architecture Reference Manual [ARMARM_] states that *instructions where the 
-destination register is WZR or XZR, are not regarded as doing a read for the 
-purpose of a DMB LD barrier.*
+program that is not an outcome of executing the Concurrent Program. This is 
+because the Arm Architecture Reference Manual [ARMARM_] states that 
+*instructions where the destination register is WZR or XZR, are not regarded 
+as doing a read for the purpose of a DMB LD barrier.*
 
 In this case the compiler introduces another outcome of Execution. To fix this
 issue, a compiler is not permitted to rewrite the destination register to be the

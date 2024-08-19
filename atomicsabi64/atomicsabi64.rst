@@ -48,9 +48,9 @@ Abstract
 
 This document describes the C/C++ Atomics Application Binary Interface for the
 Arm 64-bit architecture. This document concerns the valid Mappings from C/C++
-Atomic Operations to sequences of A64 instructions. Regarding the memory model, 
-please consult §B2 of the Arm Architecture Reference Manual [ARMARM_]. This 
-document only focusses on a subset of C11 atomic operations.
+Atomic Operations to sequences of A64 instructions. For further information 
+on the memory model, refer to §B2 of the Arm Architecture Reference Manual [ARMARM_]. 
+This document only focusses on a subset of C11 atomic operations.
 
 Keywords
 --------
@@ -243,8 +243,8 @@ This document refers to, or is referred to by, the following documents.
 
 
 
-Note: At the time of writing C23 is not released, as such ISO C17 is considered
-the latest published document.
+Note: At the time of writing, C23 is not released. Therefore, ISO C17 is considered 
+the most recently published document.
 
 .. raw:: pdf
 
