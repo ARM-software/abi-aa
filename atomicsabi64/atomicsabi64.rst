@@ -4,7 +4,7 @@
    See LICENSE file for details
 
 .. |release| replace:: 2024Q1
-.. |date-of-issue| replace:: 5\ :sup:`th` July 2024
+.. |date-of-issue| replace:: 19\ :sup:`th` August 2024
 .. |copyright-date| replace:: 2024
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -14,6 +14,7 @@
 .. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
 .. _CSTD: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1548.pdf
 .. _PAPER: https://doi.org/10.1109/CGO57630.2024.10444836
+.. _OOPSLA: https://2024.splashcon.org/track/splash-2024-oopsla#event-overview
 
 *********************************************************************************************
 C/C++ Atomics Application Binary Interface Standard for the Arm\ :sup:`®` 64-bit Architecture
@@ -47,10 +48,9 @@ Abstract
 
 This document describes the C/C++ Atomics Application Binary Interface for the
 Arm 64-bit architecture. This document concerns the valid Mappings from C/C++
-Atomic Operations to sequences of A64 instructions. For matters concerning the
-memory model, please consult §B2 of the Arm Architecture Reference Manual
-[ARMARM_]. We focus only on a subset of the C11 atomic operations at the time
-of writing.
+Atomic Operations to sequences of A64 instructions. Regarding the memory model, 
+please consult §B2 of the Arm Architecture Reference Manual [ARMARM_]. This 
+document only focusses on a subset of C11 atomic operations.
 
 Keywords
 --------
@@ -76,11 +76,11 @@ on GitHub
 Acknowledgement
 ---------------
 
-This document came about in the process of Luke Geeson’s PhD on testing the
+This ABI was written as part of Luke Geeson’s PhD on testing the
 compilation of concurrent C/C++ with assistance from Wilco Dijkstra from Arm's
 Compiler Teams.
 
-This ABI arises from a paper to appear at OOPSLA 2024:
+It is an offshoot from a paper that will be presented at OOPSLA 2024 [OOPSLA_]:
 *Mix Testing: Specifying and Testing ABI Compatibility Of C/C++ Atomics Implementations*
 by Luke Geeson, James Brotherston, Wilco Dijkstra, Alastair Donaldson, Lee Smith,
 Tyler Sorensen, and John Wickerson.
@@ -203,7 +203,7 @@ specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-All content in this document is at the **Alpha** quality level.
+All content in this document is at the **Release** quality level.
 
 Change History
 --------------
@@ -218,7 +218,7 @@ changes to the content of the document for that release.
   +---------+------------------------------+-------------------------------------------------------------------+
   | Issue   | Date                         | Change                                                            |
   +=========+==============================+===================================================================+
-  | 00alp0  | 5\ :sup:`th` July 2024.      | Beta release.                                                     |
+  | 00rel0  | 19\ :sup:`th` August 2024.   | Release.                                                          |
   +---------+------------------------------+-------------------------------------------------------------------+
   
 
@@ -282,7 +282,7 @@ Thread of Execution
    Synchronization Operations or other C language statements. The Arm
    Architecture Reference Manual [ARMARM_] calls these *Observers*. Typically a
    thread is defined as a function (e.g. a POSIX thread) although we do not
-   limit threads to such implementations.
+   limit threads to this type of implementation.
 
 Atomic Operation
    A C/C++ operation on a Shared-Memory Location. Typically either a load,
@@ -301,7 +301,7 @@ Concurrent Program
    Arm-based machines that run the A64 instruction set.
 
 Synchronization Operation
-   The order that atomic operations are executed by each Thread of Execution
+   The order in which atomic operations are executed by each Thread of Execution
    may not be the same as the order they are written in the program.
    Synchronization Operations are statements that constrain the order of
    accesses made to Shared-Memory Locations by each thread. Synchronization
@@ -347,10 +347,10 @@ Overview
 ========
 
 The C/C++ Atomics ABI for the Arm 64-bit architecture (AABI64) comprises the
-following sub-components.
+following sub-components:
 
-* The `Mappings from Atomic Operations to Assembly Sequences`_, which defines
-  the Mappings from C/C++ atomic operations to sto one of more Assembly 
+* The `Mappings from Atomic Operations to Assembly Sequences`_ defines
+  the Mappings from C/C++ atomic operations to the Assembly 
   Sequences that are interoperable with respect to each other.
 
 * A `Declarative statement of Mappings compatibility`_, as far as
@@ -367,12 +367,9 @@ Assembly Sequences. Since there is a large number of ways these Mappings may be
 combined, we break down the tables by the width of the access, and list
 compatible Assembly Sequences for each Atomic Operation.
 
-This is an open ABI, we encourage improvements to this specification to be
-submitted to the `issue tracker page on
+This is an open ABI, we encourage suggestions and improvements to this 
+specification to be submitted to the `issue tracker page on
 GitHub <https://github.com/ARM-software/abi-aa/issues>`_.
-
-These Mappings are not exhaustive, but aim to cover the atomics we have tested.
-Please request more atomics using the issue tracker.
 
 Notational Conventions
 ----------------------
@@ -1125,12 +1122,12 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
 
 
 We do not list other variants of ``fetch_<op>`` since their Mappings should be
-the same (modulo implementations of <op> that are not in scope of this
+the same (modulo implementations of <op> that are not in scope for this
 document). Precisely, implementations that use loops should use the instructions
 that load or store from memory with the relevant memory order, and the
 appropriate <op> Assembly Sequence inside the loop. Exceptions, where Assembly 
-Sequences exist, are stated (for instance ``fetch_or`` can be implemented using
-``LDSETP`` when the LSE128 extension is enabled).
+Sequences exist, are stated. For instance ``fetch_or`` can be implemented using
+``LDSETP`` when the LSE128 extension is enabled.
 
 Special Cases
 -------------
@@ -1157,7 +1154,7 @@ LSE2/LRCPC3 sequence when available.
 Declarative statement of Mappings compatibility
 ===============================================
 
-To ensure that the above Mappings are ABI-compatible we tested the compilation of
+To ensure that the above Mappings are ABI-compatible we test the compilation of
 Concurrent Programs, where each Atomic Operation is compiled to one of the
 aforementioned Mappings. We test if there is a compiled program that exhibits
 an outcome of execution according to the AArch64 Memory Model contained in §B2
@@ -1168,7 +1165,7 @@ define the process by which we test compatibility.
 Definition of ABI-Compatibility for Atomic Operations
 -----------------------------------------------------
 
-*A compiler that implements the above set of Mappings and special cases is ABI-Compatible with
+*A compiler that implement these Mappings and special cases is ABI-Compatible with
 respect to other compilers that implement the Mappings and special cases.*
 
 We impose some constraints on this definition:
@@ -1183,10 +1180,10 @@ We impose some constraints on this definition:
   ABI-Compatibility of Concurrent Programs outside these bounds.
 * We test Concurrent Programs with a fixed initial state, loop unroll factor
   (equal to 1 loop unroll), and function calls or recursion. 
-* The above Mappings are not exhaustive, we recommend that Arm's partners
+* The above Mappings are not exhaustive. We recommend that Arm's partners
   submit requests for other Mappings to the ABI team using the `issue tracker page on GitHub <https://github.com/ARM-software/abi-aa/issues>`_.
 * This document makes no statement about the ABI-Compatibility of optimised
-  Concurrent Programs, nor does a statement concerning the performance of
+  Concurrent Programs, nor does it make a statement concerning the performance of
   compiled programs under the above Mappings when executed on a given Arm-based
   machine.
 * This document makes no statement about the ABI-Compatibility of compilers
