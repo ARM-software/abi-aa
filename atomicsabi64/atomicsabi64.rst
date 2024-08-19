@@ -15,6 +15,7 @@
 .. _CSTD: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1548.pdf
 .. _PAPER: https://doi.org/10.1109/CGO57630.2024.10444836
 .. _OOPSLA: https://2024.splashcon.org/track/splash-2024-oopsla#event-overview
+.. _RATIONALE: https://github.com/ARM-software/abi-aa/design-documents/atomics-ABI.rst
 
 *********************************************************************************************
 C/C++ Atomics Application Binary Interface Standard for the Arm\ :sup:`®` 64-bit Architecture
@@ -47,9 +48,9 @@ Abstract
 --------
 
 This document describes the C/C++ Atomics Application Binary Interface for the
-Arm 64-bit architecture. This document concerns the valid Mappings from C/C++
-Atomic Operations to sequences of AArch64 instructions. For further information 
-on the memory model, refer to §B2 of the Arm Architecture Reference Manual [ARMARM_]. 
+Arm 64-bit architecture. This document lists the valid Mappings from C/C++
+Atomic Operations to sequences of AArch64 instructions. For further information
+on the memory model, refer to §B2 of the Arm Architecture Reference Manual [ARMARM_].
 
 Keywords
 --------
@@ -219,7 +220,7 @@ changes to the content of the document for that release.
   +=========+==============================+===================================================================+
   | 00rel0  | 19\ :sup:`th` August 2024.   | Release.                                                          |
   +---------+------------------------------+-------------------------------------------------------------------+
-  
+
 
 References
 ----------
@@ -237,13 +238,13 @@ This document refers to, or is referred to by, the following documents.
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | AAELF64_    | ELF for the Arm 64-bit Architecture (AArch64)                | ELF for the Arm 64-bit Architecture (AArch64)                               |
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | CPPABI64_   | C++ ABI for the Arm 64-bit Architecture (AArch64)            | C++ ABI for the Arm 64-bit Architecture (AArch64)                           |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | RATIONALE_  | Rationale Document for C11 Atomics ABI                       | Rationale Document for C11 Atomics ABI                                      |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | PAPER_      | CGO paper                                                    | Compiler Testing with Relaxed Memory Models                                 |
   +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
 
-
-
-Note: At the time of writing, C23 is not released. Therefore, ISO C17 is considered 
-the most recently published document.
 
 .. raw:: pdf
 
@@ -294,11 +295,8 @@ Memory Order Parameter
    Atomic Operations. ISO C/C++ defines a ``memory_order`` enum type for the set
    of memory orders.
 
-Assembly Sequence
-   A sequence of AArch64 instructions.
-
 Mapping
-   A Mapping from an Atomic Operation to an Assembly Sequence.
+   A Mapping from an Atomic Operation to a sequence of AArch64 instructions.
 
 .. raw:: pdf
 
@@ -307,78 +305,22 @@ Mapping
 Overview
 ========
 
-The C/C++ Atomics ABI for the Arm 64-bit architecture (AABI64) comprises the
-following sub-components:
+`AArch64 atomics`_ defines the Mappings from C/C++ atomic operations
+to AArch64 that are interoperable.
 
-* The `Mappings from Atomic Operations to Assembly Sequences`_ defines
-  the Mappings from C/C++ atomic operations to the Assembly 
-  Sequences that are interoperable with respect to each other.
+Arbitrary registers may be used in the Mappings. Instructions marked with ``*``
+in the tables cannot use ``WZR`` or ``XZR`` as a destination register. This is
+further detailed in `Special Cases`_.
 
-* A `Declarative statement of Mappings compatibility`_, as far as
-  non-exhaustive testing can validate, that the aforementioned Mappings can be
-  used together. That is, there is no tested combination of Mappings that
-  induces unexpected program behaviour when a compiled program that uses
-  atomics is executed on a multi-core Arm-based machine.
+Only some variants of ``fetch_<op>`` are listed since the Mappings are identical
+except for a different ``<op>``.
 
-Mappings from Atomic Operations to Assembly Sequences
-=====================================================
-
-We now describe the compatible Mappings for C/C++ Atomic Operations and
-Assembly Sequences. Since there is a large number of ways these Mappings may be
-combined, we break down the tables by the width of the access, and list
-compatible Assembly Sequences for each Atomic Operation.
-
-This is an open ABI, we encourage suggestions and improvements to this 
-specification to be submitted to the `issue tracker page on
-GitHub <https://github.com/ARM-software/abi-aa/issues>`_.
-
-Notational Conventions
-----------------------
-To reduce repetition, we use the following notational conventions
-
-.. table::
-
-  +-----------------------------------------+--------------------------------------+
-  | Memory Order Parameter                  | Notation                             | 
-  +=========================================+======================================+
-  | ``memory_order_relaxed``                | ``relaxed``                          |
-  +-----------------------------------------+--------------------------------------+
-  | ``memory_order_acquire``                | ``acquire``                          |
-  +-----------------------------------------+--------------------------------------+
-  | ``memory_order_release``                | ``release``                          |
-  +-----------------------------------------+--------------------------------------+
-  | ``memory_order_acq_rel``                | ``acq_rel``                          |
-  +-----------------------------------------+--------------------------------------+
-  | ``memory_order_seq_cst``                | ``seq_cst``                          |
-  +-----------------------------------------+--------------------------------------+
-
-Arbitrary registers may be used in the Assembly Sequences that may change in
-compiler implementations. Cases where arbitrary registers may *not* be used are
-covered in the Special Cases section.
-
-Further, in what follows there may be multiple valid Mappings from Atomic
-Operation to Assembly Sequence, as made available by a given architecture
-extension. In this case we split the rows of the table to represent multiple
-options.
-
-.. table::
-
-  +--------------------------------------------------------+--------------------------------------+
-  | Atomic Operation                                       | Assembly Sequence                    | 
-  +============================================+===========+======================================+
-  | ``atomic_store_explicit(loc,val,relaxed)`` | ARCH1     | ``option A``                         |
-  +                                            +-----------+--------------------------------------+
-  |                                            | ARCH2     | ``option B``                         |
-  +--------------------------------------------+-----------+--------------------------------------+
-
-Where ARCH is either the base architecture (Armv8-A) or an extension like FEAT_LSE.
-
-Lastly, all operations are in a shorthand form:
+Atomic operations and Memory Order are abbreviated as follows:
 
 .. table::
 
   +----------------------------------------------------+--------------------------------------+
-  | Atomic Operation                                   | ShortHand Atomic Operation           | 
+  | Atomic Operation                                   | Short form                           |
   +====================================================+======================================+
   | ``atomic_store_explicit(...)``                     | ``store(...)``                       |
   +----------------------------------------------------+--------------------------------------+
@@ -388,17 +330,54 @@ Lastly, all operations are in a shorthand form:
   +----------------------------------------------------+--------------------------------------+
   | ``atomic_exchange_explicit(...)``                  | ``exchange(...)``                    |
   +----------------------------------------------------+--------------------------------------+
-  | ``atomic_fetch_add_explicit(...)``                 | ``fetch_add(...)``                   | 
+  | ``atomic_fetch_add_explicit(...)``                 | ``fetch_add(...)``                   |
   +----------------------------------------------------+--------------------------------------+
-  | ``atomic_fetch_sub_explicit(...)``                 | ``fetch_sub(...)``                   | 
+  | ``atomic_fetch_sub_explicit(...)``                 | ``fetch_sub(...)``                   |
   +----------------------------------------------------+--------------------------------------+
-  | ``atomic_fetch_or_explicit(...)``                  | ``fetch_or(...)``                    | 
+  | ``atomic_fetch_or_explicit(...)``                  | ``fetch_or(...)``                    |
   +----------------------------------------------------+--------------------------------------+
-  | ``atomic_fetch_xor_explicit(...)``                 | ``fetch_xor(...)``                   | 
+  | ``atomic_fetch_xor_explicit(...)``                 | ``fetch_xor(...)``                   |
   +----------------------------------------------------+--------------------------------------+
-  | ``atomic_fetch_and_explicit(...)``                 | ``fetch_and(...)``                   | 
+  | ``atomic_fetch_and_explicit(...)``                 | ``fetch_and(...)``                   |
   +----------------------------------------------------+--------------------------------------+
 
+.. table::
+
+  +----------------------------------------------------+--------------------------------------+
+  | Memory Order Parameter                             | Short form                           |
+  +====================================================+======================================+
+  | ``memory_order_relaxed``                           | ``relaxed``                          |
+  +----------------------------------------------------+--------------------------------------+
+  | ``memory_order_acquire``                           | ``acquire``                          |
+  +----------------------------------------------------+--------------------------------------+
+  | ``memory_order_release``                           | ``release``                          |
+  +----------------------------------------------------+--------------------------------------+
+  | ``memory_order_acq_rel``                           | ``acq_rel``                          |
+  +----------------------------------------------------+--------------------------------------+
+  | ``memory_order_seq_cst``                           | ``seq_cst``                          |
+  +----------------------------------------------------+--------------------------------------+
+
+If there are multiple Mappings for an Atomic Operation, the rows of the table
+show the options:
+
+.. table::
+
+  +----------------------------------------------------+--------------------------------------+
+  | Atomic Operation                                   | AArch64                              |
+  +========================================+===========+======================================+
+  | ``store(loc,val,relaxed)``             | ARCH1     | ``option A``                         |
+  +                                        +-----------+--------------------------------------+
+  |                                        | ARCH2     | ``option B``                         |
+  +----------------------------------------+-----------+--------------------------------------+
+
+Where ARCH is either the base architecture (Armv8-A) or an extension like FEAT_LSE.
+
+
+Suggestions and improvements to this specification may be submitted to:
+`issue tracker page on GitHub <https://github.com/ARM-software/abi-aa/issues>`_.
+
+AArch64 atomics
+===============
 
 Mappings for 32-bit types
 -------------------------
@@ -410,7 +389,7 @@ returned in ``W0``.
 .. table::
 
   +-----------------------------------------------------+--------------------------------------+
-  | Atomic Operation                                    | Assembly Sequence                    |
+  | Atomic Operation                                    | AArch64                              |
   +=====================================================+======================================+
   | ``store(loc,val,relaxed)``                          | .. code-block:: none                 |
   |                                                     |                                      |
@@ -602,17 +581,13 @@ returned in ``W0``.
   |                                     |               |                                      |
   |                                     |               |    CASAL  W0, W2, [X1] *             |
   +-------------------------------------+---------------+--------------------------------------+
-  | Note                                                                                       |
-  +--------------------------------------------------------------------------------------------+
-  | ``*`` Using ``WZR`` or ``XZR`` for the destination register is invalid (Section 4.7).      |
-  +--------------------------------------------------------------------------------------------+
 
 
 Mappings for 8-bit types
 ------------------------
 
 The Mappings for 8-bit types are the same as 32-bit types except they use the
-``B`` variants of instructions. 
+``B`` variants of instructions.
 
 
 Mappings for 16-bit types
@@ -634,14 +609,14 @@ Since the access width of 128-bit types is double that of the 64-bit register
 width, the following Mappings use *pair* instructions, which require their own
 table.
 
-In what follows, register ``X4`` contains the location ``loc``, ``X2`` and 
+In what follows, register ``X4`` contains the location ``loc``, ``X2`` and
 ``X3`` contain the input value ``val``. ``X0`` and ``X1`` contain input ``exp`` in
 compare-exchange. The result is returned in ``X0`` and ``X1``.
 
 .. table::
 
   +-----------------------------------------------------+--------------------------------------+
-  | Atomic Operation                                    | Assembly Sequence                    |
+  | Atomic Operation                                    | AArch64                              |
   +=====================================+===============+======================================+
   | ``store(loc,val,relaxed)``          | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -1080,80 +1055,24 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
 
 
 
-
-
-We do not list other variants of ``fetch_<op>`` since their Mappings should be
-the same (modulo implementations of <op> that are not in scope for this
-document). Precisely, implementations that use loops should use the instructions
-that load or store from memory with the relevant memory order, and the
-appropriate <op> Assembly Sequence inside the loop. Exceptions, where Assembly 
-Sequences exist, are stated. For instance ``fetch_or`` can be implemented using
-``LDSETP`` when the LSE128 extension is enabled.
-
 Special Cases
--------------
+=============
 
 Read-Modify-Write atomics must not use the zero register
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------
 
 ``CAS``, ``SWP`` and ``LD<OP>`` instructions must not use the zero register if
 the result is not used since it allows reordering of the read past a
-``DMB ISHLD`` barrier. Affected instructions are marked with ``*`` in section 4.2.
+``DMB ISHLD`` barrier. Affected instructions are marked with ``*``.
 
-Const-Qualified 128-bit Atomic Loads Should Be Marked Mutable
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Const-Qualified 128-bit Atomic Loads
+------------------------------------
 
 Const-qualified data containing 128-bit atomic types should not be placed
 in read-only memory (such as the ``.rodata`` section).
 
-Before LSE2, the only way to implement a single-copy 128-bit atomic load
+Before FEAT_LSE2, the only way to implement a single-copy 128-bit atomic load
 is by using a Read-Modify-Write sequence. The write is not visible to
 software if the memory is writeable. Compilers and runtimes should prefer the
-LSE2/LRCPC3 sequence when available.
-
-
-Declarative statement of Mappings compatibility
-===============================================
-
-To ensure that the above Mappings are ABI-compatible we test the compilation of
-Concurrent Programs, where each Atomic Operation is compiled to one of the
-aforementioned Mappings. We test if there is a compiled program that exhibits
-an outcome of execution according to the AArch64 Memory Model contained in §B2
-of the Arm Architecture Reference Manual [ARMARM_] that is not an outcome of
-execution of the source program under the ISO C model. In this section we
-define the process by which we test compatibility. 
-
-Definition of ABI-Compatibility for Atomic Operations
------------------------------------------------------
-
-*A compiler that implement these Mappings and special cases is ABI-Compatible with
-respect to other compilers that implement the Mappings and special cases.*
-
-We impose some constraints on this definition:
-
-* This is not a correctness guarantee, but rather a statement backed up by
-  bounded testing. C/C++ Atomics ABI-compatibility is thus tested for the Mappings
-  above by generating C/C++ Concurrent Programs that permute combinations of
-  Atomic Operations on each Thread of Execution. We bound our test size between
-  2 and 5 threads, where each thread has at least 1 atomic operation or fence and
-  at most 5 atomic operations or fences. We do not make any statement about the
-  ABI-Compatibility of Concurrent Programs outside these bounds.
-* We test Concurrent Programs with a fixed initial state, loop unroll factor
-  (equal to 1 loop unroll), and function calls or recursion. 
-* The above Mappings are not exhaustive. We recommend that Arm's partners
-  submit requests for other Mappings to the ABI team using the `issue tracker page on GitHub <https://github.com/ARM-software/abi-aa/issues>`_.
-* This document makes no statement about the ABI-Compatibility of optimised
-  Concurrent Programs, nor does it make a statement concerning the performance of
-  compiled programs under the above Mappings when executed on a given Arm-based
-  machine.
-* This document makes no statement about the ABI-Compatibility of compilers
-  that implement Mappings other than what is stated in this document.
-
-Appendix: Mix Testing
-=====================
-
-The status of this appendix is informative.
-
-
-
+FEAT_LSE2/FEAT_LRCPC3 sequence when available.
 
