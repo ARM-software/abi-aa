@@ -48,9 +48,8 @@ Abstract
 
 This document describes the C/C++ Atomics Application Binary Interface for the
 Arm 64-bit architecture. This document concerns the valid Mappings from C/C++
-Atomic Operations to sequences of A64 instructions. For further information 
+Atomic Operations to sequences of AArch64 instructions. For further information 
 on the memory model, refer to §B2 of the Arm Architecture Reference Manual [ARMARM_]. 
-This document only focusses on a subset of C11 atomic operations.
 
 Keywords
 --------
@@ -256,9 +255,6 @@ Terms and Abbreviations
 The C/C++ Atomics ABI for the Arm 64-bit Architecture uses the following terms and
 abbreviations.
 
-A64
-   The instruction set available when in AArch64 state.
-
 AArch64
    The 64-bit general-purpose register width state of the Armv8 architecture.
 
@@ -277,67 +273,32 @@ ABI
 Arm-based
    ... based on the Arm architecture ...
 
-Thread of Execution
-   A unit of computation that executes one or more Atomic Operations,
-   Synchronization Operations or other C language statements. The Arm
-   Architecture Reference Manual [ARMARM_] calls these *Observers*. Typically a
-   thread is defined as a function (e.g. a POSIX thread) although we do not
-   limit threads to this type of implementation.
+Thread
+   A unit of computation (e.g. a POSIX thread) of a process, managed by the OS.
 
 Atomic Operation
-   A C/C++ operation on a Shared-Memory Location. Typically either a load,
-   store, exchange, compare, or arithmetic instruction (such as a fetch and add
-   operation). Atomics are used to define higher level primitives including
-   locks and concurrent queues. ISO C defines the range of supported atomic
-   operations and the ``atomic`` type. Operations on atomic-qualified data are
-   guaranteed not to be interrupted by another Thread of Execution.
+   An indivisble operation on a memory location. This can be a load, store,
+   exchange, compare, or arithmetic operation. Atomics may be used to define
+   higher level primitives including locks and concurrent queues. ISO C/C++
+   defines a range of supported atomic types and operations.
 
 Concurrent Program
-   A C or C++ program that consists of one or more Threads of Execution. Each
-   Thread of Execution must communicate with other threads in the Concurrent
-   Program through Shared-Memory Locations, using both Atomic Operations and
-   Non-Atomic Operations (Operations that lack the atomic qualifier) to be
-   deemed *concurrent*. This document focuses on compiling such programs for
-   Arm-based machines that run the A64 instruction set.
-
-Synchronization Operation
-   The order in which atomic operations are executed by each Thread of Execution
-   may not be the same as the order they are written in the program.
-   Synchronization Operations are statements that constrain the order of
-   accesses made to Shared-Memory Locations by each thread. Synchronization
-   Operations include Thread Fences.
-
-Shared-Memory Location
-   A memory location that can be accessed by any Thread of Execution in the
-   program.
+   A C or C++ program that consists of one or more threads. Threads may
+   communicate with each other through memory locations, using both Atomic
+   Operations and standard memory accesses.
 
 Memory Order Parameter
-   Describes a constraint on an Atomic Operation or Synchronization Operation.
-   Memory Order describes how memory accesses made by Atomic Operations may be
-   ordered with respect to other Atomic Operations and Synchronization
-   Operations. ISO C defines a ``memory_order`` enum type to capture the
-   possible memory order parameters.
-
-Thread Fence 
-   A Thread Fence is a Synchronization Operation that constrains the order of
-   Accesses made by Atomic Operations on a given Thread of Execution. Fences
-   are equipped with a Memory Order Parameter that specifies which kinds of
-   accesses may be reordered before or after the fence. ISO C defines the
-   ``atomic_thread_fence`` to synchronize the order of accesses made by atomic
-   operations on ``_Atomic`` qualified data.
+   The order of memory accesses as executed by each thread may not be the same
+   as the order they are written in the program. The Memory Order describes
+   how memory accesses are ordered with respect to other memory accesses or
+   Atomic Operations. ISO C/C++ defines a ``memory_order`` enum type for the set
+   of memory orders.
 
 Assembly Sequence
-   A sequence of A64 instructions, optionally including Atomic Instructions.
+   A sequence of AArch64 instructions.
 
 Mapping
-   A Mapping takes an Atomic Operation and Compiler Profile as input, 
-   producing an Assembly Sequence as output.
-
-Compiler Profile
-   A Compiler implementation and command-line flags or attributes that use
-   Mappings.
-
-More specific terminology is defined when it is first used.
+   A Mapping from an Atomic Operation to an Assembly Sequence.
 
 .. raw:: pdf
 
@@ -1174,9 +1135,8 @@ We impose some constraints on this definition:
   bounded testing. C/C++ Atomics ABI-compatibility is thus tested for the Mappings
   above by generating C/C++ Concurrent Programs that permute combinations of
   Atomic Operations on each Thread of Execution. We bound our test size between
-  2 and 5 Threads of Execution, where each Thread has at least 1 Atomic
-  Operation or Synchronization Operation and at most 5 Atomic Operations or
-  Synchronization Operations. We do not make any statement about the
+  2 and 5 threads, where each thread has at least 1 atomic operation or fence and
+  at most 5 atomic operations or fences. We do not make any statement about the
   ABI-Compatibility of Concurrent Programs outside these bounds.
 * We test Concurrent Programs with a fixed initial state, loop unroll factor
   (equal to 1 loop unroll), and function calls or recursion. 
