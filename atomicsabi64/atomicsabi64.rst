@@ -394,9 +394,6 @@ To reduce repetition, we use the following notational conventions
   | ``memory_order_seq_cst``                | ``seq_cst``                          |
   +-----------------------------------------+--------------------------------------+
 
-In what follows ``loc`` refers to the location, ``val`` refers to a value
-parameter.
-
 Arbitrary registers may be used in the Assembly Sequences that may change in
 compiler implementations. Cases where arbitrary registers may *not* be used are
 covered in the Special Cases section.
@@ -449,7 +446,8 @@ Mappings for 32-bit types
 -------------------------
 
 In what follows, register ``X1`` contains the location ``loc`` and ``W2``
-contains ``val``. The result is returned in ``W0``.
+contains ``val``. ``W0`` contains input ``exp`` in compare-exchange.  The result is
+returned in ``W0``.
 
 .. table::
 
@@ -587,7 +585,8 @@ contains ``val``. The result is returned in ``W0``.
   |                                     |               |    LDADDAL W0, W2, [X1] *            |
   +-------------------------------------+---------------+--------------------------------------+
   | ``compare_exchange_strong(``        | ``Armv8-A``   | .. code-block:: none                 |
-  |   ``loc,&exp,val,relaxed,relaxed)`` |               |                                      |
+  |   ``loc,exp,val,relaxed,relaxed)``  |               |                                      |
+  |                                     |               |      MOV    W4, W0                   |
   |                                     |               |    loop:                             |
   |                                     |               |      LDXR   W0, [X1]                 |
   |                                     |               |      CMP    W0, W4                   |
@@ -601,7 +600,8 @@ contains ``val``. The result is returned in ``W0``.
   |                                     |               |    CAS    W0, W2, [X1] *             |
   +-------------------------------------+---------------+--------------------------------------+
   | ``compare_exchange_strong(``        | ``Armv8-A``   | .. code-block:: none                 |
-  |   ``loc,&exp,val,acquire,acquire)`` |               |                                      |
+  |   ``loc,exp,val,acquire,acquire)``  |               |                                      |
+  |                                     |               |      MOV    W4, W0                   |
   |                                     |               |    loop:                             |
   |                                     |               |      LDAXR  W0, [X1]                 |
   |                                     |               |      CMP    W0, W4                   |
@@ -615,7 +615,8 @@ contains ``val``. The result is returned in ``W0``.
   |                                     |               |    CASA   W0, W2, [X1] *             |
   +-------------------------------------+---------------+--------------------------------------+
   | ``compare_exchange_strong(``        | ``Armv8-A``   | .. code-block:: none                 |
-  |   ``loc,&exp,val,release,release)`` |               |                                      |
+  |   ``loc,exp,val,release,release)``  |               |                                      |
+  |                                     |               |      MOV    W4, W0                   |
   |                                     |               |    loop:                             |
   |                                     |               |      LDXR   W0, [X1]                 |
   |                                     |               |      CMP    W0, W4                   |
@@ -629,9 +630,10 @@ contains ``val``. The result is returned in ``W0``.
   |                                     |               |    CASL   W0, W2, [X1] *             |
   +-------------------------------------+---------------+--------------------------------------+
   | ``compare_exchange_strong(``        | ``Armv8-A``   | .. code-block:: none                 |
-  |   ``loc,&exp,val,acq_rel,acquire)`` |               |                                      |
+  |   ``loc,exp,val,acq_rel,acquire)``  |               |                                      |
+  |                                     |               |      MOV    W4, W0                   |
   | ``compare_exchange_strong(``        |               |    loop:                             |
-  |   ``loc,&exp,val,seq_cst,seq_cst)`` |               |      LDAXR  W0, [X1]                 |
+  |   ``loc,exp,val,seq_cst,seq_cst)``  |               |      LDAXR  W0, [X1]                 |
   |                                     |               |      CMP    W0, W4                   |
   |                                     |               |      B.NE   fail                     |
   |                                     |               |      STLXR  W3, W2, [X1]             |
@@ -675,7 +677,8 @@ width, the following Mappings use *pair* instructions, which require their own
 table.
 
 In what follows, register ``X4`` contains the location ``loc``, ``X2`` and 
-``X3`` contain the input value. The result is returned in ``X0`` and ``X1``.
+``X3`` contain the input value ``val``. ``X0`` and ``X1`` contain input ``exp`` in
+compare-exchange. The result is returned in ``X0`` and ``X1``.
 
 .. table::
 
@@ -1132,35 +1135,12 @@ Sequences exist, are stated (for instance ``fetch_or`` can be implemented using
 Special Cases
 -------------
 
-There are special cases in the Mappings presented above, these must be handled
-in order to prevent unexpected outcomes of the compiled program. The special 
-cases are identified below.
+Read-Modify-Write atomics must not use the zero register
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Re-Ordering of Read-Modify-Write Effects and Acquire Fence
-* Const-Qualified 128-bit Atomic Loads
-
-Destination Register Should Not Be Zero Register for Read-Modify-Writes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A compiler is not permitted to rewrite the destination register to be the
-zero register for atomic operations that make use of ``SWP`` and ``LD<OP>``
-Assembly instructions. These include but are not limited to:
-
-.. table::
-
-  +-----------------------------------------+--------------------------------------+
-  | Atomic Operation                        | Assembly Sequence                    |
-  +=========================================+======================================+
-  | ``exchange(loc,val,sc)``                | ``MOV W4, #val;``                    |
-  |                                         | ``SWP W4, W10, [X1]``                |
-  +-----------------------------------------+--------------------------------------+
-  | ``fetch_add(loc,val,sc)``               | ``MOV W4, #val;``                    |
-  |                                         | ``LDADD W4, W10, [X1]``              |
-  +-----------------------------------------+--------------------------------------+
-
-Where ``X1`` contains the address of ``loc``.
-
-We annotate Mappings affected with ``*`` in section 4.2.
+``CAS``, ``SWP`` and ``LD<OP>`` instructions must not use the zero register if
+the result is not used since it allows reordering of the read past a
+``DMB ISHLD`` barrier. Affected instructions are marked with ``*`` in section 4.2.
 
 Const-Qualified 128-bit Atomic Loads Should Be Marked Mutable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1170,7 +1150,7 @@ in read-only memory (such as the ``.rodata`` section).
 
 Before LSE2, the only way to implement a single-copy 128-bit atomic load
 is by using a Read-Modify-Write sequence. The write is not visible to
-software if the memory is writeable. Compilers and runtimes should use the
+software if the memory is writeable. Compilers and runtimes should prefer the
 LSE2/LRCPC3 sequence when available.
 
 
