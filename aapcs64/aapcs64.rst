@@ -1754,7 +1754,6 @@ states of ZA on entry to a subroutine and the possible states of ZA on a
 .. _`private-ZA`:
 .. _`shared-ZA`:
 .. _`agnostic-ZA`:
-.. _`restore-ZA`:
 
 +-------------------+-------------------+---------------------------+
 | Type of interface | ZA state on entry | ZA state on normal return |
