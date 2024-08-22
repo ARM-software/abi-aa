@@ -48,7 +48,7 @@ Abstract
 --------
 
 This document describes the C/C++ Atomics Application Binary Interface for the
-Arm 64-bit architecture. This document lists the valid Mappings from C/C++
+Arm 64-bit architecture. This document lists the valid mappings from C/C++
 Atomic Operations to sequences of AArch64 instructions. For further information
 on the memory model, refer to §B2 of the Arm Architecture Reference Manual [ARMARM_].
 
@@ -296,7 +296,7 @@ Memory Order Parameter
    of memory orders.
 
 Mapping
-   A Mapping from an Atomic Operation to a sequence of AArch64 instructions.
+   A mapping from an Atomic Operation to a sequence of AArch64 instructions.
 
 .. raw:: pdf
 
@@ -305,14 +305,14 @@ Mapping
 Overview
 ========
 
-`AArch64 atomics`_ defines the Mappings from C/C++ atomic operations
+`AArch64 atomic mappings`_ defines the mappings from C/C++ atomic operations
 to AArch64 that are interoperable.
 
-Arbitrary registers may be used in the Mappings. Instructions marked with ``*``
+Arbitrary registers may be used in the mappings. Instructions marked with ``*``
 in the tables cannot use ``WZR`` or ``XZR`` as a destination register. This is
 further detailed in `Special Cases`_.
 
-Only some variants of ``fetch_<op>`` are listed since the Mappings are identical
+Only some variants of ``fetch_<op>`` are listed since the mappings are identical
 except for a different ``<op>``.
 
 Atomic operations and Memory Order are abbreviated as follows:
@@ -357,7 +357,7 @@ Atomic operations and Memory Order are abbreviated as follows:
   | ``memory_order_seq_cst``                           | ``seq_cst``                          |
   +----------------------------------------------------+--------------------------------------+
 
-If there are multiple Mappings for an Atomic Operation, the rows of the table
+If there are multiple mappings for an Atomic Operation, the rows of the table
 show the options:
 
 .. table::
@@ -376,11 +376,34 @@ Where ARCH is either the base architecture (Armv8-A) or an extension like FEAT_L
 Suggestions and improvements to this specification may be submitted to:
 `issue tracker page on GitHub <https://github.com/ARM-software/abi-aa/issues>`_.
 
-AArch64 atomics
-===============
 
-Mappings for 32-bit types
--------------------------
+
+AArch64 atomic mappings
+=======================
+
+Synchronization Fences
+----------------------
+
+  +-----------------------------------------------------+--------------------------------------+
+  | Fence                                               | AArch64                              |
+  +=====================================================+======================================+
+  | ``atomic_thread_fence(relaxed)``                    | .. code-block:: none                 |
+  |                                                     |                                      |
+  |                                                     |    NOP                               |
+  +-----------------------------------------------------+--------------------------------------+
+  | ``atomic_thread_fence(acquire)``                    | .. code-block:: none                 |
+  |                                                     |                                      |
+  |                                                     |    DMB ISHLD                         |
+  +-----------------------------------------------------+--------------------------------------+
+  | ``atomic_thread_fence(release)``                    | .. code-block:: none                 |
+  |                                                     |                                      |
+  | ``atomic_thread_fence(acq_rel)``                    |    DMB ISH                           |
+  |                                                     |                                      |
+  | ``atomic_thread_fence(seq_cst)``                    |                                      |
+  +-------------------------------------+---------------+--------------------------------------+
+
+32-bit types
+------------
 
 In what follows, register ``X1`` contains the location ``loc`` and ``W2``
 contains ``val``. ``W0`` contains input ``exp`` in compare-exchange.  The result is
@@ -414,20 +437,6 @@ returned in ``W0``.
   | ``load(loc,seq_cst)``                               | .. code-block:: none                 |
   |                                                     |                                      |
   |                                                     |    LDAR   W2, [X1]                   |
-  +-----------------------------------------------------+--------------------------------------+
-  | ``fence(relaxed)``                                  | .. code-block:: none                 |
-  |                                                     |                                      |
-  |                                                     |    NOP                               |
-  +-----------------------------------------------------+--------------------------------------+
-  | ``fence(acquire)``                                  | .. code-block:: none                 |
-  |                                                     |                                      |
-  |                                                     |    DMB ISHLD                         |
-  +-----------------------------------------------------+--------------------------------------+
-  | ``fence(release)``                                  | .. code-block:: none                 |
-  |                                                     |                                      |
-  | ``fence(acq_rel)``                                  |    DMB ISH                           |
-  |                                                     |                                      |
-  | ``fence(seq_cst)``                                  |                                      |
   +-------------------------------------+---------------+--------------------------------------+
   | ``exchange(loc,val,relaxed)``       | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -583,30 +592,30 @@ returned in ``W0``.
   +-------------------------------------+---------------+--------------------------------------+
 
 
-Mappings for 8-bit types
-------------------------
+8-bit types
+-----------
 
-The Mappings for 8-bit types are the same as 32-bit types except they use the
+The mappings for 8-bit types are the same as 32-bit types except they use the
 ``B`` variants of instructions.
 
 
-Mappings for 16-bit types
--------------------------
+16-bit types
+------------
 
-The Mappings for 16-bit types are the same as 32-bit types except they use the
+The mappings for 16-bit types are the same as 32-bit types except they use the
 ``H`` variants of instructions.
 
-Mappings for 64-bit types
--------------------------
+64-bit types
+------------
 
-The Mappings for 64-bit types are the same as 32-bit types except the registers
+The mappings for 64-bit types are the same as 32-bit types except the registers
 used are X-registers.
 
-Mappings for 128-bit types
---------------------------
+128-bit types
+-------------
 
 Since the access width of 128-bit types is double that of the 64-bit register
-width, the following Mappings use *pair* instructions, which require their own
+width, the following mappings use *pair* instructions, which require their own
 table.
 
 In what follows, register ``X4`` contains the location ``loc``, ``X2`` and
@@ -1058,8 +1067,8 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
 Special Cases
 =============
 
-Read-Modify-Write atomics must not use the zero register
---------------------------------------------------------
+Unused result in Read-Modify-Write atomics
+------------------------------------------
 
 ``CAS``, ``SWP`` and ``LD<OP>`` instructions must not use the zero register if
 the result is not used since it allows reordering of the read past a
