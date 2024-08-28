@@ -1762,8 +1762,9 @@ states of ZA on entry to a subroutine and the possible states of ZA on a
 +-------------------+-------------------+---------------------------+
 | shared ZA         | active            | active                    |
 +-------------------+-------------------+---------------------------+
-| agnostic ZA       | active, dormant   | unchanged                 |
-|                   | or off            |                           |
+|                   | active or off     | unchanged                 |
+| agnostic ZA       +-------------------+---------------------------+
+|                   | dormant           | unchanged or off          |
 +-------------------+-------------------+---------------------------+
 
 Every subroutine has exactly one ZA interface.  A subroutine's ZA interface
@@ -1780,9 +1781,12 @@ The shared-ZA interface is so called because it allows the subroutine
 to share ZA contents with its caller.  This can be useful if an SME
 operation is split into several cooperating subroutines.
 
-The agnostic-ZA interface is intended to be called from any function without
-requiring a change to PSTATE.ZA and must preserve all state associated with
-PSTATE.ZA.
+The `agnostic-ZA`_ interface is intended to be called from any subroutine
+without requiring a change to PSTATE.ZA. Subroutines with an `agnostic-ZA`_
+interface behave like subroutines with a `private-ZA`_ interface when ZA is
+off or dormant on entry, but must additionally allow ZA to be active on
+entry; in this case, the subroutine must preserve all state associated with
+PSTATE.ZA when returning normally.
 
 Subroutines with a `private-ZA`_ interface and subroutines with a `shared-ZA`_
 interface can both (at their option) choose to guarantee that they
@@ -2341,7 +2345,6 @@ that is large enough to represent all state enabled by PSTATE.ZA.
   * X1-X15, X19-X29 and SP are call-preserved.
   * Z0-Z31 are call-preserved.
   * P0-P15 are call-preserved.
-  * the subroutine `preserves ZA`_.
 
 * The subroutine takes no arguments.
 
@@ -2360,7 +2363,7 @@ that is large enough to represent all state enabled by PSTATE.ZA.
 
   * If the current thread has access to FEAT_SME and PSTATE.ZA is 1,
     X0 contains the total size required to save and restore all SME state
-    enabled under PSTATE.ZA.
+    enabled by PSTATE.ZA.
 
   * Otherwise, X0 contains a size large enough to represent internal state
     required for `__arm_sme_save`_ and `__arm_sme_restore`_.
@@ -2383,12 +2386,6 @@ by PSTATE.ZA.
   * Z0-Z31 are call-preserved.
   * P0-P15 are call-preserved.
 
-* The custom ``ZA`` interface has the following properties:
-
-  * If ZA state is 'off' or 'dormant' on entry, then it is unchanged on normal
-    return.
-  * If ZA state is 'active' on entry, then it is 'dormant' on normal return.
-
 * The subroutine takes the following arguments:
 
   PTR
@@ -2401,29 +2398,31 @@ by PSTATE.ZA.
 * The subroutine behaves as follows:
 
   * If ``PTR`` does not point to a valid buffer with the required size, the
-    behaviour of calling this subroutine is undefined.
+    behavior of calling this subroutine is undefined.
+
+  * If ZA state is 'active' on entry, then it is 'dormant' on normal return.
+    Otherwise the ZA state is unchanged.
 
   * For the address ``PTR->VALID`` at an unspecified offset in the buffer,
-    if the current thread does not have access to SME or if PSTATE.ZA is 0,
-    the value 0 is written to ``PTR->VALID`` and the subroutine returns.
+    the value 0 is written to ``PTR->VALID`` and the subroutine returns, if
+    either of the following conditions is true:
 
-  * For addresses ``PTR->BLK``, ``PTR->ZA`` and ``PTR->TPIDR2_EL0`` at
-    unspecified offsets in the buffer pointed to by ``PTR``:
+    * The current thread does not have access to SME.
 
-    * The subroutine aborts in some platform-specific manner if the current
-      thread does not have access to ``TPIDR2_EL0``.
+    * PSTATE.ZA is 0.
 
-    * The contents of ``TPIDR2_EL0`` are written to ``PTR->TPIDR2_EL0``.
+    * TPIDR2_EL0 is not a NULL pointer.
 
-    * The address ``PTR->ZA`` is written to ``PTR->BLK.za_save_buffer``,
-      the streaming vector length in bytes (``SVL.B``) is written to
-      ``PTR->BLK.num_za_save_slices`` and the address ``PTR->BLK`` is
-      written to ``TPIDR2_EL0``, thus setting up a lazy save.
+  * For addresses ``PTR->BLK`` and ``PTR->ZA`` at unspecified offsets in
+    the buffer pointed to by ``PTR``, the address ``PTR->ZA`` is written to
+    ``PTR->BLK.za_save_buffer``, the streaming vector length in bytes
+    (``SVL.B``) is written to ``PTR->BLK.num_za_save_slices`` and the
+    address ``PTR->BLK`` is written to ``TPIDR2_EL0``, thus setting up a
+    lazy save.
 
-  * If ZT0 is available, then for the address ``PTR->ZT0`` at an
-    unspecified offset in the buffer pointed to by ``PTR``:
-
-    * The contents of ZT0 are written to ``PTR->ZT0``.
+  * If ZT0 is available, then for the address ``PTR->ZT0`` at an unspecified
+    offset in the buffer pointed to by ``PTR``, the contents of ZT0 are written
+    to ``PTR->ZT0``.
 
   * The value 1 is written to ``PTR->VALID``.
 
@@ -2444,57 +2443,47 @@ enabled by PSTATE.ZA.
   * Z0-Z31 are call-preserved.
   * P0-P15 are call-preserved.
 
-* The custom ``ZA`` interface has the following properties:
-
-  * If ZA state is 'off' on entry and SME state needs restoring, then it is
-    'active' on normal return.
-  * If ZA state is 'off' on entry and SME state does not need restoring, then
-    it is 'off' on normal return.
-  * If ZA state is 'dormant' on entry, then it is 'active' on normal return.
-
 * The subroutine takes the following arguments:
 
   PTR
-    a 64-bit data pointer passed in X0 that points to a buffer which
-    is guaranteed to have a size that is equal to or larger than the size
-    returned by `__arm_sme_state_size`_.
+    a 64-bit data pointer passed in X0 that points to a buffer that
+    is initialized by a call to `__arm_sme_save`_.
 
 * The subroutine does not return a value.
 
 * The subroutine behaves as follows:
 
   * If ``PTR`` does not point to a valid buffer with the required size, the
-    behaviour of calling this routine is undefined.
+    behavior of calling this routine is undefined.
+
+  * The ZA state on normal return is the same as the ZA state on entry to the
+    call to `__arm_sme_save`_ that was used to initialize the buffer
+    pointed to by ``PTR``.
 
   * For the address ``PTR->VALID`` at an unspecified offset in the buffer,
-    if the value stored at address ``PTR->VALID`` is 0, then the subroutine does
-    nothing.
+    if the value stored at address ``PTR->VALID`` is 0, then the subroutine
+    does nothing.
 
   * Otherwise, the subroutine aborts in some platform-specific manner if
     either of the following conditions is true:
 
     * The current thread does not have access to SME.
 
-    * The current thread does not have access to ``TPIDR2_EL0`` when PSTATE.ZA
-      is enabled.
+    * ZA state is active on entry.
 
-    * ZA state on entry is 'active', meaning that PSTATE.ZA is enabled and
-      ``TPIDR2_EL0`` is a NULL pointer.
+  * If PSTATE.ZA is 0, the subroutine enables PSTATE.ZA.
 
-  * If PSTATE.ZA is disabled, the subroutine enables PSTATE.ZA.
-
-  * For addresses ``PTR->BLK`` and ``PTR->TPIDR2_EL0``
-    at unspecified offsets in the buffer pointed to by ``PTR``:
+  * For the address ``PTR->BLK`` at an unspecified offset in the buffer
+    pointed to by ``PTR``:
 
     * If ``TPIDR2_EL0`` is a NULL pointer, then the subroutine points X0 to
       ``PTR->BLK`` and calls ``__arm_tpidr2_restore``.
 
-    * The contents of ``PTR->TPIDR2_EL0`` are copied to ``TPIDR2_EL0``.
+    * The value 0 is written to ``TPIDR2_EL0``.
 
   * If ZT0 is available, then for the address ``PTR->ZT0`` at an
-    unspecified offset in the buffer pointed to by ``PTR``:
-
-    * The contents of ``PTR->ZT0`` are copied to ZT0.
+    unspecified offset in the buffer pointed to by ``PTR``, the contents of
+    ``PTR->ZT0`` are copied to ZT0.
 
 
 Pseudo-code examples
