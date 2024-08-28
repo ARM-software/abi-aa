@@ -5,9 +5,25 @@
 
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
 .. _PAPER: https://doi.org/10.1109/CGO57630.2024.10444836
+.. _ATOMICS64: https://github.com/ARM-software/abi-aa/atomicsabi64/atomicsabi64.rst
 
 Rationale Document for C11 Atomics ABI.
 ***************************************
+
+Scope
+=====
+
+This document contains the design rationale for C/C++ Atomics Application 
+Binary Interface Standard for the Arm\ :sup:`®` 64-bit Architecture 
+defined in (ATOMICS64_). Nothing in this document
+is part of the specification. The purpose is to record the rationale
+for the specification as well as alternatives that were considered.
+Any contradictions between this rationale and the specification shall
+be resolved in favor of the specification.
+
+This document assumes that the reader is familiar with (ATOMICS64_)
+and the 32-bit build attributes defined in (ATOMICS64_) and will use
+concepts defined in these documents.
 
 Preamble
 ========
@@ -24,19 +40,19 @@ make:
 - We need to choose a baseline ABI (a set of mappings), that is compatible for all versions of the Armv8 architecture.
 - The mappings should cover atomic accesses of various sign, size, and type accessible through C11 atomic operations using compiler profiles.
 
-The main trade-offs we have identified or have been made aware of are:
+We have identified the following trade-offs:
 
 - Performance of different mappings versus compatibility with all architectures.
 - Whether certain compiler operations lead to unexpected behaviours.
 
 As motivated by the use cases expanded upon below:
 
-- The need for a baseline ABI
-- Knowing when an implementation departs from that baseline
-- Backwards compatibility of atomics as new mappings are added
-- Compatibility between compilers and runtimes
-- The need to constrain optimisations on specific atomic operations
-- Documenting the interoperable mappings
+- The need for a baseline ABI.
+- Knowing when an implementation departs from that baseline.
+- Backwards compatibility of atomics as new mappings are added.
+- Compatibility between compilers and runtimes.
+- The need to constrain optimisations on specific atomic operations.
+- Documenting the interoperable mappings.
 - providing a basis upon which ABI compatibility can be tested.
 
 References
@@ -59,18 +75,18 @@ This document refers to, or is referred to by, the following documents.
 Note: At the time of writing C23 is not released, as such ISO C17 is considered
 the latest published document.
 
-Use-cases known of so far
--------------------------
+Known use-cases
+---------------
 
 
 A Baseline: Describing current implementations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ABI we provide is a baseline specification that compilers should or do implement.
-The ABI provides a grounds to be compatible across all versions of the Armv8 architecture. Most
-of the mappings in the ABI are already implemented in LLVM and GCC and this ABI ratifies
-a decade of established practice, and provides alternatives where the current practice
-is incompatible.
+The ABI we provide is a baseline specification that compilers should implement.
+Compilers that implement the baseline specification are compatible across all versions 
+of the Armv8 architecture. Most of the mappings in the ABI are already implemented in 
+LLVM and GCC and this ABI ratifies a decade of established practice, and provides 
+alternatives where the current practice is incompatible.
 
 
 Sub-ABIs and ABI-islands: Departing from the baseline (or 'mainland')
@@ -88,14 +104,15 @@ unintentionally introduced into compilers when new mappings are added.
 We need a baseline ABI in order to determine if a given sub-ABI respects or departs
 from the baseline. Adding command-line options is a logical consequence of defining such an ABI, 
 and makes it possible to track ABI compatibility of concurrent programs at compile or link-time,
-rather than runtime. It is the responsibility of the sub-ABI maintainer to ensure code built
+rather than runtime. It is the responsibility of the sub-ABI user to ensure code built
 under their ABI does not mix with code built under the baseline. But a baseline must exist 
 for sub-ABI compatibility to be decided in the first place.
 
-A baseline provides the means to describe or contain ABI-islands. Where a compiler implementation
-departs from the baseline completely (an ABI-island), it would be the responsibility of the
-maintainer of that implementation to ensure their programs are not mixed with programs built for 
-baseline ABI compatibility, or provide adequate warnings at compile time. 
+Where a compiler implementation departs from the baseline completely (an ABI-island), 
+Arm cannot provide any statement on the compatibility of the extensions with respect 
+to the baseline specification. In the ABI-island, which could be a known incompatibility 
+with the base-line then users should not mix ABIs. It is QoI whether a toolchain is 
+able to diagnose incompatibility.
 
 Further, numerous parties have asked the ABI team whether the same atomics mapping is correct. 
 Writing down the known cases helps engineers answer these queries without the concurrency 
