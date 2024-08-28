@@ -266,7 +266,7 @@ Concurrent Program finishes execution in one of three possible outcomes
   { thread_0:r0=1, thread_1:r0=0 }
   { thread_0:r0=1, thread_1:r0=1 }
 
-and one possible compiled program outcome has the following outcomes 
+and one compiled program execution run has the following possible outcomes 
 according to the AArch64 Memory Model contained in §B2 of the Arm 
 Architecture Reference Manual [ARMARM_]::
 
