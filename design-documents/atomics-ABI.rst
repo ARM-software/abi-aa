@@ -116,7 +116,7 @@ able to diagnose incompatibility.
 
 Further, numerous parties have asked the ABI team whether the same atomics mapping is correct. 
 Writing down the known cases helps engineers answer these queries without the concurrency 
-expertise required to come up with current compatible mappings. A future section of the ABI 
+expertise required to come up with current compatible mappings. A future section of this document 
 could document common queries received by the ABI team, in order to assist implementers and 
 engineers with such issues.
 
