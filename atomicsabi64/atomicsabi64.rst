@@ -203,7 +203,7 @@ specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-All content in this document is at the **Release** quality level.
+All content in this document is at the **Alpha** quality level.
 
 Change History
 --------------
