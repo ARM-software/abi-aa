@@ -373,7 +373,7 @@ show the options:
 Where ARCH is either the base architecture (Armv8-A) or an extension like FEAT_LSE.
 
 
-Suggestions and improvements to this specification may be submitted to:
+Suggestions and improvements to this specification may be submitted to the:
 `issue tracker page on GitHub <https://github.com/ARM-software/abi-aa/issues>`_.
 
 

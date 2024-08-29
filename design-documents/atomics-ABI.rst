@@ -15,14 +15,14 @@ Scope
 
 This document contains the design rationale for C/C++ Atomics Application 
 Binary Interface Standard for the Arm\ :sup:`®` 64-bit Architecture 
-defined in (ATOMICS64_). Nothing in this document
+defined in ATOMICS64_. Nothing in this document
 is part of the specification. The purpose is to record the rationale
 for the specification as well as alternatives that were considered.
 Any contradictions between this rationale and the specification shall
 be resolved in favor of the specification.
 
-This document assumes that the reader is familiar with (ATOMICS64_)
-and the 32-bit build attributes defined in (ATOMICS64_) and will use
+This document assumes that the reader is familiar with ATOMICS64_
+and the 32-bit build attributes defined in ATOMICS64_ and will use
 concepts defined in these documents.
 
 Preamble
@@ -45,7 +45,7 @@ We have identified the following trade-offs:
 - Performance of different mappings versus compatibility with all architectures.
 - Whether certain compiler operations lead to unexpected behaviours.
 
-As motivated by the use cases expanded upon below:
+The use cases expanded upon below motivate why we need an atomics abi:
 
 - The need for a baseline ABI.
 - Knowing when an implementation departs from that baseline.
@@ -62,13 +62,15 @@ This document refers to, or is referred to by, the following documents.
 
 .. table::
 
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | Ref         | External reference or URL                                    | Title                                                                       |
-  +=============+==============================================================+=============================================================================+
-  | ARMARM_     | DDI 0487                                                     | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile    |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | PAPER_      | CGO paper                                                    | Compiler Testing with Relaxed Memory Models                                 |
-  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+  | Ref         | External reference or URL                                    | Title                                                                                         |
+  +=============+==============================================================+===============================================================================================+
+  | ARMARM_     | DDI 0487                                                     | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile                      |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+  | PAPER_      | CGO paper                                                    | Compiler Testing with Relaxed Memory Models                                                   |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+  | ATOMICS64_  | Atomics ABI                                                  | C/C++ Atomics Application Binary Interface Standard for the Arm\ :sup:`®` 64-bit Architecture |
+  +-------------+--------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
 
 
 
@@ -195,7 +197,7 @@ the following Assembly Sequences::
     LDR W3,[X4]
 
 where ``thread_0:X2`` contains the address of ``x``, ``thread_0:X4`` contains
-the address of ``y``, and ``thread_1:X2`` contains the address of ``y``,
+the address of ``y``,  ``thread_1:X2`` contains the address of ``y``, and 
 ``thread_1:X4`` contains the address of ``x``.
 
 The ``exchange`` Atomic Operation is compiled to a ``SWP`` Assembly
@@ -266,7 +268,7 @@ The Mix Testing Process
 ABI compatibility must be testable. Concurrency is not trivial, and the ABI
 presents a simplification of part of the problem that is understandable by
 engineers. We provide a simple technique for testing ABI compatibility.
-These techniques reduce the difficulty of checking compatibility from a 
+This technique reduces the difficulty of checking compatibility from a 
 problem of understanding concurrent executions, to the familiar testing 
 domain of comparing program outcomes of tests. This document does not 
 preclude other means of testing compatibility.
