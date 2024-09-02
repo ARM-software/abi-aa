@@ -2486,6 +2486,28 @@ enabled by PSTATE.ZA.
     ``PTR->ZT0`` are copied to ZT0.
 
 
+Dynamic symbols for supported state
+-----------------------------------
+
+A platform that supports SME may provide a set of dynamic symbols.
+
+The availability of these dynamic symbols indicates whether SME state is
+supported by the routines provided by the platform. These symbols
+can be used during dynamic linking to verify that SME state used in the
+program will be handled correctly by the runtime.
+
+This is particularly relevant for calls to `agnostic-ZA`_ functions, which
+can't make assumptions on PSTATE.ZA or what state is enabled by it. These
+functions rely on the routines defined in `SME support routines`_ to preserve
+all SME state that may be live in the caller. The level of support required
+by the program must therefore match the level of support provided by the
+runtime, which for dynamically linked executables can only be asserted
+during dynamic linking.
+
+* ``__arm_sme_routines_support_zt0`` is available when the SME support routines
+  support ZT0.
+
+
 Pseudo-code examples
 ====================
 
