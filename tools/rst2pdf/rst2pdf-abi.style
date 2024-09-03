@@ -342,6 +342,17 @@ styles:
         parent : table
         colWidths: [ 30%, 70% ]
 
+
+    # atomicsabi64 styles
+    atomicsabi64-change:
+        parent : table
+        colWidths: [ 13%, 25%, 57% ]
+
+    atomicsabi64-refs:
+        parent : table
+        colWidths: [ 15%, 40%, 45% ]
+
+
     # vfabia64 styles
     linear-clause:
         parent : table

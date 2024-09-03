@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2002, 2005-2007, 2015, 2018, 2020-2023, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2002, 2005-2007, 2015, 2018, 2020-2024, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q3
-.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
-.. |copyright-date| replace:: 2002, 2005-2007, 2015, 2018, 2020-2023
+.. |release| replace:: 2024Q3
+.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
+.. |copyright-date| replace:: 2002, 2005-2007, 2015, 2018, 2020-2024
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 

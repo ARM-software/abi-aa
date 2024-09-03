@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2022-2023, Google LLC
+   Copyright (c) 2022-2024, Google LLC
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q3
-.. |date-of-issue| replace:: 6\ :sup:`th` October 2023
-.. |copyright-date| replace:: 2022-2023
+.. |release| replace:: 2024Q3
+.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
+.. |copyright-date| replace:: 2022-2024
 
 
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -208,6 +208,9 @@ changes to the content of the document for that release.
   +============+=============================+================================================================+
   | 0.1        | 6\ :sup:`th` March 2023     | Alpha draft release.                                           |
   +------------+-----------------------------+----------------------------------------------------------------+
+  | 2024Q3     | 5\ :sup:`th` September 2024 | In `Dynamic Section`_, switch the d_un of                      |
+  |            |                             | DT_AARCH64_MEMTAG_STACK and DT_AARCH64_MEMTAG_GLOBALS          |
+  +------------+-----------------------------+----------------------------------------------------------------+
 
 References
 ----------
@@ -396,7 +399,7 @@ has two possible values:
 * ``0``, indicating that the desired MTE mode is Synchronous
 * ``1``, indicating that the desired mode is Asynchronous.
 
-This entry is only valid on the main executable, usage in dynamically loaded
+This entry is only valid on the main executable. Usage in dynamically loaded
 objects is ignored.
 
 The presence of the ``DT_AARCH64_MEMTAG_HEAP`` dynamic array entry indicates
