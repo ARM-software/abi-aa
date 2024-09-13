@@ -1646,9 +1646,8 @@ The following bits are defined for GNU_PROPERTY_AARCH64_FEATURE_1_AND:
     +-----------------------------------------+------------+
 
 ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` This indicates that all executable
-sections are compatible with Branch Target Identification mechanism. An
-executable or shared object with this bit set is required to generate
-`Custom PLTs`_ with BTI instruction.
+sections are compatible with Branch Target Identification mechanism. See
+`Tool requirements for generating BTI instructions`_.
 
 ``GNU_PROPERTY_AARCH64_FEATURE_1_PAC`` This indicates that all
 executable sections have been protected with Return Address Signing.
@@ -1671,6 +1670,61 @@ include:
 * Any functions used by the program that manipulate the stack such as
   ``setjmp`` and ``longjmp``, must be aware of GCS.
 
+Tool Requirements for generating BTI instructions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For an executable or shared library to set
+``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` every indirect branch to a
+location in a guarded page must target a BTI instruction that is
+compatible with the PSTATE.BTYPE value. Indirect branches can come
+from:
+
+* Relocatable object producers, such as a compiler or assembler.
+
+* Static linkers when generating PLT sequences or veneers.
+
+* Other executables and shared libraries via call from a PLT or a
+  function pointer.
+
+It is desirable to minimize the number of BTI instructions to limit
+the number of indirect branch destinations in the program. The
+following tool requirements determine which tool has the
+responsibility of inserting the BTI instruction, permitting a tool to
+elide the BTI instuction when it can prove that there are no indirect
+calls to that location.
+
+A relocatable object producer is required to add a BTI instruction to
+the destination of an indirect branch originating in the same
+relocatable object.
+
+A relocatable object producer is required to add a BTI instruction to
+a location when the address of that location escapes out of the
+relocatable object. This includes the locations of all symbols that
+can be exported into the dynamic symbol table by a static linker.
+
+A static linker is required to generate `Custom PLTs`_ with BTI
+instructions.
+
+A static linker that uses indirect branches in veneers is required to
+generate a BTI compatible landing pad if the target does not have a
+compatible BTI instruction at the destination of the veneer. A BTI
+compatible landing pad consists of a BTI instruction followed by a
+direct branch. For example:
+
+.. code-block:: asm
+
+  // Linker generated veneer using indirect bracnh
+  adrp x16, fn
+  add  x16, :lo12: fn
+  br   x16
+  ...
+  // Linker generated BTI landing pad
+  bti c
+  b   fn
+  ...
+  // Destination of veneer without a BTI instruction.
+  fn:
+  // a non BTI instruction.
 
 Program Loading
 ---------------
