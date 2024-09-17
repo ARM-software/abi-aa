@@ -905,7 +905,7 @@ Floating-Point register v0.
 z0-z7 are used to pass scalable vector arguments to a subroutine, and
 to return scalable vector results from a function. If a subroutine
 takes at least one argument in scalable vector registers or scalable
-predicate registers, or returns results in such regisers, the
+predicate registers, or returns results in such registers, the
 subroutine must ensure that the entire contents of z8-z23 are
 preserved across the call. In other cases it need only preserve the
 low 64 bits of z8-z15, as described in `SIMD and Floating-Point
@@ -2852,7 +2852,7 @@ setjmp and longjmp
 The C subroutines ``setjmp`` and ``longjmp`` have a `private-ZA`_
 `non-streaming interface`_.  In addition to the standard requirements
 for such an interface, there is an additional requirement that applies
-specificially to ``setjmp`` and ``longjmp``:
+specifically to ``setjmp`` and ``longjmp``:
 
 * ZA must be in the “off” state when ``setjmp`` returns to its caller via a
   ``longjmp``.
@@ -3016,9 +3016,9 @@ The header file ``arm_neon.h`` also defines a number of intrinsic functions that
   +-----------------+-------------------+--------------------------+-----------+
   | __Poly64x2\_t   | poly64x2\_t       | unsigned double-word     | 2         |
   +-----------------+-------------------+--------------------------+-----------+
-  | __Bfloat16x4\_t | bfloat16x4\_t     | half-precison Brain float| 4         |
-  +-----------------+-------------------+--------------------------+-----------+
-  | __Bfloat16x8\_t | bfloat16x8\_t     | half-precison Brain float| 8         |
+  | __Bfloat16x4\_t | bfloat16x4\_t     | half-precision Brain float| 4         |
+  +-----------------+-------------------+---------------------------+-----------+
+  | __Bfloat16x8\_t | bfloat16x8\_t     | half-precision Brain float| 8         |
   +-----------------+-------------------+--------------------------+-----------+
 
 APPENDIX Support for Scalable vectors
