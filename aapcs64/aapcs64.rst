@@ -2575,7 +2575,7 @@ The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3
   |                                |                                         | significant bits of the type in a big-endian view.  Non-significant    |
   |                                |                                         | bits within the last quad-word are unspecified.                        |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  |  **(Alpha)** ``__mfp8``        | unsigned byte                           | Arm extension. Values are intrepreted as either E5M2 or E4M3,          |
+  |  **(Alpha)** ``__mfp8``        | unsigned byte                           | Arm extension. Values are interpreted as either E5M2 or E4M3,          |
   |                                |                                         | depending on processor mode.                                           |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
 
