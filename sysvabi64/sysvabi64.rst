@@ -1706,7 +1706,8 @@ A static linker is required to generate `Custom PLTs`_ with BTI
 instructions.
 
 A static linker that uses indirect branches in veneers is required to
-generate a BTI compatible landing pad if the target does not have a
+generate a BTI compatible landing pad if the target of the indirect
+branch is defined within the same link unit and does not have a
 compatible BTI instruction at the destination of the veneer. A BTI
 compatible landing pad consists of a BTI instruction followed by a
 direct branch. For example:
@@ -1725,6 +1726,9 @@ direct branch. For example:
   // Destination of veneer without a BTI instruction.
   fn:
   // a non BTI instruction.
+
+A static linker is not required to insert BTI compatible landing pads
+for symbols with section index ``SHN_ABS``.
 
 Program Loading
 ---------------
