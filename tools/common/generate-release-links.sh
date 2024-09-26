@@ -57,10 +57,10 @@ cat <<EOF
 - $(spec aadwarf64 "DWARF for the Arm 64-bit Architecture")
 - $(spec cppabi64 "C++ ABI for the Arm 64-bit Architecture")
 - $(spec vfabia64 "Vector Function ABI for the Arm 64-bit Architecture")
-- $(spec atomicsabi64 "C/C++ Atomics Application Binary Interface Standard for the Arm 64-bit Architecture")
-
-#### PAuth ABI Extension
 - $(spec pauthabielf64 "PAuth ABI Extension to ELF for the Arm 64-bit Architecture")
+- $(spec sysvabi64 "System V ABI for the Arm 64-bit Architecture")
+- $(spec memtagabielf64 "Memtag Extension to ELF for the Arm 64-bit Architecture")
+- $(spec atomicsabi64 "C/C++ Atomics Application Binary Interface Standard for the Arm 64-bit Architecture")
 
 #### Morello Extension
 - $(spec aapcs64-morello "Morello Extension to the Procedure Call Standard for the Arm 64-bit Architecture")
@@ -73,8 +73,5 @@ cat <<EOF
 ### download bundle
 
 PDFs of all the above specifications have also been bundled in this [zip file](${URL}/releases/download/${RELEASE}/Arm-Architecture-ABI-rel-${RELEASE}.zip).
-
-### other specifications
-
-For other ABI specifications, please go to: https://developer.arm.com/architectures/system-architectures/software-standards/abi
 EOF
+
