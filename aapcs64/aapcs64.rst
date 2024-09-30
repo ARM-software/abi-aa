@@ -1903,10 +1903,10 @@ For a caller, sufficient stack space to hold stacked argument values is assumed 
   | When an argument is assigned to a register any unused bits in the register have unspecified value. When an     |
   | argument is assigned to a stack slot any unused padding bytes have unspecified value.                          |
   +-----------------------+----------------------------------------------------------------------------------------+
-  |                       | If the argument is a Half-, Single-, Double- or Quad- precision Floating-point or      |
-  |                       | short vector type and the NSRN is less than 8, then the argument is allocated to the   |
-  | C.1                   | least significant bits of register v[NSRN]. The NSRN is incremented by one. The        |
-  |                       | argument has now been allocated.                                                       |
+  |                       | If the argument is an 8-bit, Half-, Single-, Double- or Quad- precision Floating-point |
+  | C.1                   | or short vector type and the NSRN is less than 8, then the argument is allocated to    |
+  |                       | the least significant bits of register v[NSRN]. The NSRN is incremented by one.        |
+  |                       | The argument has now been allocated.                                                   |
   +-----------------------+----------------------------------------------------------------------------------------+
   |                       | If the argument is an HFA or an HVA and there are sufficient unallocated SIMD and      |
   |                       | Floating-point registers (NSRN + number of members ≤ 8), then the argument is          |
