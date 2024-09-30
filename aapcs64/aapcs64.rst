@@ -538,7 +538,9 @@ Fundamental Data Types
   |                        +---------------------------------------+------------+---------------------------+                                               |
   |                        | Signed quad-word                      | 16         | 16                        |                                               |
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
-  | Floating Point         | Half precision                        | 2          | 2                         | See `Half-precision Floating Point`_          |
+  | Floating Point         | 8-bit precision                       | 1          | 1                         | See `Modal 8-bit floating point`_             |
+  |                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
+  |                        | Half precision                        | 2          | 2                         | See `Half-precision Floating Point`_          |
   |                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
   |                        | Single precision                      | 4          | 4                         | IEEE 754-2008                                 |
   |                        +---------------------------------------+------------+---------------------------+                                               |
@@ -575,6 +577,18 @@ Fundamental Data Types
   |                        | 64-bit code pointer                   | 8          | 8                         |                                               |
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
 
+
+Modal 8-bit floating-point
+------------------------------------
+
+The architecture provides hardware support for modal 8-bit floating point types.
+Two formats are currently supported:
+
+1. E4M3, 4-bit exponent and 3-bit significand, with no representation for
+   infinities and only a single bit-pattern in the significand for NaNs.
+
+2. E5M2, 5-bit exponent and 2-bit significand, following IEEE 754 conventions
+   for representation of special values.
 
 Half-precision Floating Point
 -----------------------------
@@ -894,8 +908,8 @@ specific.
 
 **(Alpha)** 
 
-The FPMR is a system register that controls behaviors of the FP8 instructions.
-It is a temporary register.
+The FPMR is a system register that controls behaviors of the instructions
+operating on modal 8-bit floating-point values. It is a temporary register.
 
 Scalable vector registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2575,7 +2589,7 @@ The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3
   |                                |                                         | significant bits of the type in a big-endian view.  Non-significant    |
   |                                |                                         | bits within the last quad-word are unspecified.                        |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  |  **(Alpha)** ``__mfp8``        | unsigned byte                           | Arm extension. Values are interpreted as either E5M2 or E4M3,          |
+  |  **(Alpha)** ``__mfp8``        | 8-bit floating point                    | Arm extension. Values are interpreted as either E5M2 or E4M3,          |
   |                                |                                         | depending on processor mode.                                           |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
 
