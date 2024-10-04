@@ -582,7 +582,7 @@ Modal 8-bit floating-point
 ------------------------------------
 
 The architecture provides hardware support for modal 8-bit floating point types.
-Two formats are currently supported:
+Two formats are supported:
 
 1. E4M3, 4-bit exponent and 3-bit significand, with no representation for
    infinities and only a single bit-pattern in the significand for NaNs.
