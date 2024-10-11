@@ -256,6 +256,7 @@ changes to the content of the document for that release.
 |            | September 2024     | - Add soft-float PCS variant.                                    |
 |            |                    | - Add the __arm_get_current_vg SME support routine.              |
 |            |                    | - Clarify use of `it` when preserving z and p registers.         |
+|            |                    | - Update C++ mangling to include SME attributes in type names    |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -3110,6 +3111,34 @@ instead.
 
 The SVE tuple types are mangled using their ``arm_sve.h`` names
 (``svBASExN_t``).
+
+Types which have an SME streaming or ZA interface should include an additional suffix as described in the table below:
+
++-------------------------+-----------------------------+
+| Type of interface       | Suffix                      |
++=========================+=============================+
+| Non-streaming (default) | None                        |
++-------------------------+-----------------------------+
+| Streaming               | sm                          |
++-------------------------+-----------------------------+
+| Streaming-compatible    | sc                          |
++-------------------------+-----------------------------+
+| Private-ZA (default)    | None                        |
++-------------------------+-----------------------------+
+| Shared-ZA               | sz                          |
++-------------------------+-----------------------------+
+
+A streaming interface suffix should precede any ZA interface suffix. For example:
+
+.. code:: c
+
+void f(svint8_t (*fn)() __arm_inout("za") __arm_streaming) { fn(); }
+
+is mangled as
+
+.. code:: c
+
+_Z1fPFu10__SVInt8_tsmszvE
 
 .. raw:: pdf
 
