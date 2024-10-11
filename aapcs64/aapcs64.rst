@@ -3132,13 +3132,13 @@ A streaming interface suffix should precede any ZA interface suffix. For example
 
 .. code:: c
 
-void f(svint8_t (*fn)() __arm_inout("za") __arm_streaming) { fn(); }
+   void f(svint8_t (*fn)() __arm_inout("za") __arm_streaming) { fn(); }
 
 is mangled as
 
 .. code:: c
 
-_Z1fPFu10__SVInt8_tsmszvE
+   _Z1fPFu10__SVInt8_tsmszvE
 
 .. raw:: pdf
 
