@@ -538,7 +538,7 @@ Fundamental Data Types
   |                        +---------------------------------------+------------+---------------------------+                                               |
   |                        | Signed quad-word                      | 16         | 16                        |                                               |
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
-  | Floating Point         | 8-bit precision                       | 1          | 1                         | See `Modal 8-bit floating point`_             |
+  | Floating Point         | 8-bit precision                       | 1          | 1                         | See `Modal 8-bit floating-point`_             |
   |                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
   |                        | Half precision                        | 2          | 2                         | See `Half-precision Floating Point`_          |
   |                        +---------------------------------------+------------+---------------------------+-----------------------------------------------+
@@ -581,7 +581,7 @@ Fundamental Data Types
 Modal 8-bit floating-point
 ------------------------------------
 
-The architecture provides hardware support for modal 8-bit floating point types.
+The architecture provides hardware support for modal 8-bit floating-point types.
 Two formats are supported:
 
 1. E4M3, 4-bit exponent and 3-bit significand, with no representation for
