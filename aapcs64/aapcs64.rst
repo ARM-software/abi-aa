@@ -3112,33 +3112,68 @@ instead.
 The SVE tuple types are mangled using their ``arm_sve.h`` names
 (``svBASExN_t``).
 
-Types which have an SME streaming or ZA interface should include an additional suffix as described in the table below:
+Function types which have SME streaming, ZA interface or ZT0 interface attributes must include these attributes in the name mangling of the type.
 
-+-------------------------+-----------------------------+
-| Type of interface       | Suffix                      |
-+=========================+=============================+
-| Non-streaming (default) | None                        |
-+-------------------------+-----------------------------+
-| Streaming               | sm                          |
-+-------------------------+-----------------------------+
-| Streaming-compatible    | sc                          |
-+-------------------------+-----------------------------+
-| Private-ZA (default)    | None                        |
-+-------------------------+-----------------------------+
-| Shared-ZA               | sz                          |
-+-------------------------+-----------------------------+
+SME attributes are mangled in the same way as a template:
 
-A streaming interface suffix should precede any ZA interface suffix. For example:
+  template<typename, unsigned, unsigned, unsigned> __SME_ATTRS;
 
-.. code:: c
+with the arguments:
 
-   void f(svint8_t (*fn)() __arm_inout("za") __arm_streaming) { fn(); }
+  __SME_ATTRS<normal_function_type, streaming_mode, za_state, zt0_state>;
 
-is mangled as
+where:
 
-.. code:: c
+* normal_function_type is the function type without any SME attributes.
 
-   _Z1fPFu10__SVInt8_tsmszvE
+* streaming_mode is an integer representing the streaming-mode of the function:
+
+  +------------------------+--------------------------+
+  | Interface Type         | Value                    |
+  +========================+==========================+
+  | Normal (default)       | 0                        |
+  +------------------------+--------------------------+
+  | Streaming Mode         | 1                        |
+  +------------------------+--------------------------+
+  | Streaming-Compatible   | 2                        |
+  +------------------------+--------------------------+
+
+* za_state is an integer representing the ZA state of the function:
+
+  +------------------------+--------------------------+
+  | Interface Type         | Value                    |
+  +========================+==========================+
+  | No ZA State (default)  | 0                        |
+  +------------------------+--------------------------+
+  | Preserves ZA           | 1                        |
+  +------------------------+--------------------------+
+  | Shared ZA              | 2                        |
+  +------------------------+--------------------------+
+
+* zt0_state is an integer representing the ZT0 state of the function:
+
+  +------------------------+--------------------------+
+  | Interface Type         | Value                    |
+  +========================+==========================+
+  | No ZT0 State (default) | 0                        |
+  +------------------------+--------------------------+
+  | Preserves ZT0          | 1                        |
+  +------------------------+--------------------------+
+  | Shared ZT0             | 2                        |
+  +------------------------+--------------------------+
+
+For example:
+
+.. code-block:: c++
+
+  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj1ELj0ELj0EE
+  void f(svint8_t (*fn)() __arm_streaming) { fn(); }
+
+  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj2ELj2ELj0EE
+  void f(svint8_t (*fn)() __arm_streaming_compatible __arm_inout("za")) { fn(); }
+
+  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj0ELj0ELj2EE
+  void f(svint8_t (*fn)() __arm_in("zt0")) { fn(); }
 
 .. raw:: pdf
 
