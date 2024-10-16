@@ -3145,9 +3145,7 @@ where:
   +========================+==========================+
   | No ZA State (default)  | 0                        |
   +------------------------+--------------------------+
-  | Preserves ZA           | 1                        |
-  +------------------------+--------------------------+
-  | Shared ZA              | 2                        |
+  | Shared ZA              | 1                        |
   +------------------------+--------------------------+
 
 * zt0_state is an integer representing the ZT0 state of the function:
@@ -3157,9 +3155,7 @@ where:
   +========================+==========================+
   | No ZT0 State (default) | 0                        |
   +------------------------+--------------------------+
-  | Preserves ZT0          | 1                        |
-  +------------------------+--------------------------+
-  | Shared ZT0             | 2                        |
+  | Shared ZT0             | 1                        |
   +------------------------+--------------------------+
 
 For example:
@@ -3169,10 +3165,10 @@ For example:
   // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj1ELj0ELj0EE
   void f(svint8_t (*fn)() __arm_streaming) { fn(); }
 
-  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj2ELj2ELj0EE
+  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj2ELj1ELj0EE
   void f(svint8_t (*fn)() __arm_streaming_compatible __arm_inout("za")) { fn(); }
 
-  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj0ELj0ELj2EE
+  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj0ELj0ELj1EE
   void f(svint8_t (*fn)() __arm_in("zt0")) { fn(); }
 
 .. raw:: pdf
