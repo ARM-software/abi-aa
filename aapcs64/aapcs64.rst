@@ -3162,13 +3162,13 @@ For example:
 
 .. code-block:: c++
 
-  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj1ELj0ELj0EE
+  // Mangled as fP11__SME_ATTRSIFu10__SVInt8_tELj1ELj0ELj0EE
   void f(svint8_t (*fn)() __arm_streaming) { fn(); }
 
-  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj2ELj1ELj0EE
+  // Mangled as fP11__SME_ATTRSIFu10__SVInt8_tELj2ELj1ELj0EE
   void f(svint8_t (*fn)() __arm_streaming_compatible __arm_inout("za")) { fn(); }
 
-  // Mangled as fP9__SME_ATTRSIFu10__SVInt8_tELj0ELj0ELj1EE
+  // Mangled as fP11__SME_ATTRSIFu10__SVInt8_tELj0ELj0ELj1EE
   void f(svint8_t (*fn)() __arm_in("zt0")) { fn(); }
 
 .. raw:: pdf
