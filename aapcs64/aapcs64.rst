@@ -257,6 +257,11 @@ changes to the content of the document for that release.
 |            |                    | - Add the __arm_get_current_vg SME support routine.              |
 |            |                    | - Clarify use of `it` when preserving z and p registers.         |
 +------------+--------------------+------------------------------------------------------------------+
+|            |                    | - Add descriptions of the modal 8-bit floating point types       |
+|            |                    | - Add a description of the FPMR register                         |
+|            |                    | - Update argument passing rules to include FP8 types             |
+|            |                    |                                                                  |
++------------+--------------------+------------------------------------------------------------------+
 
 References
 ^^^^^^^^^^
