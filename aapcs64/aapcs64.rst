@@ -2391,7 +2391,7 @@ by PSTATE.ZA.
   PTR
     a 64-bit data pointer passed in X0 that points to a buffer which
     is guaranteed to have a size that is equal to or larger than the size
-    returned by `__arm_sme_state_size`_.
+    returned by `__arm_sme_state_size`_. The pointer must be 16-byte aligned.
 
 * The subroutine does not return a value.
 
@@ -2414,11 +2414,12 @@ by PSTATE.ZA.
     * TPIDR2_EL0 is not a NULL pointer.
 
   * For addresses ``PTR->BLK`` and ``PTR->ZA`` at unspecified offsets in
-    the buffer pointed to by ``PTR``, the address ``PTR->ZA`` is written to
-    ``PTR->BLK.za_save_buffer``, the streaming vector length in bytes
-    (``SVL.B``) is written to ``PTR->BLK.num_za_save_slices`` and the
-    address ``PTR->BLK`` is written to ``TPIDR2_EL0``, thus setting up a
-    lazy save.
+    the buffer pointed to by ``PTR``, the routine must set up a lazy save
+    by zero-initializing the TPIDR2 block at address ``PTR->BLK``, then
+    writing address ``PTR->ZA`` to ``PTR->BLK.za_save_buffer``, writing the
+    streaming vector length in bytes (``SVL.B``) to
+    ``PTR->BLK.num_za_save_slices`` and finally copying the address ``PTR->BLK``
+    to ``TPIDR2_EL0``.
 
   * If ZT0 is available, then for the address ``PTR->ZT0`` at an unspecified
     offset in the buffer pointed to by ``PTR``, the contents of ZT0 are written
@@ -2447,7 +2448,8 @@ enabled by PSTATE.ZA.
 
   PTR
     a 64-bit data pointer passed in X0 that points to a buffer that
-    is initialized by a call to `__arm_sme_save`_.
+    is initialized by a call to `__arm_sme_save`_. The pointer must be 16-byte
+    aligned.
 
 * The subroutine does not return a value.
 
@@ -2469,7 +2471,7 @@ enabled by PSTATE.ZA.
 
     * The current thread does not have access to SME.
 
-    * ZA state is active on entry.
+    * ZA state is 'active' on entry.
 
   * If PSTATE.ZA is 0, the subroutine enables PSTATE.ZA.
 
