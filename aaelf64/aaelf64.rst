@@ -288,6 +288,8 @@ changes to the content of the document for that release.
   | 2025Q1        | 7\ :sup:`th`       | - In `Section Attribute Flags`_, added  |
   |               | April 2025         |   `SHF_AARCH64_PURECODE` processor      |
   |               |                    |   specific section attribute flag.      |
+  |               |                    | - Clarify use of addends in GOT         |
+  |               |                    |   generating static TLS relocations.    |
   +---------------+--------------------+-----------------------------------------+
   | 2025Q4        | 23\ :sup:`rd`      | - In `Call and Jump relocations`_ added |
   |               | January 2026       |   static linker requirements on veneers |
@@ -1516,6 +1518,7 @@ In addition to the terms defined in `Relocation types`_, the tables listing the 
 
 - ``TLSDESC(S+A)`` resolves to a contiguous pair of pointer-sized values, as created by ``GTLSDESC(S+A)``.
 
+Relocations using the operations ``GTLSDESC(S)``, ``GTPREL(S)`` and ``GTLSIDX(S)`` relocations must have a zero addend. Previous versions of this document included the addend ``A`` in ``Operation(S + A)`` where Operation is one of ``GTLSDESC,``, ``GTPREL`` and ``GTLSIDX``. This results in a GOT entry, or pair of entries for ``S + A``. With a zero addend ``Operation(S + 0)`` is equivalent to ``Operation(S)`` and ``Operation(S) + 0``.
 
 General Dynamic thread-local storage model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1527,15 +1530,15 @@ General Dynamic thread-local storage model
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                            | Operation                       | Comment                                                                                  |
   +============+============+=================================+=================================+==========================================================================================+
-  | 512        | 80         | R\_<CLS>\_TLSGD\_ADR\_PREL21    | G(GTLSIDX(S,A)) - P             | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`  |
+  | 512        | 80         | R\_<CLS>\_TLSGD\_ADR\_PREL21    | G(GTLSIDX(S)) - P               | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`  |
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 513        | 81         | R\_<CLS>\_TLSGD\_ADR\_PAGE21    | Page(G(GTLSIDX(S,A)) - Page(P)  | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  | 513        | 81         | R\_<CLS>\_TLSGD\_ADR\_PAGE21    | Page(G(GTLSIDX(S)) - Page(P)    | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 514        | 82         | R\_<CLS>\_TLSGD\_ADD\_LO12\_NC  | G(GTLSIDX(S,A))                 | Set an ADD immediate field to bits [11:0] of X. No overflow check                        |
+  | 514        | 82         | R\_<CLS>\_TLSGD\_ADD\_LO12\_NC  | G(GTLSIDX(S))                   | Set an ADD immediate field to bits [11:0] of X. No overflow check                        |
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 515        | \-         | R\_<CLS>\_TLSGD\_MOVW\_G1       | G(GTLSIDX(S,A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
+  | 515        | \-         | R\_<CLS>\_TLSGD\_MOVW\_G1       | G(GTLSIDX(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 516        | \-         | R\_<CLS>\_TLSGD\_MOVW\_G0\_NC   | G(GTLSIDX(S,A)) - GOT           | Set a MOVK immediate field to bits [15:0] of X. No overflow check                        |
+  | 516        | \-         | R\_<CLS>\_TLSGD\_MOVW\_G0\_NC   | G(GTLSIDX(S)) - GOT             | Set a MOVK immediate field to bits [15:0] of X. No overflow check                        |
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
 
 .. note::
@@ -1627,17 +1630,17 @@ Initial Exec thread-local storage model
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                                       | Operation                      | Comment                                                                                  |
   +============+============+============================================+================================+==========================================================================================+
-  | 539        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G1        | G(GTPREL(S+A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
+  | 539        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G1        | G(GTPREL(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 540        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G0\_NC    | G(GTPREL(S+A)) - GOT           | Set MOVK immediate to bits [15:0] of X. No overflow check                                |
+  | 540        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G0\_NC    | G(GTPREL(S)) - GOT             | Set MOVK immediate to bits [15:0] of X. No overflow check                                |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 541        | 103        | R\_<CLS>\_TLSIE\_ADR\_GOTTPREL\_PAGE21     | Page(G(GTPREL(S+A))) - Page(P) | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  | 541        | 103        | R\_<CLS>\_TLSIE\_ADR\_GOTTPREL\_PAGE21     | Page(G(GTPREL(S))) - Page(P)   | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 542        | \-         | R\_<CLS>\_TLSIE\_LD64\_GOTTPREL\_LO12\_NC  | G(GTPREL(S+A))                 | Set an LD offset field to bits [11:3] of X. No overflow check; check that X&7=0          |
+  | 542        | \-         | R\_<CLS>\_TLSIE\_LD64\_GOTTPREL\_LO12\_NC  | G(GTPREL(S))                   | Set an LD offset field to bits [11:3] of X. No overflow check; check that X&7=0          |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | \-         | 104        | R\_<CLS>\_TLSIE\_LD32\_GOTTPREL\_LO12\_NC  | G(GTPREL(S+A))                 | Set an LD offset field to bits [11:2] of X. No overflow check; check that X&3=0          |
+  | \-         | 104        | R\_<CLS>\_TLSIE\_LD32\_GOTTPREL\_LO12\_NC  | G(GTPREL(S))                   | Set an LD offset field to bits [11:2] of X. No overflow check; check that X&3=0          |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 543        | 105        | R\_<CLS>\_TLSIE\_LD\_GOTTPREL\_PREL19      | G(GTPREL(S+A)) – P             | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
+  | 543        | 105        | R\_<CLS>\_TLSIE\_LD\_GOTTPREL\_PREL19      | G(GTPREL(S)) – P               | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
 
 .. note::
@@ -1708,23 +1711,23 @@ Thread-local storage descriptors
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                            | Operation                        | Comment                                                                                      |
   +============+============+=================================+==================================+==============================================================================================+
-  | 560        | 122        | R\_<CLS>\_TLSDESC\_LD\_PREL19   | G(GTLSDESC(S+A)) - P             | Set a load-literal immediate to bits [20:2]; check -2\ :sup:`20` <= X < 2\ :sup:`20`; check  |
+  | 560        | 122        | R\_<CLS>\_TLSDESC\_LD\_PREL19   | G(GTLSDESC(S)) - P               | Set a load-literal immediate to bits [20:2]; check -2\ :sup:`20` <= X < 2\ :sup:`20`; check  |
   |            |            |                                 |                                  | X & 3 = 0.                                                                                   |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 561        | 123        | R\_<CLS>\_TLSDESC\_ADR\_PREL21  | G(GTLSDESC(S+A)) - P             | Set an ADR immediate field to bits [20:0]; check -2\ :sup:`20` <= X < 2\ :sup:`20`.          |
+  | 561        | 123        | R\_<CLS>\_TLSDESC\_ADR\_PREL21  | G(GTLSDESC(S)) - P               | Set an ADR immediate field to bits [20:0]; check -2\ :sup:`20` <= X < 2\ :sup:`20`.          |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 562        | 124        | R\_<CLS>\_TLSDESC\_ADR\_PAGE21  | Page(G(GTLSDESC(S+A))) - Page(P) | Set an ADRP immediate field to bits [32:12] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`.   |
+  | 562        | 124        | R\_<CLS>\_TLSDESC\_ADR\_PAGE21  | Page(G(GTLSDESC(S))) - Page(P)   | Set an ADRP immediate field to bits [32:12] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`.   |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 563        | \-         | R\_<CLS>\_TLSDESC\_LD64\_LO12   | G(GTLSDESC(S+A))                 | Set an LD offset field to bits [11:3] of X. No overflow check; check X & 7 = 0.              |
+  | 563        | \-         | R\_<CLS>\_TLSDESC\_LD64\_LO12   | G(GTLSDESC(S))                   | Set an LD offset field to bits [11:3] of X. No overflow check; check X & 7 = 0.              |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | \-         | 125        | R\_<CLS>\_TLSDESC\_LD32\_LO12   | G(GTLSDESC(S+A))                 | Set an LD offset field to bits [11:2] of X. No overflow check; check X & 3  = 0.             |
+  | \-         | 125        | R\_<CLS>\_TLSDESC\_LD32\_LO12   | G(GTLSDESC(S))                   | Set an LD offset field to bits [11:2] of X. No overflow check; check X & 3  = 0.             |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 564        | 126        | R\_<CLS>\_TLSDESC\_ADD\_LO12    | G(GTLSDESC(S+A))                 | Set an ADD immediate field to bits [11:0] of X. No overflow check.                           |
+  | 564        | 126        | R\_<CLS>\_TLSDESC\_ADD\_LO12    | G(GTLSDESC(S))                   | Set an ADD immediate field to bits [11:0] of X. No overflow check.                           |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 565        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G1      | G(GTLSDESC(S+A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`. |
+  | 565        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G1      | G(GTLSDESC(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`. |
   |            |            |                                 |                                  | See notes below.                                                                             |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 566        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G0\_NC  | G(GTLSDESC(S+A)) - GOT           | Set a MOVK immediate field to bits [15:0] of X. No overflow check.                           |
+  | 566        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G0\_NC  | G(GTLSDESC(S)) - GOT             | Set a MOVK immediate field to bits [15:0] of X. No overflow check.                           |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
   | 567        | \-         | R\_<CLS>\_TLSDESC\_LDR          | None                             | For relaxation only. Must be used to identify an LDR instruction which loads the TLS         |
   |            |            |                                 |                                  | descriptor function pointer for S + A if it has no other relocation.                         |
