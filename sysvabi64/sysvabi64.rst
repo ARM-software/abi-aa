@@ -1698,9 +1698,9 @@ the destination of an indirect branch originating in the same
 relocatable object.
 
 A relocatable object producer is required to add a BTI instruction to
-a location when the address of that location escapes out of the
-relocatable object. This includes the locations of all symbols that
-can be exported into the dynamic symbol table by a static linker.
+a location when the address of that location is live and escapes out
+of the relocatable object. This includes the locations of all symbols
+that can be exported into the dynamic symbol table by a static linker.
 
 A static linker is required to generate `Custom PLTs`_ with BTI
 instructions.
