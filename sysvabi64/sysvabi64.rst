@@ -1690,31 +1690,33 @@ It is desirable to minimize the number of BTI instructions to limit
 the number of indirect branch destinations in the program. The
 following tool requirements determine which tool has the
 responsibility of inserting the BTI instruction, permitting a tool to
-elide the BTI instuction when it can prove that there are no indirect
+elide the BTI instruction when it can prove that there are no indirect
 calls to that location.
 
-A relocatable object producer is required to add a BTI instruction to
-the destination of an indirect branch originating in the same
-relocatable object.
+* A relocatable object producer is required to add a BTI instruction
+  to the destination of an indirect branch originating in the same
+  relocatable object.
 
-A relocatable object producer is required to add a BTI instruction to
-a location when the address of that location is live and escapes out
-of the relocatable object. This includes the locations of all symbols
-that can be exported into the dynamic symbol table by a static linker.
+* A relocatable object producer is required to add a BTI instruction
+ to a location when the address of the location is live, and it
+ escapes to an entity that is permitted to generate an indirect branch
+ that is opaque to the relocatable object producer. This includes the
+ locations of all symbols that can be exported into the dynamic symbol
+ table by a static linker.
 
-A static linker is required to generate `Custom PLTs`_ with BTI
-instructions.
+* A static linker is required to generate `Custom PLTs`_ with BTI
+  instructions.
 
-A static linker that uses indirect branches in veneers is required to
-generate a BTI compatible landing pad if the target of the indirect
-branch is defined within the same link unit and does not have a
-compatible BTI instruction at the destination of the veneer. A BTI
-compatible landing pad consists of a BTI instruction followed by a
-direct branch. For example:
+* A static linker that uses indirect branches in veneers is required
+  to generate a BTI compatible landing pad if the target of the
+  indirect branch is defined within the same link unit and does not
+  have a compatible BTI instruction at the destination of the
+  veneer. A BTI compatible landing pad consists of a BTI instruction
+  followed by a direct branch. For example:
 
 .. code-block:: asm
 
-  // Linker generated veneer using indirect bracnh
+  // Linker generated veneer using indirect branch
   adrp x16, fn
   add  x16, :lo12: fn
   br   x16
@@ -1727,8 +1729,8 @@ direct branch. For example:
   fn:
   // a non BTI instruction.
 
-A static linker is not required to insert BTI compatible landing pads
-for symbols with section index ``SHN_ABS``.
+* A static linker is not required to insert BTI compatible landing
+  pads for symbols with section index ``SHN_ABS``.
 
 Program Loading
 ---------------
