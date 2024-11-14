@@ -1698,11 +1698,11 @@ calls to that location.
   relocatable object.
 
 * A relocatable object producer is required to add a BTI instruction
- to a location when the address of the location is live, and it
- escapes to an entity that is permitted to generate an indirect branch
- that is opaque to the relocatable object producer. This includes the
- locations of all symbols that can be exported into the dynamic symbol
- table by a static linker.
+  to a location when the address of the location is live, and it
+  escapes to an entity that is permitted to generate an indirect
+  branch that is opaque to the relocatable object producer. This
+  includes the locations of all symbols that can be exported into the
+  dynamic symbol table by a static linker.
 
 * A static linker is required to generate `Custom PLTs`_ with BTI
   instructions.
