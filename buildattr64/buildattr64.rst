@@ -193,7 +193,7 @@ The following support level definitions are used by the Arm ABI specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-This document is at **Alpha** release quality.
+This document is at **Beta** release quality.
 
 Change history
 ^^^^^^^^^^^^^^
@@ -203,11 +203,19 @@ changes to the content of the document for that release.
 
 .. table::
 
-  +------------+---------------------+------------------------------------------------------------------+
-  | Issue      | Date                | Change                                                           |
-  +============+=====================+==================================================================+
-  | 0.1        | 18th October 2023   | Alpha draft release for public comment                           |
-  +------------+---------------------+------------------------------------------------------------------+
+  +------------+---------------------+---------------------------------------------------------------------+
+  | Issue      | Date                | Change                                                              |
+  +============+=====================+=====================================================================+
+  | 0.1        | 18th October 2023   | Alpha draft release for public comment                              |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.2        | 14th November 2024  | Updates after feedback from initial implementation.                 |
+  |            |                     | Specification now at Beta                                           |
+  |            |                     | Clarification of "optional" in public subsection header             |
+  |            |                     | Clarification that public subsections define their own attributes   |
+  |            |                     | Clarify static linker responsibilities with mixed build attributes  |
+  |            |                     | and .note.gnu.property sections.                                    |
+  |            |                     | Tool Interface for aeabi subsections taken from rationale document. |
+  +------------+---------------------+---------------------------------------------------------------------+
 
 References
 ----------
@@ -610,9 +618,9 @@ Representing build attributes in a relocatable ELF Object file
 Encoding
 --------
 
-Encoding build attributes are encoded in a vendor-specific section of
-type ``SHT_AARCH64_ATTRIBUTES`` and name ``.ARM.attributes`` (for
-further details see [AAELF64_]).
+Build attributes are encoded in a vendor-specific section of type
+``SHT_AARCH64_ATTRIBUTES`` and name ``.ARM.attributes`` (for further
+details see [AAELF64_]).
 
 An attribute is encoded in a <tag, value> pair.
 
@@ -652,11 +660,20 @@ An ELF Attributes section uses a processor specific section with details
     | ``.ARM.attributes`` | ``SHT_AARCH64_ATTRIBUTES`` | 0x0   | 1         | 0    | 0          |
     +---------------------+----------------------------+-------+-----------+------+------------+
 
-A consumer may not assume the natural alignment of a data type such as ``uint32``.
+In the contents of an ELF attributes section, a consumer may not assume
+the natural alignment of a data type such as ``uint32``.
+
+An attributes section contains a sequence of subsections. Each
+subsection is either
+
+* A public subsection defined by this ABI and public to all tools that
+  process the file.
+
+* A private subsection that is private to a tool vendor's tools.
 
 The syntactic structure of an attributes section is::
 
-   <format-version: <version-letter>>
+   <format-version: ‘A’>
    [ <uint32: subsection-length> NTBS: vendor-name
      <bytes: vendor-data>
    ]*
@@ -695,8 +712,8 @@ data in a second pass.
 Public aeabi prefixed subsections
 =================================
 
-About public tags
------------------
+About public subsections
+------------------------
 
 Subsections containing a vendor name with a prefix of "aeabi" are
 public attributes defined by this specification. All public aeabi
@@ -706,6 +723,10 @@ will indicate whether the section is required or optional.
 A consumer must be able to parse the header of all subsections that
 have a prefix of "aeabi". If the header is optional then a consumer
 may skip the subsection if they do not recognize the full vendor-name.
+
+All public subsections must have a unique vendor name.
+
+Each public subsection defines its own attribute tags.
 
 Default values for public tags
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -725,6 +746,7 @@ attributes.
 *optional* is a 1-byte integer. It encodes whether the subsection
 contents can be safely skipped if the consumer does not recognize the
 vendor-name, or if any subset of the subsection can be skipped over.
+
 The permitted values are::
 
    *0* not optional. The consumer must understand the subsection
@@ -732,6 +754,7 @@ The permitted values are::
 
    *1* optional. The consumer may skip the subsection in full or in part
    and the program will still be correct.
+
 
 *parameter type* is a 1-byte integer. It encodes whether the values in
 the subsection are ULEB128 values or NTBS. The permitted values are::
@@ -743,6 +766,12 @@ the subsection are ULEB128 values or NTBS. The permitted values are::
 *<attribute>* is *<tag, value>* pair. Where tag is encoded using
 unsigned LEB128 encoding (ULEB128), and value is encoded as described
 by *parameter type*.
+
+A subsection that is ``not optional`` must be processed in full. A
+subsection this ABI defines as ``not optional`` is not required to be
+present in the relocatable object file, the rules for `Default values
+for public tags`_ apply.
+
 
 How this specification describes public attributes
 --------------------------------------------------
@@ -758,7 +787,11 @@ follows. ::
    Block commentary about the tag and its possible values.
 
 *Tag value* gives the numerical representation of the tag. It is a
-small integer less than 128.
+small integer less than 128. The *Tag value* is meaningful only within
+the subsection it is defined within.
+
+*Tag_tag_name* is the human readable representation of the tag value
+ for use by tools that produce or consume build attributes.
 
 Following lines enumerate the currently defined parameter values,
 giving a short comment about each one.
@@ -816,48 +849,6 @@ attributes
       0  Not all executable sections are compatible with the guarded control stack extension or no information available.
       1  All executable sections are compatible with the guarded control stack extension.
 
-Pointer Authentication Signing Schema
--------------------------------------
-
-The full vendor name is "aeabi-pauthabi"
-
-The (PAUTHABI64_) defines an extension to ELF in which code pointers
-are signed using instructions in the FEAT_PAuth extension. The
-pointers that are signed as well as the modifiers and key used for
-each type of pointer are known as the signing schema. To make use of
-(PAuthABI64_) all relocatable object files and shared-library dependencies
-must use the same signing schema.
-
-While the requirement for the ``FEAT_PAuth`` extension is recorded in
-the architectural features.  The signing schema is software defined
-with more complex compatibility requirements.
-
-::
-   Tag_PAuth_Platform (=1)
-     0  The user did not permit this entity to use the PAuthABI, or no information available.
-     <id> The platform vendor id.
-
-Where the *<id>* is one of a number of registered platforms.
-
-::
-   Tag_PAuth_Schema (=2)
-     0 The user did not permit this entity to use the PAuthABI, or no information available.
-     <id> The version number of the Schema.
-
-Where the *<id>* is the version number in the context of
-``Tag_PAuth_Platform``.
-
-The signing schema is not optional.
-
-The parameter type is ULEB128.
-
-The partial order is custom. Two entities are compabitible if both
-``Tag_PAuth_Platform`` and ``Tag_PAuth_Schema`` are identical.
-
-The compatibility between an entity with ``Tag_PAuth_Platform`` = 0,
-``Tag_PAuth_Schema`` = 0, and ``Tag_Pauth_Platform`` != 0, ``Tag_PAuth_Schema`` !=
-0 is implementation defined.
-
 aeabi-feature-and-bits and GNU Program Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -877,12 +868,12 @@ Many existing relocatable object files have a ``.note.gnu.property``
 section with the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` program
 property.
 
-A relocatable object file may have a ``.note.gnu.property`` section
-and ``.ARM.attributes`` sections. When both program properties and
-build attributes exist, the program properties must be translated into
-build attributes using the mapping below. The relocatable object file
-is not well formed if a build attribute from the ``.ARM.attributes``
-has a different value when translated from ``.note.gnu.property``.
+If a static linker has a subset of the relocatable objects using
+``.note.gnu.property`` sections with
+``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` program property, and a subset
+of the relocatable objects using build attributes. Then the program
+properties must be translated into build attributes using the mapping
+below.
 
 +--------------------------------------------+---------------------------+
 + Feature bit set in relocatable object file | Equivalent  tag = value   |
@@ -894,11 +885,179 @@ has a different value when translated from ``.note.gnu.property``.
 + *GNU_PROPERTY_AARCH64_FEATURE_1_GCS*       | Tag_Feature_GCS = 1       |
 +--------------------------------------------+---------------------------+
 
+A relocatable object file may have a ``.note.gnu.property`` section
+and ``.ARM.attributes`` sections. When both program properties and
+build attributes exist within the same relocatable object, the
+relocatable object file is not well formed if a build attribute from
+the ``.ARM.attributes`` has a different value when translated from
+``.note.gnu.property``. It is QoI whether a static linker uses the
+build attributes in preference to the ``.note.gnu.property`` section,
+or does the translation and produces a diagnostic.
+
 For a platform that uses GNU Program Properties in loadable-units the
 mapping table above can be used to translate build attributes back to
 GNU properties.
 
+Pointer Authentication Signing Schema
+-------------------------------------
+
+The full vendor name is "aeabi-pauthabi"
+
+The (PAUTHABI64_) defines an extension to ELF in which code pointers
+are signed using instructions in the FEAT_PAuth extension. The
+pointers that are signed as well as the modifiers and key used for
+each type of pointer are known as the signing schema. To make use of
+(PAuthABI64_) all relocatable object files and shared-library
+dependencies must use the same signing schema.
+
+While the requirement for the ``FEAT_PAuth`` extension is recorded in
+the architectural features.  The signing schema is software defined
+with more complex compatibility requirements.
+
+header contents
+^^^^^^^^^^^^^^^
+
+*optional* is 0 (not optional)
+
+*parameter type* is 0 (ULEB128)
+
+attributes
+^^^^^^^^^^
+
+::
+   Tag_PAuth_Platform (=1)
+     0  The user did not permit this entity to use the PAuthABI, or no information available.
+     <id> The platform vendor id.
+
+Where the *<id>* is a number representing one of a number of
+registered platforms defined in ``PAuthABI64_``.
+
+::
+   Tag_PAuth_Schema (=2)
+     0 The user did not permit this entity to use the PAuthABI, or no information available.
+     <id> The version number of the Schema.
+
+Where the *<id>* is a number representing the version in the context
+of ``Tag_PAuth_Platform``.
+
+Combining attribute values of aeabi-pauthabi
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The partial order is custom. Two entities are compabitible if both
+``Tag_PAuth_Platform`` and ``Tag_PAuth_Schema`` are identical.
+
+The compatibility between an entity with ``Tag_PAuth_Platform`` = 0,
+``Tag_PAuth_Schema`` = 0, and ``Tag_Pauth_Platform`` != 0, ``Tag_PAuth_Schema`` !=
+0 is implementation defined.
+
 Private subsections
 -------------------
 
-The tool interface for private subsections is implementation defined.
+No requirements are placed on the format of private vendor data.
+
+Appendix: Tool Interface for aeabi subsections
+==============================================
+
+The tool interface presented below describes the interface for GNU and
+GNU compatible toolchains.
+
+Compiler
+--------
+
+Build attributes are set by the compiler based on command-line
+options.  For example the clang and gcc ``-mbranch-protection`` option
+can be used to derive ``Tag_Feature_BTI`` and ``Tag_Feature_PAC`` and
+``Tag_Feature_GCS``.
+
+Individual functions can be given different values from the file scope
+command-line options. The file scope build attributes should still be
+derived from the file scope command-line options, or module level encodings
+of the file scope command-line options in the case of link time optimization.
+It is the user's responsibility that the individual functions are used in a
+compatible way to the file scope build attributes.
+
+Assembler
+---------
+
+Where possible the assembler can derive build attributes from the
+assembler's command line options in the same way as the compiler. For
+options that cannot be derived, assembler directives can be used to
+construct "aeabi" prefixed subsections. The assembler directives take
+precedence over any derived attributes.
+
+Directives
+^^^^^^^^^^
+
+::
+   .aeabi_subsection name [, optional] [, parameter type]
+
+*name*
+
+Create or switch the current subsection to *name*.
+
+*optional*
+
+This field is optional and only applies to subsection names with a
+prefix of "aeabi". The default value is 1 for optional.
+
+*parameter type*
+
+This field is an integer 0 or 1 that determines whether the subsection
+value is ULEB128 or a NTBS. It only applies to subsection names with a
+prefix of "aeabi".  The default value is 0 for ULEB128. If *parameter
+type* is not the default then optional must be also be specified even
+if it is the default value.
+
+::
+
+   .aeabi_attribute tag, value
+
+* *tag* is either the ``Tag_tag_name`` such as ``Tag_Feature_GCS`` or
+  the ``tag value``.
+
+* *value* is either a `number` or a "string" depending on the
+  ``<parameter type>`` of the current subsection.
+
+In the current active subsection, set *tag* to *value*.
+
+It is an error if .aebi_attribute is encountered when the current
+aeabi subsection is undefined.
+
+Directive examples
+^^^^^^^^^^^^^^^^^^
+
+Produces a single subsection with 3 attributes set. The default values
+for *optional* and *parameter-type* (1 and 0 respectively) match the
+required values for aeabi-feature-and-bits. The .aeabi_attributes use
+the human readable ``Tag_tag_name``.
+
+.. code-block:: asm
+
+    .aeabi_subsection aeabi-feature-and-bits
+    .aeabi_attribute Tag_Feature_BTI, 1
+    .aeabi_attribute Tag_Feature_PAC, 1
+    .aeabi_attribute Tag_Feature_GCS, 1
+
+This translates to the following .ARM.attributes section contents for
+a little-endian relocatable object:
+
+`A`, <length 0x23,0x0,0x0,0x0>, "aeabi-feature-and-bits", 1, 0, 0, 1, 1, 1, 2, 1
+
+
+Produces two subsections. The values for *optional* and
+*parameter-type* have been given explicitly. Numbers have been used to
+set the tag values with comments showing the human readable names.
+
+.. code-block:: asm
+
+    .aeabi_subsection aeabi-feature-and-bits, 1, 0
+    .aeabi_attribute 0 /*Tag_Feature_GCS*/, 1
+
+    .aeabi_subsection aeabi-pauthabi, 0, 0
+    .aeabi_attribute 0 /*Tag_PAuth_Platform*/, 1
+    .aeabi_attribute 1 /*Tag_Pauth_Schema*/, 1
+
+This translates to the following .ARM.attributes section contents for
+a little-endian relocatable object:
+
+`A`, <length 0x1e,0x0,0x0,0x0>, "aeabi-feature-and-bits", 1, 0, 2, 1, <length 0x21, 0x0, 0x0, 0x0>, "aeabi-feature-pauthabi", 0, 0, 0, 1, 1, 1
