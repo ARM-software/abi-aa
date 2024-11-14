@@ -117,6 +117,9 @@ changes to the content of the document for that release.
   +============+=====================+==================================================================+
   | 0.1        | 18th October 2023   | Alpha draft release to accompany Build Attributes specification  |
   +------------+---------------------+------------------------------------------------------------------+
+  | 0.2        | 14th November 2024  | Updates after feedback from initial implementation.              |
+  |            |                     | Move Tool Interface for aeabi subsections to main specification. |
+  +------------+---------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -388,7 +391,10 @@ follows:
 - Relocatable links such as ``ld -r``. A relocatable link takes one or
   more relocatable object files, producing a single output relocatable
   object file. The static linker can merge the build attributes of
-  each input relocatable object file.
+  each input relocatable object file. If the relocatable object
+  produced by ``ld -r`` is consumed by a static linker some information
+  may be lost compared to linking the individual relocatable objects
+  that were the inputs to ``ld -r``.
 
 
 Multiple subsections with similar properties
@@ -442,63 +448,6 @@ or reversing the build attribute arithmetic order. As (ADDENDA32_)
 states it is usually obvious when this is the case. However there are
 more complex cases and in these cases it can help to state what the
 reference intention is for the tag.
-
-Appendix: Recommended Tool Interface for aeabi subsections
-==========================================================
-
-Compiler
---------
-
-Build attributes are set by the compiler based on command-line
-options.  For example the clang and gcc ``-mbranch-protection`` option
-can be used to derive ``Tag_Feature_BTI`` and ``Tag_Feature_PAC`` and
-``Tag_Feature_GCS``.
-
-Individual functions can be given different values from the file scope
-command-line options. The file scope build attributes should still be
-derived from the file scope command-line options, or module level encodings
-of the file scope command-line options in the case of link time optimization.
-It is the user's responsibility that the individual functions are used in a
-compatible way to the file scope build attributes.
-
-Assembler
----------
-
-Where possible the assembler can derive build attributes from the
-assembler's command line options in the same way as the compiler.  For
-options that cannot be derived the following directives can be used to
-construct "aeabi" prefixed subsections.
-
-::
-   .aeabi_subsection name [optional] [, parameter type]
-
-
-*name*
-
-Create or switch the current subsection to *name*.
-
-*optional*
-
-This field is optional and only applies to subsection names with a
-prefix of "aeabi".  The default value is 1 for optional.
-
-*parameter type*
-
-This field is an integer 0 or 1 that determines whether the
-subsection value is ULEB128 or a NTBS. It only applies to subsection
-names with a prefix of "aeabi".  The default value is 0 for ULEB128.
-
-::
-
-   .aeabi_attribute tag, value
-
-* *tag* is either an attribute number or one of the following
-  Tag_Feature_BTI, Tag_Feature_PAC or Tag_Feature_GCS.
-
-* *value* is either a number or "string" depending on <parameter type>
-  of the current subsection.
-
-In the current active subsection, set *tag* to *value*.
 
 Appendix: Alternatives to Build Attributes
 ==========================================
