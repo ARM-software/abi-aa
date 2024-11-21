@@ -256,6 +256,7 @@ changes to the content of the document for that release.
 |            | September 2024     | - Add soft-float PCS variant.                                    |
 |            |                    | - Add the __arm_get_current_vg SME support routine.              |
 |            |                    | - Clarify use of `it` when preserving z and p registers.         |
+|            |                    | - Update C++ mangling to include SME attributes in type names    |
 +------------+--------------------+------------------------------------------------------------------+
 |            |                    | - Add descriptions of the modal 8-bit floating point types       |
 |            |                    | - Add a description of the FPMR register                         |
@@ -3143,6 +3144,65 @@ instead.
 
 The SVE tuple types are mangled using their ``arm_sve.h`` names
 (``svBASExN_t``).
+
+Function types which have SME streaming, ZA interface or ZT0 interface attributes must include these attributes in the name mangling of the type.
+
+SME attributes are mangled in the same way as a template:
+
+  template<typename, unsigned, unsigned, unsigned> __SME_ATTRS;
+
+with the arguments:
+
+  __SME_ATTRS<normal_function_type, streaming_mode, za_state, zt0_state>;
+
+where:
+
+* normal_function_type is the function type without any SME attributes.
+
+* streaming_mode is an integer representing the streaming-mode of the function:
+
+  +------------------------+--------------------------+
+  | Interface Type         | Value                    |
+  +========================+==========================+
+  | Normal (default)       | 0                        |
+  +------------------------+--------------------------+
+  | Streaming Mode         | 1                        |
+  +------------------------+--------------------------+
+  | Streaming-Compatible   | 2                        |
+  +------------------------+--------------------------+
+
+* za_state is an integer representing the ZA state of the function:
+
+  +------------------------+--------------------------+
+  | Interface Type         | Value                    |
+  +========================+==========================+
+  | No ZA State (default)  | 0                        |
+  +------------------------+--------------------------+
+  | Shared ZA              | 1                        |
+  +------------------------+--------------------------+
+
+* zt0_state is an integer representing the ZT0 state of the function:
+
+  +------------------------+--------------------------+
+  | Interface Type         | Value                    |
+  +========================+==========================+
+  | No ZT0 State (default) | 0                        |
+  +------------------------+--------------------------+
+  | Shared ZT0             | 1                        |
+  +------------------------+--------------------------+
+
+For example:
+
+.. code-block:: c++
+
+  // Mangled as fP11__SME_ATTRSIFu10__SVInt8_tELj1ELj0ELj0EE
+  void f(svint8_t (*fn)() __arm_streaming) { fn(); }
+
+  // Mangled as fP11__SME_ATTRSIFu10__SVInt8_tELj2ELj1ELj0EE
+  void f(svint8_t (*fn)() __arm_streaming_compatible __arm_inout("za")) { fn(); }
+
+  // Mangled as fP11__SME_ATTRSIFu10__SVInt8_tELj0ELj0ELj1EE
+  void f(svint8_t (*fn)() __arm_in("zt0")) { fn(); }
 
 .. raw:: pdf
 
