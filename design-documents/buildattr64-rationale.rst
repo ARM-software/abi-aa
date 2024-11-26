@@ -1,9 +1,9 @@
 ..
-   Copyright (c) 2023, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2024, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |copyright-date| replace:: 2023
+.. |copyright-date| replace:: 2024
 
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
