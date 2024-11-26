@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2023, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2024, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2023Q4
-.. |date-of-issue| replace:: 18\ :sup:`th` October 2023
-.. |copyright-date| replace:: 2023
+.. |release| replace:: 2024Q1
+.. |date-of-issue| replace:: 14\ :sup:`th` November 2024
+.. |copyright-date| replace:: 2024
 
 .. _ADDENDA32: https://github.com/ARM-software/abi-aa/releases
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -215,6 +215,10 @@ changes to the content of the document for that release.
   |            |                     | Clarify static linker responsibilities with mixed build attributes  |
   |            |                     | and .note.gnu.property sections.                                    |
   |            |                     | Tool Interface for aeabi subsections taken from rationale document. |
+  |            |                     | Changed assembler syntax to make parameters mandatory and to define |
+  |            |                     | human readable names.                                               |
+  |            |                     | Generalise mapping of aeabi-feature-and-bits to .note.gnu.property  |
+  |            |                     | Renumber aeabi-feature-and-bits tags to start from 0.               |
   +------------+---------------------+---------------------------------------------------------------------+
 
 References
@@ -805,7 +809,11 @@ The full vendor name is "aeabi-feature-and-bits"
 
 This subsection contains tags that describe the same optional feature
 bits as the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` as described in
-(AAELF64_).
+(AAELF64_). The tag values and combination rules have been specified
+so that a static linker does not need to recognize the *Tag value* to
+be able combine attributes with the *Tag value*, and to convert the
+*Tag value* to the appropriate feature bit in
+``GNU_PROPERTY_AARCH64_FEATURE_1_AND``.
 
 header contents
 ^^^^^^^^^^^^^^^
@@ -834,18 +842,22 @@ combination of the attributes to have value 1.
 attributes
 ^^^^^^^^^^
 
+The attribute values of the first 32 attributes must match the bit
+position of the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` Bit Flags
+defined in (SYSVABI64_).
+
 ::
-   Tag_Feature_BTI, (= 1)
+   Tag_Feature_BTI, (= 0)
       0  Not all executable sections are compatible with the Branch Target Identification mechanism or no information available.
       1  All executable sections are compatible with the Branch Target Identification mechanism
 
 ::
-   Tag_Feature_PAC, (= 2)
+   Tag_Feature_PAC, (= 1)
       0  Not all executable sections have been protected with Return Address Signing or no information available.
       1  All executable sections have been protected with Return Address Signing.
 
 ::
-   Tag_Feature_GCS, (= 3)
+   Tag_Feature_GCS, (= 2)
       0  Not all executable sections are compatible with the guarded control stack extension or no information available.
       1  All executable sections are compatible with the guarded control stack extension.
 
@@ -895,8 +907,16 @@ build attributes in preference to the ``.note.gnu.property`` section,
 or does the translation and produces a diagnostic.
 
 For a platform that uses GNU Program Properties in loadable-units the
-mapping table above can be used to translate build attributes back to
-GNU properties.
+attributes in aeabi-feature-and-bits can be translated to the
+appropriate bit flag value in ``GNU_PROPERTY_AARCH64_FEATURE_1_AND``
+with the following formula:
+
+::
+   1U << *Tag value*
+
+For example ``Tag_Feature_GCS`` has *Tag value* 2, giving ``1U << 2``
+matching the value of ``GNU_PROPERTY_AARCH64_FEATURE_1_GCS`` defined
+in (SYSVABI64_).
 
 Pointer Authentication Signing Schema
 -------------------------------------
@@ -989,7 +1009,7 @@ Directives
 ^^^^^^^^^^
 
 ::
-   .aeabi_subsection name [, optional] [, parameter type]
+   .aeabi_subsection *name*, *optional*, *parameter type*
 
 *name*
 
@@ -997,23 +1017,43 @@ Create or switch the current subsection to *name*.
 
 *optional*
 
-This field is optional and only applies to subsection names with a
-prefix of "aeabi". The default value is 1 for optional.
+The *optional* argument is one of the following constants:
+
+.. table:: optional values
+
+  +---------------------------+----------------+---------------------------------------+
+  | Constant                  | Mapping to subsection optional field.                  |
+  +===========================+================+=======================================+
+  | ``required``              | subsection is not optional, optional field is set to 0 |
+  +---------------------------+----------------+---------------------------------------+
+  | ``optional``              | subsection is optional, optional field is set to 1     |
+  +---------------------------+--------------------------------------------------------+
 
 *parameter type*
 
-This field is an integer 0 or 1 that determines whether the subsection
-value is ULEB128 or a NTBS. It only applies to subsection names with a
-prefix of "aeabi".  The default value is 0 for ULEB128. If *parameter
-type* is not the default then optional must be also be specified even
-if it is the default value.
+The *parameter type* argument is one of the following constants:
+
+.. table:: parameter type values
+
+  +----------------------------+----------------+------------------------------------------------+
+  | Constant                   | Mapping to subsection parameter type field.                     |
+  +============================+================+================================================+
+  | ``uleb128``                | Encoding of subsection is ULEB128, parameter type field is set  |
+  +----------------------------+                                                                 |
+  | ``ULEB128``                | to 0.                                                           |
+  +----------------------------+----------------+------------------------------------------------+
+  | ``ntbs``                   | Encoding of subsection is a null terminated byte string (NTBS). |
+  +----------------------------+                                                                 +
+  | ``NTBS``                   | The parameter type field is set to 1.                           |
+  +----------------------------+-----------------------------------------------------------------+
 
 ::
 
-   .aeabi_attribute tag, value
+   .aeabi_attribute *tag*, *value*
 
 * *tag* is either the ``Tag_tag_name`` such as ``Tag_Feature_GCS`` or
-  the ``tag value``.
+  the ``Tag value`` such as ``3``. The matching of ``Tag_tag_name`` is case
+  insensitive.
 
 * *value* is either a `number` or a "string" depending on the
   ``<parameter type>`` of the current subsection.
@@ -1021,19 +1061,17 @@ if it is the default value.
 In the current active subsection, set *tag* to *value*.
 
 It is an error if .aebi_attribute is encountered when the current
-aeabi subsection is undefined.
+subsection is undefined.
 
 Directive examples
 ^^^^^^^^^^^^^^^^^^
 
-Produces a single subsection with 3 attributes set. The default values
-for *optional* and *parameter-type* (1 and 0 respectively) match the
-required values for aeabi-feature-and-bits. The .aeabi_attributes use
-the human readable ``Tag_tag_name``.
+Produces a single subsection with 3 attributes set. The
+.aeabi_attributes use the human readable ``Tag_tag_name``.
 
 .. code-block:: asm
 
-    .aeabi_subsection aeabi-feature-and-bits
+    .aeabi_subsection aeabi-feature-and-bits ,optional, ULEB128
     .aeabi_attribute Tag_Feature_BTI, 1
     .aeabi_attribute Tag_Feature_PAC, 1
     .aeabi_attribute Tag_Feature_GCS, 1
@@ -1044,16 +1082,17 @@ a little-endian relocatable object:
 `A`, <length 0x23,0x0,0x0,0x0>, "aeabi-feature-and-bits", 1, 0, 0, 1, 1, 1, 2, 1
 
 
-Produces two subsections. The values for *optional* and
-*parameter-type* have been given explicitly. Numbers have been used to
-set the tag values with comments showing the human readable names.
+Produces two subsections. Numbers have been used to set the tag values
+with comments showing the human readable names. This form can be
+useful when it is not known if the assembler will recognise the Tag
+name.
 
 .. code-block:: asm
 
-    .aeabi_subsection aeabi-feature-and-bits, 1, 0
+    .aeabi_subsection aeabi-feature-and-bits, optional, ULEB128
     .aeabi_attribute 0 /*Tag_Feature_GCS*/, 1
 
-    .aeabi_subsection aeabi-pauthabi, 0, 0
+    .aeabi_subsection aeabi-pauthabi, required, ULEB128
     .aeabi_attribute 0 /*Tag_PAuth_Platform*/, 1
     .aeabi_attribute 1 /*Tag_Pauth_Schema*/, 1
 
