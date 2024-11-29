@@ -210,6 +210,10 @@ Change History
  |            |                              |   used by `PAuthABIELF64`_ and                        |
  |            |                              |   `MemTagABIELF64`_.                                  |
  +------------+------------------------------+-------------------------------------------------------+
+ | 2024Q4     | 29\ :sup:`th` November 2024  | Require that ``PT_GNU_PROPERTY`` program header be    |
+ |            |                              | present in executables and shared-libraries if a      |
+ |            |                              | .note.gnu.property section is present.                |
+ +------------+------------------------------+-------------------------------------------------------+
 
 References
 ----------
@@ -1670,6 +1674,17 @@ include:
 * Any functions used by the program that manipulate the stack such as
   ``setjmp`` and ``longjmp``, must be aware of GCS.
 
+Program Properties and program headers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+An executable or shared-library containing Program Properties must
+have a ``PT_GNU_PROPERTY`` program header [LINUX_ABI_] to identify
+the location of the program properties to the program loader.
+
+The program header must be generated even if the
+``.note.gnu.property`` is consolidated into another section of type
+SHT_NOTE.
+
 Tool Requirements for generating BTI instructions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1734,6 +1749,13 @@ calls to that location.
 
 Program Loading
 ---------------
+
+Locating GNU properties
+^^^^^^^^^^^^^^^^^^^^^^^
+
+A program loader may rely on the presence of a ``PT_GNU_PROPERTY``
+program header to locate the ``.note.gnu.property`` section in an
+executable or shared-object.
 
 Process ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
