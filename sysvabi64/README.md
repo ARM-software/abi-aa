@@ -7,7 +7,7 @@
 
 ## About this document
 
-This document describes the [System V ABI for the Arm® 64-bit Architecture (AArch64)](sysvabi.rst).
+This document describes the [System V ABI for the Arm® 64-bit Architecture (AArch64)](sysvabi64.rst).
 
 ## About the license
 
