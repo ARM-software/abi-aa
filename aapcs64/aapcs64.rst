@@ -1386,6 +1386,8 @@ active
      would benefit from the lazy saving scheme.
 
 dormant
+   .. _`ZA dormant state`:
+
    All of the following are true:
 
    * PSTATE.ZA is 1
@@ -2361,9 +2363,8 @@ that is large enough to represent all state enabled by PSTATE.ZA.
 
 * The subroutine behaves as follows:
 
-  * If the current thread has access to FEAT_SME and PSTATE.ZA is 1,
-    X0 contains the total size required to save and restore all SME state
-    enabled by PSTATE.ZA.
+  * If ZA state is `active <ZA active state>`_, X0 contains the total size
+    required to save and restore all SME state enabled by PSTATE.ZA.
 
   * Otherwise, X0 contains a size large enough to represent internal state
     required for `__arm_sme_save`_ and `__arm_sme_restore`_.
@@ -2397,15 +2398,19 @@ by PSTATE.ZA.
 
 * The subroutine behaves as follows:
 
-  * If ``PTR`` does not point to a valid buffer with the required size, the
-    behavior of calling this subroutine is undefined.
+  * If ``PTR`` is not 16-byte aligned, the program aborts in some platform-
+    specific manner.
 
-  * If ZA state is 'active' on entry, then it is 'dormant' on normal return.
-    Otherwise the ZA state is unchanged.
+  * Otherwise if ``PTR`` does not point to a valid buffer with the required
+    size, the behavior of calling this subroutine is undefined.
+
+  * If ZA state is `active <ZA active state>`_ on entry, then it is
+    `dormant <ZA dormant state>`_ on normal return.  Otherwise the ZA state
+    is unchanged.
 
   * For the address ``PTR->VALID`` at an unspecified offset in the buffer,
     the value 0 is written to ``PTR->VALID`` and the subroutine returns, if
-    either of the following conditions is true:
+    one of the following conditions is true:
 
     * The current thread does not have access to SME.
 
@@ -2455,12 +2460,11 @@ enabled by PSTATE.ZA.
 
 * The subroutine behaves as follows:
 
-  * If ``PTR`` does not point to a valid buffer with the required size, the
-    behavior of calling this routine is undefined.
+  * If ``PTR`` is not 16-byte aligned, the program aborts in some platform-
+    specific manner.
 
-  * The ZA state on normal return is the same as the ZA state on entry to the
-    call to `__arm_sme_save`_ that was used to initialize the buffer
-    pointed to by ``PTR``.
+  * Otherwise if ``PTR`` does not point to a valid buffer with the required
+    size, the behavior of calling this subroutine is undefined.
 
   * For the address ``PTR->VALID`` at an unspecified offset in the buffer,
     if the value stored at address ``PTR->VALID`` is 0, then the subroutine
@@ -2471,7 +2475,7 @@ enabled by PSTATE.ZA.
 
     * The current thread does not have access to SME.
 
-    * ZA state is 'active' on entry.
+    * ZA state is `active <ZA active state>`_ on entry.
 
   * If PSTATE.ZA is 0, the subroutine enables PSTATE.ZA.
 
