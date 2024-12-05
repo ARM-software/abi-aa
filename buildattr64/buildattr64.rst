@@ -219,6 +219,7 @@ changes to the content of the document for that release.
   |            |                     | human readable names.                                               |
   |            |                     | Generalise mapping of aeabi-feature-and-bits to .note.gnu.property  |
   |            |                     | Renumber aeabi-feature-and-bits tags to start from 0.               |
+  |            |                     | Clarify that the same attribute with different values is an error.  |
   +------------+---------------------+---------------------------------------------------------------------+
 
 References
@@ -632,6 +633,9 @@ Both tags and numerical values are encoded using unsigned LEB128
 encoding (ULEB128), DWARF style (for details see [GDWARF_]).
 
 String values are encoded using NUL-terminated byte strings (NTBS).
+
+In a subsection it is erroneus to give two different values to the
+same attribute, though the same value may be given more than once.
 
 Encoding of meta data in a loadable-unit
 ----------------------------------------
