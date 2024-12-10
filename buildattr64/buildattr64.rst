@@ -222,6 +222,8 @@ changes to the content of the document for that release.
   |            |                     | Clarify that the same attribute with different values is an error.  |
   |            |                     | Rename subsection names to avoid - character which can be difficult |
   |            |                     | for assemblers to parse as a single token.                          |
+  |            |                     | Recommend that aeabi_pauthabi subsection not emitted when pauthabi  |
+  |            |                     | not used.                                                           |
   +------------+---------------------+---------------------------------------------------------------------+
 
 References
@@ -939,6 +941,11 @@ dependencies must use the same signing schema.
 While the requirement for the ``FEAT_PAuth`` extension is recorded in
 the architectural features.  The signing schema is software defined
 with more complex compatibility requirements.
+
+Relocatable objects not using the PAuthABI are recommended not to
+output the "aeabi_pauthabi" subsection with explicit values of 0 for
+the tags. This permits a relocatable object to be used by an object
+consumer that does not implement the "aeabi_pauthabi" subsection.
 
 header contents
 ^^^^^^^^^^^^^^^
