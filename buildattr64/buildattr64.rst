@@ -1073,7 +1073,7 @@ The *parameter type* argument is one of the following constants:
 
 In the current active subsection, set *tag* to *value*.
 
-It is an error if .aebi_attribute is encountered when the current
+It is an error if .aeabi_attribute is encountered when the current
 subsection is undefined.
 
 Directive examples
