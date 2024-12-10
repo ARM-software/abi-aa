@@ -220,6 +220,8 @@ changes to the content of the document for that release.
   |            |                     | Generalise mapping of aeabi-feature-and-bits to .note.gnu.property  |
   |            |                     | Renumber aeabi-feature-and-bits tags to start from 0.               |
   |            |                     | Clarify that the same attribute with different values is an error.  |
+  |            |                     | Rename subsection names to avoid - character which can be difficult |
+  |            |                     | for assemblers to parse as a single token.                          |
   +------------+---------------------+---------------------------------------------------------------------+
 
 References
@@ -495,7 +497,7 @@ For example, target-related attributes could record whether use of the
 ``FEAT_MEMTAG`` extension is permitted, and at what architectural
 revision use is permitted.
 
-ABI related attributes such as (`aeabi-feature-and-bits subsection`_)
+ABI related attributes such as (`aeabi_feature_and_bits subsection`_)
 describe features of the ABI contract that the ABI
 allows to vary, such as whether executable sections are compatible
 with the branch target identification mechanism.
@@ -566,7 +568,7 @@ order is:
    (ADDENDA32_)).
 
 *  Reversed from the arithmetic order (as with ``Tag_Feature_GCS`` in
-   `aeabi-feature-and-bits subsection`_).
+   `aeabi_feature_and_bits subsection`_).
 
 *  Represents mutually incompatible choices with which only the identical
    choice, or no use at all, is compatible (as with ``Tag_ABI_PCS_wchar_t`` in
@@ -806,10 +808,10 @@ giving a short comment about each one.
 
 A block of explanatory text follows in some cases.
 
-aeabi-feature-and-bits subsection
+aeabi_feature_and_bits subsection
 ---------------------------------
 
-The full vendor name is "aeabi-feature-and-bits"
+The full vendor name is "aeabi_feature_and_bits"
 
 This subsection contains tags that describe the same optional feature
 bits as the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` as described in
@@ -826,7 +828,7 @@ header contents
 
 *parameter type* is 0 (ULEB128)
 
-Combining attribute values of aeabi-feature-and-bits
+Combining attribute values of aeabi_feature_and_bits
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 With reference to Combining attribute values. The partial order for
@@ -865,7 +867,7 @@ defined in (SYSVABI64_).
       0  Not all executable sections are compatible with the guarded control stack extension or no information available.
       1  All executable sections are compatible with the guarded control stack extension.
 
-aeabi-feature-and-bits and GNU Program Properties
+aeabi_feature_and_bits and GNU Program Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GNU Program Properties as defined by [LINUX_ABI_] are a similar
@@ -911,7 +913,7 @@ build attributes in preference to the ``.note.gnu.property`` section,
 or does the translation and produces a diagnostic.
 
 For a platform that uses GNU Program Properties in loadable-units the
-attributes in aeabi-feature-and-bits can be translated to the
+attributes in aeabi_feature_and_bits can be translated to the
 appropriate bit flag value in ``GNU_PROPERTY_AARCH64_FEATURE_1_AND``
 with the following formula:
 
@@ -925,7 +927,7 @@ in (SYSVABI64_).
 Pointer Authentication Signing Schema
 -------------------------------------
 
-The full vendor name is "aeabi-pauthabi"
+The full vendor name is "aeabi_pauthabi"
 
 The (PAUTHABI64_) defines an extension to ELF in which code pointers
 are signed using instructions in the FEAT_PAuth extension. The
@@ -964,7 +966,7 @@ registered platforms defined in ``PAuthABI64_``.
 Where the *<id>* is a number representing the version in the context
 of ``Tag_PAuth_Platform``.
 
-Combining attribute values of aeabi-pauthabi
+Combining attribute values of aeabi_pauthabi
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The partial order is custom. Two entities are compabitible if both
@@ -1075,7 +1077,7 @@ Produces a single subsection with 3 attributes set. The
 
 .. code-block:: asm
 
-    .aeabi_subsection aeabi-feature-and-bits ,optional, ULEB128
+    .aeabi_subsection aeabi_feature_and_bits ,optional, ULEB128
     .aeabi_attribute Tag_Feature_BTI, 1
     .aeabi_attribute Tag_Feature_PAC, 1
     .aeabi_attribute Tag_Feature_GCS, 1
@@ -1083,7 +1085,7 @@ Produces a single subsection with 3 attributes set. The
 This translates to the following .ARM.attributes section contents for
 a little-endian relocatable object:
 
-`A`, <length 0x23,0x0,0x0,0x0>, "aeabi-feature-and-bits", 1, 0, 0, 1, 1, 1, 2, 1
+`A`, <length 0x23,0x0,0x0,0x0>, "aeabi_feature_and_bits", 1, 0, 0, 1, 1, 1, 2, 1
 
 
 Produces two subsections. Numbers have been used to set the tag values
@@ -1093,14 +1095,14 @@ name.
 
 .. code-block:: asm
 
-    .aeabi_subsection aeabi-feature-and-bits, optional, ULEB128
+    .aeabi_subsection aeabi_feature_and_bits, optional, ULEB128
     .aeabi_attribute 0 /*Tag_Feature_GCS*/, 1
 
-    .aeabi_subsection aeabi-pauthabi, required, ULEB128
+    .aeabi_subsection aeabi_pauthabi, required, ULEB128
     .aeabi_attribute 0 /*Tag_PAuth_Platform*/, 1
     .aeabi_attribute 1 /*Tag_Pauth_Schema*/, 1
 
 This translates to the following .ARM.attributes section contents for
 a little-endian relocatable object:
 
-`A`, <length 0x1e,0x0,0x0,0x0>, "aeabi-feature-and-bits", 1, 0, 2, 1, <length 0x21, 0x0, 0x0, 0x0>, "aeabi-feature-pauthabi", 0, 0, 0, 1, 1, 1
+`A`, <length 0x1e,0x0,0x0,0x0>, "aeabi_feature_and_bits", 1, 0, 2, 1, <length 0x21, 0x0, 0x0, 0x0>, "aeabi-feature-pauthabi", 0, 0, 0, 1, 1, 1
