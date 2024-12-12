@@ -1364,6 +1364,8 @@ off
 active
    .. _`ZA active state`:
 
+   .. _`ZA state is active`:
+
    PSTATE.ZA is 1 and TPIDR2_EL0 is null.
 
    This state indicates that both of the following are true:
@@ -2356,14 +2358,14 @@ that is large enough to represent all state enabled by PSTATE.ZA.
   `__arm_sme_restore`_.
 
   The exact layout used to calculate the size is unspecified.  The
-  implementations of `__arm_sme_save`_ and `__arm_sme_restore`_ and
+  implementations of `__arm_sme_save`_, `__arm_sme_restore`_, and
   `__arm_sme_state_size`_ must all assume the same layout.
 
   The size is guaranteed to be a multiple of 16.
 
 * The subroutine behaves as follows:
 
-  * If ZA state is `active <ZA active state>`_, X0 contains the total size
+  * If the `ZA state is active`_, X0 contains the total size
     required to save and restore all SME state enabled by PSTATE.ZA.
 
   * Otherwise, X0 contains a size large enough to represent internal state
@@ -2404,9 +2406,8 @@ by PSTATE.ZA.
   * Otherwise if ``PTR`` does not point to a valid buffer with the required
     size, the behavior of calling this subroutine is undefined.
 
-  * If ZA state is `active <ZA active state>`_ on entry, then it is
-    `dormant <ZA dormant state>`_ on normal return.  Otherwise the ZA state
-    is unchanged.
+  * If the `ZA state is active`_ on entry, then it is dormant on normal return.
+    Otherwise the ZA state is unchanged.
 
   * For the address ``PTR->VALID`` at an unspecified offset in the buffer,
     the value 0 is written to ``PTR->VALID`` and the subroutine returns, if
@@ -2475,7 +2476,7 @@ enabled by PSTATE.ZA.
 
     * The current thread does not have access to SME.
 
-    * ZA state is `active <ZA active state>`_ on entry.
+    * The `ZA state is active`_ on entry.
 
   * If PSTATE.ZA is 0, the subroutine enables PSTATE.ZA.
 
