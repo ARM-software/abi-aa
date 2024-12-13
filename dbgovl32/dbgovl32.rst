@@ -701,7 +701,7 @@ From an embedded perspective there are a number of issues with this.
 To integrate this mechanism in a manner more useful to embedded systems
 we propose the following.
 
--  Define a new ``.ARM.overlay_table``` section of type
+-  Define a new ``.ARM.overlay_table`` section of type
    ``SHT_ARM_OVERLAYSECTION`` = 0x70000005 with contents exactly as
    defined by [GNUOV_].
 
