@@ -727,7 +727,7 @@ causes a problem if the code uses FP values in its interface functions.
    might reasonably be offered in the base standard only with its
    FP-using functions declared in its supporting header files as
    base-standard interfaces using some Q-o-I means such as decoration
-   with ``__softfp``` or ``__ATTRIBUTE((softfp))__``.
+   with ``__softfp`` or ``__ATTRIBUTE((softfp))__``.
 
 The third use case causes a potential problem.
 
