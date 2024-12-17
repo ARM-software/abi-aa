@@ -621,7 +621,7 @@ The defined processor-specific section types are listed in the below table. All 
 Section Attribute Flags
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The defined processor-specific section attribute flags are listed in the following table. All processor-specific values are reserved to future revisions of this specification.
+The defined processor-specific section attribute flags are listed in the following table. All other processor-specific values are reserved to future revisions of this specification.
 
 .. class:: aaelf64-numbered-flags
 
