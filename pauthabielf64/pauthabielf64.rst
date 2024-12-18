@@ -243,6 +243,9 @@ changes to the content of the document for that release.
   |            |                             | - Add R_AARCH64_AUTH_GOT_ADR_PREL_LO21 relocation.               |
   |            |                             | - Remove addend in GDAT relocation operation.                    |
   +------------+-----------------------------+------------------------------------------------------------------+
+  | 2024Q1     | 5\ :sup:`th` November 2024  | - Add static Auth TLSDESC generating relocations                 |
+  |            |                             | - Correct comment entry for R_AARCH64_AUTH_LD64_GOTOFF_LO15      |
+  +------------+-----------------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -1103,80 +1106,94 @@ AUTH variant GOT Generating Relocations
 ``ENCD(value)`` is the encoding of the signing schema into the GOT
 slot using the ``IA`` key for symbols of type STT_FUNC and the ``DA``
 key for all other symbol types. The address of the GOT slot ``G`` is
-used as a modifer.
+used as a modifer. For ``ENCD(GTLSDESC(S)`` the encoding applies to
+the first entry containing the pointer to the variable's TLS
+descriptor resolver function.
 
 The GOT entries must be relocated by AUTH variant dynamic relocations.
 
 .. table:: PAuth GOT generating relocations
 
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | ELF 64 Code | Name                                   | Operation                        | Comment                  |
-  +=============+========================================+==================================+==========================+
-  | 0x8110      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0     | G(ENCD(GDAT(S))) - GOT           | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [15:0] of  |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8111      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0\_NC | G(ENCD(GDAT(S))) - GOT           | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [15:0] of  |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8112      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1     | G(ENCD(GDAT(S))) - GOT           | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [31:16] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8113      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1\_NC | G(ENCD(GDAT(S))) - GOT           | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [31:16] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8114      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2     | G(ENCD(GDAT(S))) - GOT           | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [47:32] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8115      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2\_NC | G(ENCD(GDAT(S))) - GOT           | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [47:32] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8116      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G3     | G(ENCD(GDAT(S))) - GOT           | Set a MOV[NZ] immediate  |
-  |             |                                        |                                  | field to bits [63:48] of |
-  |             |                                        |                                  | X (see notes below)      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8117      | R\_AARCH64\_AUTH\_GOT\_LD\_PREL19      | G(ENCD(GDAT(S))) - P             | Set a load-literal im-   |
-  |             |                                        |                                  | mediate field to bits    |
-  |             |                                        |                                  | [20:2] of X; check       |
-  |             |                                        |                                  | –2\ :sup:`20` <=         |
-  |             |                                        |                                  | X < 2 \ :sup:`20`        |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8118      | R\_AARCH64\_AUTH\_LD64\_GOTOFF\_LO15   | G(ENCD(GDAT(S))) - GOT           | Set the immediate        |
-  |             |                                        |                                  | value of an ADRP         |
-  |             |                                        |                                  | to bits [32:12] of X;    |
-  |             |                                        |                                  | check that –2\ :sup:`32` |
-  |             |                                        |                                  | <= X < 2\ :sup:`32`      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x8119      | R\_AARCH64\_AUTH\_ADR\_GOT\_PAGE       | G(ENCD(GDAT(S))) - Page(P)       | Set the immediate        |
-  |             |                                        |                                  | value of an ADRP         |
-  |             |                                        |                                  | to bits [32:12] of X;    |
-  |             |                                        |                                  | check that –2\ :sup:`32` |
-  |             |                                        |                                  | <= X < 2\ :sup:`32`      |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x811A      | R\_AARCH64\_AUTH\_LD64\_GOT\_LO12_NC   | G(ENCD(GDAT(S)))                 | Set the LD/ST immediate  |
-  |             |                                        |                                  | field to bits [11:3] of  |
-  |             |                                        |                                  | X. No overflow check;    |
-  |             |                                        |                                  | check that X&7 = 0       |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x811B      | R\_AARCH64\_AUTH\_LD64\_GOTPAGE\_LO15  | G(ENCD(GDAT(S))) - Page(GOT)     | Set the LD/ST immediate  |
-  |             |                                        |                                  | field to bits [14:3] of  |
-  |             |                                        |                                  | X; check that 0 <= X  <  |
-  |             |                                        |                                  | 2\ :sup:`15`             |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x811C      | R\AARCH64\_AUTH\_GOT\_ADD_LO12_NC      | G(ENCD(GDAT(S)))                 | Set an ADD immediate     |
-  |             |                                        |                                  | value to bits [11:0] of  |
-  |             |                                        |                                  | X. No overflow check.    |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
-  | 0x811D      | R\AARCH64\_AUTH\_GOT\_ADR\_PREL\_LO21  | G(ENCD(GDAT(S))) - P             | Set the immediate        |
-  |             |                                        |                                  | value to bits[20:0] of X;|
-  |             |                                        |                                  | check that -2 :sup:`20`  |
-  |             |                                        |                                  | <= 2 :sup: `20`          |
-  +-------------+----------------------------------------+----------------------------------+--------------------------+
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | ELF 64 Code | Name                                   | Operation                              | Comment                  |
+  +=============+========================================+========================================+==========================+
+  | 0x8110      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0     | G(ENCD(GDAT(S))) - GOT                 | Set a MOV[NZ] immediate  |
+  |             |                                        |                                        | field to bits [15:0] of  |
+  |             |                                        |                                        | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8111      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0\_NC | G(ENCD(GDAT(S))) - GOT                 | Set a MOV[NZ] immediate  |
+  |             |                                        |                                        | field to bits [15:0] of  |
+  |             |                                        |                                        | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8112      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1     | G(ENCD(GDAT(S))) - GOT                 | Set a MOV[NZ] immediate  |
+  |             |                                        |                                        | field to bits [31:16] of |
+  |             |                                        |                                        | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8113      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1\_NC | G(ENCD(GDAT(S))) - GOT                 | Set a MOV[NZ] immediate  |
+  |             |                                        |                                        | field to bits [31:16] of |
+  |             |                                        |                                        | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8114      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2     | G(ENCD(GDAT(S))) - GOT                 | Set a MOV[NZ] immediate  |
+  |             |                                        |                                        | field to bits [47:32] of |
+  |             |                                        |                                        | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8115      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2\_NC | G(ENCD(GDAT(S))) - GOT                 | Set a MOV[NZ] immediate  |
+  |             |                                        |                                        | field to bits [47:32] of |
+  |             |                                        |                                        | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8116      | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G3     | G(ENCD(GDAT(S))) - GOT                 | Set a MOV[NZ] immediate  |
+  |             |                                        |                                        | field to bits [63:48] of |
+  |             |                                        |                                        | X (see notes below)      |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8117      | R\_AARCH64\_AUTH\_GOT\_LD\_PREL19      | G(ENCD(GDAT(S))) - P                   | Set a load-literal im-   |
+  |             |                                        |                                        | mediate field to bits    |
+  |             |                                        |                                        | [20:2] of X; check       |
+  |             |                                        |                                        | –2\ :sup:`20` <=         |
+  |             |                                        |                                        | X < 2 \ :sup:`20`        |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8118      | R\_AARCH64\_AUTH\_LD64\_GOTOFF\_LO15   | G(ENCD(GDAT(S))) - GOT                 | Set a LD/ST immediate    |
+  |             |                                        |                                        | field to bits [14:3] of  |
+  |             |                                        |                                        | X. check that 0 <= X <   |
+  |             |                                        |                                        | 2\ :sup:`15`, X&7 = 0    |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8119      | R\_AARCH64\_AUTH\_ADR\_GOT\_PAGE       | G(ENCD(GDAT(S))) - Page(P)             | Set the immediate        |
+  |             |                                        |                                        | value of an ADRP         |
+  |             |                                        |                                        | to bits [32:12] of X;    |
+  |             |                                        |                                        | check that –2\ :sup:`32` |
+  |             |                                        |                                        | <= X < 2\ :sup:`32`      |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x811A      | R\_AARCH64\_AUTH\_LD64\_GOT\_LO12_NC   | G(ENCD(GDAT(S)))                       | Set the LD/ST immediate  |
+  |             |                                        |                                        | field to bits [11:3] of  |
+  |             |                                        |                                        | X. No overflow check;    |
+  |             |                                        |                                        | check that X&7 = 0       |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x811B      | R\_AARCH64\_AUTH\_LD64\_GOTPAGE\_LO15  | G(ENCD(GDAT(S))) - Page(GOT)           | Set the LD/ST immediate  |
+  |             |                                        |                                        | field to bits [14:3] of  |
+  |             |                                        |                                        | X; check that 0 <= X  <  |
+  |             |                                        |                                        | 2\ :sup:`15`             |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x811C      | R\_AARCH64\_AUTH\_GOT\_ADD_LO12_NC     | G(ENCD(GDAT(S)))                       | Set an ADD immediate     |
+  |             |                                        |                                        | value to bits [11:0] of  |
+  |             |                                        |                                        | X. No overflow check.    |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x811D      | R\_AARCH64\_AUTH\_GOT\_ADR\_PREL\_LO21 | G(ENCD(GDAT(S))) - P                   | Set the immediate        |
+  |             |                                        |                                        | value to bits[20:0] of X;|
+  |             |                                        |                                        | check that -2 :sup:`20`  |
+  |             |                                        |                                        | <= 2 :sup: `20`          |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x811E      | R\_AARCH64\_AUTH\_TLSDESC\_ADR\_PAGE21 | Page(G(ENCD(GTLSDESC(S)))) - Page(P)   | Set an ADRP immediate    |
+  |             |                                        |                                        | field to bits [32:12] of |
+  |             |                                        |                                        | X; check –2\ :sup:`20`   |
+  |             |                                        |                                        | <= X < 2 \ :sup:`20`     |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x811F      | R\_AARCH64\_AUTH\_TLSDESC\_LD64\_LO12  | G(ENCD(GTLSDESC(S)))                   | Set an LD offset to bits |
+  |             |                                        |                                        | [11:3] of X. No overflow |
+  |             |                                        |                                        | check; check X&7 = 0.    |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x8120      | R\_AARCH64\_AUTH\_TLSDESC\_ADD\_LO12   | G(ENCD(GTLSDESC(S)))                   | Set an ADD immediate     |
+  |             |                                        |                                        | field to bits [11:0] of  |
+  |             |                                        |                                        | X. No overflow check.    |
+  +-------------+----------------------------------------+----------------------------------------+--------------------------+
 .. raw:: pdf
 
    PageBreak
