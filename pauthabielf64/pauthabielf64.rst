@@ -1178,13 +1178,13 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   +-------------+----------------------------------------+----------------------------------------+--------------------------+
   | 0x811D      | R\_AARCH64\_AUTH\_GOT\_ADR\_PREL\_LO21 | G(ENCD(GDAT(S))) - P                   | Set the immediate        |
   |             |                                        |                                        | value to bits[20:0] of X;|
-  |             |                                        |                                        | check that -2 :sup:`20`  |
-  |             |                                        |                                        | <= 2 :sup: `20`          |
+  |             |                                        |                                        | check that -2\ :sup:`20` |
+  |             |                                        |                                        | <= 2\ :sup:`20`          |
   +-------------+----------------------------------------+----------------------------------------+--------------------------+
   | 0x811E      | R\_AARCH64\_AUTH\_TLSDESC\_ADR\_PAGE21 | Page(G(ENCD(GTLSDESC(S)))) - Page(P)   | Set an ADRP immediate    |
   |             |                                        |                                        | field to bits [32:12] of |
-  |             |                                        |                                        | X; check –2\ :sup:`20`   |
-  |             |                                        |                                        | <= X < 2 \ :sup:`20`     |
+  |             |                                        |                                        | X; check –2\ :sup:`32`   |
+  |             |                                        |                                        | <= X < 2\ :sup:`32`      |
   +-------------+----------------------------------------+----------------------------------------+--------------------------+
   | 0x811F      | R\_AARCH64\_AUTH\_TLSDESC\_LD64\_LO12  | G(ENCD(GTLSDESC(S)))                   | Set an LD offset to bits |
   |             |                                        |                                        | [11:3] of X. No overflow |
