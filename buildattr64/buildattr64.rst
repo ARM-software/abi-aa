@@ -749,8 +749,10 @@ including it with a value of 0 or “”, depending on its parameter type.
 Formal Syntax of aeabi prefixed subsections
 -------------------------------------------
 
-<uint8: optional> <uint8: parameter type>
-<attribute>*
+The syntactic structure of an aeabi prefixed subsection is::
+
+   <uint8: optional> <uint8: parameter type>
+   <attribute>*
 
 aeabi prefixed subsections consist of a header and 0 or more
 attributes.
