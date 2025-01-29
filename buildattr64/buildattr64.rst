@@ -225,6 +225,11 @@ changes to the content of the document for that release.
   |            |                     | Recommend that aeabi_pauthabi subsection not emitted when pauthabi  |
   |            |                     | not used.                                                           |
   +------------+---------------------+---------------------------------------------------------------------+
+  | 0.3        | 29th January 2025   | All subsections, and not just public subsections must follow the    |
+  |            |                     | syntactic structure of a subsection.                                |
+  |            |                     | Introduced a naming convention for private subsection names using   |
+  |            |                     | registered vendors.                                                 |
+  +------------+---------------------+---------------------------------------------------------------------+
 
 References
 ----------
@@ -430,10 +435,10 @@ Capturing user intentions about compatibility
 This standard does not specify how a tool should capture and
 approximate the intentions of its users.
 
-As far as possible, ABI-defined compatibility tags (`Public aeabi
-prefixed subsections`_) model the long-term compatibility commitments
-implicit in architectural specifications, product data sheets, and the
-ABI for the Arm Architecture.
+As far as possible, ABI-defined compatibility tags (`Public
+subsections`_) model the long-term compatibility commitments implicit
+in architectural specifications, product data sheets, and the ABI for
+the Arm Architecture.
 
 In general, tools have invocation options – command-line options and
 GUI configuration options – that present choices similar to those
@@ -683,12 +688,27 @@ subsection is either
 
 * A private subsection that is private to a tool vendor's tools.
 
+The type of each subsection is given by a short textual (NTBS)
+name. In an ELF attributes section all subsections must have a unique
+name.
+
+This ABI requires a vendor to register a short vendor name to use as a
+prefix to the names of private helper functions (for details see
+(AAELF64_)). The same vendor name must be used as a prefix for a
+vendors private subsection.
+
+A public attributes subsection has a prefix of *aeabi*. Names
+beginning *Anon* and *anon* are reserved for unregistered private use.
+
 The syntactic structure of an attributes section is::
 
    <format-version: ‘A’>
    [ <uint32: subsection-length> NTBS: vendor-name
      <bytes: vendor-data>
    ]*
+
+Informally an attributes section consists of a format-version
+character followed by 0 or more subsections.
 
 *Format-version* describes the format of the following data. It is a
 single byte. Only version 'A' (0x41) is defined. This field exists to
@@ -701,65 +721,42 @@ the following vendor data. It gives the offset from the start of this
 subsection to the start of the next one.
 
 *Vendor-name* is a NUL-terminated byte string (NTBS) like a C-language
-literal string.
+literal string. As described above the *vendor-name* must start with a
+vendor specific prefix.
 
-No requirements are placed on the format of private vendor data. The
-format of the public attributes subsections (which will have a
-pseudo-vendor name with a prefix of “aeabi”) are described below.
+Private vendor subsections must follow the syntactic structure of a
+subsection. No requirements are placed on the attributes defined
+in the private subsection.
 
 Attributes that record data about the compatibility of this
 relocatable object file with other relocatable object files must be
 recorded in a public "aeabi" prefixed subsection.
 
 Attributes meaningful only to the producer must be recorded in a
-private vendor subsection. These must not affect compatibility between
-relocatable object files. A producer that does not recognize the
-private vendor may skip over the private vendor subsection.
+private vendor subsection.
 
 Formally, there are no constraints on the order or number of vendor
 subsections. A consumer can collect the public ("aeabi" prefixed)
 attributes in a single pass over the section, then all of its private
 data in a second pass.
 
-Public aeabi prefixed subsections
-=================================
+Subsections
+===========
 
-About public subsections
-------------------------
+Formal Syntax of subsections
+----------------------------
 
-Subsections containing a vendor name with a prefix of "aeabi" are
-public attributes defined by this specification. All public aeabi
-sections have the same format, which includes a header. The header
-will indicate whether the section is required or optional.
-
-A consumer must be able to parse the header of all subsections that
-have a prefix of "aeabi". If the header is optional then a consumer
-may skip the subsection if they do not recognize the full vendor-name.
-
-All public subsections must have a unique vendor name.
-
-Each public subsection defines its own attribute tags.
-
-Default values for public tags
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The effect of omitting a public tag in file scope is identical to
-including it with a value of 0 or “”, depending on its parameter type.
-
-Formal Syntax of aeabi prefixed subsections
--------------------------------------------
-
-The syntactic structure of an aeabi prefixed subsection is::
+The syntactic structure of a subsection is::
 
    <uint8: optional> <uint8: parameter type>
    <attribute>*
 
-aeabi prefixed subsections consist of a header and 0 or more
-attributes.
+Informally, subsections consist of a header and 0 or more attributes.
 
 *optional* is a 1-byte integer. It encodes whether the subsection
 contents can be safely skipped if the consumer does not recognize the
-vendor-name, or if any subset of the subsection can be skipped over.
+subsection vendor-name, or if any subset of the subsection can be
+skipped over.
 
 The permitted values are::
 
@@ -768,7 +765,6 @@ The permitted values are::
 
    *1* optional. The consumer may skip the subsection in full or in part
    and the program will still be correct.
-
 
 *parameter type* is a 1-byte integer. It encodes whether the values in
 the subsection are ULEB128 values or NTBS. The permitted values are::
@@ -781,10 +777,44 @@ the subsection are ULEB128 values or NTBS. The permitted values are::
 unsigned LEB128 encoding (ULEB128), and value is encoded as described
 by *parameter type*.
 
-A subsection that is ``not optional`` must be processed in full. A
-subsection this ABI defines as ``not optional`` is not required to be
+Public subsections
+------------------
+
+Subsections with a vendor name prefix of "aeabi" are public
+subsections. They contain attributes defined by this specification.
+
+Each public subsection defines its own attribute tags.
+
+Default values for public tags
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Public tags are omitted by one of the following methods::
+
+  The ELF file does not have a ``.ARM.attributes`` section. All public
+  tags defined in this specification are omitted.
+
+  The ``.ARM.attributes`` does not contain an "aeabi" prefixed
+  subsection defined by this specification. All public tags that can
+  be defined by the subsection are omitted.
+
+  An "aeabi" prefixed subsection omits one or more public tags that
+  can be defined by the subection.
+
+The effect of omitting a public tag is identical to including it with
+a value of 0 or “”, depending on its parameter type.
+
+A subsection this ABI defines as *not optional* is not required to be
 present in the relocatable object file, the rules for `Default values
 for public tags`_ apply.
+
+
+Unrecognized public tags
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+When processing a public subsection a tool may encounter a public tag
+that it does not recognize. If the subsection is *optional* then the
+unrecognized public tag can be safely skipped. If the subsection is
+*not optional* then the tool should issue a diagnostic.
 
 
 How this specification describes public attributes
@@ -947,7 +977,7 @@ with more complex compatibility requirements.
 Relocatable objects not using the PAuthABI are recommended not to
 output the "aeabi_pauthabi" subsection with explicit values of 0 for
 the tags. This permits a relocatable object to be used by an object
-consumer that does not implement the "aeabi_pauthabi" subsection.
+consumer that does not recognize the "aeabi_pauthabi" subsection.
 
 header contents
 ^^^^^^^^^^^^^^^
@@ -988,7 +1018,8 @@ The compatibility between an entity with ``Tag_PAuth_Platform`` = 0,
 Private subsections
 -------------------
 
-No requirements are placed on the format of private vendor data.
+No requirements are placed on the attributes used in a private
+subsection.
 
 Appendix: Tool Interface for aeabi subsections
 ==============================================
