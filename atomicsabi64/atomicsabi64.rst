@@ -1138,13 +1138,13 @@ Floating-point atomic operations not supported for 8-bit types.
 ---------------------------
 
 The mappings for 16-bit types are the same as 32-bit types except the registers
-used are ``H``-registers.
+used are ``H``-registers, and they use the ``H`` variants of instructions.
 
 64-bit floating-point types
 ---------------------------
 
 The mappings for 64-bit types are the same as 32-bit types except the registers
-used are ``D``-registers.
+used are ``D``-registers and ``X``-general purpose registers.
 
 128-bit floating-point types
 ----------------------------
