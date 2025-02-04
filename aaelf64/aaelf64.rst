@@ -284,6 +284,10 @@ changes to the content of the document for that release.
   | 2024Q4        | 29\ :sup:`th`      | - Moved PAuthABI GOT relocations out of |
   |               | November 2024      |   reserved space.                       |
   +---------------+--------------------+-----------------------------------------+
+  | next          | tbd                | - In `Section Attribute Flags`_, added  |
+  |               |                    |   `SHF_AARCH64_PURECODE` processor      |
+  |               |                    |   specific section attribute flag.      |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------
@@ -620,8 +624,25 @@ The defined processor-specific section types are listed in the below table. All 
 Section Attribute Flags
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-There are no processor-specific section attribute flags defined. All processor-specific values are reserved to future revisions of this specification.
+The defined processor-specific section attribute flags are listed in the following table. All other processor-specific values are reserved to future revisions of this specification.
 
+.. class:: aaelf64-numbered-flags
+
+.. table:: Processor specific section attribute flags
+
+  +--------------------------+----------------+----------------------------------------------------+
+  | Name                     | Value          | Comment                                            |
+  +==========================+================+====================================================+
+  | ``SHF_AARCH64_PURECODE`` | ``0x20000000`` | The contents of this section contains only program |
+  |                          |                | instructions and no program data                   |
+  +--------------------------+----------------+----------------------------------------------------+
+
+If any section contained by a segment does not have the SHF_AARCH64_PURECODE
+section flag set, the PF_R segment flag must be set in the program header for
+the segment. If all sections contained by a segment have the SHF_AARCH64_PURECODE
+section flag, a linker may optionally clear the PF_R segment flag in the
+program header of the segment, to signal to the runtime that the program does
+not rely on being able to read that segment.
 
 Merging of objects in sections with SHF\_MERGE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
