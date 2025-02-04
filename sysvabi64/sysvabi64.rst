@@ -210,6 +210,8 @@ Change History
  |            |                              |   used by `PAuthABIELF64`_ and                        |
  |            |                              |   `MemTagABIELF64`_.                                  |
  +------------+------------------------------+-------------------------------------------------------+
+ | 2025Q1     | 04\ :sup:`th` February 2025  | Require hard-float ABI for sysvabi platforms          |
+ +------------+------------------------------+-------------------------------------------------------+
 
 References
 ----------
@@ -373,6 +375,16 @@ AArch64 system.
 
 Low Level Information
 =====================
+
+Hardware Requirements
+---------------------
+
+The AArch64 System V ABI requires the presence of SIMD and FP registers.
+
+Procedure call standard requirements
+------------------------------------
+
+The AArch64 System V ABI uses The Base Procedure Call Standard from (AAPCS64_).
 
 Not available for this Alpha release.
 
