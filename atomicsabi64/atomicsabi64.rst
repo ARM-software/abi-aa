@@ -217,6 +217,7 @@ changes to the content of the document for that release.
   | Issue   | Date                         | Change                                                            |
   +=========+==============================+===================================================================+
   | 00alp0  | 5\ :sup:`th` September 2024  | Alpha Release.                                                    |
+  | 00alp1  | 5\ :sup:`th` February 2025   | Added table for floating-point atomic `fetch_add` operations      |
   +---------+------------------------------+-------------------------------------------------------------------+
 
 
@@ -1117,7 +1118,7 @@ contains ``val``. The result is returned in ``S0``.
   | ``fetch_add(loc,val,acq_rel)``      | ``Armv8-A``   | .. code-block:: none                 |
   | ``fetch_add(loc,val,seq_cst)``      |               |                                      |
   |                                     |               |    loop:                             |
-  |                                     |               |      LDAXR   W0, [X1]                |
+  |                                     |               |      LDAXR  W0, [X1]                 |
   |                                     |               |      FMOV   S1, W0                   |
   |                                     |               |      FADD   S2, S2, S1               |
   |                                     |               |      FMOV   W0, S2                   |
