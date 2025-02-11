@@ -1099,7 +1099,7 @@ The *parameter type* argument is one of the following constants:
 
 * *tag* is either the ``Tag_tag_name`` such as ``Tag_Feature_GCS`` or
   the ``Tag value`` such as ``3``. The matching of ``Tag_tag_name`` is case
-  insensitive.
+  sensitive.
 
 * *value* is either a `number` or a "string" depending on the
   ``<parameter type>`` of the current subsection.
