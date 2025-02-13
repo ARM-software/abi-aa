@@ -476,6 +476,11 @@ The following nomenclature is used in the descriptions of relocation operations:
   the second entry holds a platform-specific offset or pointer. The pair of
   pointer-sized entries will be relocated with ``R_MORELLO_TLSDESC(S+A)``.
 
+- ``Delta(S)`` if ``S`` is a normal symbol, resolves to the difference between the
+  static link address of ``S`` and the execution address of ``S``. If ``S`` is the
+  null symbol (ELF symbol index 0), resolves to the difference between the static
+  link address of ``P`` and the execution address of ``P``.
+
 - ``TPREL(S)`` resolves to a pair of two 64-bit values. The first value
   contains the offset in the static TLS block of the thread-local symbol ``S``.
   The second value contains the size of the symbol ``S``
@@ -688,31 +693,40 @@ Dynamic Morello relocations
 
 .. table:: Dynamic relocations
 
-    +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | ELF64 | Name                    | Operation                               | Comment                                  |
-    | Code  |                         |                                         |                                          |
-    +=======+=========================+=========================================+==========================================+
-    | 59392 | ``R_MORELLO_CAPINIT``   | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
-    |       |                         |                                         |                                          |
-    +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59393 | ``R_MORELLO_GLOB_DAT``  | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
-    |       |                         |                                         |                                          |
-    +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59394 | ``R_MORELLO_JUMP_SLOT`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
-    |       |                         |                                         |                                          |
-    +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59395 | ``R_MORELLO_RELATIVE``  | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
-    |       |                         |                                         |                                          |
-    +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59396 | ``R_MORELLO_IRELATIVE`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
-    |       |                         |                                         |                                          |
-    +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59397 | ``R_MORELLO_TLSDESC``   | ``TLSDESC(S+A)``                        | Identifies a TLS descriptor to be filled.|
-    |       |                         |                                         |                                          |
-    +-------+-------------------------+-----------------------------------------+------------------------------------------+
-    | 59398 | ``R_MORELLO_TPREL128``  | ``TPREL(S)``                            | See note below.                          |
-    |       |                         |                                         |                                          |
-    +-------+-------------------------+-----------------------------------------+------------------------------------------+
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | ELF64 | Name                        | Operation                               | Comment                                  |
+    | Code  |                             |                                         |                                          |
+    +=======+=============================+=========================================+==========================================+
+    | 59392 | ``R_MORELLO_CAPINIT``       | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59393 | ``R_MORELLO_GLOB_DAT``      | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59394 | ``R_MORELLO_JUMP_SLOT``     | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59395 | ``R_MORELLO_RELATIVE``      | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59396 | ``R_MORELLO_IRELATIVE``     | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59397 | ``R_MORELLO_TLSDESC``       | ``TLSDESC(S+A)``                        | Identifies a TLS descriptor to be filled.|
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59398 | ``R_MORELLO_TPREL128``      | ``TPREL(S)``                            | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59399 | ``R_MORELLO_CODE_CAPINIT``  | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59400 | ``R_MORELLO_FUNC_RELATIVE`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59401 | ``R_AARCH64_FUNC_RELATIVE`` | ``Delta(S) + A``                        | See note below.                          |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
 
 .. note::
 
@@ -758,6 +772,21 @@ Dynamic Morello relocations
   fragment will contain the size of the symbol. The fragment has the following format:
 
   ``| 64-bits offset | 64-bits size |``
+
+  ``R_MORELLO_CODE_CAPINIT`` is similar to ``R_MORELLO_CAPINIT`` but signifies
+  that the capability being relocated is a code pointer as opposed to a data
+  pointer or function pointer. As such, it must only be used against
+  ``STT_FUNC`` symbols. This relocation type is needed for library-based
+  compartmentalization (c18n). Currently for security reasons this relocation
+  may only be used against non-preemptible symbols, and thus will be converted
+  to ``R_MORELLO_RELATIVE`` at link time, making it in effect a static
+  relocation. However, this restriction may be removed in future if needed, and
+  it is therefore classed as a dynamic relocation.
+
+  ``R_MORELLO_FUNC_RELATIVE`` and ``R_AARCH64_FUNC_RELATIVE`` : similar to
+  their non-``_FUNC`` counterparts but signify that the capability being
+  relocated is a function pointer as opposed to a data pointer or code pointer.
+  This distinction is needed for library-based compartmentalization (c18n).
 
 Static linking with Morello
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
