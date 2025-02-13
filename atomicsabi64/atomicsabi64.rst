@@ -1065,8 +1065,9 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
 32-bit floating-point types
 ---------------------------
 
-In what follows, register ``X1`` contains the location ``loc`` and ``S2``
-contains ``val``. The result is returned in ``S0``.
+In what follows, register ``X1`` contains the location ``loc`` and ``S1``
+contains ``val``. The value initially loaded from memory is returned in
+``S0``.
 
 .. table::
 
@@ -1077,57 +1078,57 @@ contains ``val``. The result is returned in ``S0``.
   |                                     |               |                                      |
   |                                     |               |    loop:                             |
   |                                     |               |      LDXR   W0, [X1]                 |
-  |                                     |               |      FMOV   S1, W0                   |
-  |                                     |               |      FADD   S2, S2, S1               |
-  |                                     |               |      FMOV   W0, S2                   |
+  |                                     |               |      FMOV   S0, W0                   |
+  |                                     |               |      FADD   S1, S1, S0               |
+  |                                     |               |      FMOV   W0, S1                   |
   |                                     |               |      STXR   W3, W0, [X1]             |
   |                                     |               |      CBNZ   W3, loop                 |
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSFE`` | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    LDFADD S0, S2, [X1] *             |
+  |                                     |               |    LDFADD S1, S0, [X1]               |
   +-------------------------------------+---------------+--------------------------------------+
   | ``fetch_add(loc,val,acquire)``      | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
   |                                     |               |    loop:                             |
   |                                     |               |      LDAXR  W0, [X1]                 |
-  |                                     |               |      FMOV   S1, W0                   |
-  |                                     |               |      FADD   S2, S2, S1               |
-  |                                     |               |      FMOV   W0, S2                   |
+  |                                     |               |      FMOV   S0, W0                   |
+  |                                     |               |      FADD   S1, S1, S0               |
+  |                                     |               |      FMOV   W0, S1                   |
   |                                     |               |      STXR   W3, W0, [X1]             |
   |                                     |               |      CBNZ   W3, loop                 |
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSFE`` | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    LDFADDA S0, S2, [X1] *            |
+  |                                     |               |    LDFADDA S1, S0, [X1]              |
   +-------------------------------------+---------------+--------------------------------------+
   | ``fetch_add(loc,val,release)``      | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
   |                                     |               |    loop:                             |
   |                                     |               |      LDXR   W0, [X1]                 |
-  |                                     |               |      FMOV   S1, W0                   |
-  |                                     |               |      FADD   S2, S2, S1               |
-  |                                     |               |      FMOV   W0, S2                   |
+  |                                     |               |      FMOV   S0, W0                   |
+  |                                     |               |      FADD   S1, S1, S0               |
+  |                                     |               |      FMOV   W0, S1                   |
   |                                     |               |      STLXR  W3, W0, [X1]             |
   |                                     |               |      CBNZ   W3, loop                 |
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSFE`` | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    LDFADDL S0, S2, [X1] *            |
+  |                                     |               |    LDFADDL S1, S0, [X1]              |
   +-------------------------------------+---------------+--------------------------------------+
   | ``fetch_add(loc,val,acq_rel)``      | ``Armv8-A``   | .. code-block:: none                 |
   | ``fetch_add(loc,val,seq_cst)``      |               |                                      |
   |                                     |               |    loop:                             |
   |                                     |               |      LDAXR  W0, [X1]                 |
-  |                                     |               |      FMOV   S1, W0                   |
-  |                                     |               |      FADD   S2, S2, S1               |
-  |                                     |               |      FMOV   W0, S2                   |
+  |                                     |               |      FMOV   S0, W0                   |
+  |                                     |               |      FADD   S1, S1, S0               |
+  |                                     |               |      FMOV   W0, S1                   |
   |                                     |               |      STLXR  W3, W0, [X1]             |
   |                                     |               |      CBNZ   W3, loop                 |
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSFE`` | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    LDFADDAL S0, S2, [X1] *           |
+  |                                     |               |    LDFADDAL S1, S0, [X1]             |
   +-------------------------------------+---------------+--------------------------------------+
 
 8-bit floating-point types
