@@ -1179,27 +1179,27 @@ The following tables record single instruction relocations and relocations that 
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                                | Operation         | Comment                                                                                             |
   +============+============+=====================================+===================+=====================================================================================================+
-  | 273        | 9          | R\_<CLS>\_ LD\_PREL\_LO19           | S + A - P         | Set a load-literal immediate value to bits [20:2] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`|
+  | 273        | 9          | R\_<CLS>\_LD\_PREL\_LO19            | S + A - P         | Set a load-literal immediate value to bits [20:2] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`|
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 274        | 10         | R\_<CLS>\_ ADR\_PREL\_LO21          | S + A - P         | Set an ADR immediate value to bits [20:0] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`        |
+  | 274        | 10         | R\_<CLS>\_ADR\_PREL\_LO21           | S + A - P         | Set an ADR immediate value to bits [20:0] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`        |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 275        | 11         | R\_<CLS>\_ ADR\_PREL\_PG\_HI21      | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X; check that -2\ :sup:`32` <= X < 2\ :sup:`32`  |
+  | 275        | 11         | R\_<CLS>\_ADR\_PREL\_PG\_HI21       | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X; check that -2\ :sup:`32` <= X < 2\ :sup:`32`  |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 276        | \-         | R\_<CLS>\_ ADR\_PREL\_PG\_HI21\_NC  | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X. No overflow check                             |
+  | 276        | \-         | R\_<CLS>\_ADR\_PREL\_PG\_HI21\_NC   | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X. No overflow check                             |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 277        | 12         | R\_<CLS>\_ ADD\_ABS\_LO12\_NC       | S + A             | Set an ADD immediate value to bits [11:0] of X. No overflow check. Used with relocations            |
+  | 277        | 12         | R\_<CLS>\_ADD\_ABS\_LO12\_NC        | S + A             | Set an ADD immediate value to bits [11:0] of X. No overflow check. Used with relocations            |
   |            |            |                                     |                   | ADR\_PREL\_PG\_HI21 and  ADR\_PREL\_PG\_HI21\_NC                                                    |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 278        | 13         | R\_<CLS>\_ LDST8\_ABS\_LO12\_NC     | S + A             | Set an LD/ST immediate value to bits [11:0] of X. No overflow check. Used with relocations          |
+  | 278        | 13         | R\_<CLS>\_LDST8\_ABS\_LO12\_NC      | S + A             | Set an LD/ST immediate value to bits [11:0] of X. No overflow check. Used with relocations          |
   |            |            |                                     |                   | ADR\_PREL\_PG\_HI21 and  ADR\_PREL\_PG\_HI21\_NC                                                    |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 284        | 14         | R\_<CLS>\_ LDST16\_ABS\_LO12\_NC    | S + A             | Set an LD/ST immediate value to bits [11:1] of X. No overflow check                                 |
+  | 284        | 14         | R\_<CLS>\_LDST16\_ABS\_LO12\_NC     | S + A             | Set an LD/ST immediate value to bits [11:1] of X. No overflow check                                 |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 285        | 15         | R\_<CLS>\_ LDST32\_ABS\_LO12\_NC    | S + A             | Set the LD/ST immediate value to bits [11:2] of X. No overflow check                                |
+  | 285        | 15         | R\_<CLS>\_LDST32\_ABS\_LO12\_NC     | S + A             | Set the LD/ST immediate value to bits [11:2] of X. No overflow check                                |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 286        | 16         | R\_<CLS>\_ LDST64\_ABS\_LO12\_NC    | S + A             | Set the LD/ST immediate value to bits [11:3] of X. No overflow check                                |
+  | 286        | 16         | R\_<CLS>\_LDST64\_ABS\_LO12\_NC     | S + A             | Set the LD/ST immediate value to bits [11:3] of X. No overflow check                                |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 299        | 17         | R\_<CLS>\_ LDST128\_ABS\_LO12\_NC   | S + A             | Set the LD/ST immediate value to bits [11:4] of X. No overflow check                                |
+  | 299        | 17         | R\_<CLS>\_LDST128\_ABS\_LO12\_NC    | S + A             | Set the LD/ST immediate value to bits [11:4] of X. No overflow check                                |
   +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
 
 
@@ -1494,15 +1494,15 @@ General Dynamic thread-local storage model
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                            | Operation                       | Comment                                                                                  |
   +============+============+=================================+=================================+==========================================================================================+
-  | 512        | 80         | R\_<CLS>\_TLSGD\_ ADR\_PREL21   | G(GTLSIDX(S,A)) - P             | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`  |
+  | 512        | 80         | R\_<CLS>\_TLSGD\_ADR\_PREL21    | G(GTLSIDX(S,A)) - P             | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`  |
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 513        | 81         | R\_<CLS>\_TLSGD\_ ADR\_PAGE21   | Page(G(GTLSIDX(S,A)) - Page(P)  | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  | 513        | 81         | R\_<CLS>\_TLSGD\_ADR\_PAGE21    | Page(G(GTLSIDX(S,A)) - Page(P)  | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 514        | 82         | R\_<CLS>\_TLSGD\_ ADD\_LO12\_NC | G(GTLSIDX(S,A))                 | Set an ADD immediate field to bits [11:0] of X. No overflow check                        |
+  | 514        | 82         | R\_<CLS>\_TLSGD\_ADD\_LO12\_NC  | G(GTLSIDX(S,A))                 | Set an ADD immediate field to bits [11:0] of X. No overflow check                        |
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 515        | \-         | R\_<CLS>\_TLSGD\_ MOVW\_G1      | G(GTLSIDX(S,A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
+  | 515        | \-         | R\_<CLS>\_TLSGD\_MOVW\_G1       | G(GTLSIDX(S,A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 516        | \-         | R\_<CLS>\_TLSGD\_ MOVW\_G0\_NC  | G(GTLSIDX(S,A)) - GOT           | Set a MOVK immediate field to bits [15:0] of X. No overflow check                        |
+  | 516        | \-         | R\_<CLS>\_TLSGD\_MOVW\_G0\_NC   | G(GTLSIDX(S,A)) - GOT           | Set a MOVK immediate field to bits [15:0] of X. No overflow check                        |
   +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
 
 .. note::
@@ -1524,53 +1524,53 @@ Local Dynamic thread-local storage model
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
   | ELF64 Code  | ELF32 Code | Name                                         | Operation                 | Comment                                                                                        |
   +=============+============+==============================================+===========================+================================================================================================+
-  | 517         | 83         | R\_<CLS>\_TLSLD\_ ADR\_PREL21                | G(GLDM(S))) - P           | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`        |
+  | 517         | 83         | R\_<CLS>\_TLSLD\_ADR\_PREL21                 | G(GLDM(S))) - P           | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`        |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 518         | 84         | R\_<CLS>\_TLSLD\_ ADR\_PAGE21                | Page(G(GLDM(S)))-Page(P)  | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`      |
+  | 518         | 84         | R\_<CLS>\_TLSLD\_ADR\_PAGE21                 | Page(G(GLDM(S)))-Page(P)  | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`      |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 519         | 85         | R\_<CLS>\_TLSLD\_ ADD\_LO12\_NC              | G(GLDM(S))                | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
+  | 519         | 85         | R\_<CLS>\_TLSLD\_ADD\_LO12\_NC               | G(GLDM(S))                | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 520         | \-         | R\_<CLS>\_TLSLD\_ MOVW\_G1                   | G(GLDM(S)) - GOT          | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
+  | 520         | \-         | R\_<CLS>\_TLSLD\_MOVW\_G1                    | G(GLDM(S)) - GOT          | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 521         | \-         | R\_<CLS>\_TLSLD\_ MOVW\_G0\_NC               | G(GLDM(S)) - GOT          | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
+  | 521         | \-         | R\_<CLS>\_TLSLD\_MOVW\_G0\_NC                | G(GLDM(S)) - GOT          | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 522         | 86         | R\_<CLS>\_TLSLD\_ LD\_PREL19                 | G(GLDM(S)) - P            | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
+  | 522         | 86         | R\_<CLS>\_TLSLD\_LD\_PREL19                  | G(GLDM(S)) - P            | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 523         | \-         | R\_<CLS>\_TLSLD\_ MOVW\_DTPREL\_G2           | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)                           |
+  | 523         | \-         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G2            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)                           |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 524         | 87         | R\_<CLS>\_TLSLD\_ MOVW\_DTPREL\_G1           | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
+  | 524         | 87         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G1            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 525         | \-         | R\_<CLS>\_TLSLD\_ MOVW\_DTPREL\_G1\_NC       | DTPREL(S+A)               | Set a MOVK immediate field to bits [31:16] of X. No overflow check                             |
+  | 525         | \-         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G1\_NC        | DTPREL(S+A)               | Set a MOVK immediate field to bits [31:16] of X. No overflow check                             |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 526         | 88         | R\_<CLS>\_TLSLD\_ MOVW\_DTPREL\_G0           | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)                            |
+  | 526         | 88         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G0            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)                            |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 527         | 89         | R\_<CLS>\_TLSLD\_ MOVW\_DTPREL\_G0\_NC       | DTPREL(S+A)               | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
+  | 527         | 89         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G0\_NC        | DTPREL(S+A)               | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 528         | 90         | R\_<CLS>\_TLSLD\_ ADD\_DTPREL\_HI12          | DTPREL(S+A)               | Set an ADD immediate field to bits [23:12] of X; check 0 <= X < 2\ :sup:`24`                   |
+  | 528         | 90         | R\_<CLS>\_TLSLD\_ADD\_DTPREL\_HI12           | DTPREL(S+A)               | Set an ADD immediate field to bits [23:12] of X; check 0 <= X < 2\ :sup:`24`                   |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 529         | 91         | R\_<CLS>\_TLSLD\_ ADD\_DTPREL\_LO12          | DTPREL(S+A)               | Set an ADD immediate field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`                    |
+  | 529         | 91         | R\_<CLS>\_TLSLD\_ADD\_DTPREL\_LO12           | DTPREL(S+A)               | Set an ADD immediate field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`                    |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 530         | 92         | R\_<CLS>\_TLSLD\_ ADD\_DTPREL\_LO12\_NC      | DTPREL(S+A)               | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
+  | 530         | 92         | R\_<CLS>\_TLSLD\_ADD\_DTPREL\_LO12\_NC       | DTPREL(S+A)               | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 531         | 93         | R\_<CLS>\_TLSLD\_ LDST8\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`                      |
+  | 531         | 93         | R\_<CLS>\_TLSLD\_LDST8\_DTPREL\_LO12         | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`                      |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 532         | 94         | R\_<CLS>\_TLSLD\_ LDST8\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:0] of X. No overflow check                                |
+  | 532         | 94         | R\_<CLS>\_TLSLD\_LDST8\_DTPREL\_LO12\_NC     | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:0] of X. No overflow check                                |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 533         | 95         | R\_<CLS>\_TLSLD\_ LDST16\_DTPREL\_LO12       | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:1] of X; check 0 <= X < 2\ :sup:`12`                      |
+  | 533         | 95         | R\_<CLS>\_TLSLD\_LDST16\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:1] of X; check 0 <= X < 2\ :sup:`12`                      |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 534         | 96         | R\_<CLS>\_TLSLD\_ LDST16\_DTPREL\_LO12\_NC   | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:1] of X. No overflow check                                |
+  | 534         | 96         | R\_<CLS>\_TLSLD\_LDST16\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:1] of X. No overflow check                                |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 535         | 97         | R\_<CLS>\_TLSLD\_ LDST32\_DTPREL\_LO12       | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:2] of X; check 0 <= X < 2\ :sup:`12`                      |
+  | 535         | 97         | R\_<CLS>\_TLSLD\_LDST32\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:2] of X; check 0 <= X < 2\ :sup:`12`                      |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 536         | 98         | R\_<CLS>\_TLSLD\_ LDST32\_DTPREL\_LO12\_NC   | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:2] of X. No overflow check                                |
+  | 536         | 98         | R\_<CLS>\_TLSLD\_LDST32\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:2] of X. No overflow check                                |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 537         | 99         | R\_<CLS>\_TLSLD\_ LDST64\_DTPREL\_LO12       | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:3] of X; check 0 <= X < 2\ :sup:`12`                      |
+  | 537         | 99         | R\_<CLS>\_TLSLD\_LDST64\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:3] of X; check 0 <= X < 2\ :sup:`12`                      |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 538         | 100        | R\_<CLS>\_TLSLD\_ LDST64\_DTPREL\_LO12\_NC   | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:3] of X. No overflow check                                |
+  | 538         | 100        | R\_<CLS>\_TLSLD\_LDST64\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:3] of X. No overflow check                                |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 572         | 101        | R\_<CLS>\_TLSLD\_ LDST128\_DTPREL\_LO12      | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X; check 0 <= X < 2\ :sup:`12`                      |
+  | 572         | 101        | R\_<CLS>\_TLSLD\_LDST128\_DTPREL\_LO12       | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X; check 0 <= X < 2\ :sup:`12`                      |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 573         | 102        | R\_<CLS>\_TLSLD\_ LDST128\_DTPREL\_LO12\_ NC | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X. No overflow check                                |
+  | 573         | 102        | R\_<CLS>\_TLSLD\_LDST128\_DTPREL\_LO12\_NC   | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X. No overflow check                                |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
 
 .. note::
@@ -1594,17 +1594,17 @@ Initial Exec thread-local storage model
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                                       | Operation                      | Comment                                                                                  |
   +============+============+============================================+================================+==========================================================================================+
-  | 539        | \-         | R\_<CLS>\_TLSIE\_ MOVW\_GOTTPREL\_G1       | G(GTPREL(S+A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
+  | 539        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G1        | G(GTPREL(S+A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 540        | \-         | R\_<CLS>\_TLSIE\_ MOVW\_GOTTPREL\_G0\_NC   | G(GTPREL(S+A)) - GOT           | Set MOVK immediate to bits [15:0] of X. No overflow check                                |
+  | 540        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G0\_NC    | G(GTPREL(S+A)) - GOT           | Set MOVK immediate to bits [15:0] of X. No overflow check                                |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 541        | 103        | R\_<CLS>\_TLSIE\_ ADR\_GOTTPREL\_PAGE21    | Page(G(GTPREL(S+A))) - Page(P) | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  | 541        | 103        | R\_<CLS>\_TLSIE\_ADR\_GOTTPREL\_PAGE21     | Page(G(GTPREL(S+A))) - Page(P) | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 542        | \-         | R\_<CLS>\_TLSIE\_ LD64\_GOTTPREL\_LO12\_NC | G(GTPREL(S+A))                 | Set an LD offset field to bits [11:3] of X. No overflow check; check that X&7=0          |
+  | 542        | \-         | R\_<CLS>\_TLSIE\_LD64\_GOTTPREL\_LO12\_NC  | G(GTPREL(S+A))                 | Set an LD offset field to bits [11:3] of X. No overflow check; check that X&7=0          |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | \-         | 104        | R\_<CLS>\_TLSIE\_ LD32\_GOTTPREL\_LO12\_NC | G(GTPREL(S+A))                 | Set an LD offset field to bits [11:2] of X. No overflow check; check that X&3=0          |
+  | \-         | 104        | R\_<CLS>\_TLSIE\_LD32\_GOTTPREL\_LO12\_NC  | G(GTPREL(S+A))                 | Set an LD offset field to bits [11:2] of X. No overflow check; check that X&3=0          |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 543        | 105        | R\_<CLS>\_TLSIE\_ LD\_GOTTPREL\_PREL19     | G(GTPREL(S+A)) – P             | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
+  | 543        | 105        | R\_<CLS>\_TLSIE\_LD\_GOTTPREL\_PREL19      | G(GTPREL(S+A)) – P             | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
 
 .. note::
@@ -1621,41 +1621,41 @@ Local Exec thread-local storage model
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                                       | Operation   | Comment                                                                      |
   +============+============+============================================+=============+==============================================================================+
-  | 544        | \-         | R\_<CLS>\_TLSLE\_ MOVW\_TPREL\_G2          | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)         |
+  | 544        | \-         | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G2           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)         |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 545        | 106        | R\_<CLS>\_TLSLE\_ MOVW\_TPREL\_G1          | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)         |
+  | 545        | 106        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G1           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)         |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 546        | \-         | R\_<CLS>\_TLSLE\_ MOVW\_TPREL\_G1\_NC      | TPREL(S+A)  | Set a MOVK immediate field to bits [31:16] of X. No overflow check           |
+  | 546        | \-         | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G1\_NC       | TPREL(S+A)  | Set a MOVK immediate field to bits [31:16] of X. No overflow check           |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 547        | 107        | R\_<CLS>\_TLSLE\_ MOVW\_TPREL\_G0          | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)          |
+  | 547        | 107        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G0           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)          |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 548        | 108        | R\_<CLS>\_TLSLE\_ MOVW\_TPREL\_G0\_NC      | TPREL(S+A)  | Set a MOVK immediate field to bits [15:0] of X. No overflow check            |
+  | 548        | 108        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G0\_NC       | TPREL(S+A)  | Set a MOVK immediate field to bits [15:0] of X. No overflow check            |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 549        | 109        | R\_<CLS>\_TLSLE\_ ADD\_TPREL\_HI12         | TPREL(S+A)  | Set an ADD immediate field to bits [23:12] of X; check 0 <= X < 2\ :sup:`24`.|
+  | 549        | 109        | R\_<CLS>\_TLSLE\_ADD\_TPREL\_HI12          | TPREL(S+A)  | Set an ADD immediate field to bits [23:12] of X; check 0 <= X < 2\ :sup:`24`.|
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 550        | 110        | R\_<CLS>\_TLSLE\_ ADD\_TPREL\_LO12         | TPREL(S+A)  | Set an ADD immediate field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`. |
+  | 550        | 110        | R\_<CLS>\_TLSLE\_ADD\_TPREL\_LO12          | TPREL(S+A)  | Set an ADD immediate field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`. |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 551        | 111        | R\_<CLS>\_TLSLE\_ ADD\_TPREL\_LO12\_NC     | TPREL(S+A)  | Set an ADD immediate field to bits [11:0] of X. No overflow check            |
+  | 551        | 111        | R\_<CLS>\_TLSLE\_ADD\_TPREL\_LO12\_NC      | TPREL(S+A)  | Set an ADD immediate field to bits [11:0] of X. No overflow check            |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 552        | 112        | R\_<CLS>\_TLSLE\_ LDST8\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`.   |
+  | 552        | 112        | R\_<CLS>\_TLSLE\_LDST8\_TPREL\_LO12        | TPREL(S+A)  | Set a LD/ST offset field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`.   |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 553        | 113        | R\_<CLS>\_TLSLE\_ LDST8\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:0] of X. No overflow check              |
+  | 553        | 113        | R\_<CLS>\_TLSLE\_LDST8\_TPREL\_LO12\_NC    | TPREL(S+A)  | Set a LD/ST offset field to bits [11:0] of X. No overflow check              |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 554        | 114        | R\_<CLS>\_TLSLE\_ LDST16\_TPREL\_LO12      | TPREL(S+A)  | Set a LD/ST offset field to bits [11:1] of X; check 0 <= X < 2\ :sup:`12`    |
+  | 554        | 114        | R\_<CLS>\_TLSLE\_LDST16\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:1] of X; check 0 <= X < 2\ :sup:`12`    |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 555        | 115        | R\_<CLS>\_TLSLE\_ LDST16\_TPREL\_LO12\_NC  | TPREL(S+A)  | Set a LD/ST offset field to bits [11:1] of X. No overflow check              |
+  | 555        | 115        | R\_<CLS>\_TLSLE\_LDST16\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:1] of X. No overflow check              |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 556        | 116        | R\_<CLS>\_TLSLE\_ LDST32\_TPREL\_LO12      | TPREL(S+A)  | Set a LD/ST offset field to bits [11:2] of X; check 0 <= X < 2\ :sup:`12`    |
+  | 556        | 116        | R\_<CLS>\_TLSLE\_LDST32\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:2] of X; check 0 <= X < 2\ :sup:`12`    |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 557        | 117        | R\_<CLS>\_TLSLE\_ LDST32\_TPREL\_LO12\_NC  | TPREL(S+A)  | Set a LD/ST offset field to bits [11:2] of X. No overflow check              |
+  | 557        | 117        | R\_<CLS>\_TLSLE\_LDST32\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:2] of X. No overflow check              |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 558        | 118        | R\_<CLS>\_TLSLE\_ LDST64\_TPREL\_LO12      | TPREL(S+A)  | Set a LD/ST offset field to bits [11:3] of X; check 0 <= X < 2\ :sup:`12`    |
+  | 558        | 118        | R\_<CLS>\_TLSLE\_LDST64\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:3] of X; check 0 <= X < 2\ :sup:`12`    |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 559        | 119        | R\_<CLS>\_TLSLE\_ LDST64\_TPREL\_LO12\_NC  | TPREL(S+A)  | Set a LD/ST offset field to bits [11:3] of X. No overflow check              |
+  | 559        | 119        | R\_<CLS>\_TLSLE\_LDST64\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:3] of X. No overflow check              |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 570        | 120        | R\_<CLS>\_TLSLE\_ LDST128\_TPREL\_LO12     | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X; check 0 <= X < 2\ :sup:`12`    |
+  | 570        | 120        | R\_<CLS>\_TLSLE\_LDST128\_TPREL\_LO12      | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X; check 0 <= X < 2\ :sup:`12`    |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 571        | 121        | R\_<CLS>\_TLSLE\_ LDST128\_TPREL\_LO12\_NC | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X. No overflow check              |
+  | 571        | 121        | R\_<CLS>\_TLSLE\_LDST128\_TPREL\_LO12\_NC  | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X. No overflow check              |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
 
 .. note::
@@ -1675,31 +1675,31 @@ Thread-local storage descriptors
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                            | Operation                        | Comment                                                                                      |
   +============+============+=================================+==================================+==============================================================================================+
-  | 560        | 122        | R\_<CLS>\_TLSDESC\_ LD\_PREL19  | G(GTLSDESC(S+A)) - P             | Set a load-literal immediate to bits [20:2]; check -2\ :sup:`20` <= X < 2\ :sup:`20`; check  |
+  | 560        | 122        | R\_<CLS>\_TLSDESC\_LD\_PREL19   | G(GTLSDESC(S+A)) - P             | Set a load-literal immediate to bits [20:2]; check -2\ :sup:`20` <= X < 2\ :sup:`20`; check  |
   |            |            |                                 |                                  | X & 3 = 0.                                                                                   |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 561        | 123        | R\_<CLS>\_TLSDESC\_ ADR\_PREL21 | G(GTLSDESC(S+A)) - P             | Set an ADR immediate field to bits [20:0]; check -2\ :sup:`20` <= X < 2\ :sup:`20`.          |
+  | 561        | 123        | R\_<CLS>\_TLSDESC\_ADR\_PREL21  | G(GTLSDESC(S+A)) - P             | Set an ADR immediate field to bits [20:0]; check -2\ :sup:`20` <= X < 2\ :sup:`20`.          |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 562        | 124        | R\_<CLS>\_TLSDESC\_ ADR\_PAGE21 | Page(G(GTLSDESC(S+A))) - Page(P) | Set an ADRP immediate field to bits [32:12] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`.   |
+  | 562        | 124        | R\_<CLS>\_TLSDESC\_ADR\_PAGE21  | Page(G(GTLSDESC(S+A))) - Page(P) | Set an ADRP immediate field to bits [32:12] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`.   |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 563        | \-         | R\_<CLS>\_TLSDESC\_ LD64\_LO12  | G(GTLSDESC(S+A))                 | Set an LD offset field to bits [11:3] of X. No overflow check; check X & 7 = 0.              |
+  | 563        | \-         | R\_<CLS>\_TLSDESC\_LD64\_LO12   | G(GTLSDESC(S+A))                 | Set an LD offset field to bits [11:3] of X. No overflow check; check X & 7 = 0.              |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | \-         | 125        | R\_<CLS>\_TLSDESC\_ LD32\_LO12  | G(GTLSDESC(S+A))                 | Set an LD offset field to bits [11:2] of X. No overflow check; check X & 3  = 0.             |
+  | \-         | 125        | R\_<CLS>\_TLSDESC\_LD32\_LO12   | G(GTLSDESC(S+A))                 | Set an LD offset field to bits [11:2] of X. No overflow check; check X & 3  = 0.             |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 564        | 126        | R\_<CLS>\_TLSDESC\_ ADD\_LO12   | G(GTLSDESC(S+A))                 | Set an ADD immediate field to bits [11:0] of X. No overflow check.                           |
+  | 564        | 126        | R\_<CLS>\_TLSDESC\_ADD\_LO12    | G(GTLSDESC(S+A))                 | Set an ADD immediate field to bits [11:0] of X. No overflow check.                           |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 565        | \-         | R\_<CLS>\_TLSDESC\_ OFF\_G1     | G(GTLSDESC(S+A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`. |
+  | 565        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G1      | G(GTLSDESC(S+A)) - GOT           | Set a MOV[NZ] immediate field to bits [31:16] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`. |
   |            |            |                                 |                                  | See notes below.                                                                             |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 566        | \-         | R\_<CLS>\_TLSDESC\_ OFF\_G0\_NC | G(GTLSDESC(S+A)) - GOT           | Set a MOVK immediate field to bits [15:0] of X. No overflow check.                           |
+  | 566        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G0\_NC  | G(GTLSDESC(S+A)) - GOT           | Set a MOVK immediate field to bits [15:0] of X. No overflow check.                           |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 567        | \-         | R\_<CLS>\_TLSDESC\_ LDR         | None                             | For relaxation only. Must be used to identify an LDR instruction which loads the TLS         |
+  | 567        | \-         | R\_<CLS>\_TLSDESC\_LDR          | None                             | For relaxation only. Must be used to identify an LDR instruction which loads the TLS         |
   |            |            |                                 |                                  | descriptor function pointer for S + A if it has no other relocation.                         |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 568        | \-         | R\_<CLS>\_TLSDESC\_ ADD         | None                             | For relaxation only. Must be used to identify an ADD instruction which computes the          |
+  | 568        | \-         | R\_<CLS>\_TLSDESC\_ADD          | None                             | For relaxation only. Must be used to identify an ADD instruction which computes the          |
   |            |            |                                 |                                  | address of the TLS Descriptor for S + A if it has no other relocation.                       |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 569        | 127        | R\_<CLS>\_TLSDESC\_ CALL        | None                             | For relaxation only. Must be used to identify a BLR instruction which performs an indirect   |
+  | 569        | 127        | R\_<CLS>\_TLSDESC\_CALL         | None                             | For relaxation only. Must be used to identify a BLR instruction which performs an indirect   |
   |            |            |                                 |                                  | call to the TLS descriptor function for S + A.                                               |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
 
