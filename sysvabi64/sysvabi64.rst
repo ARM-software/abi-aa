@@ -1919,6 +1919,9 @@ into the abstract storage hierarchy as follows.
 *  (Most local) Automatic data (stack variables, instanced once per function
    activation, per thread).
 
+Rules governing thread local storage on AArch64
+-----------------------------------------------
+
 *  How to denote TLS in source programs.
 
    C++11 and C11 use :c:`thread_local T t...`; A GCC extension uses
@@ -1935,14 +1938,14 @@ into the abstract storage hierarchy as follows.
 
    This is part of ABI for the platform or execution environment.
 
+This document and AA_ELF64_ are concerned with:
+
 *  How to relocate, statically and dynamically, with respect to symbols
    defined in TLS (for details of relocations relevant to AArch64 Linux see
    AAELF64_).
 
 *  How code must address variables allocated in TLS (the subject of the
    notes below).
-
-It is the last two bullet points that are the subject of this ABI.
 
 Introduction to TLS addressing
 ------------------------------
@@ -1960,13 +1963,13 @@ the executable is always 1, but the module indexes for shared
 libraries are allocated at process start time, or when a shared
 library is loaded dynamically via dlopen. A shared library may have a
 different module index in two different processes so its per-thread
-module index must be part of its program-own state (or be queried
+module index must be part of its process state (or be queried
 dynamically). The run-time system is responsible for maintaining a
 per-thread vector of pointers to allocated TLS regions indexed by
 these module indexes.
 
 There is a system resource called the Thread Pointer (TP) that
-typically, points to a Thread Control Block (TCB) for the currently
+points to a Thread Control Block (TCB) for the currently
 executing thread which, in turn, points to the Dynamic Thread Vector
 (DTV) for that thread.
 
@@ -1994,26 +1997,34 @@ The size of the TCB is 16-bytes, where the first 8 bytes contain the
 pointer to the Dynamic Thread Vector (DTV), and the other 8 bytes are
 reserved for the implementation.
 
-Following the TCB and any required alignment padding, the TLS Blocks
-of the modules loaded at process start form the static TLS Block. The
-memory for the TLS Block is allocated at process start time.
+Following the TCB and any required alignment padding (defined in
+`SystemV AArch64 TLS addressing`_), the TLS Blocks of the modules
+loaded at process start form the static TLS Block. The memory for the
+TLS Block is allocated at process start time.
 
 The TLS Blocks for modules loaded dynamically via dlopen are known as
 dynamic TLS.
 
-Index 0 of the Dynamic Thread Vector DTV[0] typically contains a
-generation counter which can be used to update or reallocate the DTV
-when dynamic modules are opened or closed.
+Index N, where N > 0, of the Dynamic Thread Vector DTV[N] is a pointer
+to the TLS block for module N.
 
-Index N, where N > 0, of the Dynamic Thread Vector DTV[N] points to
-the TLS block for module N.
+Index 0 of the Dynamic Thread Vector DTV[0] is reserved for use by the
+platform. It typically contains the thread's generation counter which
+can be used to update or reallocate the DTV when TLS variables in
+dynamic modules loaded by ``dlopen`` are first used. When a dynamic
+TLS variable is accessed the thread's generation count is compared
+with the global generation count which can be used to trigger updates
+of the DTV. The details are platform specific.
 
 To calculate the address of a TLS variable in any given module, static
 or dynamic, the expression ``TP[0][Module id][offset in module]`` can
 be used. The function ``__tls_get_address(module_id, offset)`` returns
 the result of this calculation.
 
-The calculation above is the most general and it can be applied to both static and dynamic TLS. There are four defined models of accessing TLS that trade off generality for performance. In order of descending generality:
+The calculation above is the most general and it can be applied to
+both static and dynamic TLS. There are four defined models of
+accessing TLS that trade off generality for performance. In order of
+descending generality:
 
    1. General Dynamic, can be used anywhere.
 
@@ -2482,7 +2493,8 @@ accessing the TLS Descriptor is:
 * The actual entry function uses a load acquire on the address of the
   resolver function, with a destination register of xzr.
 
-Referring to the example above, the code for the resolver function becomes:
+Referring to the example above, the code for the resolver function
+becomes:
 
 .. code-block:: asm
 
