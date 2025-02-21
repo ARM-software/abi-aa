@@ -1938,7 +1938,7 @@ Rules governing thread local storage on AArch64
 
    This is part of ABI for the platform or execution environment.
 
-This document and AA_ELF64_ are concerned with:
+This document and AAELF64_ are concerned with:
 
 *  How to relocate, statically and dynamically, with respect to symbols
    defined in TLS (for details of relocations relevant to AArch64 Linux see
