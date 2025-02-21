@@ -2052,22 +2052,33 @@ AArch64 TLS SystemV design choices
   KiB, 16 MiB, 4GiB or 16EiB, depending on the addressing mode. The
   default is 16 MiB for all addressing modes.
 
+Recall that the Thread Pointer ``TP`` points to the start of the ``TCB``.
+
 The static and dynamic linker must agree on the size of the padding
-between the TCB and the executables TLS Block. Using ``TCB`` as the
-size of the TCB (16 bytes), ``PAD`` as the size of the padding bytes,
-and ``PT_TLS`` as the program header with type PT_TLS. ``PAD`` must be
-the smallest positive integer that satisfies the following congruence:
+between the TCB and the executables TLS Block. Using ``TCBsize`` as the
+size of the TCB (16 bytes), ``PADsize`` as the size of the padding bytes,
+and ``PT_TLS`` as the program header with type PT_TLS.
 
-``TP + TCB + PAD ≡ PT_TLS.p_vaddr (modulo PT_TLS.p_align)``
+The Thread Pointer ``TP`` and also the address of the start of the
+``TCB``, must satisfy the requirement.
 
-Given that ``TP ≡ 0 (modulo PT_TLS.p_align)``. An expression
-for `PAD` is ``PAD = (PT_TLS.p_vaddr - TCB) mod PT_TLS.p_align``.
+``TP ≡ 0 (modulo PT_TLS.p_align)``.
 
-A significant number of dynamic linkers use a different calculation
-that requires ``PT_TLS.p_vaddr ≡ 0 (modulo PT_TLS.p_align)`` to
-correctly align the executables TLS block. For maximum compatibility,
-static linkers and any linker scripts including TLS, are recommended
-to align the TLS block so that `PT_TLS.p_vaddr ≡ 0 (modulo p_align)`.
+``PADsize`` must be the smallest positive integer that satisfies the
+following congruence:
+
+``TCBsize + PADsize ≡ PT_TLS.p_vaddr (modulo PT_TLS.p_align)``.
+
+An expression for ``PADsize`` is therefore:
+
+``PADsize = (PT_TLS.p_vaddr - TCBsize) mod PT_TLS.p_align``.
+
+A number of dynamic linkers use a different calculation that requires
+``PT_TLS.p_vaddr ≡ 0 (modulo PT_TLS.p_align)`` to correctly align the
+executables TLS block, for either static or dynamic TLS. For maximum
+compatibility, static linkers and any linker scripts including TLS,
+are recommended to align the TLS block so that `PT_TLS.p_vaddr ≡ 0
+(modulo p_align)`.
 
 There are two dialects of TLS supported by the relocations defined in
 AAELF64_, the traditional dialect described by ELFTLS_ and the
@@ -2248,6 +2259,11 @@ Optimization to load a 64-bit var directly into a core register.
 Static link time TLS Relaxations
 --------------------------------
 
+Relaxation is a term used by the TLS literature such as ELFTLS_ to
+represent an optimization. AAELF64_ has used optimization for similar
+link-time instruction sequence optimizations. This document will use
+relaxation to be consistent with existing references.
+
 The static linker can relax a more general TLS model to a more
 constrained TLS model when the TLS variables meet the requirements for
 using the constrained model.
@@ -2400,9 +2416,10 @@ the exception of ``x0``, ``x1``, ``x30`` and the processor flags.
 Example Resolver Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-These examples are for illustrative purposes only. Due to the
-restrictions on calling convention, the resolver routines must be
-written in assembly language.
+These examples are for illustrative purposes only. There is no
+requirement for any of the following resolver functions to be
+implemented.  Due to the restrictions on calling convention, the
+resolver routines must be written in assembly language.
 
 Static TLS Specialization
 
