@@ -755,7 +755,7 @@ A member of an aggregate that is a Fundamental Data Type may be subdivided into 
 Homogeneous Aggregates
 ^^^^^^^^^^^^^^^^^^^^^^
 
-A Homogeneous Aggregate is a composite type where all of the Fundamental Data Types of the members that compose the type are the same. The test for homogeneity is applied after data layout is completed and without regard to access control or other source language restrictions. Note that for short-vector types the fundamental types are 64-bit vector and 128-bit vector; the type of the elements in the short vector does not form part of the test for homogeneity.
+A Homogeneous Aggregate is a composite type where all of the Fundamental Data Types of the members that compose the type are the same. The test for homogeneity is applied after data layout is completed and without regard to access control or other source language restrictions. Note that for short-vector types the fundamental types are 64-bit vector and 128-bit vector; the type of the elements in the short vector does not form part of the test for homogeneity. Likewise, the different half-precision floating point formats share a single Fundamental Data Type, so the format does not form part of the test for homogeneity.
 
 A Homogeneous Aggregate has a Base Type, which is the Fundamental Data Type of each Member. The overall size is the size of the Base Type multiplied by the number uniquely addressable Members; its alignment will be the alignment of the Base Type.
 
@@ -2740,11 +2740,11 @@ The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``__uint128``                  | unsigned quad-word                      | Arm extension (used for LDXP/STXP)                                     |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``__fp16``                     | half precision (IEEE754-2008 format or  | Arm extension. See `Types Varying by Data Model`_                      |
-  |                                | Arm Alternative Format)                 |                                                                        |
+  | ``__fp16``                     | half precision                          | Arm extension. See `Types Varying by Data Model`_                      |
+  |                                |                                         | Using IEEE754-2008 format or Arm Alternative Format.                   |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  | ``__bf16``                     | half precision Brain floating-point     | Arm extension.                                                         |
-  |                                | format                                  |                                                                        |
+  | ``__bf16``                     | half precision                          | Arm extension.                                                         |
+  |                                |                                         | Using Brain floating-point format.                                     |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
   | ``float``                      | single precision (IEEE 754)             |                                                                        |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
