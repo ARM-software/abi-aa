@@ -217,6 +217,7 @@ changes to the content of the document for that release.
   | Issue   | Date                         | Change                                                            |
   +=========+==============================+===================================================================+
   | 00alp0  | 5\ :sup:`th` September 2024  | Alpha Release.                                                    |
+  +---------+------------------------------+-------------------------------------------------------------------+
   | 00alp1  | 5\ :sup:`th` February 2025   | Added table for floating-point atomic `fetch_add` operations      |
   +---------+------------------------------+-------------------------------------------------------------------+
 
@@ -1079,8 +1080,8 @@ contains ``val``. The value initially loaded from memory is returned in
   |                                     |               |    loop:                             |
   |                                     |               |      LDXR   W0, [X1]                 |
   |                                     |               |      FMOV   S0, W0                   |
-  |                                     |               |      FADD   S1, S1, S0               |
-  |                                     |               |      FMOV   W0, S1                   |
+  |                                     |               |      FADD   S2, S1, S0               |
+  |                                     |               |      FMOV   W0, S2                   |
   |                                     |               |      STXR   W3, W0, [X1]             |
   |                                     |               |      CBNZ   W3, loop                 |
   |                                     +---------------+--------------------------------------+
@@ -1093,8 +1094,8 @@ contains ``val``. The value initially loaded from memory is returned in
   |                                     |               |    loop:                             |
   |                                     |               |      LDAXR  W0, [X1]                 |
   |                                     |               |      FMOV   S0, W0                   |
-  |                                     |               |      FADD   S1, S1, S0               |
-  |                                     |               |      FMOV   W0, S1                   |
+  |                                     |               |      FADD   S2, S1, S0               |
+  |                                     |               |      FMOV   W0, S2                   |
   |                                     |               |      STXR   W3, W0, [X1]             |
   |                                     |               |      CBNZ   W3, loop                 |
   |                                     +---------------+--------------------------------------+
@@ -1107,8 +1108,8 @@ contains ``val``. The value initially loaded from memory is returned in
   |                                     |               |    loop:                             |
   |                                     |               |      LDXR   W0, [X1]                 |
   |                                     |               |      FMOV   S0, W0                   |
-  |                                     |               |      FADD   S1, S1, S0               |
-  |                                     |               |      FMOV   W0, S1                   |
+  |                                     |               |      FADD   S2, S1, S0               |
+  |                                     |               |      FMOV   W0, S2                   |
   |                                     |               |      STLXR  W3, W0, [X1]             |
   |                                     |               |      CBNZ   W3, loop                 |
   |                                     +---------------+--------------------------------------+
@@ -1121,8 +1122,8 @@ contains ``val``. The value initially loaded from memory is returned in
   |                                     |               |    loop:                             |
   |                                     |               |      LDAXR  W0, [X1]                 |
   |                                     |               |      FMOV   S0, W0                   |
-  |                                     |               |      FADD   S1, S1, S0               |
-  |                                     |               |      FMOV   W0, S1                   |
+  |                                     |               |      FADD   S2, S1, S0               |
+  |                                     |               |      FMOV   W0, S2                   |
   |                                     |               |      STLXR  W3, W0, [X1]             |
   |                                     |               |      CBNZ   W3, loop                 |
   |                                     +---------------+--------------------------------------+
