@@ -260,7 +260,7 @@ changes to the content of the document for that release.
 |            |                    | - Add descriptions of the modal 8-bit floating point types       |
 |            |                    | - Add a description of the FPMR register                         |
 |            |                    | - Update argument passing rules to include FP8 types             |
-|            |                    |                                                                  |
+|            |                    | - Change the status of the FP8 support from Alpha to Beta.       |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -911,7 +911,7 @@ thread-local storage on platforms where multi-threaded code is
 supported.  The exact location of such information is platform
 specific.
 
-**(Alpha)** 
+**(Beta)**
 
 The FPMR is a system register that controls behaviors of the instructions
 operating on modal 8-bit floating-point values. It is a temporary register.
@@ -2804,7 +2804,7 @@ The mapping of C arithmetic types to Fundamental Data Types is shown in `Table 3
   |                                |                                         | significant bits of the type in a big-endian view.  Non-significant    |
   |                                |                                         | bits within the last quad-word are unspecified.                        |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
-  |  **(Alpha)** ``__mfp8``        | 8-bit floating point                    | Arm extension. Values are interpreted as either E5M2 or E4M3,          |
+  |  **(Beta)** ``__mfp8``         | 8-bit floating point                    | Arm extension. Values are interpreted as either E5M2 or E4M3,          |
   |                                |                                         | depending on processor mode.                                           |
   +--------------------------------+-----------------------------------------+------------------------------------------------------------------------+
 
@@ -3257,9 +3257,9 @@ The header file ``arm_neon.h`` also defines a number of intrinsic functions that
   +-----------------------------+-------------------+--------------------------+-----------+
   | __Bfloat16x8\_t             | bfloat16x8\_t     | half-precison Brain float| 8         |
   +-----------------------------+-------------------+--------------------------+-----------+
-  | **(Alpha)** __Mfloat8x8\_t  | mfloat8x8\_t      | modal 8-bit float        | 8         |
+  | **(Beta)** __Mfloat8x8\_t   | mfloat8x8\_t      | modal 8-bit float        | 8         |
   +-----------------------------+-------------------+--------------------------+-----------+
-  | **(Alpha)** __Mfloat8x16\_t | mfloat8x16\_t     | modal 8-bit float        | 16        |
+  | **(Beta)** __Mfloat8x16\_t  | mfloat8x16\_t     | modal 8-bit float        | 16        |
   +-----------------------------+-------------------+--------------------------+-----------+
 
 APPENDIX Support for Scalable vectors
@@ -3324,7 +3324,7 @@ document.
   +--------------------------------+-----------------------+-------------------------------------------+----------------+
   | ``__SVBool_t``                 | ``svbool_t``          | single bit (fully packed into VG bytes)   | VG×8           |
   +--------------------------------+-----------------------+-------------------------------------------+----------------+
-  | **(Alpha)** ``__SVMfloat8_t``  | ``svmfloat8_t``       | modal 8-bit float                         | VG×8           |
+  | **(Beta)** ``__SVMfloat8_t``   | ``svmfloat8_t``       | modal 8-bit float                         | VG×8           |
   +--------------------------------+-----------------------+-------------------------------------------+----------------+
 
 
