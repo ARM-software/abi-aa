@@ -942,6 +942,13 @@ undefined.
    Zn.b [msb] ... 0x??????03 0x??????02 0x??????01 0x??????00 [lsb]
    Zn.s [msb] ... 0x00000003 0x00000002 0x00000001 0x00000000 [lsb]
 
+Streaming compatibility
+^^^^^^^^^^^^^^^^^^^^^^^
+
+If targeting SVE from a streaming or streaming-compatible region,
+calls should be emitted to the streaming-compatible SVE rather than
+the plain SVE variant (differentiated by mangling, as below).
+
 Vector function name mangling
 -----------------------------
 
@@ -983,6 +990,7 @@ Name mangling grammar for vector functions.
 
    <isa> := "n"   (Advanced SIMD)
           | "s"   (SVE)
+          | "c"   (Streaming-compatible SVE)
 
    <mask> := "N" (No Mask)
            | "M" (Mask)
@@ -1195,6 +1203,19 @@ Note that the ``svbool_t`` parameter is described in `SVE masking`_.
    svfloat32_t _ZGVsM8vv_bar(svfloat64_t vx, svfloat64_t vy,
                              svbool_t vmask);
 
+Streaming-compatible SVE Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The use of ``#pragma omp declare simd`` with ``f``, ``g`` and ``foo``
+in a streaming or streaming-compatible region will also generate:
+
+* ``svfloat32_t _ZGVcMxv_f(svfloat64_t, svbool_t) __arm_streaming_compatible``
+  streaming-compatible VLA signature for the vector version of ``f``;
+* ``svfloat64_t _ZGVcMxv_g(svfloat32_t, svbool_t) __arm_streaming_compatible``
+  streaming-compatible VLA signature for the vector version of ``g``;
+* ``svint16_t _ZGVcMxvvv_foo(svint64_t, svint32_t, svint8_t, svbool_t) __arm_streaming_compatible``
+  streaming-compatible VLA signature for the vector version of ``foo``.
+
 Linear parameters examples
 --------------------------
 
@@ -1364,17 +1385,19 @@ AArch64 Variant Traits
 
 .. table:: AArch64 traits for OpenMP contexts.
 
-  +------------------+-----------------------+-------------------------+
-  |Trait set         |Trait value            |Notes                    |
-  +==================+=======================+=========================+
-  |``device``        |``isa("simd")``        |Advanced SIMD call.      |
-  +------------------+-----------------------+-------------------------+
-  |``device``        |``isa("sve")``         |SVE call.                |
-  +------------------+-----------------------+-------------------------+
-  |``device``        |``arch("march-list")`` |Used to match            |
-  |                  |                       |``-march=march-list``    |
-  |                  |                       |from the compiler.       |
-  +------------------+-----------------------+-------------------------+
+  +------------------+-----------------------+-------------------------------+
+  |Trait set         |Trait value            |Notes                          |
+  +==================+=======================+===============================+
+  |``device``        |``isa("simd")``        |Advanced SIMD call.            |
+  +------------------+-----------------------+-------------------------------+
+  |``device``        |``isa("sve")``         |SVE call.                      |
+  +------------------+-----------------------+-------------------------------+
+  |``device``        |``isa("sc_sve")``      |Streaming-compatible SVE call. |
+  +------------------+-----------------------+-------------------------------+
+  |``device``        |``arch("march-list")`` |Used to match                  |
+  |                  |                       |``-march=march-list``          |
+  |                  |                       |from the compiler.             |
+  +------------------+-----------------------+-------------------------------+
 
 The scalar function ``f`` that is decorated with a ``declare
 variant`` directive with a ``simd`` trait in the ``construct`` set is
@@ -1391,8 +1414,9 @@ mapped to the vector function ``F`` according to the following rules:
 
    1. ``isa("simd")`` targets Advanced SIMD function signatures.
    2. ``isa("sve")`` targets SVE function signatures.
-   3. Either ``isa("simd")`` or ``isa("sve")`` must be specified.
-   4. The ``arch`` traits of the ``device`` set is optional, and it
+   3. ``isa("sc_sve")`` targets streaming-compatible SVE function signatures.
+   4. One of ``isa("simd")``, ``isa("sve")`` or ``isa("sc_sve")`` must be specified.
+   5. The ``arch`` traits of the ``device`` set is optional, and it
       accepts any value that can be passed to the compiler via the
       command line option ``-march``.
 
