@@ -229,6 +229,8 @@ changes to the content of the document for that release.
   |            |                     | syntactic structure of a subsection.                                |
   |            |                     | Introduced a naming convention for private subsection names using   |
   |            |                     | registered vendors.                                                 |
+  |            |                     | Added predefined macro for toolchains to define when they support   |
+  |            |                     | build attributes.                                                   |
   +------------+---------------------+---------------------------------------------------------------------+
 
 References
@@ -1041,6 +1043,18 @@ derived from the file scope command-line options, or module level encodings
 of the file scope command-line options in the case of link time optimization.
 It is the user's responsibility that the individual functions are used in a
 compatible way to the file scope build attributes.
+
+Predefined Macro
+^^^^^^^^^^^^^^^^
+
+Toolchains that generate build attributes sections and support the assembler
+directives below should define the following pre-processor macro.
+
+::
+   __ARM_BUILDATTR64_FV <format-version: 'A'>
+
+Where *format-version* is the same value as in `Formal syntax of an
+ELF Attributes Section`_. Only version 'A' (0x41) is defined.
 
 Assembler
 ---------
