@@ -1010,7 +1010,7 @@ of ``Tag_PAuth_Platform``.
 Combining attribute values of aeabi_pauthabi
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The partial order is custom. Two entities are compabitible if both
+The partial order is custom. Two entities are compatible if both
 ``Tag_PAuth_Platform`` and ``Tag_PAuth_Schema`` are identical.
 
 The compatibility between an entity with ``Tag_PAuth_Platform`` = 0,
