@@ -232,6 +232,9 @@ changes to the content of the document for that release.
   |            |                     | Added predefined macro for toolchains to define when they support   |
   |            |                     | build attributes.                                                   |
   +------------+---------------------+---------------------------------------------------------------------+
+  | 0.4        | 17th March 2025     | Rewrote PAuthABI attributes to more closely match the existing      |
+  |            |                     | .note.gnu.property section.                                         |
+  +------------+---------------------+---------------------------------------------------------------------+
 
 References
 ----------
@@ -991,31 +994,98 @@ header contents
 attributes
 ^^^^^^^^^^
 
+The values of the attributes ``Tag_PAuth_Platform`` and
+``Tag_Pauth_Schema`` form a tuple ``(Tag_Pauth_Platform, Tag_Pauth_Schema)`` that must be
+combined as a tuple.
+
 ::
    Tag_PAuth_Platform (=1)
      0  The user did not permit this entity to use the PAuthABI, or no information available.
-     <id> The platform vendor id.
+     id The platform vendor id.
 
 Where the *<id>* is a number representing one of a number of
-registered platforms defined in ``PAuthABI64_``.
+registered platforms defined in ``PAuthABI64_``. See `Special PAuth Encodings`_ below for the encoding of
+the ``Invalid platform``.
 
 ::
    Tag_PAuth_Schema (=2)
-     0 The user did not permit this entity to use the PAuthABI, or no information available.
-     <id> The version number of the Schema.
+     id The version number of the Schema, or no information available.
 
 Where the *<id>* is a number representing the version in the context
 of ``Tag_PAuth_Platform``.
 
+
+Special PAuth Encodings
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The tuple value of (``Tag_Pauth_Platform``, ``Tag_Pauth_Schema``) matching
+(0, 0) is obtained when both attributes are explicitly set to 0 or
+are implicitly set to 0 due to the rules in `Default values for public
+tags`_. This represents an ELF file which makes no use of the PAuthABI
+extension.
+
+The tuple value matching (0, 1) is reserved for the ``Invalid``
+platform. ELF files with an ``Invalid`` platform are incompatible with
+the PAuth ABI Extension.
+
+Tuple values matching (0, N) where ``N > 1`` are reserved.
+
+The tuple value of ``(Tag_Pauth_Platform, Tag_Pauth_Schema)`` matching
+``(platform, 0)`` where ``platform`` is non zero, represent a version
+schema version of 0 for ``platform``.
+
 Combining attribute values of aeabi_pauthabi
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The partial order is custom. Two entities are compatible if both
-``Tag_PAuth_Platform`` and ``Tag_PAuth_Schema`` are identical.
+The partial order is custom.
 
-The compatibility between an entity with ``Tag_PAuth_Platform`` = 0,
-``Tag_PAuth_Schema`` = 0, and ``Tag_Pauth_Platform`` != 0, ``Tag_PAuth_Schema`` !=
-0 is implementation defined.
+
+Two entities are compatible if the tuple (``Tag_PAuth_Platform``,
+``Tag_PAuth_Schema``) for each entity is lexicographically identical.
+
+The compatibility between an entity with the tuple ``(N, M)`` where N
+is not 0 and an entity with the tuple ``(0,0)`` is implementation
+defined, and may be defined by a user provided policy.
+
+aeabi_pauthabi and GNU Program Properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+See `aeabi_feature_and_bits and GNU Program Properties`_ for the
+relationship between GNU Program Properties and Build Attributes.
+
+Many existing relocatable objects that use the PAuthABI extension have
+a ``.note.gnu.property`` section with the
+``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` program property. This is
+defined in `PAUTHABI64`_.
+
+If a static linker has a subset of the relocatable objects using
+``.note.gnu.property`` sections with
+``GNU_PROPERTY_AARCH64_FEATURE_PAUTH``, and a subset of the
+relocatable objects using build attributes. Then the program
+properties (``platform identifier``, ``version number``) must be
+translated into build attributes using the mapping below.
+
+``Tag_PAuth_Platform`` is set to ``platform identifier``
+
+``Tag_PAuth_Schema`` is set to ``version number`` if ``platform
+identifier`` is not 0, otherwise it is set to 1.
+
+This maps a ``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` reserved tuple of
+``(0,0)`` to ``Tag_PAuth_ABI_Platform = 0``, ``Tag_PAuth_ABI_Schema =
+1``.
+
+When writing a ``.note.gnu.property`` section in a loadable-unit the
+following rules apply to the combined build attribute tuple of
+``(Tag_PAuth_Platform, Tag_PAuth_Schema)``:
+
+(0, 0) results in no ``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` property
+in the output.
+
+(0, 1) results in a ``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` property
+with (``platform identifier``, ``version number``) set to (0, 0).
+
+(N, M) where N is non zero, results in a ``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` property with
+(``platform identifier``, ``version number``) set to (N, M).
 
 Private subsections
 -------------------
