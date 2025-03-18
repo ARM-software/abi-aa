@@ -2245,7 +2245,7 @@ block is smaller than 16 KiB.
 
 .. code-block:: asm
 
-    add  xn, xn, :tprel_hi12:var, lsl #12 // R_AARCH64_TLSLE_ADD_TPREL_HI12 var
+    add  xn, tp, :tprel_hi12:var, lsl #12 // R_AARCH64_TLSLE_ADD_TPREL_HI12 var
     add  xn, xn, :tprel_lo12_nc:var       // R_AARCH64_TLSLE_ADD_TPREL_LO12_NC var
     // offset of var from tp in xn
 
