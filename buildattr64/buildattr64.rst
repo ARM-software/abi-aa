@@ -709,7 +709,7 @@ The syntactic structure of an attributes section is::
 
    <format-version: ‘A’>
    [ <uint32: subsection-length> NTBS: vendor-name
-     <bytes: vendor-data>
+     <bytes: subsection-data>
    ]*
 
 Informally an attributes section consists of a format-version
@@ -728,6 +728,9 @@ subsection to the start of the next one.
 *Vendor-name* is a NUL-terminated byte string (NTBS) like a C-language
 literal string. As described above the *vendor-name* must start with a
 vendor specific prefix.
+
+*Subsection-data* is the contents of the subsection. See `Formal Syntax of subsections`_
+for the syntatic structure of subsections.
 
 Private vendor subsections must follow the syntactic structure of a
 subsection. No requirements are placed on the attributes defined
