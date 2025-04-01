@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2021-2024, Arm Limited
+# Copyright (c) 2021-2025, Arm Limited
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
