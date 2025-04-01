@@ -206,6 +206,10 @@ changes to the content of the document for that release.
   +---------------+------------------------------+---------------------------------------------------+
   | 2022Q3        | 20\ :sup:`th` October 2022   | Describe the purecap TLS implementation.          |
   +---------------+------------------------------+---------------------------------------------------+
+  | 2025Q1        | 7\ :sup:`th` April 2025      | - Improve R_MORELLO_JUMP_SLOT documentation.      |
+  |               |                              | - Distinguish between function pointers and code  |
+  |               |                              |   pointers.                                       |
+  +---------------+------------------------------+---------------------------------------------------+
 
 References
 ----------

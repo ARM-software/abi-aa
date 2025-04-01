@@ -284,8 +284,8 @@ changes to the content of the document for that release.
   | 2024Q4        | 29\ :sup:`th`      | - Moved PAuthABI GOT relocations out of |
   |               | November 2024      |   reserved space.                       |
   +---------------+--------------------+-----------------------------------------+
-  | next          | tbd                | - In `Section Attribute Flags`_, added  |
-  |               |                    |   `SHF_AARCH64_PURECODE` processor      |
+  | 2025Q1        | 7\ :sup:`th`       | - In `Section Attribute Flags`_, added  |
+  |               | April 2025         |   `SHF_AARCH64_PURECODE` processor      |
   |               |                    |   specific section attribute flag.      |
   +---------------+--------------------+-----------------------------------------+
 

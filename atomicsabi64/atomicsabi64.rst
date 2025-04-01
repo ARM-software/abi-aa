@@ -218,9 +218,11 @@ changes to the content of the document for that release.
   +=========+==============================+===================================================================+
   | 00alp0  | 5\ :sup:`th` September 2024  | Alpha Release.                                                    |
   +---------+------------------------------+-------------------------------------------------------------------+
-  | 00alp1  | 5\ :sup:`th` February 2025   | Added table for floating-point atomic `fetch_add` operations      |
+  | 00alp1  | 5\ :sup:`th` February 2025   | Added table for floating-point atomic `fetch_add` operations.     |
   +---------+------------------------------+-------------------------------------------------------------------+
-
+  | 2025Q1  | 7\ :sup:`th` April 2025      | - Update `fetch_add` to add atomic floating-point operations.     |
+  |         |                              | - Preserve S1 (val) in example code.                              |
+  +---------+------------------------------+-------------------------------------------------------------------+
 
 References
 ----------

@@ -210,7 +210,8 @@ Change History
  |            |                              |   used by `PAuthABIELF64`_ and                        |
  |            |                              |   `MemTagABIELF64`_.                                  |
  +------------+------------------------------+-------------------------------------------------------+
- | 2025Q1     | 04\ :sup:`th` February 2025  | Require hard-float ABI for sysvabi platforms          |
+ | 2025Q1     | 7\ :sup:`th` April 2025      | - Require hard-float ABI for sysvabi platforms.       |
+ |            |                              | - Document requirements for tools wrt BTI.            |
  +------------+------------------------------+-------------------------------------------------------+
 
 References

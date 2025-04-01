@@ -243,10 +243,9 @@ changes to the content of the document for that release.
   |            |                             | - Add R_AARCH64_AUTH_GOT_ADR_PREL_LO21 relocation.               |
   |            |                             | - Remove addend in GDAT relocation operation.                    |
   +------------+-----------------------------+------------------------------------------------------------------+
-  | 2024Q1     | 5\ :sup:`th` November 2024  | - Add static Auth TLSDESC generating relocations.                |
+  | 2025Q1     | 7\ :sup:`th` April 2025     | - Add static Auth TLSDESC generating relocations.                |
   |            |                             | - Correct comment entry for R_AARCH64_AUTH_LD64_GOTOFF_LO15.     |
-  +------------+-----------------------------+------------------------------------------------------------------+
-  | 2024Q1     | 29\ :sup:`th` November 2024 | - Move AUTH GOT generating relocations out of private experiment |
+  |            |                             | - Move AUTH GOT generating relocations out of private experiment |
   |            |                             |   Range.                                                         |
   +------------+-----------------------------+------------------------------------------------------------------+
 

@@ -257,10 +257,12 @@ changes to the content of the document for that release.
 |            |                    | - Add the __arm_get_current_vg SME support routine.              |
 |            |                    | - Clarify use of `it` when preserving z and p registers.         |
 +------------+--------------------+------------------------------------------------------------------+
-|            |                    | - Add descriptions of the modal 8-bit floating point types       |
-|            |                    | - Add a description of the FPMR register                         |
-|            |                    | - Update argument passing rules to include FP8 types             |
+| 2025Q1     | 7\ :sup:`th`       | - Add descriptions of the modal 8-bit floating point types.      |
+|            | April 2025         | - Add a description of the FPMR register.                        |
+|            |                    | - Update argument passing rules to include FP8 types.            |
 |            |                    | - Change the status of the FP8 support from Alpha to Beta.       |
+|            |                    | - Add agnostic-ZA interface and routines to save/restore SME     |
+|            |                    |   state.                                                         |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
