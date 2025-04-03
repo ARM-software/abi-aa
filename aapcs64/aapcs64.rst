@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2011, 2013, 2018, 2020-2024, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2011, 2013, 2018, 2020-2025, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2024Q3
-.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
-.. |copyright-date| replace:: 2011, 2013, 2018, 2020-2024
+.. |release| replace:: 2025Q1
+.. |date-of-issue| replace:: 07\ :sup:`th` April 2025
+.. |copyright-date| replace:: 2011, 2013, 2018, 2020-2025
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
@@ -257,10 +257,12 @@ changes to the content of the document for that release.
 |            |                    | - Add the __arm_get_current_vg SME support routine.              |
 |            |                    | - Clarify use of `it` when preserving z and p registers.         |
 +------------+--------------------+------------------------------------------------------------------+
-|            |                    | - Add descriptions of the modal 8-bit floating point types       |
-|            |                    | - Add a description of the FPMR register                         |
-|            |                    | - Update argument passing rules to include FP8 types             |
+| 2025Q1     | 7\ :sup:`th`       | - Add descriptions of the modal 8-bit floating point types.      |
+|            | April 2025         | - Add a description of the FPMR register.                        |
+|            |                    | - Update argument passing rules to include FP8 types.            |
 |            |                    | - Change the status of the FP8 support from Alpha to Beta.       |
+|            |                    | - Add agnostic-ZA interface and routines to save/restore SME     |
+|            |                    |   state.                                                         |
 +------------+--------------------+------------------------------------------------------------------+
 
 References

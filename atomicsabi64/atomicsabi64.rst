@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2024, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2024-2025, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2024Q3
-.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
-.. |copyright-date| replace:: 2024
+.. |release| replace:: 2025Q1
+.. |date-of-issue| replace:: 07\ :sup:`th` April 2025
+.. |copyright-date| replace:: 2024-2025
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
@@ -218,9 +218,11 @@ changes to the content of the document for that release.
   +=========+==============================+===================================================================+
   | 00alp0  | 5\ :sup:`th` September 2024  | Alpha Release.                                                    |
   +---------+------------------------------+-------------------------------------------------------------------+
-  | 00alp1  | 5\ :sup:`th` February 2025   | Added table for floating-point atomic `fetch_add` operations      |
+  | 00alp1  | 5\ :sup:`th` February 2025   | Added table for floating-point atomic `fetch_add` operations.     |
   +---------+------------------------------+-------------------------------------------------------------------+
-
+  | 2025Q1  | 7\ :sup:`th` April 2025      | - Update `fetch_add` to add atomic floating-point operations.     |
+  |         |                              | - Preserve S1 (val) in example code.                              |
+  +---------+------------------------------+-------------------------------------------------------------------+
 
 References
 ----------

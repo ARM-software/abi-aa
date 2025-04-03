@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2021-2024, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2021-2025, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2024Q3
-.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
-.. |copyright-date| replace:: 2021-2024
+.. |release| replace:: 2025Q1
+.. |date-of-issue| replace:: 07\ :sup:`th` April 2025
+.. |copyright-date| replace:: 2021-2025
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
 
@@ -210,7 +210,8 @@ Change History
  |            |                              |   used by `PAuthABIELF64`_ and                        |
  |            |                              |   `MemTagABIELF64`_.                                  |
  +------------+------------------------------+-------------------------------------------------------+
- | 2025Q1     | 04\ :sup:`th` February 2025  | Require hard-float ABI for sysvabi platforms          |
+ | 2025Q1     | 7\ :sup:`th` April 2025      | - Require hard-float ABI for sysvabi platforms.       |
+ |            |                              | - Document requirements for tools wrt BTI.            |
  +------------+------------------------------+-------------------------------------------------------+
 
 References

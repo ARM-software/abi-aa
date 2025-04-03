@@ -1,11 +1,11 @@
 ..
-   Copyright (c) 2020-2024, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2020-2025, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2024Q3
-.. |date-of-issue| replace:: 5\ :sup:`th` September 2024
-.. |copyright-date| replace:: 2020-2024
+.. |release| replace:: 2025Q1
+.. |date-of-issue| replace:: 07\ :sup:`th` April 2025
+.. |copyright-date| replace:: 2020-2025
 
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -243,10 +243,9 @@ changes to the content of the document for that release.
   |            |                             | - Add R_AARCH64_AUTH_GOT_ADR_PREL_LO21 relocation.               |
   |            |                             | - Remove addend in GDAT relocation operation.                    |
   +------------+-----------------------------+------------------------------------------------------------------+
-  | 2024Q1     | 5\ :sup:`th` November 2024  | - Add static Auth TLSDESC generating relocations.                |
+  | 2025Q1     | 7\ :sup:`th` April 2025     | - Add static Auth TLSDESC generating relocations.                |
   |            |                             | - Correct comment entry for R_AARCH64_AUTH_LD64_GOTOFF_LO15.     |
-  +------------+-----------------------------+------------------------------------------------------------------+
-  | 2024Q1     | 29\ :sup:`th` November 2024 | - Move AUTH GOT generating relocations out of private experiment |
+  |            |                             | - Move AUTH GOT generating relocations out of private experiment |
   |            |                             |   Range.                                                         |
   +------------+-----------------------------+------------------------------------------------------------------+
 
