@@ -1417,9 +1417,7 @@ GNU C Library IFUNC interface
 The GNU C Library (glibc) ``sys/ifunc.h`` header provides the
 necessary type definitions for defining IFUNC resolvers. The resolver
 is passed at least one, and at most 2 parameters dependent on the
-glibc IFUNC ABI version. A flag is set in the first parameter if a
-second parameter is available. The parameters provide access to the
-HWCAP_ flags.
+glibc IFUNC ABI version.
 
 .. code-block:: c
 
@@ -1435,9 +1433,19 @@ HWCAP_ flags.
     unsigned long _size; /* Size of the struct, so it can grow.  */
     unsigned long _hwcap;
     unsigned long _hwcap2;
+    unsigned long _hwcap3;
+    unsigned long _hwcap4;
   };
 
   typedef struct __ifunc_arg_t __ifunc_arg_t;
+
+The ``_IFUNC_ARG_HWCAP`` bit will be set in the first parameter when the
+second parameter is available. When this is the case, the second parameter
+is a pointer to a ``__ifunc_arg_t`` object and its ``_size`` field is set
+to ``sizeof(__ifunc_arg_t)``. IFUNC resolver functions can use the value
+of the ``_size`` field to check if additional ``_hwcap`` fields are available.
+When the ``_IFUNC_ARG_HWCAP`` bit is not set, only one parameter is passed
+to the resolver and it contains the value of ``hwcap``.
 
 IFUNC resolver functions must have a type of ``STT_GNU_IFUNC``. With
 the GCC and Clang compilers an attribute can be used to achieve this.
