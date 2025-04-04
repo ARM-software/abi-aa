@@ -80,9 +80,26 @@ withdrawn it will be moved to an archive folder.
 
 ## Manual checking of the PDF documents and Continuous Integration
 
-To check the outcome of your changes, run the `tools/rst2pdf/generate-pdfs.sh`
-script. To install the (python) prerequisites for the script, run the
-`tools/rst2pdf/install.sh` script.
+To check the outcome of your changes, use the `tools/rst2pdf/generate-pdfs.sh`
+script. To install the (python) prerequisites for the script, do the following.
+
+Create and activate Python virtual environment:
+
+```
+python3 -m venv ./venv
+source ./venv/bin/activate
+pip3 install -U pip setuptools wheel
+```
+
+Run the `tools/rst2pdf/install.sh` script.
+
+Now run the `tools/rst2pdf/generate-pdfs.sh`:
+
+```
+./tools/rst2pdf/generate-pdfs.sh build
+```
+
+The generated PDF files will be in the `build` directory.
 
 You can also check the rst syntax of the documents you changed with the
 `tools/common/check-rst-syntax.sh` script.
