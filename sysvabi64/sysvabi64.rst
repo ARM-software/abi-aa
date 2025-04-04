@@ -1414,30 +1414,57 @@ below.
 GNU C Library IFUNC interface
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The GNU C Library (glibc) ``sys/ifunc.h`` header provides the
-necessary type definitions for defining IFUNC resolvers. The resolver
-is passed at least one, and at most 2 parameters dependent on the
-glibc IFUNC ABI version. A flag is set in the first parameter if a
-second parameter is available. The parameters provide access to the
-HWCAP_ flags.
+The prototype of a GNU indirect function resolver is:
 
 .. code-block:: c
 
-  /* A second argument is passed to the ifunc resolver.  */
-  #define _IFUNC_ARG_HWCAP        (1ULL << 62)
+   ElfW(Addr) ifunc_resolver (uint64_t, const uint64_t *);
 
-  /* Function prototype for an IFUNC resolver.
-  ElfW(Addr) ifunc_resolver (uint64_t, const __ifunc_arg_t *);
+The resolver is passed at least one, and at most 2 parameters dependent
+on the GNU C Library (glibc) IFUNC ABI version. The bits in the first parameter
+will match the ``AT_HWCAP`` settings except for the ``_IFUNC_ARG_HWCAP`` bit
+that has special meaning: if this bit is set, then the second parameter is
+passed to the resolver function.
 
-  /* Second argument to an ifunc resolver.  */
-  struct __ifunc_arg_t
-  {
-    unsigned long _size; /* Size of the struct, so it can grow.  */
-    unsigned long _hwcap;
-    unsigned long _hwcap2;
-  };
+.. code-block:: c
 
-  typedef struct __ifunc_arg_t __ifunc_arg_t;
+   /* A second parameter is passed to the ifunc resolver.  */
+   #define _IFUNC_ARG_HWCAP (1ULL << 62)
+
+When the second parameter is passed, it will be a const pointer to a buffer
+that allows to access all HWCAP elements. The buffer may contain the following
+fields:
+
+``_size``
+   A ``uint64_t`` value at byte offset 0 containing the size of the buffer
+   in bytes, this field is always present
+
+``_hwcap``
+   A ``uint64_t`` value at byte offset 8 matching the AT_HWCAP settings,
+   this field is always present
+
+``_hwcap2``
+   A ``uint64_t`` value at byte offset 16 matching the AT_HWCAP2 settings,
+   this field is always present
+
+``_hwcap3``
+   A ``uint64_t`` value at byte offset 24 matching the AT_HWCAP3 settings
+
+``_hwcap4``
+   A ``uint64_t`` value at byte offset 32 matching the AT_HWCAP4 settings
+
+IFUNC resolver functions must use the value of the ``_size`` field to check
+how many HWCAP fields are available.
+
+The glibc header ``sys/ifunc.h`` provides the necessary type definitions
+that may be used by IFUNC resolvers. Namely, the ``__ifunc_arg_t`` struct is
+defined to match the buffer fields described above. When IFUNC resolvers rely
+on the ``sys/ifunc.h`` header, they may use the following compatible prototype
+of a GNU indirect function resolver:
+
+.. code-block:: c
+
+   ElfW(Addr) ifunc_resolver (uint64_t, const __ifunc_arg_t *);
 
 IFUNC resolver functions must have a type of ``STT_GNU_IFUNC``. With
 the GCC and Clang compilers an attribute can be used to achieve this.
@@ -1451,16 +1478,10 @@ the GCC and Clang compilers an attribute can be used to achieve this.
   static int implementation2(void) { ... }
 
   /* Resolver function */
-  static void* resolver(uint64_t, const __ifunc_arg_t *) { ... }
+  static void* resolver(uint64_t, const uint64_t *) { ... }
 
   /* Make symbol ifunc type STT_GNU_IFUNC using resolver as the IFUNC resolver. */
   int ifunc(void) __attribute__((ifunc("resolver")));
-
-The first ``uint64_t`` parameter is ``AT_HWCAP``. If the
-``_IFUNC_ARG_HWCAP`` flag is set, the second parameter is present. The
-second parameter is a structure ``__ifunc_arg_t`` defined in
-``sys/ifunc.h``, it provides access to all of the flags in HWCAP_ via
-fields of the structure.
 
 The IFUNC resolver function returns the address of the function
 implementation.
