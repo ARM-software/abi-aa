@@ -1435,9 +1435,16 @@ HWCAP_ flags.
     unsigned long _size; /* Size of the struct, so it can grow.  */
     unsigned long _hwcap;
     unsigned long _hwcap2;
+    unsigned long _hwcap3;
+    unsigned long _hwcap4;
   };
 
   typedef struct __ifunc_arg_t __ifunc_arg_t;
+
+The second paramter is a pointer to a ``__ifunc_arg_t`` object and its
+``_size`` field is set to ``sizeof(__ifunc_arg_t)``. IFUNC resolver
+functions can use the value of the ``_size`` field to check if additional
+``_hwcap`` fields are available.
 
 IFUNC resolver functions must have a type of ``STT_GNU_IFUNC``. With
 the GCC and Clang compilers an attribute can be used to achieve this.
