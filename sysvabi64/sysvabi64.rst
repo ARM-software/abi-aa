@@ -14,6 +14,7 @@
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
 .. _GCABI: https://itanium-cxx-abi.github.io/cxx-abi/abi.html
+.. _GCCML: https://gcc.gnu.org/legacy-ml/gcc/2018-10/msg00112.html
 .. _LINUX_ABI: https://github.com/hjl-tools/linux-abi/wiki
 .. _MemTagABIELF64: https://github.com/ARM-software/abi-aa/releases
 .. _PAuthABIELF64: https://github.com/ARM-software/abi-aa/releases
@@ -247,6 +248,8 @@ This document refers to, or is referred to by, the following documents.
   | CPPABI64_       | IHI 0059                                                     | C++ ABI for the Arm 64-bit Architecture                                     |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | GCABI_          | https://itanium-cxx-abi.github.io/cxx-abi/abi.html           | Generic C++ ABI                                                             |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | GCCML_          | https://gcc.gnu.org/legacy-ml/gcc/2018-10/msg00112.html      | GCC Mailing list topic TLSDESC clobber ABI stability/futureproofness?       |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | HWCAP_          | https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html | Linux Kernel HWCAPs interface                                               |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
@@ -2410,8 +2413,13 @@ TLS resolver functions have one argument, the address of the TLS
 descriptor, passed in ``x0``, they return the offset of the variable
 from the thread pointer in ``x0``.
 
-TLS resolver functions must save all registers that they modify with
-the exception of ``x0``, ``x1``, ``x30`` and the processor flags.
+TLS resolver functions must save all general-purpose and SIMD&FP
+registers that they modify with the exception of ``x0``, ``x1``,
+``x30`` and the processor flags.
+
+TLS resolver functions are not required to save any register added by
+an extension, such as the scalable vector registers or the SVE
+predicate registers. See `GCCML`_ for details.
 
 Example Resolver Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
