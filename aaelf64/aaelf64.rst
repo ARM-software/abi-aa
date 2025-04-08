@@ -1354,6 +1354,7 @@ In some systems indirect calls may also use veneers in order to support dynamic 
 
 On platforms that do not support dynamic pre-emption of symbols, an unresolved weak reference to a symbol relocated by ``R_<CLS>_CALL26`` shall be treated as a jump to the next instruction (the call becomes a no-op). The behaviour of ``R_<CLS>_JUMP26`` and ``R_<CLS>_PLT32`` in these conditions is not specified by this standard.
 
+When a static linker uses an indirect branch in a veneer, it may not assume that a destination in the same link unit has a BTI instruction, or BTI compatible instruction, at the destination of the indirect branch. See `SYSVABI64`_ for additional requirements on code-generators and PLT sequences.
 
 Group relocations
 ^^^^^^^^^^^^^^^^^
