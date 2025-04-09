@@ -288,6 +288,10 @@ changes to the content of the document for that release.
   |               | April 2025         |   `SHF_AARCH64_PURECODE` processor      |
   |               |                    |   specific section attribute flag.      |
   +---------------+--------------------+-----------------------------------------+
+  | 2025Q2        | 9\ :sup:`th`       | - In `Call and Jump relocations`_ added |
+  |               | April 2025         |   static linker requirements on veneers |
+  |               |                    |   when BTI guarded pages are used.      |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------
@@ -357,6 +361,13 @@ ABI
 
 Arm-based
    ... based on the Arm architecture ...
+
+BTI
+   Branch Target Identification. A feature that allows memory pages
+   to be guarded against the execution of instructions that are not
+   the intended target of an indirect branch. An indirect branch from
+   a guarded page must land on a BTI instruction or an instruction
+   that has implicit BTI behavior.
 
 ELF32
    An ELF object file with a class of ELFCLASS32
@@ -1354,6 +1365,7 @@ In some systems indirect calls may also use veneers in order to support dynamic 
 
 On platforms that do not support dynamic pre-emption of symbols, an unresolved weak reference to a symbol relocated by ``R_<CLS>_CALL26`` shall be treated as a jump to the next instruction (the call becomes a no-op). The behaviour of ``R_<CLS>_JUMP26`` and ``R_<CLS>_PLT32`` in these conditions is not specified by this standard.
 
+In a link-unit that is intended to be used when BTI guarded pages are enabled, veneers created by the static linker that use an indirect branch must target a BTI instruction or a BTI compatible instruction. If the destination of the veneer is in the same link unit and does not have a BTI or BTI compatible instruction, the static linker must generate an additional veneer that has a BTI instruction followed by a transfer of control to the destination that does not use an indirect branch. See `SYSVABI64`_ for additional requirements on code-generators and PLT sequences.
 
 Group relocations
 ^^^^^^^^^^^^^^^^^
