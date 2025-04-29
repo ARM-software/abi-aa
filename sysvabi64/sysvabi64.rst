@@ -1715,7 +1715,9 @@ calls to that location.
   escapes to an entity that is permitted to generate an indirect
   branch that is opaque to the relocatable object producer. This
   includes the locations of all symbols that can be exported into the
-  dynamic symbol table by a static linker.
+  dynamic symbol table by a static linker. It also includes IFUNC
+  resolver functions as these are called indirectly via the dynamic
+  loader or a local relocation resolver when static linking.
 
 * A static linker is required to generate `Custom PLTs`_ with BTI
   instructions.
