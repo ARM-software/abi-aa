@@ -264,6 +264,12 @@ changes to the content of the document for that release.
 |            |                    | - Add agnostic-ZA interface and routines to save/restore SME     |
 |            |                    |   state.                                                         |
 +------------+--------------------+------------------------------------------------------------------+
+|            |                    | - Explicitly say that ZT0 is a temporary register.               |
+|            |                    | - Add a note about the interaction between the SME lazy save     |
+|            |                    |   scheme and asynchronous transfers of control.                  |
+|            |                    | - Recommend that ``setjmp`` as well as ``longjmp`` call          |
+|            |                    |   ``__arm_za_disable``.                                          |
++------------+--------------------+------------------------------------------------------------------+
 
 References
 ^^^^^^^^^^
@@ -414,7 +420,7 @@ Global register
 Program state
    The state of the program’s memory, including values in machine registers.
 
-Scratch register, temporary register, caller-saved register
+Scratch register, _`temporary register`, caller-saved register
    A register used to hold an intermediate value during a calculation (usually, such values are not named in the program source and have a limited lifetime). If a function needs to preserve the value held in such a register over a call to another function, then the calling function must save and restore the value.
 
 Callee-saved register
@@ -977,6 +983,9 @@ TPIDR2_EL0
    a system register that software can use to manage thread-local state
 
    See `TPIDR2_EL0`_ for a description of how the AAPCS64 uses this register.
+
+In addition, SME2 defines a 512-bit register ZT0, which is accessible when
+PSTATE.ZA is 1.  The AAPCS64 defines ZT0 to be a `temporary register`_.
 
 Threads and processes
 ---------------------
@@ -1729,6 +1738,68 @@ it induces ``memset`` to modify ``BLK`` before ``memset`` has returned:
    TPIDR2_EL0 = &BLK;
    memset(&BLK, 0, 16);          // Non-conforming
 
+Asynchronous transfers of control
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**(Beta)**
+
+The specification of the lazy save scheme in this document says that
+certain things must be true of a thread at all times after initialization,
+rather than requiring those things to be true only at function-call
+boundaries.  As a result, the specification also restricts the order
+in which certain state transitions can happen.
+
+This is done to support asynchronous transfers of control, as provided
+by things like POSIX signals.  The exact treatment of such transfers
+is platform-specific and is outside the scope of this specification.
+However, in the case where the asynchronous transfer involves calling
+some form of handler, a platform must implement transfers to and from
+the handler in a way that is compatible with the lazy save scheme.
+This applies even if the handler returns abnormally, such as by calling
+``longjmp`` or by raising an exception, if the platform allows such
+abnormal returns.
+
+One approach that a platform can take for such handlers is as follows:
+
+* Save all SME state before entering a handler.
+
+* Leave a record on the stack so that an unwinder can recover this
+  saved information.
+
+* After saving the SME state, set PSTATE.ZA and TPIDR2_EL0 to zero,
+  so that the handler starts with ZA in the “off” state.
+
+* On a normal return from the handler, restore the saved SME state
+  and resume execution.
+
+* Make ``setjmp`` and ``longjmp`` turn ZA off; see `setjmp and longjmp`_
+  for details.
+
+* Make the platform subroutines for throwing exceptions turn ZA off; see
+  `Exceptions`_ for details.  When unwinding out of a handler, use the
+  saved TPIDR2_EL0 information to see whether ZA was previously dormant;
+  that is, if TPIDR2_EL0 pointed to a TPIDR2 block that has a nonnull ZA
+  save buffer.  If so, copy the saved ZA contents to this buffer.
+
+Note that if an asynchronous exception is thrown while ZA is active,
+the subroutines that are using that active ZA state cannot catch the
+exception and expect to recover the contents of ZA at the point that
+the exception was thrown.
+
+Other state controlled by PSTATE.ZA
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**(Beta)**
+
+Access to the SME2 ZT0 register is also controlled by PSTATE.ZA.
+As described in `SME state`_, the AAPCS64 defines ZT0 to be a
+`temporary register`_, meaning that its contents may be changed by a
+call to any subroutine, unless the subroutine makes a specific promise
+not to do so.  Subroutines that make such a promise are said to
+“preserve ZT0”.
+
+ZT0 is therefore not handled by the lazy save scheme.
+
 Types of subroutine interface
 -----------------------------
 
@@ -2411,12 +2482,13 @@ by PSTATE.ZA.
 
 * The subroutine is called ``__arm_sme_save``.
 
-* The subroutine has a custom ``ZA`` `streaming-compatible interface`_ with
+* The subroutine has a `streaming-compatible interface`_ with
   the following properties:
 
   * X1-X15, X19-X29 and SP are call-preserved.
   * Z0-Z31 are call-preserved.
   * P0-P15 are call-preserved.
+  * ZA and ZT0 are handled specially, as described below.
 
 * The subroutine takes the following arguments:
 
@@ -2472,12 +2544,13 @@ enabled by PSTATE.ZA.
 
 * The subroutine is called ``__arm_sme_restore``.
 
-* The subroutine has a custom ``ZA`` `streaming-compatible interface`_ with
-  the following properties:
+* The subroutine has a `streaming-compatible interface`_ with the
+  following properties:
 
   * X1-X15, X19-X29 and SP are call-preserved.
   * Z0-Z31 are call-preserved.
   * P0-P15 are call-preserved.
+  * ZA and ZT0 are handled specially, as described below.
 
 * The subroutine takes the following arguments:
 
@@ -2589,8 +2662,8 @@ conforming way for S to flush any dormant ZA state before S uses ZA itself:
 
 If S has a `private-ZA`_ interface, the following pseudo-code describes a
 conforming way for S to clear PSTATE.ZA.  This procedure is useful for
-things like the C subroutine ``longjmp`` (see `setjmp and longjmp`_) and
-exception unwinders (see `Exceptions`_).
+things like the C subroutines ``setjmp`` and ``longjmp`` (see
+`setjmp and longjmp`_) and exception unwinders (see `Exceptions`_).
 
 .. code-block:: c++
 
@@ -3096,27 +3169,22 @@ specifically to ``setjmp`` and ``longjmp``:
 * ZA must be in the “off” state when ``setjmp`` returns to its caller via a
   ``longjmp``.
 
-``longjmp`` can meet this requirement by using ``__arm_za_disable``
-to `turn ZA off`_.
-
-The intention of this definition is to allow a subroutine that has a
-`private-ZA`_ interface to use ``setjmp`` and ``longjmp`` without being aware
-of ZA.
-
-This approach to saving ZA is intended to be conservatively correct.
-It may lead to ``longjmp`` saving the ZA contents for a subroutine that is
-about to be “unwound”, in which case the save is wasted work but is
-otherwise harmless.
-
-``setjmp`` is encouraged not to `commit a lazy save`_.  The intention is
-for ``longjmp`` rather than ``setjmp`` to bear the cost of the save,
-because not all calls to ``setjmp`` have a partnering call to
-``longjmp``.
+A platform can meet this requirement by making both ``setjmp`` and ``longjmp``
+call ``__arm_za_disable`` to `turn ZA off`_.
 
 .. note::
 
-   A consequence of this is that any existing open-coded copies of ``longjmp``
-   become invalid.
+   A consequence of this is that any existing open-coded copies of
+   ``setjmp`` and ``longjmp`` become invalid.
+
+.. note::
+
+   Versions 2025Q1 and earlier of the AAPCS64 instead recommended that
+   only ``longjmp`` call ``__arm_za_disable``.  However, that approach
+   was found to be incompatible with the handling of POSIX signals on
+   some platforms.  The underlying requirement that ZA must be in the
+   “off” state when ``setjmp`` returns to its caller via a ``longjmp``
+   is unchanged.
 
 Exceptions
 ----------
