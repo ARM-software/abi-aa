@@ -817,6 +817,7 @@ does not have a maximum size limit.
 
 Data is defined as large data if any of the following are true:
 
+- The data is in section with section flag ``SHF_AARCH64_LARGE``.
 - The data is >= 64 KiB in size.
 - The data is of unknown size.
 - The data will be represented by an unallocated common block, described by a
@@ -825,12 +826,13 @@ Data is defined as large data if any of the following are true:
 All other data is small data.
 
 Large data is placed in sections with an ``l`` prefix, for example ``.lbss``,
-``.ldata`` and ``.lrodata``. Both small and large RELRO data are placed in
-``.data.rel.ro`` as many loaders only support one ``PT_GNU_RELRO`` program
-header. At static link time the large data sections must be placed after all
-small data sections. If it is the last small data section, the static linker
-allocates storage for ``SHN_COMMON`` symbols at the end of the ``bss``
-section. Otherwise they are allocated in ``lbss``.
+``.ldata`` and ``.lrodata``. Additionally, they all have ``SHF_AARCH64_LARGE``
+section flag. Both small and large RELRO data are placed in ``.data.rel.ro`` 
+as many loaders only support one ``PT_GNU_RELRO`` program header. At static
+link time the large data sections must be placed after all small data sections.
+If it is the last small data section, the static linker allocates storage for
+``SHN_COMMON`` symbols at the end of the ``bss`` section. Otherwise they are
+allocated in ``lbss``.
 
 Sample code sequences for code models
 -------------------------------------
