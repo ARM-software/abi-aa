@@ -295,6 +295,9 @@ changes to the content of the document for that release.
   |               |                    | - Added section for structure protection|
   |               |                    |   extension relocations.                |
   +---------------+--------------------+-----------------------------------------+
+  | 2026Q1        | 12\ :sup:`th`      | - R_AARCH64_TLS_DTPREL can be used as a |
+  |               | January 2026       |   static relocation as well as dynamic  |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------
@@ -1729,6 +1732,27 @@ Thread-local storage descriptors
 
 Relocation codes ``R_<CLS>_TLSDESC_LDR``, ``R_<CLS>_TLSDESC_ADD`` and ``R_<CLS>_TLSDESC_CALL`` are needed to permit linker optimization of TLS descriptor code sequences to use Initial-exec or Local-exec TLS sequences; this can only be done if all relevant uses of TLS descriptors are marked to permit accurate relaxation. Object producers that are unable to satisfy this requirement must generate traditional General-dynamic TLS
 sequences using the relocations described in `General Dynamic thread-local storage model`_. The details of TLS descriptors are beyond the scope of this specification; a general introduction can be found in [TLSDESC_].
+
+Thread Local Storage Data Relocations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A data relocation is required to describe the location of a TLS variable in debug information.
+
+.. class:: aaelf64-tls-data-relocations
+
+.. table:: TLS data relocations
+
+  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1028       | 184        | R\_<CLS>\_TLS\_IMPDEF1      |                                    | See note below                            |
+  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1029       | 185        | R\_<CLS>\_TLS\_IMPDEF2      |                                    | See note below                            |
+  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
+  |            |            | R\_<CLS>\_TLS\_DTPREL       | DTPREL(S+A)                        | See note below                            |
+  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
+
+``R_<CLS>_TLS_DTPREL`` is both a static and dynamic relocation. When used as a static relocation ``S`` must be fully resolved at static link time to a symbol definition in the same module as the relocation.
+
+It is implementation defined whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPREL`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPMOD`` or whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPMOD`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
 
 Relocations for PAuth ABI Extension
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
