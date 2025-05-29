@@ -269,6 +269,7 @@ changes to the content of the document for that release.
 |            |                    |   scheme and asynchronous transfers of control.                  |
 |            |                    | - Recommend that ``setjmp`` as well as ``longjmp`` call          |
 |            |                    |   ``__arm_za_disable``.                                          |
+|            |                    | - Explicitly say that the FFR is a temporary register.           |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -959,6 +960,15 @@ scalable predicate registers, or returns results in such registers,
 the subroutine must ensure that p4-p15 are preserved across the
 call. In other cases it need not preserve any scalable predicate
 register contents.
+
+First Fault Register (FFR)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The special-purpose First Fault Register (FFR) has the same size and
+format as the scalable predicate registers, and is available if and only
+if the scalable vector registers are available. It captures the
+cumulative fault status of a sequence of SVE first-fault and non-fault
+vector load instructions. It is a temporary register.
 
 SME state
 ---------
