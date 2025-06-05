@@ -1610,7 +1610,8 @@ On GNU/Linux this function is called at load time and has the following
 prototype:
 
 .. code-block:: c
-   void __init_cpu_features_resolver (uint64_t, const uint64_t *)
+
+   void __init_cpu_features_resolver (uint64_t, const uint64_t *);
 
 The above interface expects the same parameters as a GNU Indirect
 Function resolver. Other platforms may use a different interface
@@ -1622,6 +1623,7 @@ The runtime initialization must set a global variable which contains
 the bits corresponding to the CPU features that have been detected:
 
 .. code-block:: c
+
    uint64_t __aarch64_cpu_features
 
 The variable may contain the following fields:
