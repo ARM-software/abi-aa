@@ -1592,39 +1592,26 @@ IFUNC requirements for dynamic linkers
 To resolve an ``R_AARCH64_IRELATIVE`` relocation the dynamic linker
 performs the calculation described in AAELF64_ Dynamic Relocations.
 
-Function Multi-Versioning
+Function Multi-versioning
 -------------------------
 
-Function Multi-Versioning (FMV) is an Arm C Language Extension that
+Function Multi-versioning (FMV) is an Arm C Language Extension that
 lets the compiler generate multiple function versions and auto-dispatch
 between them. Each of the function versions is specialized for a set
-of architecture extensions. The most suitable version is selected
-dynamically. This requires runtime information about the CPU features
-available on the host. FMV is supported on GNU/Linux, Android, Windows
-and many of the BSD operating systems, including Darwin.
+of architecture extensions. The most suitable version is selected at
+load time. This requires runtime information about the CPU features
+available on the host. FMV is supported on GNU/Linux, Android, and
+many of the BSD operating systems.
 
-The initialization of the runtime is platform dependent. It may be
-performed at startup by calling a constructor (Windows), or it may be
-performed by calling ``__init_cpu_features_resolver`` (otherwise).
-On GNU/Linux this function is called at load time and has the following
-prototype:
-
-.. code-block:: c
-
-   void __init_cpu_features_resolver (uint64_t, const uint64_t *);
-
-The above interface expects the same parameters as a GNU Indirect
-Function resolver. Other platforms may use a different interface
-with the runtime library. However, all implementations must provide
-a DSO local definition of the function by setting the symbol
-visibility to ``STV_HIDDEN``.
-
-The runtime initialization must set a global variable which contains
-the bits corresponding to the CPU features that have been detected:
+On System V platforms Function Multi-versioning is implemented using
+GNU Indirect Functions (IFUNC). The compiler generated IFUNC resolver
+uses a global variable ``__aarch64_cpu_features`` that contains a
+description of the detected CPU features to select the best function
+version:
 
 .. code-block:: c
 
-   uint64_t __aarch64_cpu_features
+   uint64_t __aarch64_cpu_features = 0;
 
 The variable may contain the following fields:
 
@@ -1725,6 +1712,28 @@ The variable may contain the following fields:
     +-------------------+----------+
     | FEAT_MOPS         | 1U << 60 |
     +-------------------+----------+
+
+A special value ``FEAT_INIT = (1U << 63);`` is used to signify
+initialization completion.
+
+Initialization of the ``__aarch64_cpu_features`` is performed by
+the runtime. Each FMV resolver function will call the
+``__init_cpu_features_resolver`` function that must be provided
+by the runtime environment. This runtime function must ensure
+that ``__aarch64_cpu_features`` is populated.
+
+The ``__init_cpu_features_resolver`` function has the following
+prototype:
+
+.. code-block:: c
+
+   void __init_cpu_features_resolver (uint64_t, const uint64_t *);
+
+The above interface expects the same parameters as a GNU Indirect
+Function resolver. Other platforms may use a different interface
+with the runtime library. However, all implementations must provide
+a DSO local definition of the function by setting the symbol
+visibility to ``STV_HIDDEN``.
 
 Initialization and Termination Functions
 ----------------------------------------
