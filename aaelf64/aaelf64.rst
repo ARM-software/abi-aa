@@ -644,6 +644,9 @@ The defined processor-specific section attribute flags are listed in the followi
   +--------------------------+----------------+----------------------------------------------------+
   | Name                     | Value          | Comment                                            |
   +==========================+================+====================================================+
+  | ``SHF_AARCH64_LARGE``    | ``0x10000000`` | The contents of this section contains large data   |
+  |                          |                | and is placed on the outer edges of the binary     |
+  +--------------------------+----------------+----------------------------------------------------+
   | ``SHF_AARCH64_PURECODE`` | ``0x20000000`` | The contents of this section contains only program |
   |                          |                | instructions and no program data                   |
   +--------------------------+----------------+----------------------------------------------------+
