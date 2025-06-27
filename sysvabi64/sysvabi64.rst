@@ -1925,19 +1925,19 @@ into the abstract storage hierarchy as follows.
 Rules governing thread local storage on AArch64
 -----------------------------------------------
 
-*  How to denote TLS in source programs.
+*  How to denote TLS in source programs:
 
    C++11 and C11 use :c:`thread_local T t...`; A GCC extension uses
    :c:`__thread T t...`; this is Q-o-I.
 
 *  How to represent the initializing images of TLS in object files, and how
-   to define symbols in TLS.
+   to define symbols in TLS:
 
    The rules for ELF are well established (see ``SHF_TLS``, ``STT_TLS`` in
    SCO-ELF_).
 
 *  How a loader or run-time system creates instances of TLS per-thread at
-   execution time.
+   execution time:
 
    This is part of ABI for the platform or execution environment.
 
@@ -1953,6 +1953,10 @@ This document and AAELF64_ are concerned with:
 Introduction to TLS addressing
 ------------------------------
 
+This section covers only the definitions required to understand the
+AArch64 specific details. A more in-depth description to TLS
+addressing in general can be found in ELFTLS_.
+
 In the most general form, a program is constructed dynamically from an
 executable and a number of shared libraries. Each component,
 (executable or shared library) can be mapped into multiple
@@ -1960,9 +1964,9 @@ processes. Additionally a shared library can be loaded dynamically by
 a program, rather than being part of the initial process image
 constructed when the program is first loaded.
 
-For the purpose of addressing TLS, components, referred to as modules,
-of an application are identified using indexes. The module index for
-the executable is always 1, but the module indexes for shared
+For the purpose of addressing TLS, components of an application,
+referred to as modules, are identified using indexes. The module index
+for the executable is always 1, but the module indexes for shared
 libraries are allocated at process start time, or when a shared
 library is loaded dynamically via dlopen. A shared library may have a
 different module index in two different processes so its per-thread
@@ -2021,7 +2025,7 @@ of the DTV. The details are platform specific.
 
 To calculate the address of a TLS variable in any given module, static
 or dynamic, the expression ``TP[0][Module id][offset in module]`` can
-be used. The function ``__tls_get_address(module_id, offset)`` returns
+be used. The function ``__tls_get_addr(module_id, offset)`` returns
 the result of this calculation.
 
 The calculation above is the most general and it can be applied to
@@ -2043,12 +2047,12 @@ descending generality:
 SystemV AArch64 TLS addressing
 ------------------------------
 
-AArch64 TLS SystemV design choices
+AArch64 TLS SystemV design choices:
 
 * AArch64 uses variant 1 TLS as described in ELFTLS_.
 
 * The thread pointer (TP) is always accessible via the ``TPIDR_EL0``
-  system register. This can be accessed via inlining a ``mrs``
+  system register. This can be accessed via inlining an ``mrs``
   instruction to read the thread pointer.
 
 * The compiler can generate code that supports a TLS block size of 4
@@ -2063,7 +2067,7 @@ size of the TCB (16 bytes), ``PADsize`` as the size of the padding bytes,
 and ``PT_TLS`` as the program header with type PT_TLS.
 
 The Thread Pointer ``TP`` and also the address of the start of the
-``TCB``, must satisfy the requirement.
+``TCB``, must satisfy the requirement:
 
 ``TP ≡ 0 (modulo PT_TLS.p_align)``.
 
@@ -2096,13 +2100,13 @@ The code sequences below assume the default TLS block size of 16 MiB,
 this permits the Local Exec model to use of a pair of add instructions
 with a combined 24-bit immediate field. Larger TLS sizes can be
 supported by using a ``movz`` and one or more ``movk`` instructions to
-construct an offset from the thread-pointer in a register.
+construct an offset from the thread pointer in a register.
 
 A code model may use a sequence from a less restrictive code model.
 
 In the code-sequences below:
 
-* ``tp`` is a core register containing the thread-pointer.
+* ``tp`` is a core register containing the thread pointer.
 
 * ``gp`` is a core register containing the base of the GOT.
 
@@ -2130,10 +2134,10 @@ the sequence, with exactly the same registers used.
 
 The code sequences below return the offset of the TLS variable from
 ``tp`` in ``x0``.  To get the address of the TLS variable requires
-additional code to add ``x0`` to be added to ``tp``, this is not part
-of the ABI required TLSDESC code sequence.
+additional code to add ``x0`` to ``tp``, this is not part of the ABI
+required TLSDESC code sequence.
 
-Small Code Model
+Small Code Model;
 
 .. code-block:: asm
 
@@ -2144,7 +2148,7 @@ Small Code Model
     blr   x1                           // R_AARCH64_TLSDESC_CALL var
     // offset of var from tp in x0
 
-Tiny Code Model
+Tiny Code Model;
 
 .. code-block:: asm
 
@@ -2154,7 +2158,7 @@ Tiny Code Model
     blr   x1                        // R_AARCH64_TLSDESC_CALL var
     // offset of var from tp in x0
 
-Large Code Model
+Large Code Model;
 
 .. code-block:: asm
 
@@ -2175,9 +2179,9 @@ Local Dynamic is a special case of general dynamic where the compiler
 knows that the TLS variable is defined in the same module as the code
 that is accessing the variable. In this case the offset of the TLS
 variable from the start of the module's TLS block is a static link
-time constant. Instead of dynamically calculating the offset of the
-TLS variable from the thread-pointer. The offset of the module's TLS
-block from the thread-pointer is calculated, then the offset of the
+time constant, instead of dynamically calculating the offset of the
+TLS variable from the thread pointer. The offset of the module's TLS
+block from the thread pointer is calculated, then the offset of the
 TLS variable within that block is added. This is more efficient than
 general dynamic when more than one TLS variable from the same module
 is accessed from the same function, but less efficient when accessing
@@ -2198,14 +2202,14 @@ Initial Exec
 Initial Exec can be used for static TLS. The location of the module's
 TLS block and the offset of the TLS variable within that block are
 run-time constants. The dynamic-loader computes the offset from the
-thread-pointer and places it in a GOT entry. The GOT entry is
+thread pointer and places it in a GOT entry. The GOT entry is
 relocated by dynamic relocation ``R_AARCH64_TLS_TPREL64``.
 
 A shared-library that contains Initial Exec TLS must have the
 ``DF_STATIC_TLS`` dynamic tag set. An attempt to load a shared library
 with ``DF_STATIC_TLS`` via ``dlopen`` will be rejected.
 
-Small Code model
+Small Code model;
 
 The static linker is permitted to relax the instructions below to
 Local Exec individually using the relocation directive. The
@@ -2217,14 +2221,14 @@ instructions do not have to be contiguous.
     ldr  xn, [xn, #:gottprel_lo12:var] // R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC var
     // offset of var from tp in xn
 
-Tiny Code model
+Tiny Code model;
 
 .. code-block:: asm
 
     ldr  xn, :gottprel:var // R_AARCH64_TLSIE_LD_GOTTPREL_PREL19 var
     // offset of var from tp in xn
 
-Large Code model
+Large Code model;
 
 .. code-block:: asm
 
@@ -2241,10 +2245,10 @@ executable always has the TLS module index of 1 so the offsets of the
 TLS variables from the thread pointer are static link time
 constants. The code sequences are the same for all code models.
 
-The instruction sequences below are not ABI. Using the instructions
-and relocations below increases the chances of static linkers applying
-the relaxations in (AAELF64_) when the size of the executables TLS
-block is smaller than 16 KiB.
+The instruction sequences below are not required by the ABI but using
+the instructions and relocations below increases the chances of static
+linkers applying the relaxations in (AAELF64_) when the size of the
+executables TLS block is smaller than 16 KiB.
 
 .. code-block:: asm
 
@@ -2285,7 +2289,7 @@ General Dynamic to Initial Exec
 This relaxation can be performed when the TLS variable is defined in a
 module that is part of static TLS.
 
-Small Code Model
+Small Code Model;
 
 .. code-block:: asm
 
@@ -2295,7 +2299,7 @@ Small Code Model
     nop
     // offset of var from tp in x0
 
-Tiny Code Model
+Tiny Code Model;
 
 .. code-block:: asm
 
@@ -2304,7 +2308,7 @@ Tiny Code Model
     nop
     // offset of var from tp in x0
 
-Large Code Model
+Large Code Model;
 
 .. code-block:: asm
 
@@ -2320,7 +2324,7 @@ General Dynamic to Local Exec
 This relaxation can be performed when the TLS variable is defined in
 the executable.
 
-Small Code Model
+Small Code Model;
 
 .. code-block:: asm
 
@@ -2330,7 +2334,7 @@ Small Code Model
     nop
     // offset of var from tp in x0
 
-Tiny Code Model
+Tiny Code Model;
 
 .. code-block:: asm
 
@@ -2339,7 +2343,7 @@ Tiny Code Model
     nop
     // offset of var from tp in x0
 
-Large Code Model
+Large Code Model;
 
 .. code-block:: asm
 
@@ -2429,7 +2433,7 @@ requirement for any of the following resolver functions to be
 implemented.  Due to the restrictions on calling convention, the
 resolver routines must be written in assembly language.
 
-Static TLS Specialization
+Static TLS Specialization:
 
 When the TLS variable is in the static TLS block, the offset from the
 thread pointer is fixed at runtime. The dynamic loader can calculate
@@ -2444,7 +2448,7 @@ resolver function needs to do is extract the offset and return it.
       ldr   x0, [x0, #8]
       ret
 
-Dynamic TLS Specialization
+Dynamic TLS Specialization:
 
 When the TLS variable is defined in dynamic TLS the address of the TLS
 variable must be calculated by the resolver function using
@@ -2491,7 +2495,7 @@ TLS descriptor has completed before reading it.
 
 .. code-block:: asm
 
-    // Code to obtain the offset of var from thread-pointer.
+    // Code to obtain the offset of var from thread pointer.
     // Loads the address of the resolver function into x1.
     // Places the address of the TLS Descriptor into x0.
     adrp  x0, :tlsdesc:var
