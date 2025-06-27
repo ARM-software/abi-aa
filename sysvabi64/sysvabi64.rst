@@ -2015,23 +2015,45 @@ dynamic TLS.
 Index N, where N > 0, of the Dynamic Thread Vector DTV[N] is a pointer
 to the TLS block for module N.
 
-Index 0 of the Dynamic Thread Vector DTV[0] is reserved for use by the
-platform. It typically contains the thread's generation counter which
-can be used to update or reallocate the DTV when TLS variables in
-dynamic modules loaded by ``dlopen`` are first used. When a dynamic
-TLS variable is accessed the thread's generation count is compared
-with the global generation count which can be used to trigger updates
-of the DTV. The details are platform specific.
-
 To calculate the address of a TLS variable in any given module, static
 or dynamic, the expression ``TP[0][Module id][offset in module]`` can
 be used. The function ``__tls_get_addr(module_id, offset)`` returns
 the result of this calculation.
 
-The calculation above is the most general and it can be applied to
-both static and dynamic TLS. There are four defined models of
-accessing TLS that trade off generality for performance. In order of
-descending generality:
+Index 0 of the Dynamic Thread Vector DTV[0] is reserved for use by the
+platform. It is typically used to store the thread's generation
+counter. In an implementation that supports deferred allocation of
+TLS, a global generation number is incremented whenever the number of
+dynamic modules changes due to ``dlopen`` or ``dlclose``. In the
+``__tls_get_addr(module_id, offset)`` function, if the thread's
+generation count is less than the global generation number, the
+thread's DTV is updated, and the TLS for the ``module_id`` is
+allocated if it is not present.
+
+In pseudo code
+
+.. code-block:: c
+
+    /* tls_get_addr with deferred allocation */
+    void * __tls_get_addr(size_t module_id, size_t offset)
+    {
+      dtv = get_thread_dtv();
+
+      if (dtv[0].generation_counter != global_generation_number)
+        /* includes setting the thread's generation counter to
+	   the global_generation_number */
+        update_thread_dtv();
+
+      if (dtv[module_id] == unallocated)
+        allocate_tls(dtv, module_id);
+
+      return dtv[module_id][offset];
+    }
+
+The calculation in __tls_get_addr is the most general and it can be
+applied to both static and dynamic TLS. There are four defined models
+of accessing TLS that trade off generality for performance. In order
+of descending generality:
 
    1. General Dynamic, can be used anywhere.
 
