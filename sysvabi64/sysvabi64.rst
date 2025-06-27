@@ -2055,7 +2055,7 @@ applied to both static and dynamic TLS. There are four defined models
 of accessing TLS that trade off generality for performance. In order
 of descending generality:
 
-   1. General Dynamic, can be used anywhere.
+   1. General Dynamic, also known as Global Dynamic, can be used anywhere.
 
    2. Local Dynamic, can be used anywhere where the definition of the
       TLS variable and the access are from the same module.
@@ -2130,6 +2130,21 @@ we get:
 which is equivalent to
 ``PADsize:sub:m = (PT_TLS.p_vaddr - TCBsize):sub:m``.
 
+TLS Descriptors
+---------------
+
+AArch64 uses the TLS Descriptor dialect for the general dynamic model.
+The TLS Descriptor dialect permits a dynamic linker to use the
+location and properties of the TLS symbol to select an optimal
+resolver function.
+
+The static relocations with a prefix of ``R_AARCH64_TLSDESC_``
+targeting TLS symbol ``var``, instruct the static linker to create a
+TLS Descriptor for ``var``. The TLS Descriptor for a variable is
+stored in a pair of consecutive GOT entries, N and N + 1. The GOT
+entry for N has a dynamic ``R_AARCH64_TLSDESC`` relocation targeting
+the TLS symbol for ``var``.
+
 Code sequences for accessing TLS variables
 ------------------------------------------
 
@@ -2158,6 +2173,16 @@ In the code-sequences below:
 
 * ``.tlsdescadd`` is an assembler directive that adds a
   ``R_AARCH64_TLSDESC_ADD`` relocation to the next instruction.
+
+Relaxation is a term used by the TLS literature such as ELFTLS_ to
+represent an optimization. AAELF64_ has used optimization for similar
+link-time instruction sequence optimizations. This document will use
+relaxation to be consistent with existing references.
+
+The static linker can relax a more general TLS model to a more
+constrained TLS model when the TLS variables meet the requirements for
+using the constrained model. The section `Static link time TLS
+Relaxations`_ describes the details of the permitted relaxations.
 
 General Dynamic
 ^^^^^^^^^^^^^^^
@@ -2284,7 +2309,7 @@ constants. The code sequences are the same for all code models.
 
 The instruction sequences below are not required by the ABI but using
 the instructions and relocations below increases the chances of static
-linkers applying the relaxations in (AAELF64_) when the size of the
+linkers applying the optimizations in (AAELF64_) when the size of the
 executables TLS block is smaller than 16 KiB.
 
 .. code-block:: asm
@@ -2302,15 +2327,6 @@ Optimization to load a 64-bit var directly into a core register.
 
 Static link time TLS Relaxations
 --------------------------------
-
-Relaxation is a term used by the TLS literature such as ELFTLS_ to
-represent an optimization. AAELF64_ has used optimization for similar
-link-time instruction sequence optimizations. This document will use
-relaxation to be consistent with existing references.
-
-The static linker can relax a more general TLS model to a more
-constrained TLS model when the TLS variables meet the requirements for
-using the constrained model.
 
 The Relaxations described below can be automatically applied to code
 sequences in the executable. Relaxing from general dynamic will
@@ -2405,19 +2421,8 @@ destination register must be preserved.
     movz    xn, :tprel_g1:var // R_AARCH64_TLSLE_MOVW_TPREL_G1 var
     movk    xn, :tprel_g0:var // R_AARCH64_TLSLE_MOVW_TPREL_G0_NC var
 
-TLS Descriptors
----------------
-
-The TLS Descriptor dialect permits a dynamic linker to use the
-location and properties of the TLS symbol to select an optimal
-resolver function.
-
-The static relocations with a prefix of ``R_AARCH64_TLSDESC_``
-targeting TLS symbol ``var``, instruct the static linker to create a
-TLS Descriptor for ``var``. The TLS Descriptor for a variable is
-stored in a pair of consecutive GOT entries, N and N + 1. The GOT
-entry for N has a dynamic ``R_AARCH64_TLSDESC`` relocation targeting
-the TLS symbol for ``var``.
+TLS Descriptor resolver functions
+---------------------------------
 
 When resolving the ``R_AARCH64_TLSDESC`` relocation, the dynamic
 loader places the address of the chosen resolver function in the first
