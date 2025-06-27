@@ -2073,6 +2073,12 @@ AArch64 TLS SystemV design choices:
 
 * AArch64 uses variant 1 TLS as described in ELFTLS_.
 
+* There are two dialects of TLS supported by the relocations defined
+  in AAELF64_, the traditional dialect described by ELFTLS_ and the
+  descriptor dialect described by TLSDESC_. This document describes
+  only the descriptor dialect as this is the default dialect for GCC
+  and the only dialect supported by clang.
+
 * The thread pointer (TP) is always accessible via the ``TPIDR_EL0``
   system register. This can be accessed via inlining an ``mrs``
   instruction to read the thread pointer.
@@ -2081,39 +2087,48 @@ AArch64 TLS SystemV design choices:
   KiB, 16 MiB, 4GiB or 16EiB, depending on the addressing mode. The
   default is 16 MiB for all addressing modes.
 
-Recall that the Thread Pointer ``TP`` points to the start of the ``TCB``.
+* The TLS for an executable or shared-library is described by the
+  ``PT_TLS`` program header.
+
+Recall from the diagram in `SystemV AArch64 TLS addressing
+architecture`_ that the Thread Pointer ``TP`` points to the start of
+the ``TCB``, which is followed by 0 or more bytes of alignment
+padding, then the executable's TLS block.
+
+The ``TP``, and hence the start of the ``TCB`` must be aligned to a
+``PT_TLS.p_align`` boundary. This can be expressed as ``TP ≡ 0 (modulo
+PT_TLS.p_align)`` where ``≡`` means congruent to.
 
 The static and dynamic linker must agree on the size of the padding
-between the TCB and the executables TLS Block. Using ``TCBsize`` as the
-size of the TCB (16 bytes), ``PADsize`` as the size of the padding bytes,
-and ``PT_TLS`` as the program header with type PT_TLS.
-
-The Thread Pointer ``TP`` and also the address of the start of the
-``TCB``, must satisfy the requirement:
-
-``TP ≡ 0 (modulo PT_TLS.p_align)``.
-
-``PADsize`` must be the smallest positive integer that satisfies the
-following congruence:
-
-``TCBsize + PADsize ≡ PT_TLS.p_vaddr (modulo PT_TLS.p_align)``.
-
-An expression for ``PADsize`` is therefore:
+(``PADsize``) between the TCB and the executable's TLS Block. Using
+``TCBsize`` as the size of the TCB (16 bytes), the following expression can be used to calcluate ``PADsize`` from the ``PT_TLS`` program header.
 
 ``PADsize = (PT_TLS.p_vaddr - TCBsize) mod PT_TLS.p_align``.
 
 A number of dynamic linkers use a different calculation that requires
 ``PT_TLS.p_vaddr ≡ 0 (modulo PT_TLS.p_align)`` to correctly align the
-executables TLS block, for either static or dynamic TLS. For maximum
+executables TLS block. In this case the expression above simplifies to
+``PADsize = Max(0, PT_TLS.p_align - TCBsize``). For maximum
 compatibility, static linkers and any linker scripts including TLS,
-are recommended to align the TLS block so that `PT_TLS.p_vaddr ≡ 0
-(modulo p_align)`.
+are recommended to align the TLS block so that ``PT_TLS.p_vaddr ≡ 0
+(modulo p_align)``. This requires the start of the TLS to be aligned
+to the maximum of the .tdata and .tbss sections.
 
-There are two dialects of TLS supported by the relocations defined in
-AAELF64_, the traditional dialect described by ELFTLS_ and the
-descriptor dialect described by TLSDESC_. This document describes only
-the descriptor dialect as this is the default dialect for GCC and the
-only dialect supported by clang.
+The expression for ``PADsize`` above can be derived from the
+requirement that ``PADsize`` must be the smallest positive integer
+that satisfies the following congruence:
+
+``TP`` + ``TCBsize + PADsize ≡ PT_TLS.p_vaddr (modulo PT_TLS.p_align)``.
+
+Using Integers modulo m where (``PT_TLS.p_align``).
+``TP:sub:m + TCBsize:sub:m + PADsize:sub:m = PT_TLS.p_vaddr:sub:m``
+
+As ``TP:sub:m`` is 0 as ``TP ≡ 0 (modulo PT_TLS.p_align)`` rearranging
+we get:
+
+``PADsize:sub:m = PT_TLS.p_vaddr:sub:m - TCBsize:sub:m``
+which is equivalent to
+``PADsize:sub:m = (PT_TLS.p_vaddr - TCBsize):sub:m``.
 
 Code sequences for accessing TLS variables
 ------------------------------------------
