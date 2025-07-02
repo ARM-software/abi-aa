@@ -1598,16 +1598,19 @@ Function Multi-versioning
 Function Multi-versioning (FMV) is an Arm C Language Extension that
 lets the compiler generate multiple function versions and auto-dispatch
 between them. Each of the function versions is specialized for a set
-of architecture extensions. The most suitable version is selected at
-load time. This requires runtime information about the CPU features
+of architecture extensions. The most suitable version is selected
+dynamically. This requires runtime information about the CPU features
 available on the host. FMV is supported on GNU/Linux, Android, and
 many of the BSD operating systems.
 
 On System V platforms Function Multi-versioning is implemented using
 GNU Indirect Functions (IFUNC). The compiler generated IFUNC resolver
-uses a global variable ``__aarch64_cpu_features`` that contains a
-description of the detected CPU features to select the best function
-version:
+may rely on a runtime library for selecting the most suitable function
+version, but it is not a requirement.
+
+If a runtime library is used, it must ensure that a global variable
+``__aarch64_cpu_features`` containing a description of the detected
+CPU features is populated before the application code reaches main.
 
 .. code-block:: c
 
@@ -1716,11 +1719,22 @@ The variable may contain the following fields:
 A special value ``FEAT_INIT = (1U << 63);`` is used to signify
 initialization completion.
 
+Implementing FMV using ``__aarch64_cpu_features`` is not required.
+Accessing ``__aarch64_cpu_features`` from outside a FMV resolver
+function is not well defined.
+
 Initialization of the ``__aarch64_cpu_features`` is performed by
-the runtime. Each FMV resolver function will call the
-``__init_cpu_features_resolver`` function that must be provided
-by the runtime environment. This runtime function must ensure
-that ``__aarch64_cpu_features`` is populated.
+the runtime library. Each FMV resolver function will call the
+``__init_cpu_features_resolver`` function at load time. This runtime
+function must ensure that ``__aarch64_cpu_features`` is populated.
+
+Systems without support for IFUNC may call the
+``__init_cpu_features_resolver`` function from an
+``__attribute__((constructor))`` function provided by the runtime.
+
+Systems with support for IFUNC should place the global variable
+``__aarch64_cpu_features`` in Relocation Read Only (RELRO) segment
+to prevent it from being modified after the FMV resolvers have run.
 
 The ``__init_cpu_features_resolver`` function has the following
 prototype:
