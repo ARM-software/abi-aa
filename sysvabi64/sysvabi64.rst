@@ -1715,14 +1715,13 @@ The variable may contain the following fields:
     | FEAT_MOPS         | 1U << 60 |
     +-------------------+----------+
 
-A special value ``FEAT_INIT = (1U << 63);`` is used to signify
-initialization completion.
-
 Implementing FMV using ``__aarch64_cpu_features`` is not required.
 Accessing this variable from outside a FMV resolver function is
 not well defined. The variable may be placed in the
 `Relocation Read Only (RELRO)`_ program segment to prevent it
-from being modified after the FMV resolvers have run.
+from being modified after the FMV resolvers have run. The
+variable must be defined as DSO-local with its symbol visibility
+set to ``STV_HIDDEN``.
 
 The ``__init_cpu_features_resolver`` function has the following
 prototype:
@@ -1734,7 +1733,7 @@ prototype:
 The above interface expects the same parameters as a GNU Indirect
 Function resolver. See `GNU C Library IFUNC interface`_. Other
 platforms may use a different interface with the runtime library.
-However, all implementations must provide a DSO local definition
+However, all implementations must provide a DSO-local definition
 of the function by setting the symbol visibility to ``STV_HIDDEN``.
 
 Initialization and Termination Functions
