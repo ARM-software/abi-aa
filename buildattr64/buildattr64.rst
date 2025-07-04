@@ -235,6 +235,9 @@ changes to the content of the document for that release.
   | 0.4        | 17th March 2025     | Rewrote PAuthABI attributes to more closely match the existing      |
   |            |                     | .note.gnu.property section.                                         |
   +------------+---------------------+---------------------------------------------------------------------+
+  | 0.5        | 4th July 2025       | Changed optional field to comprehension to clarify its intent. No   |
+  |            |                     | change to encoding or assembly directives.                          |
+  +------------+---------------------+---------------------------------------------------------------------+
 
 References
 ----------
@@ -756,19 +759,19 @@ Formal Syntax of subsections
 
 The syntactic structure of a subsection is::
 
-   <uint8: optional> <uint8: parameter type>
+   <uint8: comprehension> <uint8: parameter type>
    <attribute>*
 
 Informally, subsections consist of a header and 0 or more attributes.
 
-*optional* is a 1-byte integer. It encodes whether the subsection
+*comprehension* is a 1-byte integer. It encodes whether the subsection
 contents can be safely skipped if the consumer does not recognize the
 subsection vendor-name, or if any subset of the subsection can be
 skipped over.
 
 The permitted values are::
 
-   *0* not optional. The consumer must understand the subsection
+   *0* not optional. The consumer must comprehend the subsection
    and all of its contents for the program to be correct.
 
    *1* optional. The consumer may skip the subsection in full or in part
@@ -811,18 +814,19 @@ Public tags are omitted by one of the following methods::
 The effect of omitting a public tag is identical to including it with
 a value of 0 or “”, depending on its parameter type.
 
-A subsection this ABI defines as *not optional* is not required to be
-present in the relocatable object file, the rules for `Default values
-for public tags`_ apply.
+A subsection this ABI defines with *comprehension* as *not optional*
+is not required to be present in the relocatable object file, the
+rules for `Default values for public tags`_ apply.
 
 
 Unrecognized public tags
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 When processing a public subsection a tool may encounter a public tag
-that it does not recognize. If the subsection is *optional* then the
-unrecognized public tag can be safely skipped. If the subsection is
-*not optional* then the tool should issue a diagnostic.
+that it does not recognize. If the subsection has *comprehension* as
+*optional* then the unrecognized public tag can be safely skipped. If
+the subsection has *comprehension* as *not optional* then the tool
+should issue a diagnostic.
 
 
 How this specification describes public attributes
@@ -866,7 +870,7 @@ be able combine attributes with the *Tag value*, and to convert the
 header contents
 ^^^^^^^^^^^^^^^
 
-*optional* is 1 (optional)
+*comprehension* is 1 (*optional*)
 
 *parameter type* is 0 (ULEB128)
 
@@ -990,7 +994,7 @@ consumer that does not recognize the "aeabi_pauthabi" subsection.
 header contents
 ^^^^^^^^^^^^^^^
 
-*optional* is 0 (not optional)
+*comprehension* is 0 (*not optional*)
 
 *parameter type* is 0 (ULEB128)
 
@@ -1142,25 +1146,25 @@ Directives
 ^^^^^^^^^^
 
 ::
-   .aeabi_subsection *name*, *optional*, *parameter type*
+   .aeabi_subsection *name*, *comprehension*, *parameter type*
 
 *name*
 
 Create or switch the current subsection to *name*.
 
-*optional*
+*comprehension*
 
-The *optional* argument is one of the following constants:
+The *comprehension* argument is one of the following constants:
 
 .. table:: optional values
 
-  +---------------------------+----------------+---------------------------------------+
-  | Constant                  | Mapping to subsection optional field.                  |
-  +===========================+================+=======================================+
-  | ``required``              | subsection is not optional, optional field is set to 0 |
-  +---------------------------+----------------+---------------------------------------+
-  | ``optional``              | subsection is optional, optional field is set to 1     |
-  +---------------------------+--------------------------------------------------------+
+  +---------------------------+----------------+----------------------------------------------------------------+
+  | Constant                  | Mapping to subsection comprehension field.                                      |
+  +===========================+================+================================================================+
+  | ``required``              | Consumer is required to comprehend subsection, comprehension field is set to 0  |
+  +---------------------------+----------------+----------------------------------------------------------------+
+  | ``optional``              | Consumer not required to comprehend subsection, comprehension field is set to 1 |
+  +---------------------------+---------------------------------------------------------------------------------+
 
 *parameter type*
 
