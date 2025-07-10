@@ -1715,6 +1715,11 @@ The variable may contain the following fields:
     | FEAT_MOPS         | 1U << 60 |
     +-------------------+----------+
 
+A special value ``FEAT_EXT = (1U << 63);`` is reserved to indicate
+presence of additional feature fields exceeding
+``__aarch64_cpu_features``.
+
+
 Implementing FMV using ``__aarch64_cpu_features`` is not required.
 Accessing this variable from outside a FMV resolver function is
 not well defined. The variable may be placed in the
