@@ -638,7 +638,7 @@ The relocations reference the following mnemonics:
   +------------+--------------------+----------------+-------------------------------+
   | 1025       | R_AARCH64_GLOB_DAT | S + A          | LDG(S) + A                    |
   +------------+--------------------+----------------+-------------------------------+
-  | 1027       | R_AARCH64_RELATIVE | Delta(S) + A   | LDG(Delta(S) + A + \*P) - \*P |
+  | 1027       | R_AARCH64_RELATIVE | Delta + A      | LDG(Delta + A + \*P) - \*P    |
   +------------+--------------------+----------------+-------------------------------+
 
 ``R_AARCH64_ABS64`` and ``R_AARCH64_GLOB_DAT`` are thus extended to materialize
@@ -683,7 +683,7 @@ Effectively, the unused bits in the target field (at ``*P``) are used as an
 offset to tell the relocation where to derive the tag from. In the non-MemtagABI
 case, and in cases where the relocation operation is utilised for an untagged
 symbol, the target field will be zero, and so the tag derivation will come
-directly from ``Delta(S) + A``, maintaining backwards compatibility. However,
+directly from ``Delta + A``, maintaining backwards compatibility. However,
 note the following points:
 
 1. MemtagABI binaries must use RELA relocation encoding, as the unused bits in
