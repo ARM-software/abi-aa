@@ -1051,7 +1051,7 @@ The following nomenclature is used in the descriptions of relocation operations:
 
 - ``G(expr)`` is the address of the GOT entry for the expression expr.
 
-- ``Delta(S)`` if ``S`` is a normal symbol, resolves to the difference between the static link address of ``S`` and the execution address of ``S``. If ``S`` is the null symbol (ELF symbol index 0), resolves to the difference between the static link address of ``P`` and the execution address of ``P``.
+- ``Delta`` resolves to the difference between the static link address of ``P`` and the execution address of ``P``.
 
 - ``Indirect(expr)`` represents the result of calling expr as a function. The result is the return value from the function that is returned in ``r0``. The arguments passed to the function are defined by the platform ABI.
 
@@ -1802,7 +1802,7 @@ The dynamic relocations for those execution environments that support only a lim
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
   | 1026       | 182        | R\_<CLS>\_JUMP\_SLOT        | S + A                              | See note below                            |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1027       | 183        | R\_<CLS>\_RELATIVE          | Delta(S) + A                       | See note below                            |
+  | 1027       | 183        | R\_<CLS>\_RELATIVE          | Delta + A                          | See note below                            |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
   | 1028       | 184        | R\_<CLS>\_TLS\_IMPDEF1      |                                    | See note below                            |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
@@ -1816,9 +1816,9 @@ The dynamic relocations for those execution environments that support only a lim
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
   | 1031       | 187        | R\_<CLS>\_TLSDESC           | TLSDESC(S+A)                       | Identifies a TLS descriptor to be filled  |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1032       | 188        | R\_<CLS>\_IRELATIVE         | Indirect(Delta(S) + A)             | See note below.                           |
+  | 1032       | 188        | R\_<CLS>\_IRELATIVE         | Indirect(Delta + A)                | See note below.                           |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1041       | \-         | R\_<CLS>\_AUTH\_RELATIVE    | SIGN(DELTA(S) + A, SCHEMA(\*P))    | See note below.                           |
+  | 1041       | \-         | R\_<CLS>\_AUTH\_RELATIVE    | SIGN(Delta + A, SCHEMA(\*P))       | See note below.                           |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
   | 1042       | \-         | R\_AARCH64\_AUTH\_GLOB\_DAT | SIGN((S + A), SCHEMA(\*P))         | See note below.                           |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
@@ -1849,7 +1849,7 @@ The need for copy relocations can be avoided if a compiler generates all code re
 
 - Because the initial value of the place is not related to the ultimate target of a ``R_<CLS>_JUMP_SLOT`` relocation the addend ``A`` of such a REL-type relocation shall be zero rather than the initial content of the place. A platform ABI shall prescribe whether or not the ``r_addend`` field of such a RELA-type relocation is honored. (There may be security-related reasons not to do so).
 
-``R_<CLS>_RELATIVE`` represents a relative adjustment to the place based on the load address of the object relative to its original link address. All symbols defined in the same segment will have the same relative adjustment. If ``S`` is the null symbol (ELF symbol index 0) then the adjustment is based on the segment defining the place. On systems where all segments are mapped contiguously the adjustment will be the same for each relocation, thus adjustment never needs to resolve the symbol. This relocation represents an optimization; a static linker can use it to replace ``R_<CLS>_GLOB_DAT`` when the symbol is known at static link time to always resolve to the current link unit.
+``R_<CLS>_RELATIVE`` represents a relative adjustment to the place based on the load address of the object relative to its original link address. All symbols defined in the same binary will have the same relative adjustment. This relocation represents an optimization; a static linker can use it to replace ``R_<CLS>_GLOB_DAT`` when the symbol is known at static link time to always resolve to the current link unit.
 
 ``R_<CLS>_IRELATIVE`` represents a dynamic selection of the place’s resolved value. The means by which this relocation is generated is platform specific, as are the conditions that must hold when resolving takes place.
 
