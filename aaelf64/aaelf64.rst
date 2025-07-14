@@ -1818,6 +1818,8 @@ The dynamic relocations for those execution environments that support only a lim
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
   | 1032       | 188        | R\_<CLS>\_IRELATIVE         | Indirect(Delta(S) + A)             | See note below.                           |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1033       | \-         | R\_AARCH64\_FUNCINIT64      | Indirect(S + A)                    | See note below.                           |
+  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
   | 1041       | \-         | R\_<CLS>\_AUTH\_RELATIVE    | SIGN(DELTA(S) + A, SCHEMA(\*P))    | See note below.                           |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
   | 1042       | \-         | R\_AARCH64\_AUTH\_GLOB\_DAT | SIGN((S + A), SCHEMA(\*P))         | See note below.                           |
@@ -1852,6 +1854,8 @@ The need for copy relocations can be avoided if a compiler generates all code re
 ``R_<CLS>_RELATIVE`` represents a relative adjustment to the place based on the load address of the object relative to its original link address. All symbols defined in the same segment will have the same relative adjustment. If ``S`` is the null symbol (ELF symbol index 0) then the adjustment is based on the segment defining the place. On systems where all segments are mapped contiguously the adjustment will be the same for each relocation, thus adjustment never needs to resolve the symbol. This relocation represents an optimization; a static linker can use it to replace ``R_<CLS>_GLOB_DAT`` when the symbol is known at static link time to always resolve to the current link unit.
 
 ``R_<CLS>_IRELATIVE`` represents a dynamic selection of the place’s resolved value. The means by which this relocation is generated is platform specific, as are the conditions that must hold when resolving takes place.
+
+``R_AARCH64_FUNCINIT64`` represents a dynamic selection of the place’s resolved value, and generates a ``R_AARCH64_IRELATIVE`` relocation in the binary. The operand to ``R_AARCH64_IRELATIVE`` is an addend relative to the binary load address, so the symbol operand to ``R_AARCH64_FUNCINIT64`` must have a statically known address.
 
 Relocations ``R_AARCH64_TLS_DTPREL``, ``R_AARCH64_TLS_DTPMOD`` and ``R_AARCH64_TLS_TPREL`` were previously documented as ``R_AARCH64_TLS_DTPREL64``, ``R_AARCH64_TLS_DTPMOD64`` and ``R_AARCH64_TLS_TPREL64`` respectively.  The old names can be supported if needed for backwards compatibility.
 
