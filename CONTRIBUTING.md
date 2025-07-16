@@ -160,7 +160,7 @@ document | owner | Github handle
 [Morello extensions to Procedure Call Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aapcs64-morello) | Silviu Baranga | @sbaranga-arm
 [Morello extensions to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aaelf64-morello) | Silviu Baranga | @sbaranga-arm
 [Morello Descriptor ABI for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/descabi-morello) | Silviu Baranga | @sbaranga-arm
-[Memtag ABI Extension to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/memtagabielf64) | Mitch Phillips | @hctim
+[Memtag ABI Extension to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/memtagabielf64) | Florian Mayer | @fmayer
 [C/C++ Atomics Application Binary Interface Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/atomicsabi64) | Luke Geeson | @lukeg101
 
 3. Merging the change
