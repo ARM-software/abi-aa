@@ -1715,11 +1715,6 @@ The variable may contain the following fields:
     | FEAT_MOPS         | 1U << 60 |
     +-------------------+----------+
 
-A special value ``FEAT_EXT = (1U << 63);`` is reserved to indicate
-presence of additional feature fields exceeding
-``__aarch64_cpu_features``.
-
-
 Implementing FMV using ``__aarch64_cpu_features`` is not required.
 Accessing this variable from outside a FMV resolver function is
 not well defined. The variable may be placed in the
@@ -1727,6 +1722,17 @@ not well defined. The variable may be placed in the
 from being modified after the FMV resolvers have run. The
 variable must be defined as DSO-local with its symbol visibility
 set to ``STV_HIDDEN``.
+
+.. note::
+
+Both the SME support routines (see AAPCS64_ for more information)
+and the compiler built-in function ``__builtin_cpu_supports`` rely
+on the ``__aarch64_cpu_features`` variable for detecting CPU features.
+Therefore the runtime library must ensure that the variable is
+initialized prior to their usage. FMV support is not required for
+using the SME support routines or the ``__builtin_cpu_supports``
+function. The ``__aarch64_cpu_features`` variable should not be
+placed in ``RELRO`` if no FMV resolver has run.
 
 The ``__init_cpu_features_resolver`` function has the following
 prototype:
