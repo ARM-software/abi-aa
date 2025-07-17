@@ -1725,14 +1725,14 @@ set to ``STV_HIDDEN``.
 
 .. note::
 
-Both the SME support routines (see AAPCS64_ for more information)
-and the compiler built-in function ``__builtin_cpu_supports`` rely
-on the ``__aarch64_cpu_features`` variable for detecting CPU features.
-Therefore the runtime library must ensure that the variable is
-initialized prior to their usage. FMV support is not required for
-using the SME support routines or the ``__builtin_cpu_supports``
-function. The ``__aarch64_cpu_features`` variable should not be
-placed in ``RELRO`` if no FMV resolver has run.
+   Both the SME support routines (see AAPCS64_ for more information)
+   and the compiler built-in function ``__builtin_cpu_supports`` rely
+   on the ``__aarch64_cpu_features`` variable for detecting CPU features.
+   Therefore the runtime library must ensure that the variable is
+   initialized prior to their usage. FMV support is not required for
+   using the SME support routines or the ``__builtin_cpu_supports``
+   function. The ``__aarch64_cpu_features`` variable should not be
+   placed in ``RELRO`` if no FMV resolver has run.
 
 The ``__init_cpu_features_resolver`` function has the following
 prototype:
