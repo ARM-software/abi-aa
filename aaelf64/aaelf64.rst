@@ -1792,7 +1792,7 @@ relocations. The Structure Protection Extension is described in
 
 The structure protection relocations use the following additionl operator:
 
-- ``FUNCINIT(S)`` The place is relocated at run-time with a ``R_AARCH64_IRELATIVE`` relocation with no referenced symbol and the value of S in the addend field.
+- ``FUNCINIT(S + A)`` The place is relocated at run-time with a ``R_AARCH64_IRELATIVE`` relocation with no referenced symbol and the value of S + A in the addend field.
 
 .. class:: structure-protection-instruction-relocations
 
@@ -1824,6 +1824,12 @@ relocations`_, `Program Linkage Table (PLT) Sequences and Usage
 Models`_ and `Relocation optimization`_ may ignore
 ``R_AARCH64_PATCHINST``.
 
+The intended use case for ``R_AARCH64_PATCHINST`` to be used to
+replace an instruction with a ``NOP``. Uses of the relocation for
+other instructions is limited to what can be constructed with ``S +
+A``. Responsibility for using ``R_AARCH64_PATCHINST`` outside of the
+Structure Protection Extension is out of scope of the ABI.
+
 .. class:: structure-protection-data-relocations
 
 .. table:: Structure Protection Data Relocations
@@ -1831,12 +1837,13 @@ Models`_ and `Relocation optimization`_ may ignore
   +------------+------------+----------------------------------------+--------------------------------------+----------------------+
   | ELF64 Code | ELF32 Code | Name                                   | Operation                            | Comment              |
   +============+============+========================================+======================================+======================+
-  |    317     | \-         | R\_AARCH64\_FUNCINIT64                 | FUNCINIT(S)                          | See below            |
+  |    317     | \-         | R\_AARCH64\_FUNCINIT64                 | FUNCINIT(S + A)                      | See below            |
   +------------+------------+----------------------------------------+--------------------------------------+----------------------+
 
 The ``R_AARCH64_FUNCINIT64`` referenced symbol must be a function that
-does not have ``STB_GNU_INDIRECT`` or ``STB_LOCAL`` binding. The
-referenced symbol must have an address that is known at static link time.
+does not have a type of ``STT_GNU_IFUNC``. The referenced symbol must
+be non-pre-emptible and have an address that is known at static link
+time.
 
 Dynamic relocations
 ^^^^^^^^^^^^^^^^^^^
