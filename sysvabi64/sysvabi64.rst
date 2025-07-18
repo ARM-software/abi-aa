@@ -1716,23 +1716,19 @@ The variable may contain the following fields:
     +-------------------+----------+
 
 Implementing FMV using ``__aarch64_cpu_features`` is not required.
-Accessing this variable from outside a FMV resolver function is
-not well defined. The variable may be placed in the
-`Relocation Read Only (RELRO)`_ program segment to prevent it
-from being modified after the FMV resolvers have run. The
-variable must be defined as DSO-local with its symbol visibility
-set to ``STV_HIDDEN``.
+Accessing this variable from outside a FMV resolver function is not
+well defined. If the variable is only accessed by the FMV resolvers,
+then it may be placed in the `Relocation Read Only (RELRO)`_ program
+segment to prevent it from being modified after the FMV resolvers
+have run. The variable must be defined as DSO-local with its symbol
+visibility set to ``STV_HIDDEN``.
 
 .. note::
 
-   Both the SME support routines (see AAPCS64_ for more information)
-   and the compiler built-in function ``__builtin_cpu_supports`` rely
-   on the ``__aarch64_cpu_features`` variable for detecting CPU features.
-   Therefore the runtime library must ensure that the variable is
-   initialized prior to their usage. FMV support is not required for
-   using the SME support routines or the ``__builtin_cpu_supports``
-   function. The ``__aarch64_cpu_features`` variable should not be
-   placed in ``RELRO`` if no FMV resolver has run.
+   The ``__aarch64_cpu_features`` variable may be used by the runtime
+   library or by compiler generated code besides FMV. In that case the
+   runtime library must ensure that the variable is initialized via a
+   constructor function and cannot be placed in the ``RELRO`` segment.
 
 The ``__init_cpu_features_resolver`` function has the following
 prototype:
