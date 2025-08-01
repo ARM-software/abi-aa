@@ -179,11 +179,23 @@ The following support level definitions are used by the Arm ABI specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-Content relating to SVE should be considered as having **Beta** support level.
+Content relating to SVE should be considered as having **Beta** or **Alpha**
+support level.
 This includes:
 
 * DWARF register names marked as **Beta** in `DWARF register names`_
-* Recommended expression of the vector types (`Vector types`_)
+* Recommended expression of the vector types marked as **Beta** in
+  `Vector types`_
+* Changes in vector length marked as **Alpha**
+
+Content relating to the return address state and instructions should be
+considered as having **Alpha** support level.
+This includes:
+
+* The ``RA_SIGN_STATE`` pseudo register ra_state encoding marked as **Alpha**
+  in `DWARF register names`_ `Note 8`_
+* The ``DW_CFA_AARCH64_set_ra_state`` instruction marked as as **Alpha**
+  in `Call frame instructions`_
 
 All other content in this document is at the **Release** quality level.
 
@@ -233,6 +245,14 @@ changes to the content of the document for that release.
   |        |                             | `Call frame instructions`_, add Dwarf  |
   |        |                             | support for unwinding with             |
   |        |                             | FEAT_PAuth_LR enabled.                 |
+  +--------+-----------------------------+----------------------------------------+
+  |        |                             | - Added DW_CFA_AARCH64_set_ra_state at |
+  |        |                             |   **Alpha** quality.                   |
+  |        |                             | - Deprecated                           |
+  |        |                             |   DW_CFA_AARCH64_negate_ra_state.      |
+  |        |                             | - Redefined ra_state representation in |
+  |        |                             |   the RA_SIGN_STATE pseudo register at |
+  |        |                             |   **Alpha** quality.                   |
   +--------+-----------------------------+----------------------------------------+
 
 
@@ -478,33 +498,31 @@ integers.
       been signed with a PAC, and whether the value of PC has been used as a
       diversifier for the return address signing. This information can be used
       when unwinding. It is an unsigned integer with the same size as a general
-      register. Only bit[0] and bit[1] are meaningful and are initialized to zero.
+      register.
 
-      Bit[0] indicates whether the return address has been signed. A value of 0
-      indicates the return address has not been signed. A value of 1 indicates
-      the return address has been signed.
+      (**Alpha**) Only bits[0-3] are meaningful and are initialized to
+      ``DW_AARCH64_RA_NOT_SIGNED``.
 
-      Bit[1] indicates whether the value of PC has been used as a diversifier for
-      signing the return address. A value of 0 indicates the value of PC has not
-      been used for return address signing. A value of 1 indicates the value of PC
-      has been used for return address signing.
+     .. class:: aadwarf64-vendor-return-address-state
 
-      +--------+--------+----------------------------------+
-      | Bit[1] | Bit[0] | State                            |
-      +========+========+==================================+
-      | 0      | 0      | Return address not signed        |
-      +--------+--------+----------------------------------+
-      | 0      | 1      | Return address signed with SP    |
-      +--------+--------+----------------------------------+
-      | 1      | 1      | Return address signed with SP+PC |
-      +--------+--------+----------------------------------+
-      | 1      | 0      | Invalid state                    |
-      +--------+--------+----------------------------------+
+     .. table:: AArch64 vendor return address state
+
+      +--------------------------------+--------+-----------------------------------------------------------------+
+      | Return address state           | Value  | Description                                                     |
+      +================================+========+=================================================================+
+      | ``DW_AARCH64_RA_NOT_SIGNED``   | 0      | Return address not signed                                       |
+      +--------------------------------+--------+-----------------------------------------------------------------+
+      | ``DW_AARCH64_RA_SIGNED_SP``    | 1      | Return address signed with SP                                   |
+      +--------------------------------+--------+-----------------------------------------------------------------+
+      | ``DW_AARCH64_RA_SIGNED_SP_PC`` | 2      | Return address signed with SP+PC                                |
+      +--------------------------------+--------+-----------------------------------------------------------------+
+      |                                | 3 - 15 | (reserved for future use)                                       |
+      +--------------------------------+--------+-----------------------------------------------------------------+
 
    .. _Note 9:
 
    9. Normally, the program counter is restored from the return address, however
-      having both LR and PC columns is useful for describing asynchronously
+      having both LR and PC diversifiers are useful for describing asynchronously
       created stack frames. A DWARF expression may use this register to restore
       the context in case of a signal context.
 
@@ -600,25 +618,37 @@ Call frame instructions
 -----------------------
 
 This ABI defines the following vendor call frame instructions:
-``DW_CFA_AARCH64_negate_ra_state`` and ``DW_CFA_AARCH64_negate_ra_state_with_pc``.
+``DW_CFA_AARCH64_set_ra_state``, ``DW_CFA_AARCH64_negate_ra_state`` and ``DW_CFA_AARCH64_negate_ra_state_with_pc``.
 
 .. class:: aadwarf64-vendor-cfa-operations
 
 .. table:: AArch64 vendor CFA operations
 
-   +--------------------------------------------+-------------+------------+-----------+-----------+
-   | Instruction                                | High 2 bits | Low 6 bits | Operand 1 | Operand 2 |
-   +============================================+=============+============+===========+===========+
-   | ``DW_CFA_AARCH64_negate_ra_state``         | 0           | ``0x2D``   | \-        | \-        |
-   +--------------------------------------------+-------------+------------+-----------+-----------+
-   | ``DW_CFA_AARCH64_negate_ra_state_with_pc`` | 0           | ``0x2C``   | \-        | \-        |
-   +--------------------------------------------+-------------+------------+-----------+-----------+
+   +-------------------------------------------------------------+-------------+------------+------------------+----------------+
+   | Instruction                                                 | High 2 bits | Low 6 bits | Operand 1        | Operand 2      |
+   +=============================================================+=============+============+==================+================+
+   | ``DW_CFA_AARCH64_negate_ra_state``                          | 0           | ``0x2D``   | \-               | \-             |
+   +-------------------------------------------------------------+-------------+------------+------------------+----------------+
+   | ``DW_CFA_AARCH64_negate_ra_state_with_pc`` (**Deprecated**) | 0           | ``0x2C``   | \-               | \-             |
+   +-------------------------------------------------------------+-------------+------------+------------------+----------------+
+   | ``DW_CFA_AARCH64_set_ra_state`` (**Alpha**)                 | 0           | ``0x2B``   | ULEB128 ra_state | SLEB128 offset |
+   +-------------------------------------------------------------+-------------+------------+------------------+----------------+
 
-The ``DW_CFA_AARCH64_negate_ra_state`` operation negates bit[0] of the
-RA_SIGN_STATE pseudo-register. It does not take any operands.
+The ``DW_CFA_AARCH64_negate_ra_state`` operation toggles between the
+``DW_AARCH64_RA_NOT_SIGNED`` and ``DW_AARCH64_RA_SIGNED_SP`` return address
+states in RA_SIGN_STATE pseudo-register. It does not take any operands.
 
-The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` operation negates bit[0] and
-bit[1] of the RA_SIGN_STATE pseudo-register, and instructs the unwinder to
+The ``DW_CFA_AARCH64_set_ra_state`` instruction takes two operands; an unsigned
+LEB128 value representing a return address state ra_state and a signed LEB128
+factored offset. The required action is to set the RA_SIGN_STATE pseudo-register
+to the ra_state value and if the ra_state value is ``DW_AARCH64_RA_SIGNED_SP_PC``
+to capture the current code location + (offset * ``code_alignment_factor``)
+as the signing/authenticating PAC instruction, otherwise it is has the value 0.
+The code location information can be used for authenticating the return address.
+
+The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` operation toggles between the
+``DW_AARCH64_RA_NOT_SIGNED`` and ``DW_AARCH64_RA_SIGNED_SP_PC`` return
+address state in RA_SIGN_STATE pseudo-register, and instructs the unwinder to
 capture the current code location. The code location information can be used
 for authenticating the return address.
 
