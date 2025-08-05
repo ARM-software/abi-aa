@@ -1790,7 +1790,7 @@ The Structure Protection Extension defines a number of static
 relocations. The Structure Protection Extension is described in
 [STRUCTPROT_]. The Structure Protection Extension is in Alpha state.
 
-The structure protection relocations use the following additionl operator:
+The structure protection relocations use the following additional operator:
 
 - ``FUNCINIT(S + A)`` The place is relocated at run-time with a ``R_AARCH64_IRELATIVE`` relocation with no referenced symbol and the value of S + A in the addend field.
 
