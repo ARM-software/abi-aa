@@ -18,6 +18,7 @@
 .. _SYM-VER: http://www.akkadia.org/drepper/symbol-versioning
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
 .. _MTEEXTENSIONS: https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support
+.. _STRUCTPROT: https://discourse.llvm.org/t/rfc-structure-protection-a-family-of-uaf-mitigation-techniques/85555
 .. _SYSVABI64: https://github.com/ARM-software/abi-aa/releases
 .. _VFABI64: https://github.com/ARM-software/abi-aa/releases
 
@@ -291,6 +292,8 @@ changes to the content of the document for that release.
   | 2025Q2        | 9\ :sup:`th`       | - In `Call and Jump relocations`_ added |
   |               | April 2025         |   static linker requirements on veneers |
   |               |                    |   when BTI guarded pages are used.      |
+  |               |                    | - Added section for structure protection|
+  |               |                    |   extension relocations.                |
   +---------------+--------------------+-----------------------------------------+
 
 References
@@ -300,31 +303,33 @@ This document refers to, or is referred to by, the following documents.
 
 .. table::
 
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | Ref                          | External reference or URL                                                                    | Title                                                                       |
-  +==============================+==============================================================================================+=============================================================================+
-  | AAELF64                      | Source for this document                                                                     | ELF for the Arm 64-bit Architecture (AArch64).                              |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | AAPCS64_                     | IHI 0055                                                                                     | Procedure Call Standard for the Arm 64-bit Architecture                     |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | Addenda32_                   | IHI 0045                                                                                     | Addenda to, and Errata in, the ABI for the Arm Architecture                 |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | PAuthABIELF64_               | pauthabielf64                                                                                | PAuth Extension to ELF for the Arm 64-bit Architecture                      |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | LSB_                         | http://www.linuxbase.org/                                                                    | Linux Standards Base                                                        |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | SCO-ELF_                     | http://www.sco.com/developers/gabi/                                                          | System V Application Binary Interface – DRAFT                               |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | LINUX_ABI_                   | https://github.com/hjl-tools/linux-abi/wiki                                                  | Linux Extensions to gABI                                                    |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | SYM-VER_                     | http://people.redhat.com/drepper/symbol-versioning                                           | GNU Symbol Versioning                                                       |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | TLSDESC_                     | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf                                  | TLS Descriptors for Arm. Original proposal document                         |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | MTEEXTENSIONS_               | https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support | Linux Kernel MTE core dump format                                           |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | SYSVABI64_                   | sysvabi64                                                                                    | System V Application Binary Interface (ABI) for the Arm 64-bit Architecture |
-  +------------------------------+----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | Ref            | External reference or URL                                                                         | Title                                                                       |
+  +================+===================================================================================================+=============================================================================+
+  | AAELF64        | Source for this document                                                                          | ELF for the Arm 64-bit Architecture (AArch64).                              |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | AAPCS64_       | IHI 0055                                                                                          | Procedure Call Standard for the Arm 64-bit Architecture                     |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | Addenda32_     | IHI 0045                                                                                          | Addenda to, and Errata in, the ABI for the Arm Architecture                 |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | PAuthABIELF64_ | pauthabielf64                                                                                     | PAuth Extension to ELF for the Arm 64-bit Architecture                      |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LSB_           | http://www.linuxbase.org/                                                                         | Linux Standards Base                                                        |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SCO-ELF_       | http://www.sco.com/developers/gabi/                                                               | System V Application Binary Interface – DRAFT                               |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LINUX_ABI_     | https://github.com/hjl-tools/linux-abi/wiki                                                       | Linux Extensions to gABI                                                    |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | STRUCTPROT_    | https://discourse.llvm.org/t/rfc-structure-protection-a-family-of-uaf-mitigation-techniques/85555 | Structure Field Protection                                                  |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SYM-VER_       | http://people.redhat.com/drepper/symbol-versioning                                                | GNU Symbol Versioning                                                       |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | TLSDESC_       | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf                                       | TLS Descriptors for Arm. Original proposal document                         |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | MTEEXTENSIONS_ | https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support      | Linux Kernel MTE core dump format                                           |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SYSVABI64_     | sysvabi64                                                                                         | System V Application Binary Interface (ABI) for the Arm 64-bit Architecture |
+  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
 
 Terms and abbreviations
 -----------------------
@@ -1777,6 +1782,68 @@ The ``PAUTH`` and ``ENCD`` operators are defined in `PAUTHABIELF64`_.
   +------------+------------+----------------------------------------+--------------------------------------+----------------------+
   | 597        | \-         | R\_AARCH64\_AUTH\_TLSDESC\_ADD\_LO12   | G(ENCD(GTLSDESC(S)))                 | See `PAUTHABIELF64`_ |
   +------------+------------+----------------------------------------+--------------------------------------+----------------------+
+
+Relocations for Structure Protection Extension
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Structure Protection Extension defines a number of static
+relocations. The Structure Protection Extension is described in
+[STRUCTPROT_]. The Structure Protection Extension is in Alpha state.
+
+The structure protection relocations use the following additional operator:
+
+- ``FUNCINIT(S + A)`` The place is relocated at run-time with a ``R_AARCH64_IRELATIVE`` relocation with no referenced symbol and the value of S + A in the addend field.
+
+.. class:: structure-protection-instruction-relocations
+
+.. table:: Structure Protection Instruction Relocations
+
+  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
+  | ELF64 Code | ELF32 Code | Name                                   | Operation                            | Comment              |
+  +============+============+========================================+======================================+======================+
+  |    316     | \-         | R\_AARCH64\_PATCHINST                  | S + A                                | See below            |
+  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
+
+The referenced symbol for ``R_AARCH64_PATCHINST`` must either be
+undefined, or have section index ``SHN_ABS``. If the referenced symbol
+is undefined the relocation has no effect, otherwise write bits [31:0]
+of X at 4 byte-aligned place P. Check that 0 <= X < 2\ :sup:`32`.
+
+``R_AARCH64_PATCHINST`` may occur at the same offset as another
+relocation, for example when patching a branch and link instruction
+with its associated ``R_AARCH64_CALL26`` relocation. The object
+producer is responsible for ordering ``R_AARCH64_PATCHINST`` after all
+other non ``R_AARCH64_PATCHINST`` relocations at the same
+``r_offset``. The ``R_AARCH64_PATCHINST`` relocation always starts a
+new relocation composition sequence.
+
+The requirements for a static linker that supports
+``R_AARCH64_PATCHINST`` are limited to resolving the relocation. All
+other static linker processing of relocations such as `Call and jump
+relocations`_, `Program Linkage Table (PLT) Sequences and Usage
+Models`_ and `Relocation optimization`_ may ignore
+``R_AARCH64_PATCHINST``.
+
+The intended use case for ``R_AARCH64_PATCHINST`` is to replace
+an instruction with a ``NOP``. Uses of the relocation for
+other instructions is limited to what can be constructed with ``S +
+A``. Responsibility for using ``R_AARCH64_PATCHINST`` outside of the
+Structure Protection Extension is out of scope of the ABI.
+
+.. class:: structure-protection-data-relocations
+
+.. table:: Structure Protection Data Relocations
+
+  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
+  | ELF64 Code | ELF32 Code | Name                                   | Operation                            | Comment              |
+  +============+============+========================================+======================================+======================+
+  |    317     | \-         | R\_AARCH64\_FUNCINIT64                 | FUNCINIT(S + A)                      | See below            |
+  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
+
+The ``R_AARCH64_FUNCINIT64`` referenced symbol must be a function that
+does not have a type of ``STT_GNU_IFUNC``. The referenced symbol must
+be non-pre-emptible and have an address that is known at static link
+time.
 
 Dynamic relocations
 ^^^^^^^^^^^^^^^^^^^
