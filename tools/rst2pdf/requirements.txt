@@ -14,6 +14,7 @@
 # limitations under the License.
 
 git+https://github.com/rst2pdf/rst2pdf@ed41beda8eae0239803d15dd2b829faef14c0160
+roman
 rstcheck
 matplotlib
 svglib
