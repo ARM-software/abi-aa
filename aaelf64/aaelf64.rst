@@ -1824,8 +1824,8 @@ relocations`_, `Program Linkage Table (PLT) Sequences and Usage
 Models`_ and `Relocation optimization`_ may ignore
 ``R_AARCH64_PATCHINST``.
 
-The intended use case for ``R_AARCH64_PATCHINST`` to be used to
-replace an instruction with a ``NOP``. Uses of the relocation for
+The intended use case for ``R_AARCH64_PATCHINST`` is to replace
+an instruction with a ``NOP``. Uses of the relocation for
 other instructions is limited to what can be constructed with ``S +
 A``. Responsibility for using ``R_AARCH64_PATCHINST`` outside of the
 Structure Protection Extension is out of scope of the ABI.
