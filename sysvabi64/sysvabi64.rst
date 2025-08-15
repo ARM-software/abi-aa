@@ -14,6 +14,7 @@
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI64: https://developer.arm.com/docs/ihi0059/latest
 .. _GCABI: https://itanium-cxx-abi.github.io/cxx-abi/abi.html
+.. _GCCML: https://gcc.gnu.org/legacy-ml/gcc/2018-10/msg00112.html
 .. _LINUX_ABI: https://github.com/hjl-tools/linux-abi/wiki
 .. _MemTagABIELF64: https://github.com/ARM-software/abi-aa/releases
 .. _PAuthABIELF64: https://github.com/ARM-software/abi-aa/releases
@@ -22,7 +23,15 @@
 .. _SCO-ELF: http://www.sco.com/developers/gabi
 .. _SYM-VER: http://www.akkadia.org/drepper/symbol-versioning
 .. _SYSVABI: https://github.com/ARM-software/abi-aa/releases
-.. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
+.. _ELFTLS: https://www.uclibc.org/docs/tls.pdf
+.. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/RFC-TLSDESC-ARM.txt
+.. _TLSDESCRES: https://github.com/ARM-software/abi-aa/tree/main/design-documents/tlsdesc-resolvers.txt
+
+.. role:: c(code)
+   :language: c
+
+.. role:: cpp(code)
+   :language: cpp
 
 System V ABI for the Arm® 64-bit Architecture (AArch64)
 *******************************************************
@@ -216,6 +225,7 @@ Change History
  | 2025Q2     | 20\ :sup:`th` June     2024  | Require that ``PT_GNU_PROPERTY`` program header be    |
  |            |                              | present in executables and shared-libraries if a      |
  |            |                              | .note.gnu.property section is present.                |
+ |            |                              | - Added chapter on Thread Local Storage (TLS)         |
  +------------+------------------------------+-------------------------------------------------------+
 
 References
@@ -240,6 +250,8 @@ This document refers to, or is referred to by, the following documents.
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | GCABI_          | https://itanium-cxx-abi.github.io/cxx-abi/abi.html           | Generic C++ ABI                                                             |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | GCCML_          | https://gcc.gnu.org/legacy-ml/gcc/2018-10/msg00112.html      | GCC Mailing list topic TLSDESC clobber ABI stability/futureproofness?       |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | HWCAP_          | https://www.kernel.org/doc/html/latest/arm64/elf_hwcaps.html | Linux Kernel HWCAPs interface                                               |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | LINUX_ABI_      | https://github.com/hjl-tools/linux-abi/wiki                  | Linux Extensions to gABI                                                    |
@@ -253,6 +265,8 @@ This document refers to, or is referred to by, the following documents.
   | SCO-ELF_        | http://www.sco.com/developers/gabi/                          | System V Application Binary Interface – DRAFT                               |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | SYM-VER_        | http://people.redhat.com/drepper/symbol-versioning           | GNU Symbol Versioning                                                       |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | TLSDESCRES_     | design-documents/tlsdesc-resolvers                           | TLSDESC resolver function examples                                          |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
 
 Terms and Abbreviations
@@ -619,6 +633,8 @@ syntax is of the form ``#:<operator>:<symbol name>``
   | ``tlsdesc_off_g1``    | ``mov[nz]`` | R_AARCH64_TLSDESC_OFF_G1              |
   +-----------------------+-------------+---------------------------------------+
   | ``gottprel``          | ``adrp``    | R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21   |
+  +-----------------------+-------------+---------------------------------------+
+  | ``gottprel``          | ``ldr``     | R_AARCH64_TLSIE_LD_GOTTPREL_PREL19    |
   +-----------------------+-------------+---------------------------------------+
   | ``gottprel_lo12``     | ``ldr``     | R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC |
   +-----------------------+-------------+---------------------------------------+
@@ -1889,6 +1905,577 @@ See `MemTagABIELF64`_ and `PAuthABIELF64`_ for details of reserved tags.
 .. raw:: pdf
 
    PageBreak oneColumn
+
+Thread Local Storage
+====================
+
+Introduction to thread local storage
+------------------------------------
+
+Thread Local Storage (TLS) is a class of own data (static storage) that –
+like the stack – is instanced once for each thread of execution. It fits
+into the abstract storage hierarchy as follows.
+
+*  (Most global) Program-own data (static and extern variables, instanced
+   once per program/process).
+
+*  Thread local storage (variables instanced once per thread, shared between
+   all accessing function activations).
+
+*  (Most local) Automatic data (stack variables, instanced once per function
+   activation, per thread).
+
+Rules governing thread local storage on AArch64
+-----------------------------------------------
+
+*  How to denote TLS in source programs:
+
+   C++11 and C11 use :c:`thread_local T t...`; A GCC extension uses
+   :c:`__thread T t...`; this is Q-o-I.
+
+*  How to represent the initializing images of TLS in object files, and how
+   to define symbols in TLS:
+
+   The rules for ELF are well established (see ``SHF_TLS``, ``STT_TLS`` in
+   SCO-ELF_).
+
+*  How a loader or run-time system creates instances of TLS per-thread at
+   execution time:
+
+   This is part of ABI for the platform or execution environment.
+
+This document and AAELF64_ are concerned with:
+
+*  How to relocate, statically and dynamically, with respect to symbols
+   defined in TLS (for details of relocations relevant to AArch64 Linux see
+   AAELF64_).
+
+*  How code must address variables allocated in TLS (the subject of the
+   notes below).
+
+Introduction to TLS addressing
+------------------------------
+
+This section covers only the definitions required to understand the
+AArch64 specific details. A more in-depth description to TLS
+addressing in general can be found in ELFTLS_.
+
+In the most general form, a program is constructed dynamically from an
+executable and a number of shared libraries. Each component,
+(executable or shared library) can be mapped into multiple
+processes. Additionally a shared library can be loaded dynamically by
+a program, rather than being part of the initial process image
+constructed when the program is first loaded.
+
+For the purpose of addressing TLS, components of an application,
+referred to as modules, are identified using indexes. The module index
+for the executable is always 1, but the module indexes for shared
+libraries are allocated at process start time, or when a shared
+library is loaded dynamically via dlopen. A shared library may have a
+different module index in two different processes so its per-thread
+module index must be part of its process state (or be queried
+dynamically). The run-time system is responsible for maintaining a
+per-thread vector of pointers to allocated TLS regions indexed by
+these module indexes.
+
+There is a system resource called the Thread Pointer (TP) that
+points to a Thread Control Block (TCB) for the currently
+executing thread which, in turn, points to the Dynamic Thread Vector
+(DTV) for that thread.
+
+.. raw:: pdf
+
+   PageBreak oneColumn
+
+SystemV AArch64 TLS addressing architecture
+-------------------------------------------
+
+The figure below depicts the fundamental components of the TLS
+addressing architecture used by SystemV for AArch64.
+
+.. _SystemV AArch64 TLS addressing architecture:
+
+.. figure:: sysvabi64-tls.svg
+
+   SystemV AArch64 TLS addressing architecture
+
+The TLS data for a module is called the TLS Block.
+
+The thread pointer points directly to the Thread Control Block (TCB).
+
+The size of the TCB is 16-bytes, where the first 8 bytes contain the
+pointer to the Dynamic Thread Vector (DTV), and the other 8 bytes are
+reserved for the implementation.
+
+Following the TCB and any required alignment padding (defined in
+`SystemV AArch64 TLS addressing`_), the TLS Blocks of the modules
+loaded at process start form the static TLS Block. The memory for the
+TLS Block is allocated at process start time.
+
+The TLS Blocks for modules loaded dynamically via dlopen are known as
+dynamic TLS.
+
+Index N, where N > 0, of the Dynamic Thread Vector DTV[N] is a pointer
+to the TLS block for module N.
+
+To calculate the address of a TLS variable in any given module, static
+or dynamic, the expression ``TP[0][Module id][offset in module]`` can
+be used. The function ``__tls_get_addr(module_id, offset)`` returns
+the result of this calculation.
+
+Index 0 of the Dynamic Thread Vector DTV[0] is reserved for use by the
+platform. It is typically used to store the thread's generation
+counter. In an implementation that supports deferred allocation of
+TLS, a global generation number is incremented whenever the number of
+dynamic modules changes due to ``dlopen`` or ``dlclose``. In the
+``__tls_get_addr(module_id, offset)`` function, if the thread's
+generation count is less than the global generation number, the
+thread's DTV is updated, and the TLS for the ``module_id`` is
+allocated if it is not present.
+
+In pseudo code
+
+.. code-block:: c
+
+    /* tls_get_addr with deferred allocation */
+    void * __tls_get_addr(size_t module_id, size_t offset)
+    {
+      dtv = get_thread_dtv();
+
+      if (dtv[0].generation_counter != global_generation_number)
+        /* includes setting the thread's generation counter to
+	   the global_generation_number */
+        update_thread_dtv();
+
+      if (dtv[module_id] == unallocated)
+        allocate_tls(dtv, module_id);
+
+      return dtv[module_id][offset];
+    }
+
+The calculation in __tls_get_addr is the most general and it can be
+applied to both static and dynamic TLS. There are four defined models
+of accessing TLS that trade off generality for performance. In order
+of descending generality:
+
+   1. General Dynamic, also known as Global Dynamic, can be used anywhere.
+
+   2. Local Dynamic, can be used anywhere where the definition of the
+      TLS variable and the access are from the same module.
+
+   3. Initial Exec, can be used for TLS variables defined in the
+      static TLS block.
+
+   4. Local Exec, can be used in the executable for TLS variables
+      defined in the executables static TLS block.
+
+SystemV AArch64 TLS addressing
+------------------------------
+
+AArch64 TLS SystemV design choices:
+
+* AArch64 uses variant 1 TLS as described in ELFTLS_.
+
+* There are two dialects of TLS supported by the relocations defined
+  in AAELF64_, the traditional dialect described by ELFTLS_ and the
+  descriptor dialect described by TLSDESC_. This document describes
+  only the descriptor dialect as this is the default dialect for GCC
+  and the only dialect supported by clang.
+
+* The thread pointer (TP) is always accessible via the ``TPIDR_EL0``
+  system register. This can be accessed via inlining an ``mrs``
+  instruction to read the thread pointer.
+
+* The compiler can generate code that supports a TLS block size of 4
+  KiB, 16 MiB, 4GiB or 16EiB, depending on the addressing mode. The
+  default is 16 MiB for all addressing modes.
+
+* The TLS for an executable or shared-library is described by the
+  ``PT_TLS`` program header.
+
+Recall from the diagram in `SystemV AArch64 TLS addressing
+architecture`_ that the Thread Pointer ``TP`` points to the start of
+the ``TCB``, which is followed by 0 or more bytes of alignment
+padding, then the executable's TLS block.
+
+The ``TP``, and hence the start of the ``TCB`` must be aligned to a
+``PT_TLS.p_align`` boundary. This can be expressed as ``TP ≡ 0 (modulo
+PT_TLS.p_align)`` where ``≡`` means congruent to.
+
+The static and dynamic linker must agree on the size of the padding
+(``PADsize``) between the TCB and the executable's TLS Block. Using
+``TCBsize`` as the size of the TCB (16 bytes), the following expression can be used to calcluate ``PADsize`` from the ``PT_TLS`` program header.
+
+``PADsize = (PT_TLS.p_vaddr - TCBsize) mod PT_TLS.p_align``.
+
+A number of dynamic linkers use a different calculation that requires
+``PT_TLS.p_vaddr ≡ 0 (modulo PT_TLS.p_align)`` to correctly align the
+executables TLS block. In this case the expression above simplifies to
+``PADsize = Max(0, PT_TLS.p_align - TCBsize``). For maximum
+compatibility, static linkers and any linker scripts including TLS,
+are recommended to align the TLS block so that ``PT_TLS.p_vaddr ≡ 0
+(modulo p_align)``. This requires the start of the TLS to be aligned
+to the maximum of the .tdata and .tbss sections.
+
+The expression for ``PADsize`` above can be derived from the
+requirement that ``PADsize`` must be the smallest positive integer
+that satisfies the following congruence:
+
+``TP`` + ``TCBsize + PADsize ≡ PT_TLS.p_vaddr (modulo PT_TLS.p_align)``.
+
+Using Integers modulo m where (``PT_TLS.p_align``).
+``TP:sub:m + TCBsize:sub:m + PADsize:sub:m = PT_TLS.p_vaddr:sub:m``
+
+As ``TP:sub:m`` is 0 as ``TP ≡ 0 (modulo PT_TLS.p_align)`` rearranging
+we get:
+
+``PADsize:sub:m = PT_TLS.p_vaddr:sub:m - TCBsize:sub:m``
+which is equivalent to
+``PADsize:sub:m = (PT_TLS.p_vaddr - TCBsize):sub:m``.
+
+TLS Descriptors
+---------------
+
+AArch64 uses the TLS Descriptor dialect for the general dynamic model.
+The TLS Descriptor dialect permits a dynamic linker to use the
+location and properties of the TLS symbol to select an optimal
+resolver function.
+
+The static relocations with a prefix of ``R_AARCH64_TLSDESC_``
+targeting TLS symbol ``var``, instruct the static linker to create a
+TLS Descriptor for ``var``. The TLS Descriptor for a variable is
+stored in a pair of consecutive GOT entries, N and N + 1. The GOT
+entry for N has a dynamic ``R_AARCH64_TLSDESC`` relocation targeting
+the TLS symbol for ``var``.
+
+Code sequences for accessing TLS variables
+------------------------------------------
+
+The code sequences below assume the default TLS block size of 16 MiB,
+this permits the Local Exec model to use of a pair of add instructions
+with a combined 24-bit immediate field. Larger TLS sizes can be
+supported by using a ``movz`` and one or more ``movk`` instructions to
+construct an offset from the thread pointer in a register.
+
+A code model may use a sequence from a less restrictive code model.
+
+In the code-sequences below:
+
+* ``tp`` is a core register containing the thread pointer.
+
+* ``gp`` is a core register containing the base of the GOT.
+
+* ``xn`` is an arbitrary core register. Numbered core registers such
+  as ``x0`` and ``x1`` refer to the specific core register.
+
+* ``.tlsdesccall`` is an assembler directive that adds a
+  ``R_AARCH64_TLSDESC_CALL`` relocation to the next instruction.
+
+* ``.tlsdescldr`` is an assembler directive that adds a
+  ``R_AARCH64_TLSDESC_LDR`` relocation to the next instruction.
+
+* ``.tlsdescadd`` is an assembler directive that adds a
+  ``R_AARCH64_TLSDESC_ADD`` relocation to the next instruction.
+
+Relaxation is a term used by the TLS literature such as ELFTLS_ to
+represent an optimization. AAELF64_ has used optimization for similar
+link-time instruction sequence optimizations. This document will use
+relaxation to be consistent with existing references.
+
+The static linker can relax a more general TLS model to a more
+constrained TLS model when the TLS variables meet the requirements for
+using the constrained model. The section `Static link time TLS
+Relaxations`_ describes the details of the permitted relaxations.
+
+General Dynamic
+^^^^^^^^^^^^^^^
+
+General Dynamic is the most general form of accessing TLS. It supports
+static and dynamic TLS.
+
+To permit static linker relaxation. The TLSDESC code sequences must be
+emitted exactly as specified, with no other instruction breaking up
+the sequence, with exactly the same registers used.
+
+The code sequences below return the offset of the TLS variable from
+``tp`` in ``x0``.  To get the address of the TLS variable requires
+additional code to add ``x0`` to ``tp``, this is not part of the ABI
+required TLSDESC code sequence.
+
+Small Code Model;
+
+.. code-block:: asm
+
+    adrp  x0, :tlsdesc:var             // R_AARCH64_TLSDESC_ADR_PAGE21 var
+    ldr   x1, [x0, #:tlsdesc_lo12:var] // R_AARCH64_TLSDESC_LD64_LO12 var
+    add   x0, x0, #:tlsdesc_lo12:var]  // R_AARCH64_TLSDESC_ADD_LO12 var
+    .tlsdesccall var
+    blr   x1                           // R_AARCH64_TLSDESC_CALL var
+    // offset of var from tp in x0
+
+Tiny Code Model;
+
+.. code-block:: asm
+
+    ldr   x1, :tlsdesc:var          // R_AARCH64_TLSDESC_LD_PREL19 var
+    adr   x0, :tlsdesc:var          // R_AARCH64_TLSDESC_ADR_PREL21 var
+    .tlsdesccall var
+    blr   x1                        // R_AARCH64_TLSDESC_CALL var
+    // offset of var from tp in x0
+
+Large Code Model;
+
+.. code-block:: asm
+
+    movz  x0, #:tlsdesc_off_g1:var    // R_AARCH64_TLSDESC_OFF_G1 var
+    movk  x0, #:tlsdesc_off_g0_nc:var // R_AARCH64_TLSDESC_OFF_GO_NC var
+    .tlsdescldr var
+    ldr   x1, [gp, x0]                // R_AARCH64_TLSDESC_LDR var
+    .tlsdescadd var
+    add   x0, gp, x0                  // R_AARCH64_TLSDESC_ADD var
+    .tlsdesccall var
+    blr   x1                          // R_AARCH64_TLSDESC_CALL var
+    // offset of var from tp in x0
+
+Local Dynamic
+^^^^^^^^^^^^^
+
+Local Dynamic is a special case of general dynamic where the compiler
+knows that the TLS variable is defined in the same module as the code
+that is accessing the variable. In this case the offset of the TLS
+variable from the start of the module's TLS block is a static link
+time constant, instead of dynamically calculating the offset of the
+TLS variable from the thread pointer. The offset of the module's TLS
+block from the thread pointer is calculated, then the offset of the
+TLS variable within that block is added. This is more efficient than
+general dynamic when more than one TLS variable from the same module
+is accessed from the same function, but less efficient when accessing
+a single TLS variable.
+
+The code sequence for local dynamic is the same as global dynamic and
+like global dynamic must be emitted exactly as specified. There are no
+specific relocations for Local Dynamic using the descriptor dialect. A
+special symbol ``_TLS_MODULE_BASE_`` is used to get a tlsdesccall to
+return the offset of the module's TLS block from the thread pointer.
+
+Code-generators are not required to implement local dynamic and can
+emit general dynamic in its place.
+
+Initial Exec
+^^^^^^^^^^^^
+
+Initial Exec can be used for static TLS. The location of the module's
+TLS block and the offset of the TLS variable within that block are
+run-time constants. The dynamic-loader computes the offset from the
+thread pointer and places it in a GOT entry. The GOT entry is
+relocated by dynamic relocation ``R_AARCH64_TLS_TPREL64``.
+
+A shared-library that contains Initial Exec TLS must have the
+``DF_STATIC_TLS`` dynamic tag set. In the general case an attempt to
+load a shared library with ``DF_STATIC_TLS`` via ``dlopen`` will be
+rejected. Some dynamic loaders implement a surplus of DTV slots that
+permit a fixed number of ``DF_STATIC_TLS`` modules to be dynamically
+loaded. Whether a DTV surplus is available and how many slots are
+available is implementation defined.
+
+Small Code model;
+
+The static linker is permitted to relax the instructions below to
+Local Exec individually using the relocation directive. The
+instructions do not have to be contiguous.
+
+.. code-block:: asm
+
+    adrp xn, :gottprel: var            // R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21 var
+    ldr  xn, [xn, #:gottprel_lo12:var] // R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC var
+    // offset of var from tp in xn
+
+Tiny Code model;
+
+.. code-block:: asm
+
+    ldr  xn, :gottprel:var // R_AARCH64_TLSIE_LD_GOTTPREL_PREL19 var
+    // offset of var from tp in xn
+
+Large Code model;
+
+.. code-block:: asm
+
+    movz xn, #:gottprel_g1:var    // R_AARCH64_TLSIE_MOVW_GOTTPREL_G1 var
+    movk xn, #:gottprel_g0_nc:var // R_AARCH64_TLSIE_MOVW_GOTTPREL_G0_NC var
+    ldr xn, [gp, xn]
+    // offset of var from tp in xn
+
+Local Exec
+^^^^^^^^^^
+
+Local Exec is used for accesses to the executable's TLS block. The
+executable always has the TLS module index of 1 so the offsets of the
+TLS variables from the thread pointer are static link time
+constants. The code sequences are the same for all code models.
+
+The instruction sequences below are not required by the ABI but using
+the instructions and relocations below increases the chances of static
+linkers applying the optimizations in (AAELF64_) when the size of the
+executables TLS block is smaller than 16 KiB.
+
+.. code-block:: asm
+
+    add  xn, tp, :tprel_hi12:var, lsl #12 // R_AARCH64_TLSLE_ADD_TPREL_HI12 var
+    add  xn, xn, :tprel_lo12_nc:var       // R_AARCH64_TLSLE_ADD_TPREL_LO12_NC var
+    // offset of var from tp in xn
+
+Optimization to load a 64-bit var directly into a core register.
+
+.. code-block:: asm
+
+    add  xn, tp, :tprel_hi12:var, lsl #12 // R_AARCH64_TLSLE_ADD_TPREL_HI12 var
+    ldr  xn, [xn, #:tprel_lo12_nc:var]    // R_AARCH64_TLSLE_LDST64_TPREL_LO12_NC var
+
+Static link time TLS Relaxations
+--------------------------------
+
+The Relaxations described below can be automatically applied to code
+sequences in the executable. Relaxing from general dynamic will
+prevent a shared library from being opened at runtime via dlopen so
+should not be applied automatically.
+
+The static linker should use the relocation directives to distinguish
+between code models.
+
+General Dynamic to Initial Exec
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This relaxation can be performed when the TLS variable is defined in a
+module that is part of static TLS.
+
+Small Code Model;
+
+.. code-block:: asm
+
+    adrp    x0, :gottprel:var            // R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21 var
+    ldr     x0, [x0, :gottprel_lo12:var] // R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC var
+    nop
+    nop
+    // offset of var from tp in x0
+
+Tiny Code Model;
+
+.. code-block:: asm
+
+    ldr     x0, :gottprel:var // R_AARCH64_TLSIE_LD_GOTTPREL_PREL19 var
+    nop
+    nop
+    // offset of var from tp in x0
+
+Large Code Model;
+
+.. code-block:: asm
+
+    movz x0, #:gottprel_g1:var    // R_AARCH64_TLSIE_MOVW_GOTTPREL_G1 var
+    movk x0, #:gottprel_g0_nc:var // R_AARCH64_TLSIE_MOVW_GOTTPREL_G0_NC var
+    ldr x0, [gp, x0]
+    nop
+    // offset of var from tp in x0
+
+General Dynamic to Local Exec
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This relaxation can be performed when the TLS variable is defined in
+the executable.
+
+Small Code Model;
+
+.. code-block:: asm
+
+    movz    x0, :tprel_g1:var // R_AARCH64_TLSLE_MOVW_TPREL_G1 var
+    movk    x0, :tprel_g0:var // R_AARCH64_TLSLE_MOVW_TPREL_G0_NC var
+    nop
+    nop
+    // offset of var from tp in x0
+
+Tiny Code Model;
+
+.. code-block:: asm
+
+    movz    x0, :tprel_g1:var // R_AARCH64_TLSLE_MOVW_TPREL_G1 var
+    movk    x0, :tprel_g0:var // R_AARCH64_TLSLE_MOVW_TPREL_G0_NC var
+    nop
+    // offset of var from tp in x0
+
+Large Code Model;
+
+.. code-block:: asm
+
+    movz    x0, :tprel_g1:var // R_AARCH64_TLSLE_MOVW_TPREL_G1 var
+    movk    x0, :tprel_g0:var // R_AARCH64_TLSLE_MOVW_TPREL_G0_NC var
+    nop
+    nop
+    nop
+    // offset of var from tp in x0
+
+Initial Exec to Local Exec
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This relaxation is only defined for the Small Code model. It can be
+performed when the TLS variable is defined in the executable. The
+static linker is permitted to relax each instruction individually,
+using the relocation directive to identify the instruction. The
+destination register must be preserved.
+
+.. code-block:: asm
+
+    movz    xn, :tprel_g1:var // R_AARCH64_TLSLE_MOVW_TPREL_G1 var
+    movk    xn, :tprel_g0:var // R_AARCH64_TLSLE_MOVW_TPREL_G0_NC var
+
+TLS Descriptor resolver functions
+---------------------------------
+
+When resolving the ``R_AARCH64_TLSDESC`` relocation, the dynamic
+loader places the address of the chosen resolver function in the first
+GOT entry, and the argument for the chosen resolver function in the
+second GOT entry.
+
+The AArch64 C and assembler examples are adapted from the AArch32
+`TLSDESC`_ paper. The C code below represents the TLS Descriptor.
+
+.. code-block:: c
+
+    // Argument passed to TLS resolver functions.
+    struct tlsdesc
+    {
+      ptrdiff_t (*resolver)(struct tlsdesc *);
+      union
+      {
+        void *pointer;
+        long value;
+      } argument;
+    };
+
+TLS Resolver Functions
+----------------------
+
+The TLS resolver functions are not standardized by this ABI as they
+are internal to the dynamic linker. Programs must not directly refer
+to TLS resolver functions.
+
+The `TLSDESCRES`_ document contains information on how a platform
+might implement the resolver functions.
+
+Calling Convention
+^^^^^^^^^^^^^^^^^^
+
+TLS resolver functions have one argument, the address of the TLS
+descriptor, passed in ``x0``, they return the offset of the variable
+from the thread pointer in ``x0``.
+
+TLS resolver functions must save all general-purpose and SIMD&FP
+registers that they modify with the exception of ``x0``, ``x1``,
+``x30`` and the processor flags.
+
+TLS resolver functions are not required to save any register added by
+an extension, such as the scalable vector registers or the SVE
+predicate registers. See `GCCML`_ for details.
 
 Libraries
 =========
