@@ -701,7 +701,7 @@ along with the assumptions that the code model may make.
 .. table:: Code Models
 
   +--------+----------------+----------------+------------------------+
-  | Code   | Max text       | Max combined   | Additional GOT         |
+  | Code   | Max text       | Max combined   | Additional GOT size    |
   | Model  | segment size   | span of text   | restrictions           |
   |        |                | and data       |                        |
   |        |                | segments       |                        |
@@ -709,24 +709,15 @@ along with the assumptions that the code model may make.
   | tiny   | 1 MiB          | 1 Mib          | none                   |
   |        |                |                |                        |
   +--------+----------------+----------------+------------------------+
-  | small  | 2GiB           | 4 GiB          | max distance from text |
-  |        |                |                | to GOT < 2 GiB         |
-  |        |                |                +------------------------+
-  |        |                |                | pic: got size < 32 KiB |
+  | small  | 2GiB           | 4 GiB          | pic: got size < 32 KiB |
   |        |                |                +------------------------+
   |        |                |                | PIC: none              |
   +--------+----------------+----------------+------------------------+
-  | medium | 2GiB           | no restriction | max distance from text |
-  |        |                |                | to GOT < 2 GiB         |
-  |        |                |                +------------------------+
-  |        |                |                | pic: got size < 32 KiB |
+  | medium | 2GiB           | no restriction | pic: got size < 32 KiB |
   |        |                |                +------------------------+
   |        |                |                | PIC: none              |
   +--------+----------------+----------------+------------------------+
-  | large  | 2GiB           | no restriction | max distance from text |
-  |        |                |                | to GOT < 4 GiB         |
-  |        |                |                |                        |
-  |        |                |                |                        |
+  | large  | 2GiB           | no restriction | none                   |
   +--------+----------------+----------------+------------------------+
 
 .. note::
@@ -757,8 +748,8 @@ along with the assumptions that the code model may make.
   5. The text segment maximum size is limited to 2GiB by
   R_AARCH64_PLT32 relocations from ``.eh_frame`` sections.
 
-  6. The distance to the GOT in the small and medium code model is
-  limited to 2GiB by the R_AARCH64_GOTPCREL32 relocations.
+  6. The distance to the GOT from the text segment is limited to 2GiB
+  by the R_AARCH64_GOTPCREL32 relocations.
 
   7. While designing the code models it was estimated that only 2.6%
   of load modules (executables and dynamic shared objects) have a max
