@@ -25,6 +25,7 @@
 .. _SYSVABI: https://github.com/ARM-software/abi-aa/releases
 .. _ELFTLS: https://www.uclibc.org/docs/tls.pdf
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/RFC-TLSDESC-ARM.txt
+.. _TLSDESCRES: https://github.com/ARM-software/abi-aa/tree/main/design-documents/tlsdesc-resolvers.txt
 
 .. role:: c(code)
    :language: c
@@ -264,6 +265,8 @@ This document refers to, or is referred to by, the following documents.
   | SCO-ELF_        | http://www.sco.com/developers/gabi/                          | System V Application Binary Interface – DRAFT                               |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
   | SYM-VER_        | http://people.redhat.com/drepper/symbol-versioning           | GNU Symbol Versioning                                                       |
+  +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | TLSDESCRES_     | design-documents/tlsdesc-resolvers                           | TLSDESC resolver function examples                                          |
   +-----------------+--------------------------------------------------------------+-----------------------------------------------------------------------------+
 
 Terms and Abbreviations
@@ -2268,8 +2271,12 @@ thread pointer and places it in a GOT entry. The GOT entry is
 relocated by dynamic relocation ``R_AARCH64_TLS_TPREL64``.
 
 A shared-library that contains Initial Exec TLS must have the
-``DF_STATIC_TLS`` dynamic tag set. An attempt to load a shared library
-with ``DF_STATIC_TLS`` via ``dlopen`` will be rejected.
+``DF_STATIC_TLS`` dynamic tag set. In the general case an attempt to
+load a shared library with ``DF_STATIC_TLS`` via ``dlopen`` will be
+rejected. Some dynamic loaders implement a surplus of DTV slots that
+permit a fixed number of ``DF_STATIC_TLS`` modules to be dynamically
+loaded. Whether a DTV surplus is available and how many slots are
+available is implementation defined.
 
 Small Code model;
 
@@ -2430,7 +2437,7 @@ GOT entry, and the argument for the chosen resolver function in the
 second GOT entry.
 
 The AArch64 C and assembler examples are adapted from the AArch32
-TLSDESC_ paper. The C code below represents the TLS Descriptor.
+`TLSDESC`_ paper. The C code below represents the TLS Descriptor.
 
 .. code-block:: c
 
@@ -2452,6 +2459,9 @@ The TLS resolver functions are not standardized by this ABI as they
 are internal to the dynamic linker. Programs must not directly refer
 to TLS resolver functions.
 
+The `TLSDESCRES`_ document contains information on how a platform
+might implement the resolver functions.
+
 Calling Convention
 ^^^^^^^^^^^^^^^^^^
 
@@ -2466,117 +2476,6 @@ registers that they modify with the exception of ``x0``, ``x1``,
 TLS resolver functions are not required to save any register added by
 an extension, such as the scalable vector registers or the SVE
 predicate registers. See `GCCML`_ for details.
-
-Example Resolver Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-These examples are for illustrative purposes only. There is no
-requirement for any of the following resolver functions to be
-implemented.  Due to the restrictions on calling convention, the
-resolver routines must be written in assembly language.
-
-Static TLS Specialization:
-
-When the TLS variable is in the static TLS block, the offset from the
-thread pointer is fixed at runtime. The dynamic loader can calculate
-the offset and place it in the TLS descriptor. All the static TLS
-resolver function needs to do is extract the offset and return it.
-
-.. code-block:: asm
-
-    _dl_tlsdesc_return:
-    // x0 contains pointer to struct tlsdesc.
-    // tlsdesc.argument.value contains offset of variable from TP
-      ldr   x0, [x0, #8]
-      ret
-
-Dynamic TLS Specialization:
-
-When the TLS variable is defined in dynamic TLS the address of the TLS
-variable must be calculated by the resolver function using
-``__tls_get_addr``. The resolver function returns the offset from the
-thread pointer by subtracting the address of the thread pointer from
-the address of the TLS variable. In practice an implementation of the
-dynamic TLS resolver contains many platform specific details outside
-of the scope of the ABI. An example of how a dynamic resolver might be
-implemented can be found in the Dynamic Specialization section of
-TLSDESC_.
-
-Undefined Weak Symbols
-
-An undefined weak symbol has the value 0. As the resolver function
-returns an offset from the Thread Pointer, to get a value of 0 when
-added to the Thread Pointer the resolver function returns a negative
-thread pointer value that cancels to 0 when added to the thread
-pointer.
-
-.. code-block:: asm
-
-    __dl_tlsdesc_undefweak:
-      mrs   x0, tpidr_el0
-      neg   x0, x0
-      ret
-
-Lazy resolution of R_AARCH64_TLSDESC
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The TLSDESC_ paper describes an optional mechanism to resolve TLSDESC
-calls lazily. Lazy resolution for TLSDESC resolver functions is not
-recommended on AArch64. Additional synchronization is required for
-each TLSDESC call, which has a significant affect on performance. The
-description below describes the additional synchronization that is
-needed.
-
-Instead of fully resolving the ``R_AARCH64_TLSDESC`` relocation at
-module load time, a lazy resolver function runs on the first TLSDESC
-call. The lazy resolver updates the TLS Descriptor with the actual
-resolver function and the parameter to the actual resolver
-function. In a multi-threaded program when lazy TLS in use, the
-resolver functions must ensure that the write to the parameter in the
-TLS descriptor has completed before reading it.
-
-.. code-block:: asm
-
-    // Code to obtain the offset of var from thread pointer.
-    // Loads the address of the resolver function into x1.
-    // Places the address of the TLS Descriptor into x0.
-    adrp  x0, :tlsdesc:var
-    ldr   x1, [x0, #:tlsdesc_lo12:var]
-    add   x0, x0, #:tlsdesc_lo12:var]
-    .tlsdesccall var
-    blr   x1 // _dl_desc_return
-
-    // Resolver function
-    _dl_tlsdesc_return:
-    // load the parameter from the TLS descriptor. Without
-    // synchronization this load can read an old value prior
-    // to the lazy resolvers update to the descriptor completing.
-    ldr   x0, [x0, #8]
-    ret
-
-The recommended way to ensure synchronization between the lazy
-resolver update of the TLS Descriptor and the actual resolver function
-accessing the TLS Descriptor is:
-
-* The TLS lazy resolver function uses a store release when updating
-  the address of the resolver function in the TLS Descriptor.
-
-* The actual entry function uses a load acquire on the address of the
-  resolver function, with a destination register of xzr.
-
-Referring to the example above, the code for the resolver function
-becomes:
-
-.. code-block:: asm
-
-    // Resolver function
-    _dl_tlsdesc_return:
-    // Guaranteed to complete after the lazy resolvers store release
-    // of the address in [x0].
-    ldar  xzr, [x0]
-    // Access the parameter.
-    ldr   x0, [x0, #8]
-    ret
 
 Libraries
 =========
