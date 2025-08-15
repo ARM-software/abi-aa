@@ -1150,7 +1150,10 @@ Directives
 
 *name*
 
-Create or switch the current subsection to *name*.
+Create or switch the current subsection to *name*. When a subsection
+with *name* already exists, *comprehension* and *parameter type* can
+be omitted; if they are present then they must match the existing
+values for the subsection *name*.
 
 *comprehension*
 
