@@ -1716,12 +1716,13 @@ The variable may contain the following fields:
     +-------------------+----------+
 
 Implementing FMV using ``__aarch64_cpu_features`` is not required.
-Accessing this variable from outside a FMV resolver function is not
-well defined. If the variable is only accessed by the FMV resolvers,
-then it may be placed in the `Relocation Read Only (RELRO)`_ program
-segment to prevent it from being modified after the FMV resolvers
-have run. The variable must be defined as DSO-local with its symbol
-visibility set to ``STV_HIDDEN``.
+Accessing ``__aarch64_cpu_features`` is reserved for the compiler
+generated code or the runtime library. If the variable is only
+accessed by the FMV resolvers, then it may be placed in the
+`Relocation Read Only (RELRO)`_ program segment to prevent it from
+being modified after the FMV resolvers have run. The variable must
+be defined as DSO-local with its symbol visibility set to
+``STV_HIDDEN``.
 
 .. note::
 
