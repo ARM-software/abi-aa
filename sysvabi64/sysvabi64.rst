@@ -1596,6 +1596,158 @@ IFUNC requirements for dynamic linkers
 To resolve an ``R_AARCH64_IRELATIVE`` relocation the dynamic linker
 performs the calculation described in AAELF64_ Dynamic Relocations.
 
+Function Multi-versioning
+-------------------------
+
+Function Multi-versioning (FMV) is an Arm C Language Extension that
+lets the compiler generate multiple function versions and auto-dispatch
+between them. Each of the function versions is specialized for a set
+of architecture extensions. The most suitable version is selected
+at load time. This requires runtime information about the CPU features
+available on the host. FMV is supported on GNU/Linux, Android, and
+many of the BSD operating systems.
+
+On System V platforms Function Multi-versioning is implemented using
+GNU Indirect Functions (IFUNC). The compiler generated IFUNC resolver
+may rely on the presence of a global variable ``__aarch64_cpu_features``
+provided by the runtime library. It contains information about the
+available CPU features. The runtime library must also provide a
+function ``__init_cpu_features_resolver`` that the IFUNC resolver
+can call to initialize ``__aarch64_cpu_features``.
+
+.. code-block:: c
+
+   uint64_t __aarch64_cpu_features = 0;
+
+The variable may contain the following fields:
+
+.. table:: CPU features detected
+
+    +-------------------+----------+
+    | Name              | Value    |
+    +===================+==========+
+    | FEAT_RNG          | 1U << 0  |
+    +-------------------+----------+
+    | FEAT_FLAGM        | 1U << 1  |
+    +-------------------+----------+
+    | FEAT_FLAGM2       | 1U << 2  |
+    +-------------------+----------+
+    | FEAT_FLAGM2       | 1U << 3  |
+    +-------------------+----------+
+    | FEAT_FP16FML      | 1U << 4  |
+    +-------------------+----------+
+    | FEAT_DOTPROD      | 1U << 5  |
+    +-------------------+----------+
+    | FEAT_SM4          | 1U << 6  |
+    +-------------------+----------+
+    | FEAT_RDM          | 1U << 7  |
+    +-------------------+----------+
+    | FEAT_LSE          | 1U << 8  |
+    +-------------------+----------+
+    | FEAT_FP           | 1U << 9  |
+    +-------------------+----------+
+    | FEAT_SIMD         | 1U << 10 |
+    +-------------------+----------+
+    | FEAT_CRC          | 1U << 11 |
+    +-------------------+----------+
+    | FEAT_CSSC         | 1U << 12 |
+    +-------------------+----------+
+    | FEAT_SHA2         | 1U << 13 |
+    +-------------------+----------+
+    | FEAT_SHA3         | 1U << 14 |
+    +-------------------+----------+
+    | FEAT_PMULL        | 1U << 16 |
+    +-------------------+----------+
+    | FEAT_FP16         | 1U << 17 |
+    +-------------------+----------+
+    | FEAT_DIT          | 1U << 18 |
+    +-------------------+----------+
+    | FEAT_DPB          | 1U << 19 |
+    +-------------------+----------+
+    | FEAT_DPB2         | 1U << 20 |
+    +-------------------+----------+
+    | FEAT_JSCVT        | 1U << 21 |
+    +-------------------+----------+
+    | FEAT_FCMA         | 1U << 22 |
+    +-------------------+----------+
+    | FEAT_RCPC         | 1U << 23 |
+    +-------------------+----------+
+    | FEAT_RCPC2        | 1U << 24 |
+    +-------------------+----------+
+    | FEAT_FRINTTS      | 1U << 25 |
+    +-------------------+----------+
+    | FEAT_I8MM         | 1U << 27 |
+    +-------------------+----------+
+    | FEAT_BF16         | 1U << 28 |
+    +-------------------+----------+
+    | FEAT_SVE          | 1U << 31 |
+    +-------------------+----------+
+    | FEAT_SVE_F32MM    | 1U << 35 |
+    +-------------------+----------+
+    | FEAT_SVE_F64MM    | 1U << 36 |
+    +-------------------+----------+
+    | FEAT_SVE2         | 1U << 37 |
+    +-------------------+----------+
+    | FEAT_SVE_PMULL128 | 1U << 39 |
+    +-------------------+----------+
+    | FEAT_SVE_BITPERM  | 1U << 40 |
+    +-------------------+----------+
+    | FEAT_SVE_SHA3     | 1U << 41 |
+    +-------------------+----------+
+    | FEAT_SVE_SM4      | 1U << 42 |
+    +-------------------+----------+
+    | FEAT_SME          | 1U << 43 |
+    +-------------------+----------+
+    | FEAT_MEMTAG2      | 1U << 45 |
+    +-------------------+----------+
+    | FEAT_SB           | 1U << 47 |
+    +-------------------+----------+
+    | FEAT_SSBS2        | 1U << 50 |
+    +-------------------+----------+
+    | FEAT_BTI          | 1U << 51 |
+    +-------------------+----------+
+    | FEAT_WFXT         | 1U << 55 |
+    +-------------------+----------+
+    | FEAT_SME_F64      | 1U << 56 |
+    +-------------------+----------+
+    | FEAT_SME_I64      | 1U << 57 |
+    +-------------------+----------+
+    | FEAT_SME2         | 1U << 58 |
+    +-------------------+----------+
+    | FEAT_RCPC3        | 1U << 59 |
+    +-------------------+----------+
+    | FEAT_MOPS         | 1U << 60 |
+    +-------------------+----------+
+
+Implementing FMV using ``__aarch64_cpu_features`` is not required.
+Accessing ``__aarch64_cpu_features`` is reserved for the compiler
+generated code or the runtime library. If the variable is only
+accessed by the FMV resolvers, then it may be placed in the
+`Relocation Read Only (RELRO)`_ program segment to prevent it from
+being modified after the FMV resolvers have run. The variable must
+be defined as DSO-local with its symbol visibility set to
+``STV_HIDDEN``.
+
+.. note::
+
+   The ``__aarch64_cpu_features`` variable may be used by the runtime
+   library or by compiler generated code besides FMV. In that case the
+   runtime library must ensure that the variable is initialized via a
+   constructor function and cannot be placed in the ``RELRO`` segment.
+
+The ``__init_cpu_features_resolver`` function has the following
+prototype:
+
+.. code-block:: c
+
+   void __init_cpu_features_resolver (uint64_t, const uint64_t *);
+
+The above interface expects the same parameters as a GNU Indirect
+Function resolver. See `GNU C Library IFUNC interface`_. Other
+platforms may use a different interface with the runtime library.
+However, all implementations must provide a DSO-local definition
+of the function by setting the symbol visibility to ``STV_HIDDEN``.
+
 Initialization and Termination Functions
 ----------------------------------------
 
