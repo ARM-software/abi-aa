@@ -2041,6 +2041,98 @@ The information on custom PLTs has moved to [SYSVABI64_].
 
    PageBreak
 
+
+.. _appendix:
+
+Appendix
+========
+
+AArch64 Veneer Types Recognized by Binary Analysis Tools
+------------------------------------------------------------
+
+As described in `Call and Jump relocations`_, the linker may insert veneers (also referred to as thunks, stubs or trampolines) to implement call and jump relocations. This section defines the commonly used types and instruction sequences for such veneers on AArch64, enabling better recognition by binary analysis tools.
+
+Toolchains are encouraged to follow these patterns to ensure veneers can be reliably recognized during binary analysis. These pattern sets are intended to remain open, and toolchains may introduce new veneer forms.
+
+Additionally, if veneers emit static relocations, they become indistinguishable from regular code. In such cases, binary analysis tools should rely on relocation information to identify veneer targets.
+
+__AArch64AbsLongThunk_ Long-Range Veneers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A 64-bit absolute target address is loaded from a literal pool into a register, and an indirect branch is used to transfer control to the target::
+
+  <caller>:
+    B/BL __AArch64AbsLongThunk_<target>
+
+  __AArch64AbsLongThunk_<target>:
+    LDR X16, =<target>
+    BR  X16
+
+Recognized by alternative names: ``__<target>_veneer``
+
+__AArch64AbsXOLongThunk_ Execute-Only Compatible Veneers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For sections containing only program instructions and no program data, a 64-bit absolute target address is constructed using immediate instructions::
+
+  <caller>:
+    B/BL __AArch64AbsXOLongThunk_<target>
+
+  __AArch64AbsXOLongThunk_<target>:
+    MOVZ X16, #:abs_g0_nc:<target>
+    MOVK X16, #:abs_g1_nc:<target>, LSL #16
+    MOVK X16, #:abs_g2_nc:<target>, LSL #32
+    MOVK X16, #:abs_g3:<target>,    LSL #48
+    BR   X16
+
+Note that some of the MOVK instructions may be omitted if their corresponding 16-bit segments of the address are zero and do not need to be explicitly set.
+
+__AArch64Abs[XO]LongThunk_ Short-Range Veneers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When the target is within range of a direct branch, the linker may generate a simple short-range branch veneer under the same name::
+
+  __AArch64Abs[XO]LongThunk_<target>:
+    B <target>
+
+__AArch64ADRPThunk_ Position-Independent Veneers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+PC-relative veneer is generated using ADRP and ADD::
+
+  <caller>:
+    B/BL __AArch64ADRPThunk_<target>
+
+  __AArch64ADRPThunk_<target>:
+    ADRP X16, <target>
+    ADD  X16, X16, :lo12:<target>
+    BR   X16
+
+Note that ``<target>`` may be an entry in the PLT.
+
+Recognized by alternative names: ``__<target>_veneer``, ``$thunk[0-9]+``, ``[0-9a-f]+-tramp-[0-9]+``
+
+__AArch64BTIThunk_ BTI Landing Pad Veneers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When BTI is enabled, any of the veneers above may route through an additional landing pad veneer ``__AArch64BTIThunk_``, which begins with a BTI instruction to ensure a valid landing and then branches to the target::
+
+  __AArch64BTIThunk_<target>:
+    BTI C
+    B <target>
+
+In cases where the veneer is placed immediately before the target, the B instruction may be omitted::
+
+  __AArch64BTIThunk_<target>:
+    BTI C
+  <target>:
+
+Recognized by alternative names: ``__<target>_bti_veneer``
+
+.. raw:: pdf
+
+   PageBreak
+
 Footnotes
 =========
 
