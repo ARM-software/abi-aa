@@ -1086,8 +1086,8 @@ For AArch64 the linker defined ``_GLOBAL_OFFSET_TABLE_`` symbol should
 be the address of the first global offset table entry in the ``.got``
 section.
 
-See `Sample code sequences for code models`_ for code model for
-examples of how to access the ``.got``.
+See `Sample code sequences for code models`_ for examples of how to
+access the ``.got``.
 
 Function Addresses
 ^^^^^^^^^^^^^^^^^^
