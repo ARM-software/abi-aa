@@ -41,6 +41,9 @@ declare -a docs=(
 
     # atomics
     "atomicsabi64"
+
+    # binary analysis
+    "baabielf64"
 )
 
 for doc in "${docs[@]}"; do
