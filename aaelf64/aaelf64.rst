@@ -1427,9 +1427,8 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
   - The relocations apply to consecutive instructions in the order specified.
   - The relocations use the same symbol.
   - The relocated instructions have the same source and destination register.
-  - The relocations do not appear separately or in a different order.
 
-  In this case each set of relocations is independent and may be optimized. The following sequences are defined:
+  The following sequences are defined:
 
   - Large GOT indirection
 
@@ -1452,8 +1451,9 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
     - ``symbol`` does not have a ``st_shndx`` of ``SHN_ABS`` or the output is not required to be position independent.
     - ``symbol`` is within range of the ``R_<CLS>_ADR_PREL_PG_HI21`` relocation.
     - The addend of both relocations is zero.
+    - All ``R_<CLS>_ADR_GOT_PAGE`` and ``R_<CLS>_LD64_GOT_LO12_NC`` relocations to ``symbol`` are part of a sequence.
 
-    The optimized sequence does not require a GOT entry. A linker may avoid creating a GOT entry if no other GOT relocations exist for the symbol.
+    If the GOT relocations are used outside of a valid sequence, the optimization is not legal (for that symbol). The optimized sequence does not require a GOT entry. A linker may avoid creating a GOT entry if no other GOT relocations exist for the symbol.
 
   - PC-relative addressing
 
@@ -1468,6 +1468,8 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
       NOP
       ADR   x0, symbol                  // R_<CLS>_ADR_PREL_LO21
+
+    Each sequence is independent and may be optimized if in range.
 
 Proxy-generating relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
