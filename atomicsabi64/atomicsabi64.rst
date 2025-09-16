@@ -382,10 +382,10 @@ Suggestions and improvements to this specification may be submitted to the:
 Atomic types
 ============
 
-``_Atomic`` struct types less than 16 bytes must be padded to a power of 2.  Their alignment
-must be the same as their size so that they can be used by atomic instructions.
+``_Atomic`` struct types types with size less than 16 bytes must be padded to the nearest power
+of 2.  Their alignment must be the same as their size so that they can be used by atomic instructions.
 
-``atomic_is_lock_free`` must return ``true`` for all ``_Atomic`` objects less than or equal
+``atomic_is_lock_free`` must return ``true`` for all ``_Atomic`` objects with size less than or equal
 to 16 bytes, and ``false`` otherwise.
 
 
