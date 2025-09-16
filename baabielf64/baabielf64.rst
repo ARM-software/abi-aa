@@ -11,14 +11,6 @@
 
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _SYSVABI64: https://github.com/ARM-software/abi-aa/releases
-.. footer::
-
-   ###Page###
-
-   |
-
-   Copyright © |copyright-date|, Arm Limited and its affiliates. All rights
-   reserved.
 
 AArch64 ELF Conventions for Binary Analysis
 *******************************************
@@ -231,11 +223,6 @@ GOT
    The part of GOT containing symbol addresses referenced by
    Procedure Linkage Table (PLT) entries.
 
-R_AARCH64_PREL64
-   The 64-bit PC-relative relocation defined by AAELF64_, computes S + A – P,
-   where S denotes the symbol address, A the addend, and P the address of the
-   relocation place. It is widely used to refence symbols through literal pool.
-
 Other terms may be defined when first used.
 
 .. raw:: pdf
@@ -251,8 +238,11 @@ Toolchains are encouraged to follow these patterns to ensure veneers can be reli
 
 Additionally, if veneers emit static relocations, they become indistinguishable from regular code. In such cases, binary analysis tools should rely on relocation information to identify veneer targets.
 
-__AArch64AbsLongThunk_ Long-Range Veneers
------------------------------------------
+Range Extenstion Veneers
+------------------------
+
+Absolute Veneers
+^^^^^^^^^^^^^^^^
 
 A 64-bit absolute target address is loaded from a literal pool into a register, and an indirect branch is used to transfer control to the target::
 
@@ -265,7 +255,10 @@ A 64-bit absolute target address is loaded from a literal pool into a register, 
 
 Where ``<target>`` denotes the ultimate branch destination.
 
-Position independent version may also be used::
+Position-independent Veneers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Position independent version uses an ``R_AARCH64_PREL64`` relocation to refence the target address through literal pool::
 
   <caller>:
     B/BL __<target>_veneer
@@ -278,10 +271,10 @@ Position independent version may also be used::
   1:
     .xword R_AARCH64_PREL64(<target>) + 12
 
-__AArch64AbsXOLongThunk_ and Execute-Only Compatible Veneers
-------------------------------------------------------------
+Execute-only Veneers
+^^^^^^^^^^^^^^^^^^^^
 
-For sections containing only program instructions and no program data, an absolute 64-bit target address is constructed using immediate instructions::
+In pure code (execute-only) sections, an absolute 64-bit target address is constructed using move wide instructions, which combine four 16-bit immediate fields::
 
   <caller>:
     B/BL __AArch64AbsXOLongThunk_<target>
@@ -295,29 +288,26 @@ For sections containing only program instructions and no program data, an absolu
 
 Note that some of the MOVK instructions may be omitted if their corresponding 16-bit segments of the address are zero and do not need to be explicitly set.
 
-The following alternative instruction sequence may be emitted to materialize an absolute 64-bit address::
+The following instruction sequence may be used to construct 64-bit PC-relative address::
 
   <caller>:
     B/BL $thunk<decimal suffix>
 
   $thunk<decimal suffix>:
-    ADR  X16, #:abs_g0_nc:<target>
-    MOVK X17, #:abs_g1_nc:<target>, LSL #16
-    MOVK X17, #:abs_g2_nc:<target>, LSL #32
-    MOVK X17, #:abs_g3:<target>,    LSL #48
+    ADR  X16, #:prel_g0_nc:<target>
+    MOVK X17, #:prel_g1_nc:<target>, LSL #16
+    MOVK X17, #:prel_g2_nc:<target>, LSL #32
+    MOVK X17, #:prel_g3:<target>,    LSL #48
     ADD  X16, X16, X17
     BR   X16
 
-__AArch64Abs[XO]LongThunk_ Short-Range Veneers
-----------------------------------------------
+Short Range Veneers
+-------------------
 
-When the target is within range of a direct branch, the linker may generate a simple short-range branch veneer under the same name. The optional infix ``XO`` identifies execute-only variants::
+When the target is within range of a direct branch, the linker may generate a simple short range branch veneer using the same name as a range extension veneer. The optional infix ``XO`` identifies execute-only variants::
 
   __AArch64Abs[XO]LongThunk_<target>:
     B <target>
-
-__AArch64ADRPThunk_ Position-Independent Veneers
-------------------------------------------------
 
 PC-relative veneer is generated using ADRP and ADD::
 
@@ -329,7 +319,7 @@ PC-relative veneer is generated using ADRP and ADD::
     ADD  X16, X16, :lo12:<target>
     BR   X16
 
-Recognized by alternative names: ``__<target>_veneer``, ``$thunk<decimal suffix>``, ``<hexadecimal prefix>-tramp<decimal suffix>``
+It is recognized by alternative names: ``__<target>_veneer``, ``$thunk<decimal suffix>``, ``<hexadecimal prefix>-tramp<decimal suffix>``
 
 When the .got.plt entry for the <target> is known to exist an direct load from GOT may be used::
 
@@ -341,11 +331,10 @@ When the .got.plt entry for the <target> is known to exist an direct load from G
     LDR  X16, [X16, :got_lo12:<target>]
     BR   X16
 
+BTI Landing Pad Veneers
+-----------------------
 
-__AArch64BTIThunk_ BTI Landing Pad Veneers
-------------------------------------------
-
-When Branch Target Identification (BTI) is enabled, any of the veneers above may route through an additional landing pad veneer ``__AArch64BTIThunk_<target>``. The rules governing generation of these veneers are specified in SYSVABI64_, section Tool Requirements for generating BTI instructions. Landing pad veneer begins with a BTI instruction to ensure a valid landing and then branches to the target::
+When Branch Target Identification (BTI) is enabled, any of the veneers above may route through an additional Landing Pad veneer ``__AArch64BTIThunk_<target>``. The rules governing generation of these veneers are specified in SYSVABI64_, section Tool Requirements for generating BTI instructions. A Landing Pad veneer begins with a BTI instruction to ensure a valid landing and then branches to the target::
 
   __AArch64BTIThunk_<target>:
     BTI C
