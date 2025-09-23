@@ -241,8 +241,8 @@ Additionally, if veneers emit static relocations, they become indistinguishable 
 Range Extenstion Veneers
 ------------------------
 
-Absolute Veneers
-^^^^^^^^^^^^^^^^
+Absolute Address Veneers
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 A 64-bit absolute target address is loaded from a literal pool into a register, and an indirect branch is used to transfer control to the target::
 
@@ -321,7 +321,7 @@ PC-relative veneer is generated using ADRP and ADD::
 
 It is recognized by alternative names: ``__<target>_veneer``, ``$thunk<decimal suffix>``, ``<hexadecimal prefix>-tramp<decimal suffix>``
 
-When the .got.plt entry for the <target> is known to exist an direct load from GOT may be used::
+When the ``.got.plt`` entry for the <target> is known to exist an direct load from GOT may be used::
 
   <caller>:
     B/BL <hexadecimal prefix>-tramp<decimal suffix>
