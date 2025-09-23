@@ -209,51 +209,51 @@ changes to the content of the document for that release.
 
 .. table::
 
-  +--------+-----------------------------+----------------------------------------+
-  | Issue  | Date                        | Change                                 |
-  +========+=============================+========================================+
-  | 00bet3 | 16\ :sup:`th` December 2010 | Beta release.                          |
-  +--------+-----------------------------+----------------------------------------+
-  | 1.0    | 22\ :sup:`nd` May 2013      | First public release.                  |
-  +--------+-----------------------------+----------------------------------------+
-  | 2018Q4 | 31\ :sup:`st` December 2018 | Add SVE and pointer                    |
-  |        |                             | authentication support.                |
-  +--------+-----------------------------+----------------------------------------+
-  | 2019Q4 | 30\ :sup:`th` January 2020  | Minor layout changes.                  |
-  +--------+-----------------------------+----------------------------------------+
-  | 2020Q2 | 1\ :sup:`st` June 2020      | Add requirements for unwinding MTE     |
-  |        |                             | tagged stack. Describe DWARF           |
-  |        |                             | representation of SVE vector types.    |
-  +--------+-----------------------------+----------------------------------------+
-  | 2020Q4 | 21\ :sup:`st` December 2020 | - document released on Github          |
-  |        |                             | - new Licence_: CC-BY-SA-4.0           |
-  |        |                             | - new sections on Contributions_,      |
-  |        |                             |   `Trademark notice`_, and Copyright_  |
-  |        |                             | - AArch64 DWARF pointer signing        |
-  |        |                             |   operations table columns switched    |
-  |        |                             | - Add Thread ID register numbers.      |
-  +--------+-----------------------------+----------------------------------------+
-  | 2022Q1 | 1\ :sup:`st` April 2022     | - Release of Pointer authentication.   |
-  |        |                             | - In `Call frame instructions`_,       |
-  |        |                             |   document a limitation of             |
-  |        |                             |   DW_CFA_AARCH64_negate_ra_state.      |
-  +--------+-----------------------------+----------------------------------------+
-  | 2022Q3 | 20\ :sup:`th` October 2022  | - Added `Changes in vector length`_ at |
-  |        |                             |   **Alpha** quality.                   |
-  +--------+-----------------------------+----------------------------------------+
-  | 2024Q3 | 5\ :sup:`th` September 2024 | In `DWARF register names_` and         |
-  |        |                             | `Call frame instructions`_, add Dwarf  |
-  |        |                             | support for unwinding with             |
-  |        |                             | FEAT_PAuth_LR enabled.                 |
-  +--------+-----------------------------+----------------------------------------+
-  |        |                             | - Added DW_CFA_AARCH64_set_ra_state at |
-  |        |                             |   **Alpha** quality.                   |
-  |        |                             | - Deprecated                           |
-  |        |                             |   DW_CFA_AARCH64_negate_ra_state.      |
-  |        |                             | - Redefined ra_state representation in |
-  |        |                             |   the RA_SIGN_STATE pseudo register at |
-  |        |                             |   **Alpha** quality.                   |
-  +--------+-----------------------------+----------------------------------------+
+  +--------+-----------------------------+-------------------------------------------+
+  | Issue  | Date                        | Change                                    |
+  +========+=============================+===========================================+
+  | 00bet3 | 16\ :sup:`th` December 2010 | Beta release.                             |
+  +--------+-----------------------------+-------------------------------------------+
+  | 1.0    | 22\ :sup:`nd` May 2013      | First public release.                     |
+  +--------+-----------------------------+-------------------------------------------+
+  | 2018Q4 | 31\ :sup:`st` December 2018 | Add SVE and pointer                       |
+  |        |                             | authentication support.                   |
+  +--------+-----------------------------+-------------------------------------------+
+  | 2019Q4 | 30\ :sup:`th` January 2020  | Minor layout changes.                     |
+  +--------+-----------------------------+-------------------------------------------+
+  | 2020Q2 | 1\ :sup:`st` June 2020      | Add requirements for unwinding MTE        |
+  |        |                             | tagged stack. Describe DWARF              |
+  |        |                             | representation of SVE vector types.       |
+  +--------+-----------------------------+-------------------------------------------+
+  | 2020Q4 | 21\ :sup:`st` December 2020 | - document released on Github             |
+  |        |                             | - new Licence_: CC-BY-SA-4.0              |
+  |        |                             | - new sections on Contributions_,         |
+  |        |                             |   `Trademark notice`_, and Copyright_     |
+  |        |                             | - AArch64 DWARF pointer signing           |
+  |        |                             |   operations table columns switched       |
+  |        |                             | - Add Thread ID register numbers.         |
+  +--------+-----------------------------+-------------------------------------------+
+  | 2022Q1 | 1\ :sup:`st` April 2022     | - Release of Pointer authentication.      |
+  |        |                             | - In `Call frame instructions`_,          |
+  |        |                             |   document a limitation of                |
+  |        |                             |   DW_CFA_AARCH64_negate_ra_state.         |
+  +--------+-----------------------------+-------------------------------------------+
+  | 2022Q3 | 20\ :sup:`th` October 2022  | - Added `Changes in vector length`_ at    |
+  |        |                             |   **Alpha** quality.                      |
+  +--------+-----------------------------+-------------------------------------------+
+  | 2024Q3 | 5\ :sup:`th` September 2024 | In `DWARF register names_` and            |
+  |        |                             | `Call frame instructions`_, add Dwarf     |
+  |        |                             | support for unwinding with                |
+  |        |                             | FEAT_PAuth_LR enabled.                    |
+  +--------+-----------------------------+-------------------------------------------+
+  |        |                             | - Added DW_CFA_AARCH64_set_ra_state at    |
+  |        |                             |   **Alpha** quality.                      |
+  |        |                             | - Deprecated                              |
+  |        |                             |   DW_CFA_AARCH64_negate_ra_state_with_pc. |
+  |        |                             | - Redefined ra_state representation in    |
+  |        |                             |   the RA_SIGN_STATE pseudo register at    |
+  |        |                             |   **Alpha** quality.                      |
+  +--------+-----------------------------+-------------------------------------------+
 
 
 References
