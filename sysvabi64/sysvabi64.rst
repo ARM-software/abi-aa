@@ -216,6 +216,7 @@ Change History
  | 2025Q2     | 20\ :sup:`th` June     2024  | Require that ``PT_GNU_PROPERTY`` program header be    |
  |            |                              | present in executables and shared-libraries if a      |
  |            |                              | .note.gnu.property section is present.                |
+ |            |                              | - Update distance to GOT for small code-model         |
  +------------+------------------------------+-------------------------------------------------------+
 
 References
@@ -700,7 +701,7 @@ along with the assumptions that the code model may make.
 .. table:: Code Models
 
   +--------+----------------+----------------+------------------------+
-  | Code   | Max text       | Max combined   | Additional GOT         |
+  | Code   | Max text       | Max combined   | Additional GOT size    |
   | Model  | segment size   | span of text   | restrictions           |
   |        |                | and data       |                        |
   |        |                | segments       |                        |
@@ -716,10 +717,7 @@ along with the assumptions that the code model may make.
   |        |                |                +------------------------+
   |        |                |                | PIC: none              |
   +--------+----------------+----------------+------------------------+
-  | large  | 2GiB           | no restriction | max distance from text |
-  |        |                |                | to GOT < 4 GiB         |
-  |        |                |                |                        |
-  |        |                |                |                        |
+  | large  | 2GiB           | no restriction | none                   |
   +--------+----------------+----------------+------------------------+
 
 .. note::
@@ -750,23 +748,26 @@ along with the assumptions that the code model may make.
   5. The text segment maximum size is limited to 2GiB by
   R_AARCH64_PLT32 relocations from ``.eh_frame`` sections.
 
-  6. While designing the code models it was estimated that only 2.6%
+  6. The distance to the GOT from the text segment is limited to 2GiB
+  by the R_AARCH64_GOTPCREL32 relocations.
+
+  7. While designing the code models it was estimated that only 2.6%
   of load modules (executables and dynamic shared objects) have a max
   text segment size greater than 1MiB; the rest would all fit into the
   tiny model. However to avoid build option changes, it is recommended
   that the small model should be the default, with an explicit option
   to select the tiny model.
 
-  7. Executables and shared objects may be linked dynamically with other
+  8. Executables and shared objects may be linked dynamically with other
   shared objects which use a different code model.
 
-  8. Linking of relocatable objects of different code models is possible
+  9. Linking of relocatable objects of different code models is possible
   as is linking of PIC/PIE and non-PIC relocatable objects. The result
   of the combination is always the most limited model. For example the
   combination of a tiny code model PIC object and small code model
   non-PIC object is a tiny non-PIC executable.
 
-  9. The large code model is aimed at programs with large amounts of
+  10. The large code model is aimed at programs with large amounts of
   read-write data, not large amounts or sparsely placed code.
 
 Implementation of code models
@@ -1085,8 +1086,8 @@ For AArch64 the linker defined ``_GLOBAL_OFFSET_TABLE_`` symbol should
 be the address of the first global offset table entry in the ``.got``
 section.
 
-See `Sample code sequences for code models`_ for code model for
-examples of how to access the ``.got``.
+See `Sample code sequences for code models`_ for examples of how to
+access the ``.got``.
 
 Function Addresses
 ^^^^^^^^^^^^^^^^^^
