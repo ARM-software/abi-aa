@@ -327,7 +327,7 @@ Differences from the 32-bit ABI Build Attributes
 
 - Related attributes with similar properties and compatibility model
   are grouped into subsections. In (ADDENDA32_) all public attributes
-  are present in a single ``"aeabi"`` subsection.
+  are present in a single ``"aeabi\_"`` subsection.
 
 - Every subsection has all of its tags encoded as ULEB128 or all of
   its tags as encoded as NTBS. In (ADDENDA32_) this is determined by
