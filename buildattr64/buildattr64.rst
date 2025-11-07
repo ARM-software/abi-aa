@@ -217,8 +217,8 @@ changes to the content of the document for that release.
   |            |                     | Tool Interface for aeabi subsections taken from rationale document. |
   |            |                     | Changed assembler syntax to make parameters mandatory and to define |
   |            |                     | human readable names.                                               |
-  |            |                     | Generalise mapping of aeabi-feature-and-bits to .note.gnu.property  |
-  |            |                     | Renumber aeabi-feature-and-bits tags to start from 0.               |
+  |            |                     | Generalise mapping of aeabi_feature_and_bits to .note.gnu.property  |
+  |            |                     | Renumber aeabi_feature_and_bits tags to start from 0.               |
   |            |                     | Clarify that the same attribute with different values is an error.  |
   |            |                     | Rename subsection names to avoid - character which can be difficult |
   |            |                     | for assemblers to parse as a single token.                          |
@@ -237,6 +237,9 @@ changes to the content of the document for that release.
   +------------+---------------------+---------------------------------------------------------------------+
   | 0.5        | 4th July 2025       | Changed optional field to comprehension to clarify its intent. No   |
   |            |                     | change to encoding or assembly directives.                          |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.6        | 7th November 2025   | Changed aeabi subsection prefix to aeabi\_ from aeabi. All existing |
+  |            |                     | names are compliant with this pattern.                              |
   +------------+---------------------+---------------------------------------------------------------------+
 
 References
@@ -705,7 +708,7 @@ prefix to the names of private helper functions (for details see
 (AAELF64_)). The same vendor name must be used as a prefix for a
 vendors private subsection.
 
-A public attributes subsection has a prefix of *aeabi*. Names
+A public attributes subsection has a prefix of *aeabi\_*. Names
 beginning *Anon* and *anon* are reserved for unregistered private use.
 
 The syntactic structure of an attributes section is::
@@ -741,13 +744,13 @@ in the private subsection.
 
 Attributes that record data about the compatibility of this
 relocatable object file with other relocatable object files must be
-recorded in a public "aeabi" prefixed subsection.
+recorded in a public "aeabi\_" prefixed subsection.
 
 Attributes meaningful only to the producer must be recorded in a
 private vendor subsection.
 
 Formally, there are no constraints on the order or number of vendor
-subsections. A consumer can collect the public ("aeabi" prefixed)
+subsections. A consumer can collect the public ("aeabi\_" prefixed)
 attributes in a single pass over the section, then all of its private
 data in a second pass.
 
@@ -791,7 +794,7 @@ by *parameter type*.
 Public subsections
 ------------------
 
-Subsections with a vendor name prefix of "aeabi" are public
+Subsections with a vendor name prefix of "aeabi\_" are public
 subsections. They contain attributes defined by this specification.
 
 Each public subsection defines its own attribute tags.
@@ -804,11 +807,11 @@ Public tags are omitted by one of the following methods::
   The ELF file does not have a ``.ARM.attributes`` section. All public
   tags defined in this specification are omitted.
 
-  The ``.ARM.attributes`` does not contain an "aeabi" prefixed
+  The ``.ARM.attributes`` does not contain an "aeabi\_" prefixed
   subsection defined by this specification. All public tags that can
   be defined by the subsection are omitted.
 
-  An "aeabi" prefixed subsection omits one or more public tags that
+  An "aeabi\_" prefixed subsection omits one or more public tags that
   can be defined by the subection.
 
 The effect of omitting a public tag is identical to including it with
@@ -1139,7 +1142,7 @@ Assembler
 Where possible the assembler can derive build attributes from the
 assembler's command line options in the same way as the compiler. For
 options that cannot be derived, assembler directives can be used to
-construct "aeabi" prefixed subsections. The assembler directives take
+construct "aeabi\_" prefixed subsections. The assembler directives take
 precedence over any derived attributes.
 
 Directives
@@ -1239,4 +1242,4 @@ name.
 This translates to the following .ARM.attributes section contents for
 a little-endian relocatable object:
 
-`A`, <length 0x1e,0x0,0x0,0x0>, "aeabi_feature_and_bits", 1, 0, 2, 1, <length 0x21, 0x0, 0x0, 0x0>, "aeabi-feature-pauthabi", 0, 0, 0, 1, 1, 1
+`A`, <length 0x1e,0x0,0x0,0x0>, "aeabi_feature_and_bits", 1, 0, 2, 1, <length 0x21, 0x0, 0x0, 0x0>, "aeabi_feature-pauthabi", 0, 0, 0, 1, 1, 1
