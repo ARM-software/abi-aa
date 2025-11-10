@@ -12,6 +12,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.x'
+    - name: install libcairo-dev
+      run: sudo apt install -y libcairo-dev
     - name: install packages
       run: pip install -r tools/rst2pdf/requirements.txt
     - name: check .rst document syntax
