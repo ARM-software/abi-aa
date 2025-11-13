@@ -688,6 +688,9 @@ An ELF Attributes section uses a processor specific section with details
     | ``.ARM.attributes`` | ``SHT_AARCH64_ATTRIBUTES`` | 0x0   | 1         | 0    | 0          |
     +---------------------+----------------------------+-------+-----------+------+------------+
 
+A relocatable object file can contain at most one ELF Attributes
+section.
+
 In the contents of an ELF attributes section, a consumer may not assume
 the natural alignment of a data type such as ``uint32``.
 
