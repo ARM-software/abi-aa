@@ -408,10 +408,20 @@ Synchronization Fences
   +-----------------------------------------------------+--------------------------------------+
   | ``atomic_thread_fence(release)``                    | .. code-block:: none                 |
   |                                                     |                                      |
-  | ``atomic_thread_fence(acq_rel)``                    |    DMB ISH                           |
+  |                                                     |    DMB ISHLD                         |
+  |                                                     |    DMB ISHST                         |
+  |                                                     +--------------------------------------+
+  |                                                     | .. code-block:: none                 |
   |                                                     |                                      |
-  | ``atomic_thread_fence(seq_cst)``                    |                                      |
-  +-------------------------------------+---------------+--------------------------------------+
+  |                                                     |    DMB ISH                           |
+  +-----------------------------------------------------+--------------------------------------+
+  | ``atomic_thread_fence(acq_rel)``                    | .. code-block:: none                 |
+  |                                                     |                                      |
+  | ``atomic_thread_fence(seq_cst)``                    |    DMB ISH                           |
+  +-----------------------------------------------------+--------------------------------------+
+
+The release fence has two alternative implementations.  Using ``DMB ISHLD`` and ``DMB ISHST``
+allows for more reordering since the combination is not a store-load barrier.
 
 32-bit types
 ------------
