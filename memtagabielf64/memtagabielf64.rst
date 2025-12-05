@@ -638,7 +638,7 @@ The relocations reference the following mnemonics:
   +------------+--------------------+----------------+-------------------------------+
   | 1025       | R_AARCH64_GLOB_DAT | S + A          | LDG(S) + A                    |
   +------------+--------------------+----------------+-------------------------------+
-  | 1027       | R_AARCH64_RELATIVE | Delta(S) + A   | LDG(Delta(S) + A + \*P) - \*P |
+  | 1027       | R_AARCH64_RELATIVE | Delta + A      | LDG(Delta + A + \*P) - \*P    |
   +------------+--------------------+----------------+-------------------------------+
 
 ``R_AARCH64_ABS64`` and ``R_AARCH64_GLOB_DAT`` are thus extended to materialize
