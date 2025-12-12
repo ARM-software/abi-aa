@@ -1057,7 +1057,7 @@ and offset of the TLS variable is stored in a GOT slot (first 8 bytes contains t
 offset and the second 8 bytes the size). This GOT slot is initialized by a
 ``R_MORELLO_TPREL128`` dynamic relocation. The access must use the
 ``R_MORELLO_TLSIE_ADR_GOTTPREL_PAGE20`` and ``R_MORELLO_TLSIE_ADD_LO12``
-relocations in order to allow relaxation to Local Exec. There are no other
+relocations. There are no other
 requirements on how this is performed or the registers used. A possible
 instruction sequence could be:
 
@@ -1073,37 +1073,13 @@ instruction sequence could be:
 Initial Exec to Local Exec relaxation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The linker will generate 16 bytes in a read-only section, containing
-the offset in the static TLS block in the first 8 bytes and the size of the
-symbol in the next 8 bytes:
-
-.. code-block:: text
-
-  .section .rodata
-  _sym_data:
-    .xword tlsoffset(sym)
-    .xword sizeof(sym)
+No such relaxation is specified.
 
 .. note::
 
-  ``tlsoffset(sym)`` denotes the offset in the static TLS block of the symbol
-  ``sym``, while sizeof(sym) denotes the size of the symbol ``sym``. These are
-  not valid assembler directives.
-
-The relaxation is performed by:
-
-- changing the ``R_MORELLO_TLSIE_ADR_GOTTPREL_PAGE20`` relocation on the symbol
-  ``sym`` to a ``R_MORELLO_ADR_PREL_PG_HI20`` with the symbol ``_sym_data``
-
-- changing the ``R_MORELLO_TLSIE_ADD_LO12`` relocation on symbol the ``sym`` to
-  a ``R_AARCH64_ADD_ABS_LO12_NC`` relocation with the symbol ``_sym_data``.
-
-.. note::
-
-  The symbol and section names in the example above are only used for explanation
-  purposes. An implementation does not need to create an additional symbol when
-  performing this relaxation. There is no constraint on the name of the read-only
-  section where the data is placed.
+  Both the offset in the TLS block and the size of ``S`` are known by the
+  static linker and can be emitted as constants with no associated
+  ``R_MORELLO_TPREL128`` relocation.
 
 General Dynamic
 ^^^^^^^^^^^^^^^
@@ -1144,29 +1120,11 @@ The relaxed sequence is:
 General Dynamic to Local Exec relaxation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The linker will generate 16 bytes in a read-only section, containing
-the offset in the static TLS block in the first 8 bytes and the size of the
-symbol in the next 8 bytes:
-
-.. code-block:: text
-
-  .section .rodata
-  _sym_data:
-    .xword tlsoffset(sym)
-    .xword sizeof(sym)
+No such relaxation is specified; the static linker should instead relax to
+Initial Exec.
 
 .. note::
 
-  ``tlsoffset(sym)`` denotes the offset in the static TLS block of the symbol
-  ``sym``, while sizeof(sym) denotes the size of the symbol ``sym``. These are
-  not valid assembler directives.
-
-The relaxed sequence is:
-
-.. code-block:: text
-
-  adrp c0, _sym_data
-  add c0, c0, :lo12:_sym_data
-  ldp x0, x1, [c0]
-  add c0, c2, x0
-  scbnds c0, c0, x1
+  Both the offset in the TLS block and the size of ``S`` are known by the
+  static linker and can be emitted as constants with no associated
+  ``R_MORELLO_TPREL128`` relocation.
