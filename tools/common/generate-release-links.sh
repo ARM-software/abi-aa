@@ -61,6 +61,7 @@ cat <<EOF
 - $(spec sysvabi64 "System V ABI for the Arm 64-bit Architecture")
 - $(spec memtagabielf64 "Memtag Extension to ELF for the Arm 64-bit Architecture")
 - $(spec atomicsabi64 "C/C++ Atomics Application Binary Interface Standard for the Arm 64-bit Architecture")
+- $(spec baabielf64 "ELF Conventions for Binary Analysis for the Arm 64-bit Architecture")
 
 #### Morello Extension
 - $(spec aapcs64-morello "Morello Extension to the Procedure Call Standard for the Arm 64-bit Architecture")

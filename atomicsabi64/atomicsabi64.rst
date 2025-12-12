@@ -379,6 +379,15 @@ Suggestions and improvements to this specification may be submitted to the:
 `issue tracker page on GitHub <https://github.com/ARM-software/abi-aa/issues>`_.
 
 
+Atomic types
+============
+
+``_Atomic`` struct types types with size less than 16 bytes must be padded to the nearest power
+of 2.  Their alignment must be the same as their size so that they can be used by atomic instructions.
+
+``atomic_is_lock_free`` must return ``true`` for all ``_Atomic`` objects with size less than or equal
+to 16 bytes, and ``false`` otherwise.
+
 
 AArch64 atomic mappings
 =======================
@@ -399,10 +408,20 @@ Synchronization Fences
   +-----------------------------------------------------+--------------------------------------+
   | ``atomic_thread_fence(release)``                    | .. code-block:: none                 |
   |                                                     |                                      |
-  | ``atomic_thread_fence(acq_rel)``                    |    DMB ISH                           |
+  |                                                     |    DMB ISHLD                         |
+  |                                                     |    DMB ISHST                         |
+  |                                                     +--------------------------------------+
+  |                                                     | .. code-block:: none                 |
   |                                                     |                                      |
-  | ``atomic_thread_fence(seq_cst)``                    |                                      |
-  +-------------------------------------+---------------+--------------------------------------+
+  |                                                     |    DMB ISH                           |
+  +-----------------------------------------------------+--------------------------------------+
+  | ``atomic_thread_fence(acq_rel)``                    | .. code-block:: none                 |
+  |                                                     |                                      |
+  | ``atomic_thread_fence(seq_cst)``                    |    DMB ISH                           |
+  +-----------------------------------------------------+--------------------------------------+
+
+The release fence has two alternative implementations.  Using ``DMB ISHLD`` and ``DMB ISHST``
+allows for more reordering since the combination is not a store-load barrier.
 
 32-bit types
 ------------
@@ -482,7 +501,7 @@ returned in ``W0``.
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSE``  | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    SWAL   W2, W0, [X1] *             |
+  |                                     |               |    SWPAL  W2, W0, [X1] *             |
   +-------------------------------------+---------------+--------------------------------------+
   | ``fetch_add(loc,val,relaxed)``      | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -494,7 +513,7 @@ returned in ``W0``.
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSE``  | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    LDADD  W0, W2, [X1] *             |
+  |                                     |               |    LDADD   W2, W0, [X1] *            |
   +-------------------------------------+---------------+--------------------------------------+
   | ``fetch_add(loc,val,acquire)``      | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -506,7 +525,7 @@ returned in ``W0``.
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSE``  | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    LDADDA W0, W2, [X1] *             |
+  |                                     |               |    LDADDA  W2, W0, [X1] *            |
   +-------------------------------------+---------------+--------------------------------------+
   | ``fetch_add(loc,val,release)``      | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -518,7 +537,7 @@ returned in ``W0``.
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSE``  | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    LDADDL W0, W2, [X1] *             |
+  |                                     |               |    LDADDL  W2, W0, [X1] *            |
   +-------------------------------------+---------------+--------------------------------------+
   | ``fetch_add(loc,val,acq_rel)``      | ``Armv8-A``   | .. code-block:: none                 |
   | ``fetch_add(loc,val,seq_cst)``      |               |                                      |
@@ -530,7 +549,7 @@ returned in ``W0``.
   |                                     +---------------+--------------------------------------+
   |                                     | ``FEAT_LSE``  | .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    LDADDAL W0, W2, [X1] *            |
+  |                                     |               |    LDADDAL W2, W0, [X1] *            |
   +-------------------------------------+---------------+--------------------------------------+
   | ``compare_exchange_strong(``        | ``Armv8-A``   | .. code-block:: none                 |
   |   ``loc,exp,val,relaxed,relaxed)``  |               |                                      |
@@ -704,7 +723,7 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
   |                                     +---------------+--------------------------------------+
   |                                     |``FEAT_LRCPC3``| .. code-block:: none                 |
   |                                     |               |                                      |
-  |                                     |               |    STILP   x2, X3, [X4]              |
+  |                                     |               |    STILP   X2, X3, [X4]              |
   +-------------------------------------+---------------+--------------------------------------+
   | ``load(loc,relaxed)``               | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |

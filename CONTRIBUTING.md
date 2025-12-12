@@ -162,6 +162,7 @@ document | owner | Github handle
 [Morello Descriptor ABI for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/descabi-morello) | Silviu Baranga | @sbaranga-arm
 [Memtag ABI Extension to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/memtagabielf64) | Florian Mayer | @fmayer
 [C/C++ Atomics Application Binary Interface Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/atomicsabi64) | Luke Geeson | @lukeg101
+[AArch64 ELF Conventions for Binary Analysis](https://github.com/ARM-software/abi-aa/tree/main/baabielf64) | Pavel Iliin | @ilinpv
 
 3. Merging the change
 
