@@ -480,10 +480,8 @@ The following nomenclature is used in the descriptions of relocation operations:
   the second entry holds a platform-specific offset or pointer. The pair of
   pointer-sized entries will be relocated with ``R_MORELLO_TLSDESC(S+A)``.
 
-- ``Delta(S)`` if ``S`` is a normal symbol, resolves to the difference between the
-  static link address of ``S`` and the execution address of ``S``. If ``S`` is the
-  null symbol (ELF symbol index 0), resolves to the difference between the static
-  link address of ``P`` and the execution address of ``P``.
+- ``Delta`` resolves to the difference between the static link address of
+  ``P`` and the execution address of ``P``.
 
 - ``TPREL(S)`` resolves to a pair of two 64-bit values. The first value
   contains the offset in the static TLS block of the thread-local symbol ``S``.
@@ -728,7 +726,7 @@ Dynamic Morello relocations
     | 59400 | ``R_MORELLO_FUNC_RELATIVE`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below.                          |
     |       |                             |                                         |                                          |
     +-------+-----------------------------+-----------------------------------------+------------------------------------------+
-    | 59401 | ``R_AARCH64_FUNC_RELATIVE`` | ``Delta(S) + A``                        | See note below.                          |
+    | 59401 | ``R_AARCH64_FUNC_RELATIVE`` | ``Delta + A``                           | See note below.                          |
     |       |                             |                                         |                                          |
     +-------+-----------------------------+-----------------------------------------+------------------------------------------+
 
