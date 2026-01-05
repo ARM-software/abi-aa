@@ -298,6 +298,34 @@ Special Sections
 
 A Morello toolchain can emit ELF Note sections in accordance to [CHERI_ELF_].
 
+The following Morello-specific ELF Note types are used, allocated from the
+space reserved by [CHERI_ELF_] for processor-specific use:
+
+.. _Morello-specific NT_CHERI_TLS_ABI types:
+
+.. class:: aaelf64-morello-NT_CHERI_TLS_ABI-types
+
+.. table:: Morello-specific NT_CHERI_TLS_ABI types
+
+  +------------+-----------------------------------+-------------------------------------------------------+
+  | Value      | Name                              | Description                                           |
+  +------------+-----------------------------------+-------------------------------------------------------+
+  | 0x80000000 | CHERI_TLS_ABI_MORELLO_MIXED       | The object mixes both direct and compat indirect TLS. |
+  +------------+-----------------------------------+-------------------------------------------------------+
+  | 0x80000001 | CHERI_TLS_ABI_MORELLO_TGOT_COMPAT | The object uses only compat indirect TLS.             |
+  +------------+-----------------------------------+-------------------------------------------------------+
+
+.. note::
+
+  Mixing any combination of two or more of CHERI_TLS_ABI_TRAD,
+  CHERI_TLS_ABI_MORELLO_MIXED and CHERI_TLS_ABI_MORELLO_TGOT_COMPAT objects is
+  permitted, and yields a CHERI_TLS_ABI_MORELLO_MIXED object if merged at
+  static link time.
+
+  Mixing CHERI_TLS_ABI_TGOT and CHERI_TLS_ABI_MORELLO_TGOT_COMPAT objects is
+  permitted, and yields a CHERI_TLS_ABI_TGOT object if merged at static link
+  time.
+
 Symbol Table
 ------------
 
@@ -480,6 +508,10 @@ The following nomenclature is used in the descriptions of relocation operations:
   the second entry holds a platform-specific offset or pointer. The pair of
   pointer-sized entries will be relocated with ``R_MORELLO_TLSDESC(S+A)``.
 
+- ``GTGOTTLSDESC(S+A)`` represents a consecutive pair of pointer-sized entries
+  as the indirect TLS version of ``GTLSDESC(S+A)``. The pair of pointer-sized
+  entries will be relocated with ``R_MORELLO_TGOT_TLSDESC(S+A)``.
+
 - ``Delta(S)`` if ``S`` is a normal symbol, resolves to the difference between the
   static link address of ``S`` and the execution address of ``S``. If ``S`` is the
   null symbol (ELF symbol index 0), resolves to the difference between the static
@@ -489,12 +521,21 @@ The following nomenclature is used in the descriptions of relocation operations:
   contains the offset in the static TLS block of the thread-local symbol ``S``.
   The second value contains the size of the symbol ``S``
 
+- ``TGOTREL(S)`` resolves to the offset of the thread-local symbol ``S`` in the
+  static TLS TGOT.
+
 - ``GTPREL(S)`` represents an entry in the GOT containing a pair of two 64-bit
   values. The first value contains the offset in the static TLS block of the
   symbol ``S``. The second value contains the size of the symbol ``S``.
 
+- ``GTGOTREL(S)`` represents an entry in the GOT containing the offset of the
+  thread-local symbol ``S`` in the static TLS TGOT.
+
 - ``TLSDESC(S+A)`` resolves to a contiguous pair of pointer-sized values, as
   created by GTLSDESC(S+A).
+
+- ``TGOTTLSDESC(S+A)`` resolves to a contiguous pair of pointer-sized values,
+  as created by GTGOTTLSDESC(S+A).
 
 - ``CAP_INIT`` generates a capability with all required information. When used on
   its own represents the operations needs to be done for handling ``R_MORELLO_CAPINIT``.
@@ -648,8 +689,8 @@ Interworking between ABIs are not supported yet.
     |       |                                 |                        | Also see `Static linking with Morello`_.                  |
     +-------+---------------------------------+------------------------+-----------------------------------------------------------+
 
-Relocations for thread-local storage
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Relocations for thread-local storage (direct)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Morello only defines the relocations needed to implement the descriptor based
 thread-local storage (TLS) models in a SysV-type environment. The details of
@@ -662,7 +703,7 @@ Relocations needed to define the traditional TLS models are undefined.
 
 .. class:: aaelf64-morello-tls-descriptor-relocations
 
-.. table:: TLS descriptor relocations
+.. table:: TLS descriptor relocations (direct)
 
     +-------+-----------------------------------------+----------------------------+-----------------------------------------------------------+
     | ELF64 | Name                                    | Operation                  | Comment                                                   |
@@ -687,6 +728,66 @@ Relocations needed to define the traditional TLS models are undefined.
     |       |                                         |                            | No overflow check.                                        |
     |       |                                         |                            |                                                           |
     +-------+-----------------------------------------+----------------------------+-----------------------------------------------------------+
+
+Relocations for thread-local storage (indirect)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As with direct thread-local storage, Morello uses TLS descriptors. The details
+of indirect TLS are beyond the scope of this specification; they are part of
+[CHERI_ELF_].
+
+.. class:: aaelf64-morello-indirect-tls-descriptor-relocations
+.. table:: TLS descriptor relocations (indirect)
+
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | ELF64 | Name                                     | Operation                      | Comment                                                                 |
+    | Code  |                                          |                                |                                                                         |
+    +=======+==========================================+================================+=========================================================================+
+    | 57616 | ``R_MORELLO_TLSIE_ADR_GOTTGOT_PAGE20``   | ``Page(G(GTGOTREL(S+A)))``     | Set the immediate value of an ADRP to bits [31:12] of X.                |
+    |       |                                          | ``- Page(P)``                  | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                           |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57617 | ``R_MORELLO_TLSIE_LD64_GOTTGOT_LO12_NC`` | ``G(GTGOTREL(S+A))``           | Set the LD/ST immediate field to bits [11:3] of X.                      |
+    |       |                                          |                                | No overflow check. Check that X&7 = 0.                                  |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57618 | ``R_MORELLO_TLSLE_MOVW_TGOT_G1``         | ``TGOTREL(S+A)``               | Set the MOV[NZ] immediate field to bits [31:16] of X (see notes below). |
+    |       |                                          |                                | Check that -2\ :sup:`32` <= X < 2\ :sup:`32`.                           |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57619 | ``R_MORELLO_TLSLE_MOVW_TGOT_G0``         | ``TGOTREL(S+A)``               | Set the MOV[NZ] immediate field to bits [15:0] of X (see notes below).  |
+    |       |                                          |                                | Check that -2\ :sup:`16` <= X < 2\ :sup:`16`.                           |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57620 | ``R_MORELLO_TLSLE_MOVW_TGOT_G0_NC``      | ``TGOTREL(S+A)``               | Set the MOVK immediate field to bits [15:0] of X.                       |
+    |       |                                          |                                | No overflow check.                                                      |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57621 | ``R_MORELLO_TLSLE_ADD_TGOT_HI12``        | ``TGOTREL(S+A)``               | Set the ADD immediate field to bits [23:12] of X.                       |
+    |       |                                          |                                | Check 0 <= X < 2\ :sup:`24`.                                            |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57622 | ``R_MORELLO_TLSLE_LD128_TGOT_LO12``      | ``TGOTREL(S+A)``               | Set the LD/ST immediate field to bits [11:4] of X.                      |
+    |       |                                          |                                | Check that 0 <= X < 2\ :sup:`12`. X&15 = 0.                             |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57623 | ``R_MORELLO_TLSLE_LD128_TGOT_LO12_NC``   | ``TGOTREL(S+A)``               | Set the LD/ST immediate field to bits [11:4] of X.                      |
+    |       |                                          |                                | No overflow check. Check that X&15 = 0.                                 |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57624 | ``R_MORELLO_TGOT_TLSDESC_ADR_PAGE20``    | ``Page(G(GTGOTTLSDESC(S+A)))`` | Set the immediate value of an ADRP to bits [31:12] of X.                |
+    |       |                                          | ``- Page(P)``                  | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                           |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57625 | ``R_MORELLO_TGOT_TLSDESC_LD128_LO12``    | ``G(GTGOTTLSDESC(S+A))``       | Set the LD/ST immediate field to bits [11:4] of X.                      |
+    |       |                                          |                                | Check that 0 <= X < 2\ :sup:`12`. X&15 = 0.                             |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57626 | ``R_MORELLO_TGOT_TLSDESC_ADD_LO12``      | ``G(GTGOTTLSDESC(S+A))``       | Set the ADD immediate field to bits [11:0] of X.                        |
+    |       |                                          |                                | No overflow check.                                                      |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+    | 57627 | ``R_MORELLO_TGOT_TLSDESC_CALL``          | None                           | For relaxation only.                                                    |
+    |       |                                          |                                | Must be used to identify a ``BLR`` instruction which performs an        |
+    |       |                                          |                                | indirect call to the TLS descriptor function for ``S + A``.             |
+    +-------+------------------------------------------+--------------------------------+-------------------------------------------------------------------------+
+
+.. note::
+
+    These checking forms relocate ``MOVN`` or ``MOVZ``.
+
+    X >= 0: Set the instruction to ``MOVZ`` and its immediate field to the selected bits of X.
+
+    X < 0: Set the instruction to ``MOVN`` and its immediate field to NOT (selected bits of X).
 
 Dynamic Morello relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -731,6 +832,16 @@ Dynamic Morello relocations
     | 59401 | ``R_AARCH64_FUNC_RELATIVE`` | ``Delta(S) + A``                        | See note below.                          |
     |       |                             |                                         |                                          |
     +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59402 | ``R_MORELLO_TLS_TGOT_SLOT`` | ``CAP_INIT(S, A, CAP_SIZE, CAP_PERM)``  | See note below                           |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59403 | ``R_MORELLO_TLS_TGOTREL64`` | ``TGOTREL(S)``                          | See note below                           |
+    |       |                             |                                         |                                          |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+    | 59404 | ``R_MORELLO_TGOT_TLSDESC``  | ``TGOTTLSDESC(S+A)``                    | Identifies an indirect TLS descriptor to |
+    |       |                             |                                         | be filled.                               |
+    +-------+-----------------------------+-----------------------------------------+------------------------------------------+
+
 
 .. note::
 
@@ -791,6 +902,20 @@ Dynamic Morello relocations
   their non-``_FUNC`` counterparts but signify that the capability being
   relocated is a function pointer as opposed to a data pointer or code pointer.
   This distinction is needed for library-based compartmentalization (c18n).
+
+  ``R_MORELLO_TLS_TGOT_SLOT`` is similar to ``R_MORELLO_CAPINIT`` but should
+  not be applied to the TGOT template itself. Instead, represents
+  initialisation to be performed per TGOT. If ``S`` is the null symbol (ELF
+  symbol index 0), it contains a fragment in the same format as
+  ``R_MORELLO_RELATIVE``.
+
+  ``R_MORELLO_TLS_TGOTREL64`` instructs the dynamic loader to create a 64-bit
+  integer containing the offset of ``S`` in the static TLS TGOT.
+
+  ``R_MORELLO_TGOT_TLSDESC`` refers to the TGOT entry which, like a GOT entry,
+  is always local to the object. That is, like a relative relocation, ``S``
+  will be the null symbol (ELF symbol index 0) and the addend will be the
+  offset within this object's TGOT.
 
 Static linking with Morello
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -972,8 +1097,8 @@ veneer is used. The BX changes the execution state from A64 to C64:
   add c16, c16, :lo12:sym
   br c16
 
-TLS for the pure capability ABI
--------------------------------
+TLS for the pure capability ABI (direct)
+----------------------------------------
 
 The design is based on TLSDESC, with the purpose of minimizing the performance
 differences between A64 and C64, while providing strict bounds when resolving
@@ -1128,3 +1253,156 @@ Initial Exec.
   Both the offset in the TLS block and the size of ``S`` are known by the
   static linker and can be emitted as constants with no associated
   ``R_MORELLO_TPREL128`` relocation.
+
+TLS for the pure capability ABI (indirect)
+------------------------------------------
+
+The design is based on TLSDESC, using a TGOT (as described in [CHERI_ELF_]) for
+indirection to minimise privilege and enable compartmentalisation.
+
+TLS static block
+^^^^^^^^^^^^^^^^
+
+The static block layout is the same as for direct TLS, except it stores the
+TGOT rather than the TLS data. The location of the TLS data itself is
+unspecified.
+
+Thread pointer
+^^^^^^^^^^^^^^
+
+The thread pointer has the same requirements as for direct TLS.
+
+Resolver functions
+^^^^^^^^^^^^^^^^^^
+
+A resolver function takes arguments in c0 (address of the TGOT TLS GOT slot),
+and c1 (a copy of the thread pointer) and returns a pointer to the TLS global
+in c0. The resolver has a custom calling convention that must preserve all
+registers except c0.
+
+Static TLS block resolver
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the TGOT entry is in the static block, while resolving the
+``R_MORELLO_TGOT_TLSDESC`` relocation, the dynamic linker will place in the two
+GOT slots associated with this variable:
+
+- A capability to the static TLS block resolver function at offset 0.
+
+- The offset of the TGOT entry in the static TLS block.
+
+An implementation of the static block resolver could be the following:
+
+.. code-block:: text
+
+  ldr x0, [c0, #16]
+  ldr c0, [c1, x0]
+  ret
+
+Local Exec
+^^^^^^^^^^
+
+The capability to the TLS variable is loaded from ``CTPIDR_EL0``. There are no
+requirements on how this is performed or the registers used, except that the
+sequence doesn't produce a dynamic relocation. A possible instruction sequence
+could be:
+
+.. code-block:: text
+
+  mrs c0, CTPIDR_EL0
+  add c0, c0, :tgot:local_exec_var, lsl #12
+  ldr c0, [c0, :tgot_lo12_nc:local_exec_var]
+
+Initial Exec
+^^^^^^^^^^^^
+
+The capability to the TLS variable is loaded from ``CTPIDR_EL0``. The offset of
+the TGOT entry is stored in a GOT slot. This GOT slot is initialized by a
+``R_MORELLO_TLS_TGOTREL64`` dynamic relocation. The access must use the
+``R_MORELLO_TLSIE_ADR_GOTTGOT_PAGE20`` and
+``R_MORELLO_TLSIE_LD64_GOTTGOT_LO12_NC`` relocations. There are no other
+requirements on how this is performed or the registers used. A possible
+instruction sequence could be:
+
+.. code-block:: text
+
+  adrp c0, :gottgot:initial_exec_var
+  ldr x0, [c0, :gottgot_lo12:initial_exec_var]
+  mrs c1, CTPIDR_EL0
+  ldr c0, [c1, x0]
+
+Initial Exec to Local Exec relaxation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``R_MORELLO_TLSIE_ADR_GOTTPREL_PAGE20`` will be rewritten to a MOV[NZ] LSL #16
+with an ``R_MORELLO_TLSLE_MOVW_TGOT_G1``.
+
+``R_MORELLO_TLSIE_LD64_GOTTGOT_LO12_NC`` will be rewritten to a MOVK with an
+``R_MORELLO_TLSLE_MOVW_TGOT_G0_NC``.
+
+When applied to the example Initial Exec sequence, this yields:
+
+.. code-block:: text
+
+  movz x0, #:tgot_g1:initial_exec_var, lsl #16
+  movk x0, #:tgot_g0_nc:initial_exec_var
+  mrs c1, CTPIDR_EL0
+  ldr c0, [c1, x0]
+
+General Dynamic
+^^^^^^^^^^^^^^^
+
+The instruction sequence used for the General Dynamic access model is similar
+to that of direct TLS. However, due to the shorter Initial Exec and Local Exec
+instruction sequences, no additional NOP is present, and c1, not c2, is used to
+pass the thread pointer, rather than being a call-clobbered register.
+
+The General Dynamic access sequence must be output in the following form to
+allow correct linker relaxation:
+
+.. code-block:: text
+
+  adrp c0, :tgot_tlsdesc:sym
+  ldr c2, [c0, :tgot_tlsdesc_lo12:sym]
+  add c0, c0, :tgot_tlsdesc_lo12:sym
+  .tgot_tlsdesccall sym
+  blr c2
+
+General Dynamic to Initial Exec relaxation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The relaxed sequence is:
+
+.. code-block:: text
+
+  adrp c0, :gottgot:sym
+  ldr x0, [c0, :gottgot_lo12:sym]
+  ldr c0, [c1, x0]
+  nop
+
+General Dynamic to Local Exec relaxation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The relaxed sequence is:
+
+.. code-block:: text
+
+  movz x0, #:tgot_g1:sym, lsl #16
+  movk x0, #:tgot_g0_nc:sym
+  ldr c0, [c1, x0]
+  nop
+
+TLS for the pure capability ABI (mixed / compat)
+------------------------------------------------
+
+In order to support transitioning from direct to indirect TLS, both can be used
+at once. In this mixed model, direct TLS is entirely as defined above. However,
+for indirect TLS, a "compat" model is used, where the location of the static
+TGOT within the static TLS block is unspecified. This has the following
+implications:
+
+- Local Exec is forbidden (including for relaxation); the most optimised access
+  model available is Initial Exec
+
+- ``R_MORELLO_TLS_TGOTREL64`` is never statically resolvable to a constant at
+  link time
