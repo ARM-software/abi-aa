@@ -522,7 +522,7 @@ integers.
    .. _Note 9:
 
    9. Normally, the program counter is restored from the return address, however
-      having both LR and PC diversifiers are useful for describing asynchronously
+      having both LR and PC diversifiers is useful for describing asynchronously
       created stack frames. A DWARF expression may use this register to restore
       the context in case of a signal context.
 
@@ -634,23 +634,30 @@ This ABI defines the following vendor call frame instructions:
    | ``DW_CFA_AARCH64_set_ra_state`` (**Alpha**)                 | 0           | ``0x2B``   | ULEB128 ra_state | SLEB128 offset |
    +-------------------------------------------------------------+-------------+------------+------------------+----------------+
 
-The ``DW_CFA_AARCH64_negate_ra_state`` operation toggles between the
+The ``DW_CFA_AARCH64_negate_ra_state`` instruction toggles between the
 ``DW_AARCH64_RA_NOT_SIGNED`` and ``DW_AARCH64_RA_SIGNED_SP`` return address
 states in RA_SIGN_STATE pseudo-register. It does not take any operands.
 
-The ``DW_CFA_AARCH64_set_ra_state`` instruction takes two operands; an unsigned
-LEB128 value representing a return address state ra_state and a signed LEB128
+The ``DW_CFA_AARCH64_set_ra_state`` instruction takes two operands: an unsigned
+LEB128 value representing a return address state ra_state; and a signed LEB128
 factored offset. The required action is to set the RA_SIGN_STATE pseudo-register
 to the ra_state value and if the ra_state value is ``DW_AARCH64_RA_SIGNED_SP_PC``
 to capture the current code location + (offset * ``code_alignment_factor``)
 as the signing/authenticating PAC instruction, otherwise it is has the value 0.
 The code location information can be used for authenticating the return address.
 
-The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` operation toggles between the
+The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` instruction toggles between the
 ``DW_AARCH64_RA_NOT_SIGNED`` and ``DW_AARCH64_RA_SIGNED_SP_PC`` return
 address state in RA_SIGN_STATE pseudo-register, and instructs the unwinder to
 capture the current code location. The code location information can be used
 for authenticating the return address.
+
+The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` instruction is **Deprecated**
+and the ``DW_CFA_AARCH64_set_ra_state`` instruction should be used instead.
+
+*The ``DW_CFA_AARCH64_negate_ra_state`` instruction is deprecated because it is
+unable to correctly represent the return address signing state when the code
+flow is not linear between the signing/authenticating PAC instructions.*
 
 The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` instruction must be placed within
 the debug frame in a position that refers to the exact code location of the
