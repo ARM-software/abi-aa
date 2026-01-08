@@ -17,7 +17,7 @@
 .. _LSB: http://www.linuxbase.org/
 .. _SYM-VER: http://www.akkadia.org/drepper/symbol-versioning
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
-.. _MTEEXTENSIONS: https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support
+.. _MTEEXTENSIONS: https://www.kernel.org/doc/html/latest/arch/arm64/memory-tagging-extension.html#core-dump-support
 .. _STRUCTPROT: https://discourse.llvm.org/t/rfc-structure-protection-a-family-of-uaf-mitigation-techniques/85555
 .. _SYSVABI64: https://github.com/ARM-software/abi-aa/releases
 .. _VFABI64: https://github.com/ARM-software/abi-aa/releases
@@ -326,7 +326,7 @@ This document refers to, or is referred to by, the following documents.
   +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
   | TLSDESC_       | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf                                       | TLS Descriptors for Arm. Original proposal document                         |
   +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | MTEEXTENSIONS_ | https://www.kernel.org/doc/html/latest/arm64/memory-tagging-extension.html#core-dump-support      | Linux Kernel MTE core dump format                                           |
+  | MTEEXTENSIONS_ | https://www.kernel.org/doc/html/latest/arch/arm64/memory-tagging-extension.html#core-dump-support | Linux Kernel MTE core dump format                                           |
   +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
   | SYSVABI64_     | sysvabi64                                                                                         | System V Application Binary Interface (ABI) for the Arm 64-bit Architecture |
   +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
