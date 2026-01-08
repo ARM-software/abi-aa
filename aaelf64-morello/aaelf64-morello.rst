@@ -898,6 +898,31 @@ the dynamic linker generates the table itself based on the ``R_MORELLO_GLOB_DAT`
 ``R_MORELLO_JUMP_SLOT`` relocations created by the static linker. The dynamic linker
 writes the generated capabilities back into the ``.got`` entry.
 
+Program Header
+--------------
+
+A Morello toolchain can emit segments in accordance to [CHERI_ELF_]. The
+following fields have Morello-specific meanings.
+
+p\_type
+  The below table lists the Morello-specific segment types.
+
+.. table:: Morello-specific segment types
+
+    +-----------------------------+------------+------------------------------------------------------+
+    | Name                        | p\_type    | Meaning                                              |
+    +=============================+============+======================================================+
+    | ``PT_AARCH64_MEMTAG_CHERI`` | 0x70000003 | Reserved for capability tag data dumps in core files |
+    +-----------------------------+------------+------------------------------------------------------+
+
+``PT_AARCH64_MEMTAG_CHERI`` segments (if present) hold capability tags for a
+particular memory range, packed as one bit per tag.
+
+Dynamic Section
+---------------
+
+A Morello toolchain can emit dynamic tags in accordance to [CHERI_ELF_].
+
 APPENDIX
 ========
 The status of this appendix is ``informative``.
