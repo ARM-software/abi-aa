@@ -218,6 +218,9 @@ Change History
  |            |                              | .note.gnu.property section is present.                |
  |            |                              | - Update distance to GOT for small code-model         |
  +------------+------------------------------+-------------------------------------------------------+
+ | 2026Q1     | 12\ :sup:`th` January 2026   | Add assembler conventions for data directive          |
+ |            |                              | relocation expressions.                               |
+ +------------+------------------------------+-------------------------------------------------------+
 
 References
 ----------
@@ -461,8 +464,8 @@ variant of PIC called PIE (position-independent executable) can be
 used to build an executable. PIE assumes that global symbols cannot be
 pre-empted, which means that an indirection via the GOT is not needed.
 
-Assembler language addressing mode conventions
-----------------------------------------------
+Assembler language addressing mode conventions for instructions
+---------------------------------------------------------------
 
 The assembler examples in this document make use of operators to
 modify the addressing mode used to form the immediate value of the
@@ -653,6 +656,23 @@ syntax is of the form ``#:<operator>:<symbol name>``
 .. raw:: pdf
 
    PageBreak oneColumn
+
+Assembler language addressing mode conventions for data
+-------------------------------------------------------
+
+The assembler operators that apply to instructions use the syntax
+``#:<operator>:<symbol name>``. This syntax is not easy to apply to
+data directives due to a parsing ambiguity with labels.
+
+The recommended syntax for data directives is ``<directive> %operator(expression)``
+
+.. table:: TLS operators
+
+  +-----------------------+------------+------------------+
+  | Operator              | Data size  | Relocation       |
+  +=======================+============+==================+
+  | ``dtprel``            | 8 bytes    | R_AARCH64_DTPREL |
+  +-----------------------+------------+------------------+
 
 Code Models
 ===========
