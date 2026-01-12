@@ -218,6 +218,9 @@ Change History
  |            |                              | .note.gnu.property section is present.                |
  |            |                              | - Update distance to GOT for small code-model         |
  +------------+------------------------------+-------------------------------------------------------+
+ | 2026Q1     | 12\ :sup:`th` January 2026   | Add assembler conventions for data directive          |
+ |            |                              | relocation expressions.                               |
+ +------------+------------------------------+-------------------------------------------------------+
 
 References
 ----------
