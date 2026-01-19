@@ -638,13 +638,14 @@ The ``DW_CFA_AARCH64_negate_ra_state`` instruction toggles between the
 ``DW_AARCH64_RA_NOT_SIGNED`` and ``DW_AARCH64_RA_SIGNED_SP`` return address
 states in RA_SIGN_STATE pseudo-register. It does not take any operands.
 
-The ``DW_CFA_AARCH64_set_ra_state`` instruction takes two operands: an unsigned
-LEB128 value representing a return address state ra_state; and a signed LEB128
-factored offset. The required action is to set the RA_SIGN_STATE pseudo-register
-to the ra_state value and if the ra_state value is ``DW_AARCH64_RA_SIGNED_SP_PC``
-to capture the current code location + (offset * ``code_alignment_factor``)
-as the signing/authenticating PAC instruction, otherwise it is has the value 0.
-The code location information can be used for authenticating the return address.
+The `DW_CFA_AARCH64_set_ra_state` instruction takes two operands. The first is
+an unsigned LEB128 value that specifies the return address state ra_state. The
+second is a signed LEB128 factored offset. The instruction sets the
+`RA_SIGN_STATE` pseudo-register to the ra_state value. If the ra_state value is
+`DW_AARCH64_RA_SIGNED_SP_PC`, it records the current code location + (offset *
+``code_alignment_factor``) as the signing/authenticating PAC instruction,
+otherwise it is 0. The code location information can be used to authenticate the
+return address.
 
 The ``DW_CFA_AARCH64_negate_ra_state_with_pc`` instruction toggles between the
 ``DW_AARCH64_RA_NOT_SIGNED`` and ``DW_AARCH64_RA_SIGNED_SP_PC`` return

@@ -6,7 +6,8 @@
 
 ## About this document
 
-The [AArch64 ELF Conventions for Binary Analysis](baabielf64.rst) specifies code-patterns recognised by Binary Analysis tools.
+The [AArch64 ELF Conventions for Binary Analysis](baabielf64.rst) specifies code
+patterns recognized by Binary Analysis tools.
 
 ## About the license
 

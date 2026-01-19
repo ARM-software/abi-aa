@@ -292,8 +292,8 @@ changes to the content of the document for that release.
   | 2025Q2        | 9\ :sup:`th`       | - In `Call and Jump relocations`_ added |
   |               | April 2025         |   static linker requirements on veneers |
   |               |                    |   when BTI guarded pages are used.      |
-  |               |                    | - Added section for structure protection|
-  |               |                    |   extension relocations.                |
+  |               |                    | - Added section for Structure Protection|
+  |               |                    |   Extension relocations.                |
   |               |                    | - R_AARCH64_GOTPCREL32, clarify addend  |
   +---------------+--------------------+-----------------------------------------+
   | 2026Q1        | 12\ :sup:`th`      | - R_AARCH64_TLS_DTPREL can be used as a |
@@ -1751,9 +1751,13 @@ A data relocation is required to describe the location of a TLS variable in debu
   |            |            | R\_<CLS>\_TLS\_DTPREL       | DTPREL(S+A)                        | See note below                            |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
 
-``R_<CLS>_TLS_DTPREL`` is both a static and dynamic relocation. When used as a static relocation ``S`` must be fully resolved at static link time to a symbol definition in the same module as the relocation.
-
 It is implementation defined whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPREL`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPMOD`` or whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPMOD`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
+
+.. note::
+   ``R_<CLS>_TLS_DTPREL`` is both a static and dynamic relocation. When used as
+   a static relocation ``S`` must be fully resolved at static link time to a
+   symbol definition in the same module as the relocation.
+
 
 Relocations for PAuth ABI Extension
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -318,7 +318,7 @@ space reserved by [CHERI_ELF_] for processor-specific use:
 .. note::
 
   Mixing any combination of two or more of CHERI_TLS_ABI_TRAD,
-  CHERI_TLS_ABI_MORELLO_MIXED and CHERI_TLS_ABI_MORELLO_TGOT_COMPAT objects is
+  CHERI_TLS_ABI_MORELLO_MIXED, and CHERI_TLS_ABI_MORELLO_TGOT_COMPAT objects is
   permitted, and yields a CHERI_TLS_ABI_MORELLO_MIXED object if merged at
   static link time.
 
@@ -905,7 +905,7 @@ Dynamic Morello relocations
 
   ``R_MORELLO_TLS_TGOT_SLOT`` is similar to ``R_MORELLO_CAPINIT`` but should
   not be applied to the TGOT template itself. Instead, represents
-  initialisation to be performed per TGOT. If ``S`` is the null symbol (ELF
+  initialization to be performed per TGOT. If ``S`` is the null symbol (ELF
   symbol index 0), it contains a fragment in the same format as
   ``R_MORELLO_RELATIVE``.
 
@@ -1030,7 +1030,7 @@ A Morello toolchain can emit segments in accordance to [CHERI_ELF_]. The
 following fields have Morello-specific meanings.
 
 p\_type
-  The below table lists the Morello-specific segment types.
+  The following table lists the Morello-specific segment types.
 
 .. table:: Morello-specific segment types
 
@@ -1283,7 +1283,7 @@ TLS for the pure capability ABI (indirect)
 ------------------------------------------
 
 The design is based on TLSDESC, using a TGOT (as described in [CHERI_ELF_]) for
-indirection to minimise privilege and enable compartmentalisation.
+indirection to minimise privilege and enable compartmentalization.
 
 TLS static block
 ^^^^^^^^^^^^^^^^
@@ -1329,7 +1329,7 @@ Local Exec
 
 The capability to the TLS variable is loaded from ``CTPIDR_EL0``. There are no
 requirements on how this is performed or the registers used, except that the
-sequence doesn't produce a dynamic relocation. A possible instruction sequence
+sequence does not produce a dynamic relocation. A possible instruction sequence
 could be:
 
 .. code-block:: text
@@ -1420,13 +1420,13 @@ The relaxed sequence is:
 TLS for the pure capability ABI (mixed / compat)
 ------------------------------------------------
 
-In order to support transitioning from direct to indirect TLS, both can be used
-at once. In this mixed model, direct TLS is entirely as defined above. However,
-for indirect TLS, a "compat" model is used, where the location of the static
-TGOT within the static TLS block is unspecified. This has the following
-implications:
+To support transitioning from direct to indirect TLS, they can be used
+together. In this mixed model, direct TLS is entirely as defined in the `TLS for
+the pure capability ABI (direct)`_ section. However, for indirect TLS, a
+"compat" model is used, where the location of the static TGOT within the static
+TLS block is unspecified. This has the following implications:
 
-- Local Exec is forbidden (including for relaxation); the most optimised access
+- Local Exec is forbidden (including for relaxation); the most optimized access
   model available is Initial Exec
 
 - ``R_MORELLO_TLS_TGOTREL64`` is never statically resolvable to a constant at
