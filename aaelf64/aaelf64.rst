@@ -1452,7 +1452,8 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
     The Large GOT indirection optimization is valid for ``symbol`` if all
     ``R_<CLS>_ADR_GOT_PAGE`` and ``R_<CLS>_LD64_GOT_LO12_NC`` relocations are
     part of a sequence which satisfies all conditions above. If so, any
-    sequences where ``symbol`` is within +-4GiB range may now be optimized.
+    sequences where ``symbol`` is within the range of the ``R_<CLS>_ADR_PREL_PG_HI21``
+    relocation applied to the location of the ``ADRP`` may now be optimized.
     A linker may avoid creating a GOT entry if no other GOT relocations exist
     for the symbol.
 
@@ -1480,9 +1481,10 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
       NOP
       ADR   x0, symbol                  // R_<CLS>_ADR_PREL_LO21
 
-    The optimization is valid if ``symbol`` is within +-1MiB range, the
-    instructions are consecutive, relocate the same symbol and use the
-    same source and destination registers.
+    The optimization is valid if ``symbol`` is within the range of the
+    ``R_<CLS>_ADR_PREL_LO21`` relocation applied to the location of the ``ADD``
+    instruction, the instructions are consecutive, relocate the same symbol
+    and use the same source and destination registers.
 
 Proxy-generating relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
