@@ -191,7 +191,7 @@ changes to the content of the document for that release.
   +------------+------------------------------+------------------------------------------------------------------+
   | Issue      | Date                         | Change                                                           |
   +============+==============================+==================================================================+
-  | 0.1        | 10\ :sup:`st` September 2025 | Alpha draft release.                                             |
+  | 0.1        | 10\ :sup:`th` September 2025 | Alpha draft release.                                             |
   +------------+------------------------------+------------------------------------------------------------------+
 
 References
@@ -232,7 +232,7 @@ Other terms may be defined when first used.
 AArch64 Veneer Types Recognized by Binary Analysis Tools
 ========================================================
 
-As described in AAELF64_, section Call and Jump relocations, the linker may insert veneers (also referred to as thunks, stubs or trampolines) to implement call and jump relocations. This section defines the commonly used types and instruction sequences for such veneers on AArch64, enabling better recognition by binary analysis tools.
+As described in AAELF64_, section Call and Jump relocations, the linker may insert veneers (also referred to as thunks, stubs, or trampolines) to implement call and jump relocations. This section defines the commonly used types and instruction sequences for such veneers on AArch64, enabling better recognition by binary analysis tools.
 
 Toolchains are encouraged to follow these patterns to ensure veneers can be reliably recognized during binary analysis. These pattern sets are intended to remain open, and toolchains may introduce new veneer forms.
 

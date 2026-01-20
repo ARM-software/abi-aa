@@ -213,10 +213,10 @@ Change History
  | 2025Q1     | 7\ :sup:`th` April 2025      | - Require hard-float ABI for sysvabi platforms.       |
  |            |                              | - Document requirements for tools wrt BTI.            |
  +------------+------------------------------+-------------------------------------------------------+
- | 2025Q2     | 20\ :sup:`th` June     2024  | Require that ``PT_GNU_PROPERTY`` program header be    |
+ | 2025Q2     | 20\ :sup:`th` June     2024  | Require that ``PT_GNU_PROPERTY`` program header is    |
  |            |                              | present in executables and shared-libraries if a      |
- |            |                              | .note.gnu.property section is present.                |
- |            |                              | - Update distance to GOT for small code-model         |
+ |            |                              | ``.note.gnu.property`` section is present.            |
+ |            |                              | - Update distance to GOT for small code model         |
  +------------+------------------------------+-------------------------------------------------------+
  | 2026Q1     | 12\ :sup:`th` January 2026   | Add assembler conventions for data directive          |
  |            |                              | relocation expressions.                               |
@@ -862,7 +862,7 @@ Sample code sequences for code models
 
 The following section provide some sample code sequences for
 addressing static data. The samples are provided to illustrate the
-effects on code-generation of the code-models.
+effects on code-generation of the code models.
 
 Get the address of a symbol defined in the same ELF file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1617,10 +1617,10 @@ IFUNC requirements for dynamic linkers
 To resolve an ``R_AARCH64_IRELATIVE`` relocation the dynamic linker
 performs the calculation described in AAELF64_ Dynamic Relocations.
 
-Function Multi-versioning
+Function Multi-Versioning
 -------------------------
 
-Function Multi-versioning (FMV) is an Arm C Language Extension that
+Function Multi-Versioning (FMV) is an Arm C Language Extension that
 lets the compiler generate multiple function versions and auto-dispatch
 between them. Each of the function versions is specialized for a set
 of architecture extensions. The most suitable version is selected
@@ -1628,12 +1628,11 @@ at load time. This requires runtime information about the CPU features
 available on the host. FMV is supported on GNU/Linux, Android, and
 many of the BSD operating systems.
 
-On System V platforms Function Multi-versioning is implemented using
-GNU Indirect Functions (IFUNC). The compiler generated IFUNC resolver
-may rely on the presence of a global variable ``__aarch64_cpu_features``
-provided by the runtime library. It contains information about the
-available CPU features. The runtime library must also provide a
-function ``__init_cpu_features_resolver`` that the IFUNC resolver
+On System V platforms FMV is implemented using GNU Indirect Functions
+(IFUNC). The compiler generated IFUNC resolver may rely on the presence of a
+global variable ``__aarch64_cpu_features`` provided by the runtime library. It
+contains information about the available CPU features. The runtime library must
+also provide a function ``__init_cpu_features_resolver`` that the IFUNC resolver
 can call to initialize ``__aarch64_cpu_features``.
 
 .. code-block:: c
@@ -1763,7 +1762,7 @@ prototype:
 
    void __init_cpu_features_resolver (uint64_t, const uint64_t *);
 
-The above interface expects the same parameters as a GNU Indirect
+This interface expects the same parameters as a GNU Indirect
 Function resolver. See `GNU C Library IFUNC interface`_. Other
 platforms may use a different interface with the runtime library.
 However, all implementations must provide a DSO-local definition
@@ -1878,7 +1877,7 @@ include:
   means that RET instructions are only used for function returns, and
   never as an indirect branch.
 
-* Any functions used by the program that manipulate the stack such as
+* Any functions used by the program that manipulate the stack, such as
   ``setjmp`` and ``longjmp``, must be aware of GCS.
 
 Program Properties and program headers
