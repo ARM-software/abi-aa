@@ -246,7 +246,7 @@ changes to the content of the document for that release.
   |        |                             | support for unwinding with                |
   |        |                             | FEAT_PAuth_LR enabled.                    |
   +--------+-----------------------------+-------------------------------------------+
-  |        |                             | - Added DW_CFA_AARCH64_set_ra_state at    |
+  | 2025Q4 | 23\ :sup:`rd` January 2026  | - Added DW_CFA_AARCH64_set_ra_state at    |
   |        |                             |   **Alpha** quality.                      |
   |        |                             | - Deprecated                              |
   |        |                             |   DW_CFA_AARCH64_negate_ra_state_with_pc. |

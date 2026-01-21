@@ -223,6 +223,10 @@ changes to the content of the document for that release.
   | 2025Q1  | 7\ :sup:`th` April 2025      | - Update `fetch_add` to add atomic floating-point operations.     |
   |         |                              | - Preserve S1 (val) in example code.                              |
   +---------+------------------------------+-------------------------------------------------------------------+
+  | 2025Q4  | 23\ :sup:`rd` January 2026   | - Add ``_Atomic`` types.                                          |
+  |         |                              | - Fix some typos in the 32-bit atomics mapping table.             |
+  |         |                              | - Document release fence using ISHST+ISHLD barriers               |
+  +---------+------------------------------+-------------------------------------------------------------------+
 
 References
 ----------

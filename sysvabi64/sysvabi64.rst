@@ -213,13 +213,15 @@ Change History
  | 2025Q1     | 7\ :sup:`th` April 2025      | - Require hard-float ABI for sysvabi platforms.       |
  |            |                              | - Document requirements for tools wrt BTI.            |
  +------------+------------------------------+-------------------------------------------------------+
- | 2025Q2     | 20\ :sup:`th` June     2024  | Require that ``PT_GNU_PROPERTY`` program header is    |
- |            |                              | present in executables and shared-libraries if a      |
- |            |                              | ``.note.gnu.property`` section is present.            |
+ | 2025Q4     | 23\ :sup:`rd` January 2026   | - Require that ``PT_GNU_PROPERTY`` program header is  |
+ |            |                              |   present in executables and shared-libraries if a    |
+ |            |                              |   ``.note.gnu.property`` section is present.          |
  |            |                              | - Update distance to GOT for small code model         |
- +------------+------------------------------+-------------------------------------------------------+
- | 2026Q1     | 12\ :sup:`th` January 2026   | Add assembler conventions for data directive          |
- |            |                              | relocation expressions.                               |
+ |            |                              | - Add assembler conventions for data directive        |
+ |            |                              |   relocation expressions.                             |
+ |            |                              | - Update ifunc resolver content to include            |
+ |            |                              |   information on AT_HWCAP3,4 fields.                  |
+ |            |                              | - Document Function Multi-Versioning.                 |
  +------------+------------------------------+-------------------------------------------------------+
 
 References
