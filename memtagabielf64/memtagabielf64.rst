@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2025Q1
-.. |date-of-issue| replace:: 07\ :sup:`th` April 2025
+.. |release| replace:: 2025Q4
+.. |date-of-issue| replace:: 23\ :sup:`rd` January 2025
 .. |copyright-date| replace:: 2022-2025
 
 
