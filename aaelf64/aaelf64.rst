@@ -289,15 +289,14 @@ changes to the content of the document for that release.
   |               | April 2025         |   `SHF_AARCH64_PURECODE` processor      |
   |               |                    |   specific section attribute flag.      |
   +---------------+--------------------+-----------------------------------------+
-  | 2025Q2        | 9\ :sup:`th`       | - In `Call and Jump relocations`_ added |
-  |               | April 2025         |   static linker requirements on veneers |
+  | 2025Q4        | 23\ :sup:`rd`      | - In `Call and Jump relocations`_ added |
+  |               | January 2026       |   static linker requirements on veneers |
   |               |                    |   when BTI guarded pages are used.      |
   |               |                    | - Added section for Structure Protection|
   |               |                    |   Extension relocations.                |
   |               |                    | - R_AARCH64_GOTPCREL32, clarify addend  |
-  +---------------+--------------------+-----------------------------------------+
-  | 2026Q1        | 12\ :sup:`th`      | - R_AARCH64_TLS_DTPREL can be used as a |
-  |               | January 2026       |   static relocation as well as dynamic  |
+  |               |                    | - R_AARCH64_TLS_DTPREL can be used as a |
+  |               |                    |   static relocation as well as dynamic  |
   +---------------+--------------------+-----------------------------------------+
 
 References

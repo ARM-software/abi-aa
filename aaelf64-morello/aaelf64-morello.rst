@@ -210,6 +210,11 @@ changes to the content of the document for that release.
   |               |                              | - Distinguish between function pointers and code  |
   |               |                              |   pointers.                                       |
   +---------------+------------------------------+---------------------------------------------------+
+  | 2025Q4        | 23\ :sup:`rd` January 2026   | - Drop GD/IE-to-LE relaxation.                    |
+  |               |                              | - Define relocations and code seqeuences for      |
+  |               |                              |   indirect TLS.                                   |
+  |               |                              | - Document program headers and dynamic sections.  |
+  +---------------+------------------------------+---------------------------------------------------+
 
 References
 ----------

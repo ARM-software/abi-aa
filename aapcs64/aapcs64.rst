@@ -264,12 +264,13 @@ changes to the content of the document for that release.
 |            |                    | - Add agnostic-ZA interface and routines to save/restore SME     |
 |            |                    |   state.                                                         |
 +------------+--------------------+------------------------------------------------------------------+
-|            |                    | - Explicitly say that ZT0 is a temporary register.               |
-|            |                    | - Add a note about the interaction between the SME lazy save     |
+| 2025Q4     | 23\ :sup:`rd`      | - Explicitly say that ZT0 is a temporary register.               |
+|            | January 2026       | - Add a note about the interaction between the SME lazy save     |
 |            |                    |   scheme and asynchronous transfers of control.                  |
 |            |                    | - Recommend that ``setjmp`` as well as ``longjmp`` call          |
 |            |                    |   ``__arm_za_disable``.                                          |
 |            |                    | - Explicitly say that the FFR is a temporary register.           |
+|            |                    | - Clarify how __bf16 affects HFAs                                |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
