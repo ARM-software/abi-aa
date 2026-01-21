@@ -220,7 +220,7 @@ Change History
  |            |                              | - Add assembler conventions for data directive        |
  |            |                              |   relocation expressions.                             |
  |            |                              | - Update ifunc resolver content to include            |
- |            |                              |   info on AT_HWCAP3,4 fields.                         |
+ |            |                              |   information on AT_HWCAP3,4 fields.                  |
  |            |                              | - Document Function Multi-Versioning.                 |
  +------------+------------------------------+-------------------------------------------------------+
 
