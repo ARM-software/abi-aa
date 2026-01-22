@@ -2952,9 +2952,9 @@ Both C and C++ require that a system provide additional type definitions that ar
   +-----------------+------------------+----------------+---------------------+
   | Typedef         | ILP32 **(Beta)** | LP64           | LLP64               |
   +=================+==================+================+=====================+
-  | ``size_t``      | unsigned long    | unsigned long  | unsigned long long  |
+  | ``size_t``      | unsigned int     | unsigned long  | unsigned long long  |
   +-----------------+------------------+----------------+---------------------+
-  | ``ptrdiff_t``   | signed long      | signed long    | signed long long    |
+  | ``ptrdiff_t``   | signed int       | signed long    | signed long long    |
   +-----------------+------------------+----------------+---------------------+
 
 Definition of va\_list
