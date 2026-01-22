@@ -1425,18 +1425,10 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
     If a linker supports optimizing ``R_<CLS>_TLSIE_ADR_GOTTPREL_PAGE21``, it must also support optimizing ``R_<CLS>_TLSIE_LD64_GOTTPREL_LO12_NC``.
 
-- A sequence of relocated instructions may be optimized if all of the following conditions are true:
-
-  - The relocations apply to consecutive instructions in the order specified.
-  - The relocations use the same symbol.
-  - The relocated instructions have the same source and destination register.
-  - The relocations do not appear separately or in a different order.
-
-  In this case each set of relocations is independent and may be optimized. The following sequences are defined:
+- A sequence of relocated instructions may be optimized. The following
+  sequences are defined:
 
   - Large GOT indirection
-
-    A GOT indirection may be optimized into PC-relative addressing:
 
     ::
 
@@ -1448,19 +1440,35 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
       ADRP  x0, symbol                  // R_<CLS>_ADR_PREL_PG_HI21
       ADD   x0, x0, :lo12: symbol       // R_<CLS>_ADD_ABS_LO12_NC
 
-    This sequence may be optimized if it meets all of the following conditions:
+    The following conditions apply:
 
+    - The instructions are consecutive, relocate the same symbol and use the
+      same source and destination registers.
     - ``symbol`` is not a pre-emptable definition.
     - ``symbol`` is not of type ``STT_GNU_IFUNC``.
-    - ``symbol`` does not have a ``st_shndx`` of ``SHN_ABS`` or the output is not required to be position independent.
-    - ``symbol`` is within range of the ``R_<CLS>_ADR_PREL_PG_HI21`` relocation.
-    - The addend of both relocations is zero.
+    - ``symbol`` does not have a ``st_shndx`` of ``SHN_ABS``.
 
-    The optimized sequence does not require a GOT entry. A linker may avoid creating a GOT entry if no other GOT relocations exist for the symbol.
+    The Large GOT indirection optimization is valid for ``symbol`` if all
+    ``R_<CLS>_ADR_GOT_PAGE`` and ``R_<CLS>_LD64_GOT_LO12_NC`` relocations are
+    part of a sequence which satisfies all conditions above. If so, any
+    sequences where ``symbol`` is within the range of the ``R_<CLS>_ADR_PREL_PG_HI21``
+    relocation applied to the location of the ``ADRP`` may now be optimized.
+    A linker may avoid creating a GOT entry if no other GOT relocations exist
+    for the symbol.
 
-  - PC-relative addressing
+    The optimization is unsafe if the relocations are used separately,
+    for example:
 
-    ``ADR`` may replace ``ADRP/ADD`` if ``symbol`` is within +-1MiB range:
+    ::
+
+        ADRP  x0, :got: symbol            // R_<CLS>_ADR_GOT_PAGE
+        B.EQ  forward
+
+        ADRP  x0, :got: symbol            // R_<CLS>_ADR_GOT_PAGE
+      forward:
+        LDR   x0, [x0 :got_lo12: symbol]  // R_<CLS>_LD64_GOT_LO12_NC
+
+  - Short range PC-relative addressing
 
     ::
 
@@ -1471,6 +1479,11 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
       NOP
       ADR   x0, symbol                  // R_<CLS>_ADR_PREL_LO21
+
+    The optimization is valid if ``symbol`` is within the range of the
+    ``R_<CLS>_ADR_PREL_LO21`` relocation applied to the location of the ``ADD``
+    instruction, the instructions are consecutive, relocate the same symbol
+    and use the same source and destination registers.
 
 Proxy-generating relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
