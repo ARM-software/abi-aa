@@ -10,6 +10,8 @@
                       affiliates. All rights reserved.
 
 .. _AAPCS64: https://github.com/ARM-software/abi-aa/releases
+.. |UCAM-CL-TR-986-url| replace:: https://ctsrd-cheri.github.io/morello-early-performance-results/
+.. _UCAM-CL-TR-986: https://ctsrd-cheri.github.io/morello-early-performance-results/
 
 Morello extensions to Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
 ****************************************************************************************
@@ -216,6 +218,8 @@ This document refers to, or is referred to by, the following documents.
     +------------------+--------------------------+--------------------------------------------------------------------------------------------+
     | AAPCS64_         | IHI 005D                 | Procedure Call Standard for the Arm 64-bit Architecture.                                   |
     +------------------+--------------------------+--------------------------------------------------------------------------------------------+
+    | UCAM-CL-TR-986_  | |UCAM-CL-TR-986-url|     | Early performance results from the prototype Morello microarchitecture                     |
+    +------------------+--------------------------+--------------------------------------------------------------------------------------------+
 
 Terms and Abbreviations
 -----------------------
@@ -241,6 +245,12 @@ Deriving a capability
     A capability value CV2 is said to be derived from a capability value CV1
     when CV2 is a copy of CV1 with optionally removed permissions and/or
     optionally narrowed bounds (base increased or limit reduced).
+
+Pure-capability benchmark ABI
+    A variant of the normal pure-capability ABI to work around known
+    limitations in the microarchitecture of the Morello implementation and more
+    closely model the essential overheads of CHERI. See UCAM-CL-TR-986_ for
+    more details of the motivation.
 
 More specific terminology is defined when it is first used.
 
@@ -486,6 +496,8 @@ Subroutine Calls
 
 The A64 and C64 states contain primitive subroutine call instructions, BL and BLR, which performs a branch-with-link operation. The effect of executing BL is to transfer the sequentially next value of the program counter - the return address - into the link register (LR or CLR) and the destination address into the program counter.  The effect of executing BLR is similar except that the new PC value is constructed from the specified register.
 
+.. note::
+   For C64 code in the pure-capability benchmark ABI, the value of CLR after a BL or BLR will have bit 0 set and must be cleared by the callee before returning with ``ret x30``.
 
 Use of CIP0 and CIP1 by the linker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -718,7 +730,7 @@ Interworking between data model variants of AAPCS64 (although technically possib
 
 Interworking between AAPCS64 and AAPCS64-cap is not supported.
 
-Interworking between A64 and C64 states is supported. The linker will insert a veneer at direct branches between different states. The veneer will perform both the state switch and range extensions. It is the responsibility of the callee to switch state on return.
+Interworking between A64 and C64 states is supported if not using the pure-capability benchmark ABI. The linker will insert a veneer at direct branches between different states. The veneer will perform both the state switch and range extensions. It is the responsibility of the callee to switch state on return.
 
 .. raw:: pdf
 

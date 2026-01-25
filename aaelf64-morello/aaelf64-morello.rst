@@ -306,6 +306,24 @@ A Morello toolchain can emit ELF Note sections in accordance to [CHERI_ELF_].
 The following Morello-specific ELF Note types are used, allocated from the
 space reserved by [CHERI_ELF_] for processor-specific use:
 
+.. _Morello-specific note types:
+
+.. class:: aaelf64-morello-note-types
+
+.. table:: Morello-specific note types
+
+  +------------+----------------------------------------+-----------------------------------------------------------+
+  | Value      | Name                                   | Description                                               |
+  +------------+----------------------------------------+-----------------------------------------------------------+
+  | 0x80000000 | NT_CHERI_MORELLO_PURECAP_BENCHMARK_ABI | Whether the object uses the pure-capability benchmark ABI |
+  +------------+----------------------------------------+-----------------------------------------------------------+
+
+.. note::
+
+  NT_CHERI_MORELLO_PURECAP_BENCHMARK_ABI has a Desc Size of 4, and Desc should
+  be interpreted as a 4-byte boolean value, with values other than 0 and 1
+  reserved.
+
 .. _Morello-specific NT_CHERI_TLS_ABI types:
 
 .. class:: aaelf64-morello-NT_CHERI_TLS_ABI-types
@@ -346,8 +364,10 @@ expected definition.
 The type of any other symbol defined in an executable section can be
 ``STT_NOTYPE``. A linker is only required to provide long-branch and PLT support
 for symbols of type ``STT_FUNC``. A linker is also only required to provide
-interworking support for A64 and C64 symbols of type ``STT_FUNC`` (interworking
-for untyped symbols must be encoded directly in the object file)
+interworking support for A64 and C64 symbols of type ``STT_FUNC``, and only if
+not using the pure-capability benchmark ABI (interworking for untyped symbols
+or the pure-capability benchmark ABI must be encoded directly in the object
+file).
 
 Symbol names
 ^^^^^^^^^^^^
@@ -451,13 +471,18 @@ apply to symbols of type ``STT_FUNC`` and ``STT_GNU_IFUNC``:
 
 - If the symbol addresses a C64 instruction, its value is the address of the
   instruction with bit 0 set (in a relocatable object, the section offset with
-  bit 0 set).
+  bit 0 set) if not using the pure-capability benchmark ABI, otherwise it is
+  the same as for a symbol addressing an A64 instruction.
 
 .. note::
   This allows a linker to distinguish A64 and C64 code symbols without having
   to refer to the map. An A64 symbol will always have an even value, while a
   C64 symbol will always have an odd value. However, a linker should strip the
   discriminating bit from the value before using it for relocation.
+
+  Due to the pure-capability benchmark ABI using integer BR/BLR for indirect
+  calls, bit 0 is part of the branch target rather than the new value to use
+  for PSTATE.C64, and so this distinction cannot be used.
 
 Relocation
 ----------
@@ -1258,6 +1283,11 @@ allow correct linker relaxation:
   .tlsdesccall sym
   blr c1
 
+.. note::
+
+  In the pure-capability benchmark ABI, the final ``blr c1`` is replaced with
+  ``blr x1``.
+
 General Dynamic to Initial Exec relaxation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1397,6 +1427,11 @@ allow correct linker relaxation:
   add c0, c0, :tgot_tlsdesc_lo12:sym
   .tgot_tlsdesccall sym
   blr c2
+
+.. note::
+
+  In the pure-capability benchmark ABI, the final ``blr c2`` is replaced with
+  ``blr x2``.
 
 General Dynamic to Initial Exec relaxation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
