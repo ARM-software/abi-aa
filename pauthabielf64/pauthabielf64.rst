@@ -12,6 +12,7 @@
 .. _ARM64E: https://github.com/apple/llvm-project/blob/a63a81bd9911f87a0b5dcd5bdd7ccdda7124af87/clang/docs/PointerAuthentication.rst
 .. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html
+.. _MEMTAGABI: https://github.com/ARM-software/abi-aa/releases
 .. _SCO-ELF: http://www.sco.com/developers/gabi/
 .. _SYSVABI64: https://github.com/ARM-software/abi-aa/releases
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
@@ -248,6 +249,8 @@ changes to the content of the document for that release.
   |            |                             | - Move AUTH GOT generating relocations out of private experiment |
   |            |                             |   Range.                                                         |
   +------------+-----------------------------+------------------------------------------------------------------+
+  | 2026Q2     | 6\ :sup:`th` January 2026   | - Clarify combination of MemtagABI and PAuthABI relocations      |
+  +------------+-----------------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -268,6 +271,8 @@ This document refers to, or is referred to by, the following documents.
   | CPPABI64_                                                                               | IHI 0059                                                    | C++ ABI for the Arm 64-bit Architecture                                  |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | LSB_                                                                                    |                                                             | Linux Standards Base                                                     |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
+  | MEMTAGABI_                                                                              | memtagabi64                                                 | Memtag ABI Extension for the Arm 64-bit Architecture                     |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | SCO-ELF_                                                                                | http://www.sco.com/developers/gabi/                         | System V Application Binary Interface – DRAFT                            |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
@@ -667,7 +672,7 @@ this should be sufficient.
 * ``reserved for addend`` is used in ``SHT_AUTH_RELR`` or ``SHT_REL``
   relocation implementations where the relocation addend is written to
   the contents of the place. It must be set to 0 if not used for an
-  addend.
+  addend, or not used for the (MEMTAGABI_) addend correction.
 
 * ``reserved`` are bits reserved for future expansion. These bits must
   be set to 0 by a producer. A consumer must not assume that reserved
@@ -1228,6 +1233,47 @@ The ``R_AARCH64_AUTH_GOT_ADR_PREL_LO21`` relocation is used with the
   +--------------------+------------------------------+------------------------------------+
   | 0x414 (1044)       | R\_AARCH64\_AUTH\_IRELATIVE  | SIGN(Indirect(S + A), SCHEMA(\*P)) |
   +--------------------+------------------------------+------------------------------------+
+
+Combination of PAuthABI with the Memtag ABI Extension
+-----------------------------------------------------
+
+The Memtag ABI Extension (MEMTAGABI_) extends the semantics of some
+dynamic relocations in (AAELF64_) to support memory tagging. The
+extended semantics described in (MEMTAGABI_) can be extended to the
+AUTH variant dynamic relocations described in this document.
+
+For ``R_AARCH64_AUTH_ABS64`` and ``R_AARCH64_AUTH_GLOB_DAT`` the
+extension is for the dynamic linker to materialize the tag for the
+pointer, then to sign it.
+
+For ``R_AARCH64_AUTH_RELATIVE``, both the (MEMTAGABI_) and the
+PAuthABI require metadata to be stored in the place of the
+relocation. The (MEMTAGABI_) stores an optional addend correction, and
+the PAuthABI stores the signing schema with an addend field for use
+with RELR compression. As the (MEMTAGABI_) excludes relocations that
+require addend correction from RELR compression, and the addend
+correction is expected to be small, the 32-bit addend field in the
+signing schema can be used for the (MEMTAGABI_) addend correction.
+
+Relocation Operation
+====================
+
+* ``LDG(pointer)`` is defined in (MEMTAGABI_).
+
+* ``ADDEND(\*P)`` represents the dynamic linker reading the addend
+  field from the contents of the place ``P``.
+
+.. table:: Relocations with extended semantics with MemtagABI
+
+  +--------------+-----------------------------+---------------------------------+-------------------------------------------------------------------+
+  | ELF64 Code   | Name                        | PAuthABI Base Operation         | MemtagABI Extended Operation                                      |
+  +==============+=============================+=================================+===================================================================+
+  | 0x244 (580)  | R\_AARCH64\_AUTH\_ABS64     | SIGN((S + A), SCHEMA(\*P))      | SIGN((LDG(S) + A), SCHEMA(\*P))                                   |
+  +--------------+-----------------------------+---------------------------------+-------------------------------------------------------------------+
+  | 0x413 (1043) | R\_AARCH64\_AUTH\_RELATIVE  | SIGN(DELTA(S) + A, SCHEMA(\*P)) | SIGN((LDG(Delta(S) + A + ADDEND(\*P)) - ADDEND(\*P), SCHEMA(\*P)) |
+  +--------------+-----------------------------+---------------------------------+-------------------------------------------------------------------+
+  | 0x414 (1044) | R\_AARCH64\_AUTH\_GLOB\_DAT | SIGN((S + A), SCHEMA(\*P))      | SIGN((LDG(S) + A), SCHEMA(\*P))                                   |
+  +--------------+-----------------------------+---------------------------------+-------------------------------------------------------------------+
 
 Compatibility between relocatable object files
 ----------------------------------------------
