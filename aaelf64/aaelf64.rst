@@ -1053,17 +1053,17 @@ The following nomenclature is used in the descriptions of relocation operations:
 
 - ``X`` is the result of a relocation operation, before any masking or bit-selection operation is applied
 
-- ``Page(expr)`` is the page address of the expression expr, defined as (expr & ~0xFFF). (This applies even if the machine page size supported by the platform has a different value.)
+- ``Page(expr)`` is the page address of the expression ``expr``, defined as ``(expr & ~0xFFF)``. (This applies even if the machine page size supported by the platform has a different value.)
 
-- ``GOT`` is the address of the Global Offset Table, the table of code and data addresses to be resolved at dynamic link time. The ``GOT`` and each entry in it must be, 64-bit aligned for ELF64 or 32-bit aligned for ELF32.
+- ``GOT`` is the address of the Global Offset Table, the table of code and data addresses to be resolved at dynamic link time. The ``GOT`` and each entry in it must be 64-bit aligned for ELF64 or 32-bit aligned for ELF32.
 
 - ``GDAT(S+A)`` represents a pointer-sized entry in the ``GOT`` for address ``S+A``. The entry will be relocated at run time with relocation ``R_<CLS>_GLOB_DAT(S+A)``.
 
-- ``G(expr)`` is the address of the GOT entry for the expression expr.
+- ``G(expr)`` is the address of the GOT entry for the expression ``expr``.
 
 - ``Delta(S)`` if ``S`` is a normal symbol, resolves to the difference between the static link address of ``S`` and the execution address of ``S``. If ``S`` is the null symbol (ELF symbol index 0), resolves to the difference between the static link address of ``P`` and the execution address of ``P``.
 
-- ``Indirect(expr)`` represents the result of calling expr as a function. The result is the return value from the function that is returned in ``r0``. The arguments passed to the function are defined by the platform ABI.
+- ``Indirect(expr)`` represents the result of calling ``expr`` as a function. The result is the return value from the function that is returned in ``r0``. The arguments passed to the function are defined by the platform ABI.
 
 - ``[msb:lsb]`` is a bit-mask operation representing the selection of bits in a value. The bits selected range from lsb up to msb inclusive. For example, ‘bits [3:0]’ represents the bits under the mask 0x0000000F. When range checking is applied to a value, it is applied before the masking operation is performed.
 
