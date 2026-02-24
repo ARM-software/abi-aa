@@ -1,9 +1,9 @@
 ..
-   Copyright (c) 2023, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2026, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |copyright-date| replace:: 2023
+.. |copyright-date| replace:: 2026
 
 .. _AAELF32: https://github.com/ARM-software/abi-aa/releases
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -121,6 +121,8 @@ changes to the content of the document for that release.
   +============+=====================+==================================================================+
   | 0.1        | 24th October 2023   | First draft                                                      |
   +------------+---------------------+------------------------------------------------------------------+
+  | 1.0        | 24th February 2026  | Initial release                                                  |
+  +------------+---------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -172,9 +174,9 @@ requirements on the execution unit, or the compatibility of the
 loadable-unit with optional platform features. It also contains some
 guidelines for future use of GNU properties.
 
-Nothing in this document is part of the specification. Any
-contradictions between this rationale and the specification shall be
-resolved in favor of the specification.
+Nothing in this document is part of the ABI specification of GNU
+properties. Any contradictions between this rationale and the
+specification shall be resolved in favor of the specification.
 
 This document assumes that the reader is familiar with GNU properties
 as defined by (LINUX_ABI_), and the AArch64 specific properties
@@ -219,7 +221,7 @@ the program to agree on the signing schema.
 
 To permit an ELF loader to reason about feature compatibility and take
 extra actions as a result of features some additional metadata must be
-recorded in the ELF file. This document will use the team ELF
+recorded in the ELF file. This document will use the term ELF
 loadable-unit marking scheme to describe the metadata.
 
 Design Goals
@@ -227,8 +229,8 @@ Design Goals
 
 The design goals of an ELF marking scheme are:
 
-- Utilize existing ELF marking standards where possible.  Platforms
-  may already have an implementation existing standards that can be
+- Utilize existing ELF marking standards where possible. Platforms
+  may already have an implementation of existing standards that can be
   adapted.
 
 - The ELF loadable-unit marking scheme must be easy for a program
@@ -240,6 +242,9 @@ The design goals of an ELF marking scheme are:
 - The ELF loadable-unit marking scheme must be easy for a static
   linker to write given a relocatable-object marking scheme, or a
   command-line options.
+
+- The ELF loadable-unit marking scheme must be present in both
+  statically linked and dynamically linked loadable-units.
 
 - Separate out the requirements on the execution environment such as
   hardware requirements from compatibility with optional features that
@@ -257,9 +262,9 @@ GNU program properties
 ======================
 
 GNU program properties are a linux extension defined in
-(``LINUX_ABI_``). They are encoded in ``SHT_NOTE`` sections with a
+(LINUX_ABI_). They are encoded in ``SHT_NOTE`` sections with a
 name of ``.note.GNU.property``. There are generic properties common to
-all targets defined in (``LINUX_ABI_``) as well as processor specific
+all targets defined in (LINUX_ABI_) as well as processor specific
 properties with values between ``GNU_PROPERTY_LOPROC`` and
 ``GNU_PROPERTY_HIPROC``.
 
@@ -269,7 +274,7 @@ and combination rules for each program property is specified by the
 program property itself.
 
 Program properties in the output ELF file may also be set by other
-means.  For example a static linker command line option may be used to
+means. For example a static linker command line option may be used to
 override or influence the combination rules. Furthermore information
 to set the output program properties may come from another relocatable
 object property description format like build attributes
@@ -278,12 +283,12 @@ object property description format like build attributes
 If program properties are present in the output ELF file static
 linkers are expected to create a ``PT_GNU_PROPERTY`` program header
 that desribes the location of the program properties to a program
-loader. See (``LINUX_ABI_``) for details.
+loader. See (LINUX_ABI_) for details.
 
 Scope of GNU program properties in the AArch64 ABI
 --------------------------------------------------
 
-As a Linux extension defined by (``LINUX_ABI_``) the AArch64 use of
+As a Linux extension defined by (LINUX_ABI_) the AArch64 use of
 program properties is required for the Linux platform. Other platforms
 can choose their own alternative method of encoding program
 properties. The SystemV ABI for the Arm 64-bit Architecture
@@ -301,18 +306,18 @@ The scope of this guidance is AArch64 program properties in the range
 ``GNU_PROPERTY_LOPROC`` to ``GNU_PROPERTY_HIPROC``.
 
 For reference the x86_64 program properies are defined in
-``X86_64PSABI_``.
+(X86_64PSABI_).
 
 Data format
 ^^^^^^^^^^^
 
-The data format for each program property is implementation
-defined. It can be as simple as an integer containing feature bits, to
-a ULEB128 encoded format like the Arm Build Attributes.
+The data format for each program property is defined by the program
+property. It can be as simple as an integer containing feature bits,
+to a ULEB128 encoded format like the Arm Build Attributes.
 
 To limit the overhead of processing by the dynamic linker, keeping the
-program properties as simple as possible is recommended. For example a
-single integer containing feature bits.
+program property formats as simple as possible is recommended. For
+example a single integer containing feature bits.
 
 Modelling features in program properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -322,7 +327,7 @@ AArch64 Architectural features
 
 The baseline for AArch64 Linux programs is the 64-bit Arm v8
 architecture. Additional features on top of Arm v8 are described by
-the ``ARMARM_`` as features, which may be optional or mandatory for a
+the (ARMARM_) as features, which may be optional or mandatory for a
 particular architecture extension like Arm v8.2-A. Features can be
 back-ported to older extensions so it is not possible to just record
 the architecture extension. The baseline and additional features is
@@ -342,18 +347,22 @@ Focus on userspace architectural features
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Userspace programs are expected to be portable between software
-platforms running on different hardware.  Platform specific software
+platforms running on different hardware. System software
 can be customized for the hardware that it runs on.
 
-Only require features that can't be tested at runtime
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Only require architectural features that can't be tested at runtime
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A majority of AArch64 features are amenable to runtime testing, with
-different functions in a program being called based on the
-capabilities of the platform. On linux userspace programs can test for
-features using ``HWCAPS_``. If a program has used runtime testing to
-check that a feature is available then we must not record in a program
-property that the feature is required.
+A program can testing for the presence of an architectural feature at
+runtime, and only use the feature if it is present. Examples of
+runtime testing include outline atomics and function multiversioning
+(ACLEMULTIVERSION_).
+
+If a program has used runtime testing to check that an architectural
+feature is available and can fall back to a baseline implementation,
+then we must not record in a program property that the architectural
+feature is required. For example if a program uses outline atomics,
+the program does not require the LSE atomics feature.
 
 A corollary is that we do not need to model all of the AArch64
 architectural features. Only those that are not amenable to runtime
@@ -367,12 +376,13 @@ backwards compatible way using the HINT space. If the feature is not
 present or not enabled the HINT space instructions execute as a NOP.
 
 A feature that only uses the HINT space, by definition, does not have
-any hardware requirements. The feature may require that the program
+any architecture requirements. The feature may require that the program
 loader take some action such as enabling the Guard Page (GP) bit for
 programs that have the ``GNU_PROPERTY_AARCH64_FEATURE_1_BTI`` set.
 
-A separate program property is required for features that can be
-optionally enabled.
+A separate program property such as
+``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` is required for features that
+can be optionally enabled.
 
 Representing features in properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -380,7 +390,7 @@ Representing features in properties
 There are a number of possible sources of architectural features that
 a GNU property could be based on:
 
-- The Arm Architecture Reference Manual (``ARMARM_``) describes
+- The Arm Architecture Reference Manual (ARMARM_) describes
   features individually in the form of FEAT_<feature> such as
   ``FEAT_BTI`` and ``FEAT_PAUTH``. Some features are independent and
   some are linked, for example ``FEAT_FPAC`` can only be implemented
@@ -395,7 +405,7 @@ a GNU property could be based on:
 - Function multi-versioning attributes (ACLEMULTIVERSION_). This uses
   similar names to compiler ``-march`` and ``-mcpu`` features.
 
-While the ``ARMARM_`` is the canonical reference for the
+While the (ARMARM_) is the canonical reference for the
 architecture. Many of the features have no effect on
 code-generation. Choosing a model that is as close to the compiler
 command line ``-march`` and ``-mcpu`` will be easiest for a software
