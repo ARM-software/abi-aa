@@ -3,9 +3,9 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2024Q1
-.. |date-of-issue| replace:: 14\ :sup:`th` November 2024
-.. |copyright-date| replace:: 2024
+.. |release| replace:: 2026Q2
+.. |date-of-issue| replace:: 24\ :sup:`th` February 2026
+.. |copyright-date| replace:: 2026
 
 .. _ADDENDA32: https://github.com/ARM-software/abi-aa/releases
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
@@ -240,6 +240,8 @@ changes to the content of the document for that release.
   +------------+---------------------+---------------------------------------------------------------------+
   | 0.6        | 7th November 2025   | Changed aeabi subsection prefix to aeabi\_ from aeabi. All existing |
   |            |                     | names are compliant with this pattern.                              |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.7        | 24th February 2026  | Initial Beta release.                                               |
   +------------+---------------------+---------------------------------------------------------------------+
 
 References

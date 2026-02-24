@@ -3,7 +3,7 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |copyright-date| replace:: 2024
+.. |copyright-date| replace:: 2026
 
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
@@ -119,6 +119,8 @@ changes to the content of the document for that release.
   +------------+---------------------+------------------------------------------------------------------+
   | 0.2        | 14th November 2024  | Updates after feedback from initial implementation.              |
   |            |                     | Move Tool Interface for aeabi subsections to main specification. |
+  +------------+---------------------+------------------------------------------------------------------+
+  | 0.3        | 24th February 2026  | Initial Beta Release                                             |
   +------------+---------------------+------------------------------------------------------------------+
 
 References
