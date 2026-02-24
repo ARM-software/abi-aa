@@ -1,5 +1,5 @@
 ..
-   Copyright (c) 2024, Arm Limited and its affiliates.  All rights reserved.
+   Copyright (c) 2024-2026, Arm Limited and its affiliates.  All rights reserved.
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
