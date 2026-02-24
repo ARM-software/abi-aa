@@ -32,7 +32,7 @@ declare -a docs=(
     "aadwarf32" "aaelf32" "aapcs32" "addenda32" "advnote132" "bpabi32" "bsabi32" "clibabi32" "cppabi32" "dbgovl32" "ehabi32" "rtabi32"
 
     # 64-bit
-    "aadwarf64" "aaelf64" "aapcs64" "cppabi64" "sysvabi64" "vfabia64"
+    "aadwarf64" "aaelf64" "aapcs64" "buildattr64" "cppabi64" "sysvabi64" "vfabia64"
 
     # pauth extension
     "pauthabielf64"

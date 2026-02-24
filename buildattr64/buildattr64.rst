@@ -1,0 +1,1250 @@
+..
+   Copyright (c) 2024-2026, Arm Limited and its affiliates.  All rights reserved.
+   CC-BY-SA-4.0 AND Apache-Patent-License
+   See LICENSE file for details
+
+.. |release| replace:: 2026Q2
+.. |date-of-issue| replace:: 24\ :sup:`th` February 2026
+.. |copyright-date| replace:: 2026
+
+.. _ADDENDA32: https://github.com/ARM-software/abi-aa/releases
+.. _AAELF64: https://github.com/ARM-software/abi-aa/releases
+.. _ARMARM: https://developer.arm.com/documentation/ddi0487/latest
+.. _BUILDATTR64RATIONALE: https://github.com/ARM-software/abi-aa/tree/main/design-documents
+.. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
+.. _GDWARF: https://dwarfstd.org
+.. _LINUX_ABI: https://github.com/hjl-tools/linux-abi/wiki/Linux-Extensions-to-gABI
+.. _PAUTHABI64: https://github.com/ARM-software/abi-aa/releases
+.. _SYSVABI64: https://github.com/ARM-software/abi-aa/releases
+
+.. footer::
+
+   ###Page###
+
+   |
+
+   Copyright © |copyright-date|, Arm Limited and its affiliates. All rights
+   reserved.
+
+Build Attributes for the Arm® 64-bit Architecture (AArch64)
+***********************************************************
+
+.. class:: version
+
+|release|
+
+.. class:: issued
+
+Date of Issue: |date-of-issue|
+
+.. class:: logo
+
+.. image:: Arm_logo_blue_RGB.svg
+   :scale: 30%
+
+.. section-numbering::
+
+.. raw:: pdf
+
+   PageBreak oneColumn
+
+Preamble
+========
+
+Abstract
+--------
+
+This document describes the implementation of build attributes for
+the 64-bit Arm Architecture.
+
+Keywords
+--------
+
+ELF, AArch64 ELF, Build Attributes
+
+Latest release and defects report
+---------------------------------
+
+Please check `Application Binary Interface for the Arm® Architecture
+<https://github.com/ARM-software/abi-aa>`_ for the latest
+release of this document.
+
+Please report defects in this specification to the `issue tracker page
+on GitHub
+<https://github.com/ARM-software/abi-aa/issues>`_.
+
+.. raw:: pdf
+
+   PageBreak
+
+Licence
+-------
+
+This work is licensed under the Creative Commons
+Attribution-ShareAlike 4.0 International License. To view a copy of
+this license, visit http://creativecommons.org/licenses/by-sa/4.0/ or
+send a letter to Creative Commons, PO Box 1866, Mountain View, CA
+94042, USA.
+
+Grant of Patent License. Subject to the terms and conditions of this
+license (both the Public License and this Patent License), each
+Licensor hereby grants to You a perpetual, worldwide, non-exclusive,
+no-charge, royalty-free, irrevocable (except as stated in this
+section) patent license to make, have made, use, offer to sell, sell,
+import, and otherwise transfer the Licensed Material, where such
+license applies only to those patent claims licensable by such
+Licensor that are necessarily infringed by their contribution(s) alone
+or by combination of their contribution(s) with the Licensed Material
+to which such contribution(s) was submitted. If You institute patent
+litigation against any entity (including a cross-claim or counterclaim
+in a lawsuit) alleging that the Licensed Material or a contribution
+incorporated within the Licensed Material constitutes direct or
+contributory patent infringement, then any licenses granted to You
+under this license for that Licensed Material shall terminate as of
+the date such litigation is filed.
+
+About the license
+-----------------
+
+As identified more fully in the Licence_ section, this project
+is licensed under CC-BY-SA-4.0 along with an additional patent
+license.  The language in the additional patent license is largely
+identical to that in Apache-2.0 (specifically, Section 3 of Apache-2.0
+as reflected at https://www.apache.org/licenses/LICENSE-2.0) with two
+exceptions.
+
+First, several changes were made related to the defined terms so as to
+reflect the fact that such defined terms need to align with the
+terminology in CC-BY-SA-4.0 rather than Apache-2.0 (e.g., changing
+“Work” to “Licensed Material”).
+
+Second, the defensive termination clause was changed such that the
+scope of defensive termination applies to “any licenses granted to
+You” (rather than “any patent licenses granted to You”).  This change
+is intended to help maintain a healthy ecosystem by providing
+additional protection to the community against patent litigation
+claims.
+
+Contributions
+-------------
+
+Contributions to this project are licensed under an inbound=outbound
+model such that any such contributions are licensed by the contributor
+under the same terms as those in the `Licence`_ section.
+
+Trademark notice
+----------------
+
+The text of and illustrations in this document are licensed by Arm
+under a Creative Commons Attribution–Share Alike 4.0 International
+license ("CC-BY-SA-4.0”), with an additional clause on patents.
+The Arm trademarks featured here are registered trademarks or
+trademarks of Arm Limited (or its subsidiaries) in the US and/or
+elsewhere. All rights reserved. Please visit
+https://www.arm.com/company/policies/trademarks for more information
+about Arm’s trademarks.
+
+Copyright
+---------
+
+Copyright (c) |copyright-date|, Arm Limited and its affiliates.  All rights reserved.
+
+.. raw:: pdf
+
+   PageBreak
+
+.. contents::
+   :depth: 3
+
+.. raw:: pdf
+
+   PageBreak
+
+About this document
+===================
+
+Change Control
+--------------
+
+Current Status and Anticipated Changes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following support level definitions are used by the Arm ABI specifications:
+
+**Release**
+   Arm considers this specification to have enough
+   implementations, which have received sufficient testing, to verify
+   that it is correct. The details of these criteria are dependent on
+   the scale and complexity of the change over previous versions:
+   small, simple changes might only require one implementation, but
+   more complex changes require multiple independent implementations,
+   which have been rigorously tested for cross-compatibility. Arm
+   anticipates that future changes to this specification will be
+   limited to typographical corrections, clarifications and compatible
+   extensions.
+
+**Beta**
+   Arm considers this specification to be complete, but existing
+   implementations do not meet the requirements for confidence in its release
+   quality. Arm may need to make incompatible changes if issues emerge from its
+   implementation.
+
+**Alpha**
+   The content of this specification is a draft, and Arm considers the
+   likelihood of future incompatible changes to be significant.
+
+This document is at **Beta** release quality.
+
+Change history
+^^^^^^^^^^^^^^
+
+If there is no entry in the change history table for a release, there are no
+changes to the content of the document for that release.
+
+.. table::
+
+  +------------+---------------------+---------------------------------------------------------------------+
+  | Issue      | Date                | Change                                                              |
+  +============+=====================+=====================================================================+
+  | 0.1        | 18th October 2023   | Alpha draft release for public comment                              |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.2        | 14th November 2024  | Updates after feedback from initial implementation.                 |
+  |            |                     | Specification now at Beta                                           |
+  |            |                     | Clarification of "optional" in public subsection header             |
+  |            |                     | Clarification that public subsections define their own attributes   |
+  |            |                     | Clarify static linker responsibilities with mixed build attributes  |
+  |            |                     | and .note.gnu.property sections.                                    |
+  |            |                     | Tool Interface for aeabi subsections taken from rationale document. |
+  |            |                     | Changed assembler syntax to make parameters mandatory and to define |
+  |            |                     | human readable names.                                               |
+  |            |                     | Generalise mapping of aeabi_feature_and_bits to .note.gnu.property  |
+  |            |                     | Renumber aeabi_feature_and_bits tags to start from 0.               |
+  |            |                     | Clarify that the same attribute with different values is an error.  |
+  |            |                     | Rename subsection names to avoid - character which can be difficult |
+  |            |                     | for assemblers to parse as a single token.                          |
+  |            |                     | Recommend that aeabi_pauthabi subsection not emitted when pauthabi  |
+  |            |                     | not used.                                                           |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.3        | 29th January 2025   | All subsections, and not just public subsections must follow the    |
+  |            |                     | syntactic structure of a subsection.                                |
+  |            |                     | Introduced a naming convention for private subsection names using   |
+  |            |                     | registered vendors.                                                 |
+  |            |                     | Added predefined macro for toolchains to define when they support   |
+  |            |                     | build attributes.                                                   |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.4        | 17th March 2025     | Rewrote PAuthABI attributes to more closely match the existing      |
+  |            |                     | .note.gnu.property section.                                         |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.5        | 4th July 2025       | Changed optional field to comprehension to clarify its intent. No   |
+  |            |                     | change to encoding or assembly directives.                          |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.6        | 7th November 2025   | Changed aeabi subsection prefix to aeabi\_ from aeabi. All existing |
+  |            |                     | names are compliant with this pattern.                              |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 0.7        | 24th February 2026  | Initial Beta release.                                               |
+  +------------+---------------------+---------------------------------------------------------------------+
+
+References
+----------
+
+This document refers to, or is referred to by, the following documents.
+
+.. table::
+
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | Ref                                                                                     | URL or other reference                                      | Title                                                                       |
+  +=========================================================================================+=============================================================+=============================================================================+
+  | ADDENDA32_                                                                              | IHI 0045                                                    | Addenda to, and errata in, the ABI for the Arm Architecture                 |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | ARMARM_                                                                                 | DDI 0487                                                    | Arm Architecture Reference Manual Armv8 for Armv8-A architecture profile    |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | AAELF64_                                                                                | IHI 0056                                                    | ELF for the Arm 64-bit Architecture                                         |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | BUILDATTR64RATIONALE_                                                                   |                                                             | Design Rationale for Build Attributes                                       |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | CPPABI64_                                                                               | IHI 0059                                                    | C++ ABI for the Arm 64-bit Architecture                                     |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LINUX_ABI_                                                                              |                                                             | Linux extensions to GABI                                                    |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SYSVABI64_                                                                              |                                                             | System V Application Binary Interface (ABI) for the Arm 64-bit Architecture |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | GDWARF_                                                                                 | https://dwarfstd.org/index.html                             | DWARF, the generic debug table format                                       |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LINUX_ABI_                                                                              | https://github.com/hjl-tools/linux-abi/wiki                 | Linux Extensions to gABI                                                    |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | PAUTHABI64_                                                                             | DDI 0487                                                    | PAuth ABI Extension to ELF for the 64-bit Architecture                      |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------+
+
+Terms and Abbreviations
+-----------------------
+
+The ABI for the Arm 64-bit Architecture uses the following terms and abbreviations.
+
+A32
+   The instruction set named Arm in the Armv7 architecture; A32 uses 32-bit
+   fixed-length instructions.
+
+A64
+   The instruction set available when in AArch64 state.
+
+AAPCS64
+   Procedure Call Standard for the Arm 64-bit Architecture (AArch64)
+
+AArch32
+   The 32-bit general-purpose register width state of the Armv8 architecture,
+   broadly compatible with the Armv7-A architecture.
+
+AArch64
+   The 64-bit general-purpose register width state of the Armv8 architecture.
+
+ABI
+   Application Binary Interface:
+
+   1. The specifications to which an executable must conform in order to
+      execute in a specific execution environment. For example, the
+      *Linux ABI for the Arm Architecture*.
+
+   2. A particular aspect of the specifications to which independently produced
+      relocatable files must conform in order to be statically linkable and
+      executable.  For example, the CPPABI64_, AAELF64_, ...
+
+Arm-based
+   ... based on the Arm architecture ...
+
+Floating point
+   Depending on context floating point means or qualifies: (a) floating-point
+   arithmetic conforming to IEEE 754 2008; (b) the Armv8 floating point
+   instruction set; (c) the register set shared by (b) and the Armv8 SIMD
+   instruction set.
+
+Q-o-I
+   Quality of Implementation – a quality, behavior, functionality, or
+   mechanism not required by this standard, but which might be provided
+   by systems conforming to it.  Q-o-I is often used to describe the
+   toolchain-specific means by which a standard requirement is met.
+
+SIMD
+   Single Instruction Multiple Data – A term denoting or qualifying:
+   (a) processing several data items in parallel under the control of one
+   instruction; (b) the Arm v8 SIMD instruction set: (c) the register set
+   shared by (b) and the Armv8 floating point instruction set.
+
+SIMD and floating point
+   The Arm architecture’s SIMD and Floating Point architecture comprising
+   the floating point instruction set, the SIMD instruction set and the
+   register set shared by them.
+
+SVE
+   The Arm architecture's Scalable Vector Extension.
+
+T32
+   The instruction set named Thumb in the Armv7 architecture; T32 uses
+   16-bit and 32-bit instructions.
+
+VG
+   The number of 64-bit “vector granules” in an SVE vector; in other words,
+   the number of bits in an SVE vector register divided by 64.
+
+ILP32
+   SysV-like data model where int, long int and pointer are 32-bit
+
+LP64
+   SysV-like data model where int is 32-bit, but long int and
+   pointer are 64-bit.
+
+LLP64
+   Windows-like data model where int and long int are 32-bit, but
+   long long int and pointer are 64-bit.
+
+
+This document uses the following terms and abbreviations.
+
+Link-unit
+   An executable or shared library. Also known as loadable-unit in
+   this document.
+
+Loadable-unit
+   An executable or shared library. Also known as link-unit in
+   other ABI documents.
+
+Whole-program
+   A combination of an executable and all its shared library dependencies.
+
+.. raw:: pdf
+
+   PageBreak
+
+Scope
+=====
+
+This document contains the specification of build attributes for
+64-bit ELF files defined in (AAELF64_). The AArch64 specification
+builds upon the AArch32 specification described in (ADDENDA32_). This
+document reuses much of the concepts from (ADDENDA32_), concentrating
+on the AArch64 specific information.
+
+A design rationale for build attributes containing an explanation of
+the design decisions is available in (BUILDATTR64RATIONALE_)
+
+.. raw:: pdf
+
+   PageBreak
+
+
+Introduction
+============
+
+About build attributes and compatibility
+----------------------------------------
+
+Build attributes record data that a linker needs to reason
+mechanically about the compatibility, or incompatibility, of a set of
+relocatable object files.  Other tools that consume relocatable object
+files may find the data useful.
+
+Build attributes are designed to have long-term invariant
+meaning. They record choices to which there is long term public
+commitment through the Arm Architecture Reference Manual [ARMARM_],
+the ABI for the Arm Architecture (of which this document is a
+component), vendor data sheets, and similar long lived publications.
+
+Build attributes approximate the intentions the user of a compiler or
+assembler has for the compatibility of the relocatable object file
+produced by the compiler or assembler (`Attribute values are based on
+user intentions`_).
+
+The figure below depicts the software development flows in which build
+attributes are important.
+
+.. figure:: buildattr64-toolflow.svg
+
+   Software development flows supported by build attributes
+
+In this depiction there are two principal uses of build attributes.
+
+* Within a tool chain, build attributes generate rich opportunities
+  for a linker to diagnose incompatibility, enforce compatibility,
+  and select library members intelligently according to its
+  compatibility model.
+
+* Between tool chains, build attributes describe the intended
+  compatibility of a relocatable object file and the entities it
+  defines in terms independent of either tool chain, promoting safe
+  exchange of portable code in binary form.
+
+Attribute values are based on user intentions
+---------------------------------------------
+
+We base attribute values on user intentions to avoid the values being
+an unpredictable (effectively random) function of a compiler’s code
+generation algorithms and to support using attributes with assembly
+language without overburdening programmers. Where attributes support
+exchanging portable relocatable object files among tool chains,
+predictability is worth more than precision.
+
+Capturing user intentions about compatibility
+---------------------------------------------
+
+This standard does not specify how a tool should capture and
+approximate the intentions of its users.
+
+As far as possible, ABI-defined compatibility tags (`Public
+subsections`_) model the long-term compatibility commitments implicit
+in architectural specifications, product data sheets, and the ABI for
+the Arm Architecture.
+
+In general, tools have invocation options – command-line options and
+GUI configuration options – that present choices similar to those
+revealed in such documentation and modeled by ABI-defined
+compatibility tags.
+
+The challenge for a tool that generates relocatable object files is to
+select the set of build attributes – giving a value to each
+compatibility tag – that best approximates the user’s intentions
+implicit in its invocation options.
+
+This part of the problem of managing compatibility does not have a
+perfect solution. A user’s intentions are imperfectly approximated by
+invocation options that are then sometimes imperfectly mapped to build
+attributes.
+
+No required compatibility model
+-------------------------------
+
+This specification standardizes the meaning of build attributes, not
+the compatibility models within which they will be interpreted.
+
+For the majority of build attributes there is only one reasonable
+interpretation of compatibility among their values, and it is an
+obvious one.
+
+For a minority – mostly associated with ABI compatibility
+between functions – this is not the case and it is reasonable for
+different tool chains to take different positions according to the
+markets they serve.
+
+Thus it is entirely reasonable that a relocatable object file produced
+by tool chain A and accepted by tool chain B’s linker might be
+rejected by tool chain C’s linker when targeting exactly the same
+environment as tool chain
+B.
+
+The kinds of compatibility modeled by build attributes
+------------------------------------------------------
+
+Build attributes primarily model two kinds of compatibility.
+
+* The compatibility of binary code with target hardware conforming to
+  a revision of the Arm Architecture.
+
+* The ABI compatibility between functions conforming to
+  variants of this ABI.
+
+The intuitive notion of compatibility can be given a mathematically
+precise definition using sets of demands placed on an execution
+environment.
+
+For example, a program could be defined to be compatible with a
+processor if (and only if) the set of instructions the program might
+unconditionally try to execute is a subset of the set of instructions
+implemented by the processor.
+
+Target-related attributes describe the hardware-related demands a
+relocatable object file will place on an execution environment through
+being included in an executable file for that environment.
+
+For example, target-related attributes could record whether use of the
+``FEAT_MEMTAG`` extension is permitted, and at what architectural
+revision use is permitted.
+
+ABI related attributes such as (`aeabi_feature_and_bits subsection`_)
+describe features of the ABI contract that the ABI
+allows to vary, such as whether executable sections are compatible
+with the branch target identification mechanism.
+
+ABI related compatibility can be understood in terms of
+sets of demands placed on an execution environment, but the modeling
+is more difficult. In this case the environment is less obvious, more
+abstract, and elements of it can depend on an operating system or the
+tool chain itself.
+
+Mathematically, A *compatible with* B can be understood as: {demands
+made by A} ⊆ {demands made by B}.
+
+Making this concrete sometimes requires combining information from
+several tags.
+
+The scope of build attributes
+-----------------------------
+
+Conceptually the smallest entity that build attributes can be
+practically assigned to is an ELF symbol, representing a single
+function or data object.
+
+Build attributes are recorded at file scope to model the user
+intentions when building the ELF file. They apply to all entities
+within the file.
+
+Tools may permit individual entities to be built with different
+attributes from the file scope build attributes. For example a file
+containing a function requiring an optional target feature such as
+``FEAT_SVE`` may have a runtime test for ``FEAT_SVE`` before calling
+the function, using an alternative baseline function if ``FEAT_SVE``
+is not present. The file scope build attributes should not have a
+requirement for ``FEAT_SVE`` to be present.
+
+Combining attribute values
+--------------------------
+
+Suppose E1 and E2 are entities (for example, relocatable object files)
+with attribute values a1 and a2 for an attribute tag T. This section
+discusses how to generate the correct value of T for the entity formed
+by combining E1 and E2 (for example, the executable file formed by
+linking E1 with E2)
+
+In each case, the values of a tag can be partially ordered according
+to the sets of demands they represent. We shall write a1 ≤ a2 if an
+entity tagged with <T, a1> makes no more demands on its environment
+than an entity tagged with <T, a2>.
+
+Writing {T:a1} to denote the set of demands made by an entity tagged
+with <T, a1>, we can define a1 ≤ a2 if {T:a1} ⊆ {T:a2}.  (A set of
+demands might be the set of instructions a processor must execute, for
+example).
+
+Informally we say that a1 is compatible with a2 or a1 is more
+compatible than a2 when a1 ≤ a2.
+
+Using Arm architecture versions as an example, Armv8.0-A ≤ Armv9.0-A,
+because the set of instructions conforming to architecture Armv8.0-A is
+a subset of the set conforming to architecture Armv9.0-A. Stated more
+precisely, it is the case that {ISA\@Armv8.0-A} ⊆ {ISA\@Armv9.0-A}.
+
+This partial order of the attributes often differs from the arithmetic
+order of the enumerated values of the tag. In many cases the partial
+order is:
+
+*  Identical to the arithmetic order  (as with ``Tag_THUMB_ISA_use`` in
+   (ADDENDA32_)).
+
+*  Reversed from the arithmetic order (as with ``Tag_Feature_GCS`` in
+   `aeabi_feature_and_bits subsection`_).
+
+*  Represents mutually incompatible choices with which only the identical
+   choice, or no use at all, is compatible (as with ``Tag_ABI_PCS_wchar_t`` in
+   (ADDENDA32_).
+
+Note that the appropriate partial order to use can evolve over time as
+the underlying specifications evolve.
+
+Combining two values of the same tag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Using a1 <> a2 to denote if a1 and a2 are unordered in the partial
+order of demands/compatibility and a1 + a2 to denote the combination
+of a1 and a2. The following combination rules apply:
+
+*  If a1 ≤ a2, a1 + a2 = a2, else if a2 ≤ a1,
+   a1 + a2 = a1. (‘+’ behaves like the *maximum* function).
+
+*  If a1 <> a2 there are two mutually exclusive sub-cases.
+
+   *  There is a least a3 such that a1 ≤ a3 and a2 ≤ a3.
+      Then a1 + a2 = a3.
+
+      Example: ``Tag_CPU_arch`` from (ADDENDA32_) when a1 = v6KZ, a2 = v6T2, and a3 = v7.
+
+   *  There is no such a3, so a1 + a2 denotes the attempted combination of
+      incompatible values.
+
+      Example: ``Tag_ABI_PCS_wchar_t`` from (ADDENDA32_) when a1 = 2 and a2 = 4.
+
+In this second sub-case it is a matter of notational taste whether
+a1 + a2 is defined to have a value such as error or Top, or defined to
+have no value. Either way, in practice an attempted combination is
+expected to fail in a way specific to a tool chain’s compatibility
+model (for example by provoking a link-time diagnostic).
+
+Forcing Functions
+^^^^^^^^^^^^^^^^^
+
+In many cases the value of an attribute is independent of the value
+of all other attributes. There can be cases where attribute values
+are linked. For example to describe the signing schema in (PAuthABI64_)
+which is described as a tuple (vendor, version) two attributes are
+required. Incompatibilites also exist, such as in (ADDENDA32_)
+``Tag_Advanced_SIMD_arch`` cannot be set if ``Tag_CPU_arch_profile``
+is set to 'M'.
+
+The specification will note known forcing functions. Implementation of
+forcing functions is Q-o-I.
+
+Representing build attributes in a relocatable ELF Object file
+==============================================================
+
+Encoding
+--------
+
+Build attributes are encoded in a vendor-specific section of type
+``SHT_AARCH64_ATTRIBUTES`` and name ``.ARM.attributes`` (for further
+details see [AAELF64_]).
+
+An attribute is encoded in a <tag, value> pair.
+
+Both tags and numerical values are encoded using unsigned LEB128
+encoding (ULEB128), DWARF style (for details see [GDWARF_]).
+
+String values are encoded using NUL-terminated byte strings (NTBS).
+
+In a subsection it is erroneus to give two different values to the
+same attribute, though the same value may be given more than once.
+
+Encoding of meta data in a loadable-unit
+----------------------------------------
+
+Build attributes are only defined for relocatable object files.  The
+encoding of metadata in a loadable-unit (executable or shared-library)
+is platform specific.  For example a platform may choose to use GNU
+program properties as defined in (LINUX_ABI_). This document specifies
+the meaning of build attributes for relocatable object files only.  The
+presence of ``.ARM.attributes`` sections in a loadable-unit is
+permitted, but the interpretation of the contents of the section is
+outside the scope of this document. The use of ``.note.gnu.property``
+sections for loadable-units is recommended for SysVr4 platforms,
+see (SYSVABI64_) for details.
+
+.. raw:: pdf
+
+   PageBreak
+
+Formal syntax of an ELF Attributes Section
+==========================================
+
+An ELF Attributes section uses a processor specific section with details
+
+.. table:: Attributes Section
+
+    +---------------------+----------------------------+-------+-----------+------+------------+
+    | Name                | Type                       | Flags | Alignment | Info | Entry Size |
+    +=====================+============================+=======+===========+======+============+
+    | ``.ARM.attributes`` | ``SHT_AARCH64_ATTRIBUTES`` | 0x0   | 1         | 0    | 0          |
+    +---------------------+----------------------------+-------+-----------+------+------------+
+
+A relocatable object file can contain at most one ELF Attributes
+section.
+
+In the contents of an ELF attributes section, a consumer may not assume
+the natural alignment of a data type such as ``uint32``.
+
+An attributes section contains a sequence of subsections. Each
+subsection is either
+
+* A public subsection defined by this ABI and public to all tools that
+  process the file.
+
+* A private subsection that is private to a tool vendor's tools.
+
+The type of each subsection is given by a short textual (NTBS)
+name. In an ELF attributes section all subsections must have a unique
+name.
+
+This ABI requires a vendor to register a short vendor name to use as a
+prefix to the names of private helper functions (for details see
+(AAELF64_)). The same vendor name must be used as a prefix for a
+vendors private subsection.
+
+A public attributes subsection has a prefix of *aeabi\_*. Names
+beginning *Anon* and *anon* are reserved for unregistered private use.
+
+The syntactic structure of an attributes section is::
+
+   <format-version: ‘A’>
+   [ <uint32: subsection-length> NTBS: vendor-name
+     <bytes: subsection-data>
+   ]*
+
+Informally an attributes section consists of a format-version
+character followed by 0 or more subsections.
+
+*Format-version* describes the format of the following data. It is a
+single byte. Only version 'A' (0x41) is defined. This field exists to
+allow future changes in format.
+
+*Subsection-length* is a 4-byte integer in the byte order of the ELF
+file. It encodes the length of the subsection, including the length
+field itself, the vendor name string and its terminating NUL byte, and
+the following vendor data. It gives the offset from the start of this
+subsection to the start of the next one.
+
+*Vendor-name* is a NUL-terminated byte string (NTBS) like a C-language
+literal string. As described above the *vendor-name* must start with a
+vendor specific prefix.
+
+*Subsection-data* is the contents of the subsection. See `Formal Syntax of subsections`_
+for the syntatic structure of subsections.
+
+Private vendor subsections must follow the syntactic structure of a
+subsection. No requirements are placed on the attributes defined
+in the private subsection.
+
+Attributes that record data about the compatibility of this
+relocatable object file with other relocatable object files must be
+recorded in a public "aeabi\_" prefixed subsection.
+
+Attributes meaningful only to the producer must be recorded in a
+private vendor subsection.
+
+Formally, there are no constraints on the order or number of vendor
+subsections. A consumer can collect the public ("aeabi\_" prefixed)
+attributes in a single pass over the section, then all of its private
+data in a second pass.
+
+Subsections
+===========
+
+Formal Syntax of subsections
+----------------------------
+
+The syntactic structure of a subsection is::
+
+   <uint8: comprehension> <uint8: parameter type>
+   <attribute>*
+
+Informally, subsections consist of a header and 0 or more attributes.
+
+*comprehension* is a 1-byte integer. It encodes whether the subsection
+contents can be safely skipped if the consumer does not recognize the
+subsection vendor-name, or if any subset of the subsection can be
+skipped over.
+
+The permitted values are::
+
+   *0* not optional. The consumer must comprehend the subsection
+   and all of its contents for the program to be correct.
+
+   *1* optional. The consumer may skip the subsection in full or in part
+   and the program will still be correct.
+
+*parameter type* is a 1-byte integer. It encodes whether the values in
+the subsection are ULEB128 values or NTBS. The permitted values are::
+
+   *0* the values are ULEB128 encoded.
+
+   *1* the values are NTBS.
+
+*<attribute>* is *<tag, value>* pair. Where tag is encoded using
+unsigned LEB128 encoding (ULEB128), and value is encoded as described
+by *parameter type*.
+
+Public subsections
+------------------
+
+Subsections with a vendor name prefix of "aeabi\_" are public
+subsections. They contain attributes defined by this specification.
+
+Each public subsection defines its own attribute tags.
+
+Default values for public tags
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Public tags are omitted by one of the following methods::
+
+  The ELF file does not have a ``.ARM.attributes`` section. All public
+  tags defined in this specification are omitted.
+
+  The ``.ARM.attributes`` does not contain an "aeabi\_" prefixed
+  subsection defined by this specification. All public tags that can
+  be defined by the subsection are omitted.
+
+  An "aeabi\_" prefixed subsection omits one or more public tags that
+  can be defined by the subection.
+
+The effect of omitting a public tag is identical to including it with
+a value of 0 or “”, depending on its parameter type.
+
+A subsection this ABI defines with *comprehension* as *not optional*
+is not required to be present in the relocatable object file, the
+rules for `Default values for public tags`_ apply.
+
+
+Unrecognized public tags
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+When processing a public subsection a tool may encounter a public tag
+that it does not recognize. If the subsection has *comprehension* as
+*optional* then the unrecognized public tag can be safely skipped. If
+the subsection has *comprehension* as *not optional* then the tool
+should issue a diagnostic.
+
+
+How this specification describes public attributes
+--------------------------------------------------
+
+In the following sections we describe each attribute in a uniform style, as
+follows. ::
+
+   Tag_tag_name (=tag value)
+      value  Comment
+      value  Comment
+      ...
+
+   Block commentary about the tag and its possible values.
+
+*Tag value* gives the numerical representation of the tag. It is a
+small integer less than 128. The *Tag value* is meaningful only within
+the subsection it is defined within.
+
+*Tag_tag_name* is the human readable representation of the tag value
+ for use by tools that produce or consume build attributes.
+
+Following lines enumerate the currently defined parameter values,
+giving a short comment about each one.
+
+A block of explanatory text follows in some cases.
+
+aeabi_feature_and_bits subsection
+---------------------------------
+
+The full vendor name is "aeabi_feature_and_bits"
+
+This subsection contains tags that describe the same optional feature
+bits as the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` as described in
+(AAELF64_). The tag values and combination rules have been specified
+so that a static linker does not need to recognize the *Tag value* to
+be able combine attributes with the *Tag value*, and to convert the
+*Tag value* to the appropriate feature bit in
+``GNU_PROPERTY_AARCH64_FEATURE_1_AND``.
+
+header contents
+^^^^^^^^^^^^^^^
+
+*comprehension* is 1 (*optional*)
+
+*parameter type* is 0 (ULEB128)
+
+Combining attribute values of aeabi_feature_and_bits
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+With reference to Combining attribute values. The partial order for
+all of the tags in this subsection is reversed.
+
++-------+---------------+
++ Value + Partial Order |
++=======+===============+
++ 0     | 1             |
++-------+---------------+
++ 1     | 0             |
++-------+---------------+
+
+This has the effect that all attributes must have value 1 for the
+combination of the attributes to have value 1.
+
+attributes
+^^^^^^^^^^
+
+The attribute values of the first 32 attributes must match the bit
+position of the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` Bit Flags
+defined in (SYSVABI64_).
+
+::
+   Tag_Feature_BTI, (= 0)
+      0  Not all executable sections are compatible with the Branch Target Identification mechanism or no information available.
+      1  All executable sections are compatible with the Branch Target Identification mechanism
+
+::
+   Tag_Feature_PAC, (= 1)
+      0  Not all executable sections have been protected with Return Address Signing or no information available.
+      1  All executable sections have been protected with Return Address Signing.
+
+::
+   Tag_Feature_GCS, (= 2)
+      0  Not all executable sections are compatible with the guarded control stack extension or no information available.
+      1  All executable sections are compatible with the guarded control stack extension.
+
+aeabi_feature_and_bits and GNU Program Properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+GNU Program Properties as defined by [LINUX_ABI_] are a similar
+concept to Build Attributes. Program properties are encoded in
+``.note.gnu.property`` sections. A static linker combines the program
+properties according to the rules for each program property type. The
+combined ``.note.gnu.property`` section is written to the loadable-unit.
+
+Build attributes replace the use of GNU program properties for
+relocatable object files.  A platform may choose to use GNU program
+properties to represent properties in loadable-units with static
+linkers translating from a merged build attribute value to a GNU
+program property.
+
+Many existing relocatable object files have a ``.note.gnu.property``
+section with the ``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` program
+property.
+
+If a static linker has a subset of the relocatable objects using
+``.note.gnu.property`` sections with
+``GNU_PROPERTY_AARCH64_FEATURE_1_AND`` program property, and a subset
+of the relocatable objects using build attributes. Then the program
+properties must be translated into build attributes using the mapping
+below.
+
++--------------------------------------------+---------------------------+
++ Feature bit set in relocatable object file | Equivalent  tag = value   |
++============================================+===========================+
++ *GNU_PROPERTY_AARCH64_FEATURE_1_BTI*       | Tag_Feature_BTI = 1       |
++--------------------------------------------+---------------------------+
++ *GNU_PROPERTY_AARCH64_FEATURE_1_PAC*       | Tag_Feature_PAC = 1       |
++--------------------------------------------+---------------------------+
++ *GNU_PROPERTY_AARCH64_FEATURE_1_GCS*       | Tag_Feature_GCS = 1       |
++--------------------------------------------+---------------------------+
+
+A relocatable object file may have a ``.note.gnu.property`` section
+and ``.ARM.attributes`` sections. When both program properties and
+build attributes exist within the same relocatable object, the
+relocatable object file is not well formed if a build attribute from
+the ``.ARM.attributes`` has a different value when translated from
+``.note.gnu.property``. It is QoI whether a static linker uses the
+build attributes in preference to the ``.note.gnu.property`` section,
+or does the translation and produces a diagnostic.
+
+For a platform that uses GNU Program Properties in loadable-units the
+attributes in aeabi_feature_and_bits can be translated to the
+appropriate bit flag value in ``GNU_PROPERTY_AARCH64_FEATURE_1_AND``
+with the following formula:
+
+::
+   1U << *Tag value*
+
+For example ``Tag_Feature_GCS`` has *Tag value* 2, giving ``1U << 2``
+matching the value of ``GNU_PROPERTY_AARCH64_FEATURE_1_GCS`` defined
+in (SYSVABI64_).
+
+Pointer Authentication Signing Schema
+-------------------------------------
+
+The full vendor name is "aeabi_pauthabi"
+
+The (PAUTHABI64_) defines an extension to ELF in which code pointers
+are signed using instructions in the FEAT_PAuth extension. The
+pointers that are signed as well as the modifiers and key used for
+each type of pointer are known as the signing schema. To make use of
+(PAuthABI64_) all relocatable object files and shared-library
+dependencies must use the same signing schema.
+
+While the requirement for the ``FEAT_PAuth`` extension is recorded in
+the architectural features.  The signing schema is software defined
+with more complex compatibility requirements.
+
+Relocatable objects not using the PAuthABI are recommended not to
+output the "aeabi_pauthabi" subsection with explicit values of 0 for
+the tags. This permits a relocatable object to be used by an object
+consumer that does not recognize the "aeabi_pauthabi" subsection.
+
+header contents
+^^^^^^^^^^^^^^^
+
+*comprehension* is 0 (*not optional*)
+
+*parameter type* is 0 (ULEB128)
+
+attributes
+^^^^^^^^^^
+
+The values of the attributes ``Tag_PAuth_Platform`` and
+``Tag_Pauth_Schema`` form a tuple ``(Tag_Pauth_Platform, Tag_Pauth_Schema)`` that must be
+combined as a tuple.
+
+::
+   Tag_PAuth_Platform (=1)
+     0  The user did not permit this entity to use the PAuthABI, or no information available.
+     id The platform vendor id.
+
+Where the *<id>* is a number representing one of a number of
+registered platforms defined in ``PAuthABI64_``. See `Special PAuth Encodings`_ below for the encoding of
+the ``Invalid platform``.
+
+::
+   Tag_PAuth_Schema (=2)
+     id The version number of the Schema, or no information available.
+
+Where the *<id>* is a number representing the version in the context
+of ``Tag_PAuth_Platform``.
+
+
+Special PAuth Encodings
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The tuple value of (``Tag_Pauth_Platform``, ``Tag_Pauth_Schema``) matching
+(0, 0) is obtained when both attributes are explicitly set to 0 or
+are implicitly set to 0 due to the rules in `Default values for public
+tags`_. This represents an ELF file which makes no use of the PAuthABI
+extension.
+
+The tuple value matching (0, 1) is reserved for the ``Invalid``
+platform. ELF files with an ``Invalid`` platform are incompatible with
+the PAuth ABI Extension.
+
+Tuple values matching (0, N) where ``N > 1`` are reserved.
+
+The tuple value of ``(Tag_Pauth_Platform, Tag_Pauth_Schema)`` matching
+``(platform, 0)`` where ``platform`` is non zero, represent a version
+schema version of 0 for ``platform``.
+
+Combining attribute values of aeabi_pauthabi
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The partial order is custom.
+
+
+Two entities are compatible if the tuple (``Tag_PAuth_Platform``,
+``Tag_PAuth_Schema``) for each entity is lexicographically identical.
+
+The compatibility between an entity with the tuple ``(N, M)`` where N
+is not 0 and an entity with the tuple ``(0,0)`` is implementation
+defined, and may be defined by a user provided policy.
+
+aeabi_pauthabi and GNU Program Properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+See `aeabi_feature_and_bits and GNU Program Properties`_ for the
+relationship between GNU Program Properties and Build Attributes.
+
+Many existing relocatable objects that use the PAuthABI extension have
+a ``.note.gnu.property`` section with the
+``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` program property. This is
+defined in `PAUTHABI64`_.
+
+If a static linker has a subset of the relocatable objects using
+``.note.gnu.property`` sections with
+``GNU_PROPERTY_AARCH64_FEATURE_PAUTH``, and a subset of the
+relocatable objects using build attributes. Then the program
+properties (``platform identifier``, ``version number``) must be
+translated into build attributes using the mapping below.
+
+``Tag_PAuth_Platform`` is set to ``platform identifier``
+
+``Tag_PAuth_Schema`` is set to ``version number`` if ``platform
+identifier`` is not 0, otherwise it is set to 1.
+
+This maps a ``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` reserved tuple of
+``(0,0)`` to ``Tag_PAuth_ABI_Platform = 0``, ``Tag_PAuth_ABI_Schema =
+1``.
+
+When writing a ``.note.gnu.property`` section in a loadable-unit the
+following rules apply to the combined build attribute tuple of
+``(Tag_PAuth_Platform, Tag_PAuth_Schema)``:
+
+(0, 0) results in no ``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` property
+in the output.
+
+(0, 1) results in a ``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` property
+with (``platform identifier``, ``version number``) set to (0, 0).
+
+(N, M) where N is non zero, results in a ``GNU_PROPERTY_AARCH64_FEATURE_PAUTH`` property with
+(``platform identifier``, ``version number``) set to (N, M).
+
+Private subsections
+-------------------
+
+No requirements are placed on the attributes used in a private
+subsection.
+
+Appendix: Tool Interface for aeabi subsections
+==============================================
+
+The tool interface presented below describes the interface for GNU and
+GNU compatible toolchains.
+
+Compiler
+--------
+
+Build attributes are set by the compiler based on command-line
+options.  For example the clang and gcc ``-mbranch-protection`` option
+can be used to derive ``Tag_Feature_BTI`` and ``Tag_Feature_PAC`` and
+``Tag_Feature_GCS``.
+
+Individual functions can be given different values from the file scope
+command-line options. The file scope build attributes should still be
+derived from the file scope command-line options, or module level encodings
+of the file scope command-line options in the case of link time optimization.
+It is the user's responsibility that the individual functions are used in a
+compatible way to the file scope build attributes.
+
+Predefined Macro
+^^^^^^^^^^^^^^^^
+
+Toolchains that generate build attributes sections and support the assembler
+directives below should define the following pre-processor macro.
+
+::
+   __ARM_BUILDATTR64_FV <format-version: 'A'>
+
+Where *format-version* is the same value as in `Formal syntax of an
+ELF Attributes Section`_. Only version 'A' (0x41) is defined.
+
+Assembler
+---------
+
+Where possible the assembler can derive build attributes from the
+assembler's command line options in the same way as the compiler. For
+options that cannot be derived, assembler directives can be used to
+construct "aeabi\_" prefixed subsections. The assembler directives take
+precedence over any derived attributes.
+
+Directives
+^^^^^^^^^^
+
+::
+   .aeabi_subsection *name*, *comprehension*, *parameter type*
+
+*name*
+
+Create or switch the current subsection to *name*. When switching to
+an existing subsection with *name* the *comprehension* and *parameter
+type* can be omitted. The *comprehension* and *parameter type* of a
+subsection can never be changed.
+
+*comprehension*
+
+The *comprehension* argument is one of the following constants:
+
+.. table:: optional values
+
+  +---------------------------+----------------+----------------------------------------------------------------+
+  | Constant                  | Mapping to subsection comprehension field.                                      |
+  +===========================+================+================================================================+
+  | ``required``              | Consumer is required to comprehend subsection, comprehension field is set to 0  |
+  +---------------------------+----------------+----------------------------------------------------------------+
+  | ``optional``              | Consumer not required to comprehend subsection, comprehension field is set to 1 |
+  +---------------------------+---------------------------------------------------------------------------------+
+
+*parameter type*
+
+The *parameter type* argument is one of the following constants:
+
+.. table:: parameter type values
+
+  +----------------------------+----------------+------------------------------------------------+
+  | Constant                   | Mapping to subsection parameter type field.                     |
+  +============================+================+================================================+
+  | ``uleb128``                | Encoding of subsection is ULEB128, parameter type field is set  |
+  +----------------------------+                                                                 |
+  | ``ULEB128``                | to 0.                                                           |
+  +----------------------------+----------------+------------------------------------------------+
+  | ``ntbs``                   | Encoding of subsection is a null terminated byte string (NTBS). |
+  +----------------------------+                                                                 +
+  | ``NTBS``                   | The parameter type field is set to 1.                           |
+  +----------------------------+-----------------------------------------------------------------+
+
+::
+
+   .aeabi_attribute *tag*, *value*
+
+* *tag* is either the ``Tag_tag_name`` such as ``Tag_Feature_GCS`` or
+  the ``Tag value`` such as ``3``. The matching of ``Tag_tag_name`` is case
+  sensitive.
+
+* *value* is either a `number` or a "string" depending on the
+  ``<parameter type>`` of the current subsection.
+
+In the current active subsection, set *tag* to *value*.
+
+It is an error if .aeabi_attribute is encountered when the current
+subsection is undefined.
+
+Directive examples
+^^^^^^^^^^^^^^^^^^
+
+Produces a single subsection with 3 attributes set. The
+.aeabi_attributes use the human readable ``Tag_tag_name``.
+
+.. code-block:: asm
+
+    .aeabi_subsection aeabi_feature_and_bits ,optional, ULEB128
+    .aeabi_attribute Tag_Feature_BTI, 1
+    .aeabi_attribute Tag_Feature_PAC, 1
+    .aeabi_attribute Tag_Feature_GCS, 1
+
+This translates to the following .ARM.attributes section contents for
+a little-endian relocatable object:
+
+`A`, <length 0x23,0x0,0x0,0x0>, "aeabi_feature_and_bits", 1, 0, 0, 1, 1, 1, 2, 1
+
+
+Produces two subsections. Numbers have been used to set the tag values
+with comments showing the human readable names. This form can be
+useful when it is not known if the assembler will recognise the Tag
+name.
+
+.. code-block:: asm
+
+    .aeabi_subsection aeabi_feature_and_bits, optional, ULEB128
+    .aeabi_attribute 0 /*Tag_Feature_GCS*/, 1
+
+    .aeabi_subsection aeabi_pauthabi, required, ULEB128
+    .aeabi_attribute 0 /*Tag_PAuth_Platform*/, 1
+    .aeabi_attribute 1 /*Tag_Pauth_Schema*/, 1
+
+This translates to the following .ARM.attributes section contents for
+a little-endian relocatable object:
+
+`A`, <length 0x1e,0x0,0x0,0x0>, "aeabi_feature_and_bits", 1, 0, 2, 1, <length 0x21, 0x0, 0x0, 0x0>, "aeabi_feature-pauthabi", 0, 0, 0, 1, 1, 1
