@@ -1286,7 +1286,7 @@ X will be the return address supplied by S1's caller.  The act of
 resuming execution at X is then a normal return from S2 to S1 and a
 normal return from S1 to S1's caller.
 
-.. _`each normal return`:
+.. _`every time`:
 
 A subroutine call might return normally more than once.  For example,
 the C subroutine ``setjmp`` can return normally twice: once to complete
@@ -1646,7 +1646,7 @@ conditions is true:
     entry to S.
 
 More generally, a call to a subroutine S is said to “preserve ZA” if
-the call preserves ZA `every time <each normal return>`_ that the call
+the call preserves ZA `every time`_ that the call
 returns normally.  A call trivially satisfies this requirement if the
 call never returns normally.
 
@@ -1665,7 +1665,7 @@ if one of the following conditions is true:
 
 * ZA is not dormant on entry to S.
 
-* ZA is dormant on entry to S and, `every time <each normal return>`_ that the
+* ZA is dormant on entry to S and, `every time`_ that the
   call `returns normally`_, one of the following conditions is true:
 
   * The call `preserves ZA`_ for that return.
@@ -1726,7 +1726,7 @@ If, for a particular call C to a subroutine S:
 
 * TPIDR2_EL0 has the value BLK on entry to S
 
-then conforming software must ensure that, `every time <each normal return>`_
+then conforming software must ensure that, `every time`_
 that S `returns normally`_ from C, BLK still has the same contents as it did
 on entry to S.  For example, this means that:
 
