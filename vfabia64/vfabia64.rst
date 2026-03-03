@@ -327,7 +327,7 @@ changes to the content of the document for that release.
    |2019Q1.1   |30th April 2019|Minor clarification on the definition of          |
    |           |               |`SVE unpacked vector`_. Refer to                  |
    |           |               |the original AAPCS and list the registers that are|
-   |           |               |call-preserved and call-clobbered in the base     |
+   |           |               |callee-saved and caller-saved in the base         |
    |           |               |convention (`Vector Procedure Call Standard`_,    |
    |           |               |no functional                                     |
    |           |               |change). Add chapter on                           |
@@ -433,24 +433,23 @@ can be found on `developer.arm.com
 <https://developer.arm.com/docs/100986/latest/>`_.
 
 .. note:: The SVE-specific rules of the AAPCS are in beta version. The
-          list of SVE call-clobbered and call-preserved registers in
+          list of SVE callee-saved and caller-saved registers in
           table `AAVPCS Table`_ will be updated when the
           final version of the AAPCS is published.
 
-The procedural calling standard of the AAPCS requires that none of the
-32 Advanced SIMD vector registers V0-V31 are treated as call-preserved
-(with the exception of the lower half of V8-V15, or D8-D15), thus
-requiring the caller to perform up to 32 vector stores before a call
-and up to 32 vector loads after it (see section 5.1.2 of AAPCS). For
-workloads with performance hot spots in leaf routines (an example of
-which are vector math functions), we find that a modified procedural
-calling standard for the vector units in AArch64 would be more
-efficient than the base procedural calling standard. Therefore, to
-efficiently support such vector routines, we define a modified version
-of the base procedural calling standard, called the *Vector Procedure
-Call Standard for the Arm 64-bit Architecture (AAVPCS)*.
+The procedural calling standard of the AAPCS requires that the 32 Advanced SIMD
+vector registers V0-V31 are caller-saved (with the exception of the lower half
+of V8-V15, or D8-D15), thus requiring the caller to perform up to 32 vector
+stores before a call and up to 32 vector loads after it (see section 5.1.2 of
+AAPCS). For workloads with performance hot spots in leaf routines (an example
+of which are vector math functions), we find that a modified procedural calling
+standard for the vector units in AArch64 would be more efficient than the base
+procedural calling standard. Therefore, to efficiently support such vector
+routines, we define a modified version of the base procedural calling standard,
+called the *Vector Procedure Call Standard for the Arm 64-bit Architecture
+(AAVPCS)*.
 
-The list of parameter, result, call-preserved and call-clobbered
+The list of parameter, result, callee-saved and caller-saved
 registers for the AAVPCS are presented in the following table:
 
 AAVPCS Table
@@ -459,7 +458,7 @@ AAVPCS Table
 .. table:: Modified PCS for vector functions (AAVPCS)
 
   +-------------+--------------------+--------------+--------------+
-  |Extension    |Parameter and Result|Call-clobbered|Call-preserved|
+  |Extension    |Parameter and Result|Caller-saved  |Callee-saved  |
   |             |registers           |registers     |registers     |
   +=============+====================+==============+==============+
   |Advanced SIMD|V0-V7               |V0-V7, V24-V31|V8-V23        |
@@ -1575,8 +1574,7 @@ for inactive lanes.
 .. note:: Using a mask parameter in AArch64 Advanced SIMD is not
           generally recommended for functions that operate on scalars
           of different widths, as widening of the input mask for wider
-          types might require using call-preserved temporary registers
-          (V8-V23).
+          types might require using callee-saved registers (V8-V23).
 
 Example on Complex Masking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

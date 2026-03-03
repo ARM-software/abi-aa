@@ -1385,7 +1385,7 @@ General Dynamic
 The instruction sequence used for the General Dynamic access model is similar
 to that of direct TLS. However, due to the shorter Initial Exec and Local Exec
 instruction sequences, no additional NOP is present, and c1, not c2, is used to
-pass the thread pointer, rather than being a call-clobbered register.
+pass the thread pointer, rather than being a caller-saved register.
 
 The General Dynamic access sequence must be output in the following form to
 allow correct linker relaxation:
