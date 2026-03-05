@@ -767,8 +767,7 @@ For example:
 * The function might return values in registers that are not normally
   return value registers.
 
-* The function might guarantee that extra register state is preserved
-  by the call.
+* The function might guarantee that extra register state is callee-saved.
 
 * PSTATE on entry to the function might be different from normal.
 

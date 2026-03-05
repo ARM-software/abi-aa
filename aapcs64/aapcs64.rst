@@ -264,13 +264,16 @@ changes to the content of the document for that release.
 |            |                    | - Add agnostic-ZA interface and routines to save/restore SME     |
 |            |                    |   state.                                                         |
 +------------+--------------------+------------------------------------------------------------------+
-| 2025Q4     | 23\ :sup:`rd`      | - Explicitly say that ZT0 is a temporary register.               |
+| 2025Q4     | 23\ :sup:`rd`      | - Explicitly say that ZT0 is a caller-saved register.            |
 |            | January 2026       | - Add a note about the interaction between the SME lazy save     |
 |            |                    |   scheme and asynchronous transfers of control.                  |
 |            |                    | - Recommend that ``setjmp`` as well as ``longjmp`` call          |
 |            |                    |   ``__arm_za_disable``.                                          |
-|            |                    | - Explicitly say that the FFR is a temporary register.           |
+|            |                    | - Explicitly say that the FFR is a caller-saved register.        |
 |            |                    | - Clarify how __bf16 affects HFAs                                |
++------------+--------------------+------------------------------------------------------------------+
+| 2025Q4     | 3\ :sup:`rd`       | - Standardize on "caller-saved" and "callee-saved".              |
+|            | March 2026         |                                                                  |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -422,11 +425,15 @@ Global register
 Program state
    The state of the program’s memory, including values in machine registers.
 
-Scratch register, _`temporary register`, caller-saved register
-   A register used to hold an intermediate value during a calculation (usually, such values are not named in the program source and have a limited lifetime). If a function needs to preserve the value held in such a register over a call to another function, then the calling function must save and restore the value.
-
-Callee-saved register
+_`Callee-saved` register
    A register whose value must be preserved over a function call. If the function being called (the callee) needs to use the register, then it is responsible for saving and restoring the old value.
+
+   Also known as "call preserved register" or "non-volatile register".
+
+_`Caller-saved` register
+   A register whose value is not preserved over a function call. Can be used to hold an intermediate value during a calculation. If the caller needs to preserve the value in the register over the function call, then it is responsible for saving and restoring the old value.
+
+   Also known as "call clobbered register", "caller preserved register", "volatile register", "scratch register", or "temporary register".
 
 SysV
    Unix System V. A variant of the Unix Operating System. Although this specification refers to SysV, many other operating systems, such as Linux or BSD use similar conventions.
@@ -844,42 +851,42 @@ There are thirty-one, 64-bit, general-purpose (integer) registers visible to the
 
 .. table:: Table 2, General-purpose registers and AAPCS64 usage
 
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Register  | Special  | Role in the procedure call standard                                                                                                                 |
-   +===========+==========+=====================================================================================================================================================+
-   | SP        |          | The Stack Pointer.                                                                                                                                  |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r30       | LR       | The Link Register.                                                                                                                                  |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r29       | FP       | The Frame Pointer                                                                                                                                   |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r19…r28   |          | Callee-saved registers                                                                                                                              |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r18       |          | The Platform Register, if needed; otherwise a temporary register. See notes.                                                                        |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r17       | IP1      | The second intra-procedure-call temporary register (can be used by call veneers and PLT code); at other times may be used as a temporary register.  |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r16       | IP0      | The first intra-procedure-call scratch register (can be used by call veneers and PLT code); at other times may be used as a temporary register.     |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r9…r15    |          | Temporary registers                                                                                                                                 |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r8        |          | Indirect result location register                                                                                                                   |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-   | r0…r7     |          | Parameter/result registers                                                                                                                          |
-   +-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Register  | Special  | Role in the procedure call standard                                                                                                                     |
+   +===========+==========+=========================================================================================================================================================+
+   | SP        |          | The Stack Pointer.                                                                                                                                      |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r30       | LR       | The Link Register.                                                                                                                                      |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r29       | FP       | The Frame Pointer                                                                                                                                       |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r19…r28   |          | `Callee-saved`_ registers                                                                                                                               |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r18       |          | The Platform Register, if needed; otherwise a `Caller-saved`_ register. See notes.                                                                      |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r17       | IP1      | The second intra-procedure-call temporary register (can be used by call veneers and PLT code); at other times may be used as a `Caller-saved`_ register.|
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r16       | IP0      | The first intra-procedure-call temporary register (can be used by call veneers and PLT code); at other times may be used as a `Caller-saved`_ register. |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r9…r15    |          | `Caller-saved`_                                                                                                                                         |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r8        |          | Indirect result location register (`Caller-saved`_)                                                                                                     |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | r0…r7     |          | Parameter/result registers (`Caller-saved`_)                                                                                                            |
+   +-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 The first eight registers, r0-r7, are used to pass argument values into a subroutine and to return result values from a function. They may also be used to hold intermediate values within a routine (but, in general, only between subroutine calls).
 
 Registers r16 (IP0) and r17 (IP1) may be used by a linker as a scratch register between a routine and any subroutine it calls (for details, see `Use of IP0 and IP1 by the linker`_). They can also be used within a routine to hold intermediate values between subroutine calls.
 
-The role of register r18 is platform specific. If a platform ABI has need of a dedicated general-purpose register to carry inter-procedural state (for example, the thread context) then it should use this register for that purpose. If the platform ABI has no such requirements, then it should use r18 as an additional temporary register. The platform ABI specification must document the usage for this register.
+The role of register r18 is platform specific. If a platform ABI has need of a dedicated general-purpose register to carry inter-procedural state (for example, the thread context) then it should use this register for that purpose. If the platform ABI has no such requirements, then it should use r18 as an additional `Caller-saved`_ register. The platform ABI specification must document the usage for this register.
 
 .. note::
 
-    Software developers creating platform-independent code are advised to avoid using r18 if at all possible. Most compilers provide a mechanism to prevent specific registers from being used for general allocation; portable hand-coded assembler should avoid it entirely. It should not be assumed that treating the register as callee-saved will be sufficient to satisfy the requirements of the platform. Virtualization code must, of course, treat the register as they would any other resource provided to the virtual machine.
+    Software developers creating platform-independent code are advised to avoid using r18 if at all possible. Most compilers provide a mechanism to prevent specific registers from being used for general allocation; portable hand-coded assembler should avoid it entirely. It should not be assumed that treating the register as `Callee-saved`_ will be sufficient to satisfy the requirements of the platform. Virtualization code must, of course, treat the register as they would any other resource provided to the virtual machine.
 
-A subroutine invocation must preserve the contents of the registers r19-r29 and SP. All 64 bits of each value stored in r19-r29 must be preserved, even when using the ILP32 data model **(Beta)**.
+Registers r19-r29 and SP are `Callee-saved`_. All 64 bits of each value stored in r19-r29 are `Callee-saved`_, even when using the ILP32 data model **(Beta)**.
 
 In all variants of the procedure call standard, registers r16, r17, r29 and r30 have special roles. In these roles they are labeled IP0, IP1, FP and LR when being used for holding addresses (that is, the special name implies accessing the register as a 64-bit entity).
 
@@ -902,7 +909,7 @@ The Arm 64-bit architecture also has a further thirty-two registers, v0-v31, whi
 
 The first eight registers, v0-v7, are used to pass argument values into a subroutine and to return result values from a function. They may also be used to hold intermediate values within a routine (but, in general, only between subroutine calls).
 
-Registers v8-v15 must be preserved by a callee across subroutine calls; the remaining registers (v0-v7, v16-v31) do not need to be preserved (or should be preserved by the caller). Additionally, only the bottom 64 bits of each value stored in v8-v15 need to be preserved [#aapcs64-f7]_; it is the responsibility of the caller to preserve larger values.
+Registers v8-v15 are `Callee-saved`_ and the remaining registers (v0-v7, v16-v31) are `Callee-saved`_. Additionally, only the bottom 64 bits of each value stored in v8-v15 need to be `Callee-saved`_ [#aapcs64-f7]_; it is the responsibility of the caller to preserve larger values.
 
 The FPSR is a status register that holds the cumulative exception bits of the floating-point unit. It contains the fields IDC, IXC, UFC, OFC, DZC, IOC and QC. These fields are not preserved across a public interface and may have any value on entry to a subroutine.
 
@@ -924,7 +931,8 @@ specific.
 **(Beta)**
 
 The FPMR is a system register that controls behaviors of the instructions
-operating on modal 8-bit floating-point values. It is a temporary register.
+operating on modal 8-bit floating-point values. It is a `Caller-saved`_
+register.
 
 Scalable vector registers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -936,13 +944,13 @@ contents of a single Scalable Vector Type (see `Scalable vectors`_).
 That is, scalable vector register z0 is an extension of SIMD and
 Floating-Point register v0.
 
-z0-z7 are used to pass scalable vector arguments to a subroutine, and
-to return scalable vector results from a function. If a subroutine
-takes at least one argument in scalable vector registers or scalable
-predicate registers, or returns results in such registers, the
-subroutine must ensure that the entire contents of z8-z23 are
-preserved across the call. In other cases it need only preserve the
-low 64 bits of z8-z15, as described in `SIMD and Floating-Point
+z0-z7 are used to pass scalable vector arguments to a subroutine, and to
+return scalable vector results from a function. If a subroutine takes at least
+one argument in scalable vector registers or scalable predicate registers,
+or returns results in such registers, then the entire contents of z8-z23
+are `Callee-saved`_. In other cases only the low 64 bits of z8-z15 are
+`Callee-saved`_, and the remaining vector registers (z0-z7, z16-z31, and
+rest of z8-z15) are `Caller-saved`_, as described in `SIMD and Floating-Point
 registers`_.
 
 Scalable Predicate Registers
@@ -956,11 +964,10 @@ Each register can store the contents of a Scalable Predicate Type
 
 p0-p3 are used to pass scalable predicate arguments to a subroutine
 and to return scalable predicate results from a function. If a
-subroutine takes at least one argument in scalable vector registers or
-scalable predicate registers, or returns results in such registers,
-the subroutine must ensure that p4-p15 are preserved across the
-call. In other cases it need not preserve any scalable predicate
-register contents.
+subroutine takes at least one argument in scalable vector registers or scalable
+predicate registers, or returns results in such registers, then p4-p15 are
+`Callee-saved`_. In other cases all scalable predicate registers are
+`Caller-saved`_.
 
 First Fault Register (FFR)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -969,7 +976,7 @@ The special-purpose First Fault Register (FFR) has the same size and
 format as the scalable predicate registers, and is available if and only
 if the scalable vector registers are available. It captures the
 cumulative fault status of a sequence of SVE first-fault and non-fault
-vector load instructions. It is a temporary register.
+vector load instructions. It is a `Caller-saved`_ register.
 
 SME state
 ---------
@@ -996,7 +1003,7 @@ TPIDR2_EL0
    See `TPIDR2_EL0`_ for a description of how the AAPCS64 uses this register.
 
 In addition, SME2 defines a 512-bit register ZT0, which is accessible when
-PSTATE.ZA is 1.  The AAPCS64 defines ZT0 to be a `temporary register`_.
+PSTATE.ZA is 1.  The AAPCS64 defines ZT0 to be a "`Caller-saved`_ register".
 
 Threads and processes
 ---------------------
@@ -1244,9 +1251,9 @@ A platform shall mandate the minimum level of conformance with respect to the ma
 
 - It may require the frame pointer to address a valid frame record at all times, except that any subroutine may elect not to create a frame record
 
-- It may permit the frame pointer register to be used as a general-purpose callee-saved register, but provide a platform-specific mechanism for external agents to reliably detect this condition
+- It may permit the frame pointer register to be used as a general-purpose `Callee-saved`_ register, but provide a platform-specific mechanism for external agents to reliably detect this condition
 
-- It may elect not to maintain a frame chain and to use the frame pointer register as a general-purpose callee-saved register.
+- It may elect not to maintain a frame chain and to use the frame pointer register as a general-purpose `Callee-saved`_ register.
 
 Subroutine calls
 ----------------
@@ -1316,22 +1323,21 @@ amount of data as the 32 `Scalable Vector Registers`_.  For a 512-bit
 SME implementation, ZA can handle twice as much data as the vector registers,
 and so on.
 
-Suppose that a subroutine S1 with live data in ZA calls a subroutine S2 that
-has no knowledge of S1.  If the AAPCS64 defined ZA to be “call-preserved”
-(“callee-saved”), S1 would need to save and restore ZA around S1's own
-use of ZA, in case S1's caller also had live data in ZA.  If the AAPCS64
-defined ZA to be “call-clobbered” (“caller-saved”), S1 would need to
-save and restore ZA around the call to S2, in case S2 also used ZA.
-However, nested uses of ZA are expected to be rare, so these saves and
+Suppose that a subroutine S1 with live data in ZA calls a subroutine S2 that has
+no knowledge of S1.  If the AAPCS64 defined ZA to be `Callee-saved`_, S2 would
+need to save and restore ZA around S2's own use of ZA, in case S2's caller (S1)
+also had live data in ZA.  If the AAPCS64 defined ZA to be “`Caller-saved`_”,
+S1 would need to save and restore ZA around the call to S2, in case S2 also
+used ZA. However, nested uses of ZA are expected to be rare, so these saves and
 restores would usually be wasted work.
 
-The AAPCS64 therefore defines a “lazy saving” scheme that often reduces
-the total number of saves and restores compared to the two approaches
-above.  Informally, the scheme allows “ZA is call-preserved” to become a
-dynamic rather than a static property: if S2 `complies with the lazy saving
-scheme`_, S1 can test after the call to S2 whether the call did in fact
-preserve ZA.  If the call did not preserve ZA, S1 is able to restore the
-old contents of ZA from a known buffer.
+The AAPCS64 therefore defines a “lazy saving” scheme that often reduces the
+total number of saves and restores compared to the two approaches above.
+Informally, the scheme allows “ZA is `Callee-saved`_ to become a dynamic rather
+than a static property: if S2 `complies with the lazy saving scheme`_, S1 can
+test after the call to S2 whether the call did in fact preserve ZA.  If the call
+did not preserve ZA, S1 is able to restore the old contents of ZA from a known
+buffer.
 
 The procedure is as follows:
 
@@ -1377,7 +1383,7 @@ ZA states
 
 **(Beta)**
 
-The AAPCS64 uses the term “\ _`ZA_LIVE`\ ” to refer the number of leading
+The AAPCS64 uses the term “\ _`ZA_LIVE`\ ” to refer to the number of leading
 horizontal slices of ZA that might have useful contents.  That is,
 horizontal slice ZA[\ *i*\ ] can have useful contents only if
 *i* is less than ZA_LIVE.
@@ -1802,12 +1808,11 @@ Other state controlled by PSTATE.ZA
 
 **(Beta)**
 
-Access to the SME2 ZT0 register is also controlled by PSTATE.ZA.
-As described in `SME state`_, the AAPCS64 defines ZT0 to be a
-`temporary register`_, meaning that its contents may be changed by a
-call to any subroutine, unless the subroutine makes a specific promise
-not to do so.  Subroutines that make such a promise are said to
-“preserve ZT0”.
+Access to the SME2 ZT0 register is also controlled by PSTATE.ZA. As described
+in `SME state`_, the AAPCS64 defines ZT0 to be a "`Caller-saved`_ register",
+meaning that its contents may be changed by a call to any subroutine, unless the
+subroutine makes a specific promise not to do so.  Subroutines that make such a
+promise are said to “preserve ZT0”.
 
 ZT0 is therefore not handled by the lazy save scheme.
 
@@ -2234,9 +2239,9 @@ following properties:
 * The function has a `private-ZA`_ `streaming-compatible interface`_ with
   following properties:
 
-  * X2-X15, X19-X29 and SP are call-preserved.
-  * Z0-Z31 are call-preserved.
-  * P0-P15 are call-preserved.
+  * X2-X15, X19-X29 and SP are `Callee-saved`_.
+  * Z0-Z31 are `Callee-saved`_.
+  * P0-P15 are `Callee-saved`_.
   * the function `preserves ZA`_.
 
 * The function does not take any arguments.
@@ -2284,9 +2289,9 @@ with the subroutine having the following properties:
 * The subroutine has a `private-ZA`_ `streaming-compatible interface`_ with the
   following properties:
 
-  * X0-X13, X19-X29 and SP are call-preserved.
-  * Z0-Z31 are call-preserved.
-  * P0-P15 are call-preserved.
+  * X0-X13, X19-X29 and SP are `Callee-saved`_.
+  * Z0-Z31 are `Callee-saved`_.
+  * P0-P15 are `Callee-saved`_.
 
 * The subroutine does not take any arguments.
 
@@ -2321,8 +2326,8 @@ If ZA was dormant on entry then it remains dormant on return.
 
 .. note::
 
-   The idea here is to make as many registers call-preserved as possible,
-   so that the save does not require much spilling in the caller.
+   The idea here is to make as many registers `Callee-saved`_ as possible, so
+   that the save does not require much spilling in the caller.
 
    Aborting for unrecognized reserved bytes prevents older runtimes from
    silently mishandling any future TPIDR2 state.
@@ -2342,9 +2347,9 @@ with the subroutine having the following properties:
 * The subroutine has a `private-ZA`_ `streaming-compatible interface`_ with the
   following properties:
 
-  * X0-X13, X19-X29 and SP are call-preserved.
-  * Z0-Z31 are call-preserved.
-  * P0-P15 are call-preserved.
+  * X0-X13, X19-X29 and SP are `Callee-saved`_.
+  * Z0-Z31 are `Callee-saved`_.
+  * P0-P15 are `Callee-saved`_.
 
 * The subroutine does not take any arguments.
 
@@ -2376,9 +2381,9 @@ a lazy save, with the subroutine having the following properties:
 * The subroutine has a `shared-ZA`_ `streaming-compatible interface`_ with
   following properties:
 
-  * X0-X13, X19-X29 and SP are call-preserved.
-  * Z0-Z31 are call-preserved.
-  * P0-P15 are call-preserved.
+  * X0-X13, X19-X29 and SP are `Callee-saved`_.
+  * Z0-Z31 are `Callee-saved`_.
+  * P0-P15 are `Callee-saved`_.
 
 * The subroutine takes the following argument:
 
@@ -2424,9 +2429,9 @@ value of VG, and the subroutine must have the following properties:
 * The subroutine has a `private-ZA`_ `streaming-compatible interface`_ with the
   following properties:
 
-  * X1-X15, X19-X29 and SP are call-preserved.
-  * Z0-Z31 are call-preserved.
-  * P0-P15 are call-preserved.
+  * X1-X15, X19-X29 and SP are `Callee-saved`_.
+  * Z0-Z31 are `Callee-saved`_.
+  * P0-P15 are `Callee-saved`_.
   * the subroutine `preserves ZA`_.
 
 * The subroutine does not take any arguments.
@@ -2457,9 +2462,9 @@ that is large enough to represent all state enabled by PSTATE.ZA.
 * The subroutine has an `agnostic-ZA`_ `streaming-compatible interface`_ with
   the following properties:
 
-  * X1-X15, X19-X29 and SP are call-preserved.
-  * Z0-Z31 are call-preserved.
-  * P0-P15 are call-preserved.
+  * X1-X15, X19-X29 and SP are `Callee-saved`_.
+  * Z0-Z31 are `Callee-saved`_.
+  * P0-P15 are `Callee-saved`_.
 
 * The subroutine takes no arguments.
 
@@ -2496,9 +2501,9 @@ by PSTATE.ZA.
 * The subroutine has a `streaming-compatible interface`_ with
   the following properties:
 
-  * X1-X15, X19-X29 and SP are call-preserved.
-  * Z0-Z31 are call-preserved.
-  * P0-P15 are call-preserved.
+  * X1-X15, X19-X29 and SP are `Callee-saved`_.
+  * Z0-Z31 are `Callee-saved`_.
+  * P0-P15 are `Callee-saved`_.
   * ZA and ZT0 are handled specially, as described below.
 
 * The subroutine takes the following arguments:
@@ -2558,9 +2563,9 @@ enabled by PSTATE.ZA.
 * The subroutine has a `streaming-compatible interface`_ with the
   following properties:
 
-  * X1-X15, X19-X29 and SP are call-preserved.
-  * Z0-Z31 are call-preserved.
-  * P0-P15 are call-preserved.
+  * X1-X15, X19-X29 and SP are `Callee-saved`_.
+  * Z0-Z31 are `Callee-saved`_.
+  * P0-P15 are `Callee-saved`_.
   * ZA and ZT0 are handled specially, as described below.
 
 * The subroutine takes the following arguments:

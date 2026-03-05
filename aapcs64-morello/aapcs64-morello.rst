@@ -187,17 +187,19 @@ changes to the content of the document for that release.
 
 .. table::
 
-    +----------+------------------------------+----------------------------------------+
-    | Issue    | Date                         | Change                                 |
-    +==========+==============================+========================================+
-    | 00alpha  | 1st October 2020             | Alpha release.                         |
-    +----------+------------------------------+----------------------------------------+
-    | 2020Q4   | 21\ :sup:`st` December 2020  | Document released on Github.           |
-    +----------+------------------------------+----------------------------------------+
-    | 2022Q1   | 1\ :sup:`st` April 2022      | Fix up rule C.8 on capability passing. |
-    +----------+------------------------------+----------------------------------------+
-    | 2022Q3   | 20\ :sup:`th` October 2022   | Rework varargs for Morello.            |
-    +----------+------------------------------+----------------------------------------+
+    +----------+------------------------------+-----------------------------------------------------+
+    | Issue    | Date                         | Change                                              |
+    +==========+==============================+=====================================================+
+    | 00alpha  | 1st October 2020             | Alpha release.                                      |
+    +----------+------------------------------+-----------------------------------------------------+
+    | 2020Q4   | 21\ :sup:`st` December 2020  | Document released on Github.                        |
+    +----------+------------------------------+-----------------------------------------------------+
+    | 2022Q1   | 1\ :sup:`st` April 2022      | Fix up rule C.8 on capability passing.............. |
+    +----------+------------------------------+-----------------------------------------------------+
+    | 2022Q3   | 20\ :sup:`th` October 2022   | Rework varargs for Morello.                         |
+    +----------+------------------------------+-----------------------------------------------------+
+    | 2025Q4   | 3\ :sup:`rd` March 2026      | - Standardize on "caller-saved" and "callee-saved". |
+    +----------+------------------------------+-----------------------------------------------------+
 
 
 References
@@ -361,31 +363,31 @@ Additionally, a stack-pointer register, SP in a 64-bit context or CSP in a capab
 
 .. table:: General purpose registers and AAPCS64-cap usage
 
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | Register   | Special  | Role in AAPCS64-cap                                                                                |
-    +============+==========+====================================================================================================+
-    | r31        | CSP      | The Capability Stack Pointer.                                                                      |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r30        | CLR      | The Capability Link Register.                                                                      |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r29        | CFP      | The Capability Frame Pointer.                                                                      |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r19-r28    |          | Registers r19-r28 (c19-c28) are callee-saved.                                                      |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r18        |          | The Platform Register, if needed; otherwise a temporary register. See notes.                       |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r17        | CIP1     | The second intra-procedure-call temporary register (can be used by call veneers and PLT code).     |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r16        | CIP0     | The first intra-procedure-call scratch register (can be used by call veneers and PLT code).        |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r10-r15    |          | Temporary registers.                                                                               |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r9         |          | Parameter register for variadic calls, temporary register otherwise.                               |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r8         |          | The capability indirect result location register.                                                  |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
-    | r0-r7      |          | Parameter/result registers.                                                                        |
-    +------------+----------+----------------------------------------------------------------------------------------------------+
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | Register   | Special  | Role in AAPCS64-cap                                                                            |
+    +============+==========+================================================================================================+
+    | r31        | CSP      | The Capability Stack Pointer.                                                                  |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r30        | CLR      | The Capability Link Register.                                                                  |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r29        | CFP      | The Capability Frame Pointer.                                                                  |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r19-r28    |          | Registers r19-r28 (c19-c28) are callee-saved.                                                  |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r18        |          | The Platform Register, if needed; otherwise a caller-saved register. See notes.                |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r17        | CIP1     | The second intra-procedure-call temporary register (can be used by call veneers and PLT code). |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r16        | CIP0     | The first intra-procedure-call temporary register (can be used by call veneers and PLT code).  |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r10-r15    |          | Caller-saved registers.                                                                        |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r9         |          | Parameter register for variadic calls, caller-saved register otherwise.                        |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r8         |          | The capability indirect result location register (caller-saved).                               |
+    +------------+----------+------------------------------------------------------------------------------------------------+
+    | r0-r7      |          | Parameter/result registers (caller-saved).                                                     |
+    +------------+----------+------------------------------------------------------------------------------------------------+
 
 .. _General purpose registers and AAPCS64 usage:
 
@@ -393,29 +395,29 @@ Additionally, a stack-pointer register, SP in a 64-bit context or CSP in a capab
 
 .. table:: General purpose registers and AAPCS64 usage
 
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | Register  | Special  | Role in AAPCS64                                                                                    |
-    +===========+==========+====================================================================================================+
-    | r31       | SP       | The Stack Pointer.                                                                                 |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r30       | LR       | The Link Register.                                                                                 |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r29       | FP       | The Frame Pointer.                                                                                 |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r19-r28   |          | The lower 64 bits of the registers (x19-x28) is callee-saved.                                      |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r18       |          | The Platform Register, if needed; otherwise a temporary register. See notes.                       |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r17       | IP1      | The second intra-procedure-call temporary register (can be used by call veneers and PLT code).     |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r16       | IP0      | The first intra-procedure-call scratch register (can be used by call veneers and PLT code).        |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r9-r15    |          | Temporary registers.                                                                               |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r8        |          | The indirect result location register.                                                             |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
-    | r0-r7     |          | Parameter/result registers.                                                                        |
-    +-----------+----------+----------------------------------------------------------------------------------------------------+
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | Register  | Special  | Role in AAPCS64                                                                                |
+    +===========+==========+================================================================================================+
+    | r31       | SP       | The Stack Pointer.                                                                             |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r30       | LR       | The Link Register.                                                                             |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r29       | FP       | The Frame Pointer.                                                                             |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r19-r28   |          | The lower 64 bits of the registers (x19-x28) is callee-saved.                                  |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r18       |          | The Platform Register, if needed; otherwise a caller-saved register. See notes.                |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r17       | IP1      | The second intra-procedure-call temporary register (can be used by call veneers and PLT code). |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r16       | IP0      | The first intra-procedure-call temporary register (can be used by call veneers and PLT code).  |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r9-r15    |          | Caller-saved registers.                                                                        |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r8        |          | The indirect result location register (caller-saved).                                          |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
+    | r0-r7     |          | Parameter/result registers (caller-saved).                                                     |
+    +-----------+----------+------------------------------------------------------------------------------------------------+
 
 
 The first eight registers, r0-r7, are used to pass argument values into a subroutine and to return result values from a function. They may also be used to hold intermediate values within a routine (but, in general, only between subroutine calls).
@@ -424,11 +426,11 @@ In AAPCS64-cap the r9 register is used to pass anonymous arguments in variadic c
 
 Registers r16 (IP0/CIP0) and r17 (IP1/CIP1) may be used by a linker as a scratch register between a routine and any subroutine it calls (for details, see `Use of CIP0 and CIP1 by the linker`_). They can also be used within a routine to hold intermediate values between subroutine calls.
 
-The role of register r18 is platform specific. If a platform ABI has need of a dedicated general purpose register to carry inter-procedural state (for example, the thread context) then it should use this register for that purpose. If the platform ABI has no such requirements, then it should use r18 as an additional temporary register. The platform ABI specification must document the usage for this register.
+The role of register r18 is platform specific. If a platform ABI has need of a dedicated general purpose register to carry inter-procedural state (for example, the thread context) then it should use this register for that purpose. If the platform ABI has no such requirements, then it should use r18 as an additional caller-saved register. The platform ABI specification must document the usage for this register.
 
-In AAPCS64-cap a subroutine invocation must preserve the contents of the registers r19-r29 and CSP. All 128 bits and the tag bit of each value stored in r19-r29 must be preserved.
+In a AAPCS64-cap subroutine, registers r19-r29 and CSP are callee-saved. All 128 bits and the tag bit of each value stored in r19-r29 must be preserved.
 
-In AAPCS64 a subroutine invocation must preserve the contents of the lower 64 bits of registers r19-r29 and SP. There is no requirement to preserve the tag bit.
+In a AAPCS64 subroutine the contents of the lower 64 bits of registers r19-r29 and SP are callee-saved. There is no requirement to preserve the tag bit.
 
 .. note::
 
