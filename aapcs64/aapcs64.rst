@@ -12,6 +12,7 @@
 .. _AAPCS64: https://github.com/ARM-software/abi-aa/releases
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
 .. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
+.. _SYSVABI64: https://github.com/ARM-software/abi-aa/releases
 
 Procedure Call Standard for the Arm® 64-bit Architecture (AArch64)
 ******************************************************************
@@ -286,6 +287,9 @@ This document refers to, or is referred to by, the following documents:
 | AAPCS64_                                                                | Source for this document                           | Procedure Call Standard for the Arm 64-bit Architecture  |
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 | CPPABI64_                                                               | IHI 0059                                           | C++ ABI for the Arm 64-bit Architecture                  |
++-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
+| SYSVABI64_                                                              | sysvabi64                                          | System V Application Binary Interface (ABI) for the Arm  |
+|                                                                         |                                                    | 64-bit Architecture                                      |
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
 | GC++ABI                                                                 | https://itanium-cxx-abi.github.io/cxx-abi/abi.html | Generic C++ ABI                                          |
 +-------------------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------+
@@ -2218,6 +2222,11 @@ support routines:
 ``__arm_sme_restore``
    Provides a safe way to restore state enabled by PSTATE.ZA from a buffer.
 
+The SME support routines may rely on the presence of the
+``__aarch64_cpu_features`` global variable as defined in SYSVABI64_ for use in
+Function Multi-Versioning (FMV). A full implementation of FMV is not required
+for SME support; however, ``__aarch64_cpu_features`` should indicate if the
+FEAT_SME CPU feature was detected.
 
 ``__arm_sme_state``
 ^^^^^^^^^^^^^^^^^^^
