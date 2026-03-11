@@ -6,9 +6,7 @@
 
 ## About this document
 
-This document describes the use of the [Morello extensions to the DWARF debug
-table format in the Application Binary Interface (ABI) for the Arm 64-bit
-architecture](aadwarf64-morello.rst).
+This document defines the [Morello extensions to the DWARF standard for the Arm 64-bit architecture (AArch64)](aadwarf64-morello.rst).
 
 ## About the license
 

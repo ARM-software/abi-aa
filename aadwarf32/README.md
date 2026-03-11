@@ -6,9 +6,8 @@
 
 ## About this document
 
-The [DWARF for the Arm Architecture](aadwarf32.rst) describes the
-use of the DWARF debug table format in the Application Binary Interface (ABI) for
-the Arm architecture.
+[DWARF for the Arm 32-bit Architecture (Arm)](aadwarf32.rst) defines the 
+Arm extensions to the DWARF standard.
 
 ## About the license
 
