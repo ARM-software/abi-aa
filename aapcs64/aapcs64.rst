@@ -1318,8 +1318,8 @@ and so on.
 
 Suppose that a subroutine S1 with live data in ZA calls a subroutine S2 that
 has no knowledge of S1.  If the AAPCS64 defined ZA to be “call-preserved”
-(“callee-saved”), S1 would need to save and restore ZA around S1's own
-use of ZA, in case S1's caller also had live data in ZA.  If the AAPCS64
+(“callee-saved”), S2 would need to save and restore ZA around S2's own
+use of ZA, in case S2's caller (S1) also had live data in ZA.  If the AAPCS64
 defined ZA to be “call-clobbered” (“caller-saved”), S1 would need to
 save and restore ZA around the call to S2, in case S2 also used ZA.
 However, nested uses of ZA are expected to be rare, so these saves and
@@ -1377,7 +1377,7 @@ ZA states
 
 **(Beta)**
 
-The AAPCS64 uses the term “\ _`ZA_LIVE`\ ” to refer the number of leading
+The AAPCS64 uses the term “\ _`ZA_LIVE`\ ” to refer to the number of leading
 horizontal slices of ZA that might have useful contents.  That is,
 horizontal slice ZA[\ *i*\ ] can have useful contents only if
 *i* is less than ZA_LIVE.
