@@ -6,9 +6,8 @@
 
 ## About this document
 
-The [DWARF for the Arm 64-bit Architecture (AArch64)](aadwarf64.rst) describes the
-use of the DWARF debug table format in the Application Binary Interface (ABI) for
-the Arm 64-bit architecture.
+[DWARF for the Arm 64-bit Architecture (AArch64)](aadwarf64.rst) defines the 
+AArch64 extensions to the DWARF standard.
 
 ## About the license
 
