@@ -2223,6 +2223,8 @@ support routines:
 ``__arm_sme_restore``
    Provides a safe way to restore state enabled by PSTATE.ZA from a buffer.
 
+``__aarch64_sme_accessible``
+   Provides a safe way to query if the current thread has `access to SME`_.
 
 ``__arm_sme_state``
 ^^^^^^^^^^^^^^^^^^^
@@ -2610,6 +2612,44 @@ enabled by PSTATE.ZA.
     unspecified offset in the buffer pointed to by ``PTR``, the contents of
     ``PTR->ZT0`` are copied to ZT0.
 
+
+``__aarch64_sme_accessible``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. |__aarch64_sme_accessible| replace:: ``__aarch64_sme_accessible``
+
+**(Beta)**
+
+Platforms that support SME may provide a subroutine to query if the current
+thread has `access to SME`_ with the subroutine having the following properties:
+
+* The function is called ``__aarch64_sme_accessible``.
+
+* The subroutine has a `private-ZA`_ `streaming-compatible interface`_ with the
+  following properties:
+
+  * X1-X15, X19-X29 and SP are call-preserved.
+  * Z0-Z31 are call-preserved.
+  * P0-P15 are call-preserved.
+  * the subroutine `preserves ZA`_.
+
+* The subroutine takes no arguments.
+
+* The subroutine returns an unsigned double word in X0.
+
+* The subroutine behaves as follows:
+
+  * If the current thread has `access to SME`_ a value of 1 is returned in X0.
+
+  * Otherwise, a value of 0 is returned in X0.
+
+.. note::
+
+   The intention here is to provide a way for platforms to indicate that SME is
+   accessible that can be used in the implementation of other SME support
+   routines. It is not necessary to provide this routine if all other SME
+   support routines can be implemented without reference to
+   ``__aarch64_sme_accessible``.
 
 Dynamic symbols for supported state
 -----------------------------------
