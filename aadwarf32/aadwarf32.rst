@@ -435,7 +435,9 @@ LEB128 integers. Numbers 0-127 encode in 1 byte, 128-16383 in 2 bytes.
   +----------------+------------------------+-------------------------------------+
   | 133            | SPSR_SVC               | SVC-mode SPSR                       |
   +----------------+------------------------+-------------------------------------+
-  | 134–142        | None                   | Reserved for future allocation      |
+  | 134            | CPSR                   | Current CPSR, including the flags   |
+  +----------------+------------------------+-------------------------------------+
+  | 135–142        | None                   | Reserved for future allocation      |
   +----------------+------------------------+-------------------------------------+
   | 143            | RA_AUTH_CODE           | `Return Address Authentication      |
   |                |                        | Code`_                              |
@@ -520,8 +522,8 @@ LEB128 integers. Numbers 0-127 encode in 1 byte, 128-16383 in 2 bytes.
      more precisely specified scheme using 2-byte register numbers. The new
      numbering scheme should also be used for VFP-v2.
 
-The CPSR, VFP and FPA control registers are not allocated a numbering above.
-It is considered unlikely that these will be needed for producing a stack
+The VFP and FPA control registers are not allocated a numbering above. It is
+considered unlikely that these will be needed for producing a stack
 back-trace in a debugger.
 
 VFP-v3 and Neon register descriptions
