@@ -909,7 +909,7 @@ The Arm 64-bit architecture also has a further thirty-two registers, v0-v31, whi
 
 The first eight registers, v0-v7, are used to pass argument values into a subroutine and to return result values from a function. They may also be used to hold intermediate values within a routine (but, in general, only between subroutine calls).
 
-Registers v8-v15 are `Callee-saved`_ and the remaining registers (v0-v7, v16-v31) are `Callee-saved`_. Additionally, only the bottom 64 bits of each value stored in v8-v15 need to be `Callee-saved`_ [#aapcs64-f7]_; it is the responsibility of the caller to preserve larger values.
+Registers v8-v15 are `Callee-saved`_ and the remaining registers (v0-v7, v16-v31) are `Caller-saved`_. Additionally, only the bottom 64 bits of each value stored in v8-v15 need to be `Callee-saved`_ [#aapcs64-f7]_; it is the responsibility of the caller to preserve larger values.
 
 The FPSR is a status register that holds the cumulative exception bits of the floating-point unit. It contains the fields IDC, IXC, UFC, OFC, DZC, IOC and QC. These fields are not preserved across a public interface and may have any value on entry to a subroutine.
 
