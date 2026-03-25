@@ -2177,7 +2177,7 @@ pointer to the Dynamic Thread Vector (DTV), and the other 8 bytes are
 reserved for the implementation.
 
 Following the TCB and any required alignment padding (defined in
-`SystemV AArch64 TLS addressing`_), the TLS Blocks of the modules
+`TP, TCB and padding size`_), the TLS Blocks of the modules
 loaded at process start form the static TLS Block. The memory for the
 TLS Block is allocated at process start time.
 
