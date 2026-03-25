@@ -272,7 +272,7 @@ This document refers to, or is referred to by, the following documents.
   +-----------------+-------------------------------------------------------------------+-----------------------------------------------------------------------------+
   | SYM-VER_        | http://people.redhat.com/drepper/symbol-versioning                | GNU Symbol Versioning                                                       |
   +-----------------+-------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | TLSDESCRES_     | design-documents/tlsdesc-resolvers                                | TLSDESC resolver function examples                                          |
+  | TLSDESCRES_     | design-documents/tlsdesc-resolvers.rst                            | TLSDESC resolver function examples                                          |
   +-----------------+-------------------------------------------------------------------+-----------------------------------------------------------------------------+
 
 Terms and Abbreviations
@@ -2099,13 +2099,8 @@ into the abstract storage hierarchy as follows.
 *  (Most local) Automatic data (stack variables, instanced once per function
    activation, per thread).
 
-Rules governing thread local storage on AArch64
------------------------------------------------
-
-*  How to denote TLS in source programs:
-
-   C++11 and C11 use :c:`thread_local T t...`; A GCC extension uses
-   :c:`__thread T t...`; this is Q-o-I.
+Scope of the section
+--------------------
 
 *  How to represent the initializing images of TLS in object files, and how
    to define symbols in TLS:
@@ -2207,30 +2202,14 @@ generation count is less than the global generation number, the
 thread's DTV is updated, and the TLS for the ``module_id`` is
 allocated if it is not present.
 
-In pseudo code
+The calculation in ``__tls_get_addr`` is the most general and it can be
+applied to both static and dynamic TLS.
 
-.. code-block:: c
+TLS models
+----------
 
-    /* tls_get_addr with deferred allocation */
-    void * __tls_get_addr(size_t module_id, size_t offset)
-    {
-      dtv = get_thread_dtv();
-
-      if (dtv[0].generation_counter != global_generation_number)
-        /* includes setting the thread's generation counter to
-	   the global_generation_number */
-        update_thread_dtv();
-
-      if (dtv[module_id] == unallocated)
-        allocate_tls(dtv, module_id);
-
-      return dtv[module_id][offset];
-    }
-
-The calculation in __tls_get_addr is the most general and it can be
-applied to both static and dynamic TLS. There are four defined models
-of accessing TLS that trade off generality for performance. In order
-of descending generality:
+There are four defined models of accessing TLS
+of accessing TLS that trade off generality for performance. In descending order of generality:
 
    1. General Dynamic, also known as Global Dynamic, can be used anywhere.
 
@@ -2243,10 +2222,8 @@ of descending generality:
    4. Local Exec, can be used in the executable for TLS variables
       defined in the executables static TLS block.
 
-SystemV AArch64 TLS addressing
-------------------------------
-
-AArch64 TLS SystemV design choices:
+AArch64 TLS SystemV design choices
+----------------------------------
 
 * AArch64 uses variant 1 TLS as described in ELFTLS_.
 
@@ -2256,9 +2233,9 @@ AArch64 TLS SystemV design choices:
   only the descriptor dialect as this is the default dialect for GCC
   and the only dialect supported by clang.
 
-* The thread pointer (TP) is always accessible via the ``TPIDR_EL0``
-  system register. This can be accessed via inlining an ``mrs``
-  instruction to read the thread pointer.
+* The thread pointer (``TP``) is always accessible via the
+  ``TPIDR_EL0`` system register. This can be accessed via inlining an
+  ``mrs`` instruction to read the thread pointer.
 
 * The compiler can generate code that supports a TLS block size of 4
   KiB, 16 MiB, 4GiB or 16EiB, depending on the addressing mode. The
@@ -2266,6 +2243,9 @@ AArch64 TLS SystemV design choices:
 
 * The TLS for an executable or shared-library is described by the
   ``PT_TLS`` program header.
+
+TP, TCB and padding size
+------------------------
 
 Recall from the diagram in `SystemV AArch64 TLS addressing
 architecture`_ that the Thread Pointer ``TP`` points to the start of
@@ -2278,9 +2258,13 @@ PT_TLS.p_align)`` where ``≡`` means congruent to.
 
 The static and dynamic linker must agree on the size of the padding
 (``PADsize``) between the TCB and the executable's TLS Block. Using
-``TCBsize`` as the size of the TCB (16 bytes), the following expression can be used to calcluate ``PADsize`` from the ``PT_TLS`` program header.
+``TCBsize`` as the size of the TCB (16 bytes), the following
+expression can be used to calcluate ``PADsize`` from the ``PT_TLS``
+program header.
 
-``PADsize = (PT_TLS.p_vaddr - TCBsize) mod PT_TLS.p_align``.
+.. code-block:: c
+
+  PADsize = (PT_TLS.p_vaddr - TCBsize) mod PT_TLS.p_align
 
 A number of dynamic linkers use a different calculation that requires
 ``PT_TLS.p_vaddr ≡ 0 (modulo PT_TLS.p_align)`` to correctly align the
@@ -2295,17 +2279,29 @@ The expression for ``PADsize`` above can be derived from the
 requirement that ``PADsize`` must be the smallest positive integer
 that satisfies the following congruence:
 
-``TP`` + ``TCBsize + PADsize ≡ PT_TLS.p_vaddr (modulo PT_TLS.p_align)``.
+.. code-block:: c
 
-Using Integers modulo m where (``PT_TLS.p_align``).
-``TP:sub:m + TCBsize:sub:m + PADsize:sub:m = PT_TLS.p_vaddr:sub:m``
+  TP + TCBsize + PADsize ≡ PT_TLS.p_vaddr (modulo PT_TLS.p_align)
 
-As ``TP:sub:m`` is 0 as ``TP ≡ 0 (modulo PT_TLS.p_align)`` rearranging
+Using Integers modulo m where (``PT_TLS.p_align``), denoted by a (m)
+suffix in the formula below.
+
+.. code-block:: c
+
+  TP(m) + TCBsize(m) + PADsize(m) = PT_TLS.p_vaddr(m)
+
+As ``TP(m)`` is 0 as ``TP ≡ 0 (modulo PT_TLS.p_align)`` rearranging
 we get:
 
-``PADsize:sub:m = PT_TLS.p_vaddr:sub:m - TCBsize:sub:m``
-which is equivalent to
-``PADsize:sub:m = (PT_TLS.p_vaddr - TCBsize):sub:m``.
+.. code-block:: c
+
+  PADsize(m) = PT_TLS.p_vaddr(m) - TCBsize(m)
+
+which is equivalent to:
+
+.. code-block:: c
+
+  PADsize(m) = (PT_TLS.p_vaddr - TCBsize)(m).
 
 TLS Descriptors
 ---------------
@@ -2316,7 +2312,7 @@ location and properties of the TLS symbol to select an optimal
 resolver function.
 
 The static relocations with a prefix of ``R_AARCH64_TLSDESC_``
-targeting TLS symbol ``var``, instruct the static linker to create a
+targeting TLS symbol ``var`` instruct the static linker to create a
 TLS Descriptor for ``var``. The TLS Descriptor for a variable is
 stored in a pair of consecutive GOT entries, N and N + 1. The GOT
 entry for N has a dynamic ``R_AARCH64_TLSDESC`` relocation targeting
@@ -2460,7 +2456,7 @@ instructions do not have to be contiguous.
 
 .. code-block:: asm
 
-    adrp xn, :gottprel: var            // R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21 var
+    adrp xn, :gottprel:var            // R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21 var
     ldr  xn, [xn, #:gottprel_lo12:var] // R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC var
     // offset of var from tp in xn
 
