@@ -234,6 +234,9 @@ changes to the content of the document for that release.
   |         |                              | - new sections on Contributions_,                                 |
   |         |                              |   `Trademark notice`_, and Copyright_                             |
   +---------+------------------------------+-------------------------------------------------------------------+
+  | 2026Q2  | 01\ :sup:`st` April 2026     | - document that `std::hardware_constructive_interference_size` and|
+  |         |                              |   `std::hardware_destructive_interference_size` are not ABI stable|
+  +---------+------------------------------+-------------------------------------------------------------------+
 
 References
 ----------
@@ -419,6 +422,17 @@ ABI as specified.
 `EH ABI Level III: Implementation ABI for GNU Linux`_ describes the EH
 Level III ABI used on GNU/Linux systems.
 
+The ISO C++ Standard Library
+----------------------------
+
+The ABI for the Arm Architecture places no additional requirements on
+implementation defined properties of the C++ standard library. This
+includes the hardware specific constants such as **ISO C++ §**\ 17.6.5
+**Hardware interference size**. The
+`std::hardware_destructive_interference_size` and
+`std::hardware_constructive_size` are not defined by this ABI, may
+vary between CPU implementations, and are known not to be ABI stable
+in C++ library implementations.
 
 The C++ ABI Supplement
 ======================
