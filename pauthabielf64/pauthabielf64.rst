@@ -678,9 +678,10 @@ this should be sufficient.
   be set to 0 by a producer. A consumer must not assume that reserved
   bits are set to 0.
 
-For a relocation that involves signing a pointer, if the target symbol
-is an undefined weak reference, the result of the
-relocation is 0 (nullptr) regardless of the signing schema.
+For a relocation that involves signing a pointer, and the relocation
+addend is 0, if the target symbol is an undefined weak reference, the
+result of the relocation is 0 (nullptr) regardless of the signing
+schema.
 
 The computation to form the ``modifier`` is the same as
 ARM64E_. ``Place`` is the relocation target address.
