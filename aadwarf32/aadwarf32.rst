@@ -312,12 +312,11 @@ River.
 Overview
 ========
 
-The ABI for the Arm architecture specifies the use of DWARF 3.0-format
-debugging data.  For details of the base standard see GDWARF_.
+The ABI for the Arm architecture uses the DWARF 3.0 standard as its baseline.
+For details of the base standard, see GDWARF_.
 
-The ABI for the Arm architecture gives additional rules for how DWARF 3.0
-should be used, and how it is extended in ways specific to the Arm
-architecture. The following topics are covered in detail.
+It defines additional rules and Arm-specific extensions to DWARF 3.0,
+as detailed in the following sections:
 
 - The enumeration of DWARF register-numbers for, use in .debug_frame sections
   (`DWARF register names`_).
