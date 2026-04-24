@@ -679,7 +679,8 @@ this should be sufficient.
   bits are set to 0.
 
 For a relocation that involves signing a pointer, if the target symbol
-is an undefined weak reference, the result of the
+is an undefined weak reference, the result of the relocation is not
+signed. If the relocation addend is 0, this means the result of the
 relocation is 0 (nullptr) regardless of the signing schema.
 
 The computation to form the ``modifier`` is the same as
