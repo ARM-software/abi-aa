@@ -172,7 +172,7 @@ dropdown.
 document | owner | Github handle
 ---      | ---   | ---
 [Procedure Call Standard for the Arm Architecture](https://github.com/ARM-software/abi-aa/tree/master/aapcs32) | Ties Stuij | @stuij
-[Procedure Call Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/main/aapcs64) | Ties Stuij, Yury Khrustalev, Alfie Richards, David Truby | @stuij, @yury-khrustalev, @alfierichardsarm
+[Procedure Call Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/main/aapcs64) | Ties Stuij, Yury Khrustalev, Alfie Richards, David Truby | @stuij, @yury-khrustalev, @alfierichardsarm, @DavidTruby
 [ELF for the Arm Architecture](https://github.com/ARM-software/abi-aa/blob/master/aaelf32) | Peter Smith | @smithp35
 [ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aaelf64) | Peter Smith, Daniel Kiss, Yury Khrustalev  | @smithp35, @DanielKristofKiss, @yury-khrustalev
 [DWARF for the Arm Architecture](https://github.com/ARM-software/abi-aa/tree/main/aadwarf32) | Keith Walker | @walkerkd
