@@ -139,38 +139,64 @@ dropdown.
 
 2. Review of pull request
 
-    Your pull request needs to be reviewed. Anyone can review, but at least one
-    of the reviewers needs to be someone from Arm. Good candidate to review your
-    change would be the various so-called document owners who look after the
-    quality of the individual documents. Not every document has an owner, but
-    the most used and important ones do. See the table below:
+    Your pull request needs to be reviewed. The amount of review
+    required depends on the impact of the change.
+
+    * Editorial changes such as spelling and grammar fixes can be
+      reviewed by anyone.
+
+    * Clarification of existing text, but no functional
+      changes. Ideally one of the document owners.
+
+    * Documentation of existing implementation, but no
+      changes. Ideally one of the document owners.
+
+    * Additions/Changes to the base ABI, where base is
+      platform/toolchain agnostic. Consensus required across across
+      Arm supported toolchains (GCC, LLVM).
+
+    * Additions/Changes that interact with Arm supported OS
+      (Linux). Consensus required from OS representatives.
+
+    * Additions/Changes exclusive to an extension document. Review
+      from the extension owner.
+
+    Anyone can review, but at least one of the reviewers needs to be
+    someone from Arm. Good candidate to review your change would be
+    the various document owners who look after the quality of the
+    individual documents. Not every document has owners, but the most
+    used and important ones do. If you are unable to add reviewers
+    please tag the owner with an @username in a comment. See the table
+    below for document owners:
 
 document | owner | Github handle
 ---      | ---   | ---
 [Procedure Call Standard for the Arm Architecture](https://github.com/ARM-software/abi-aa/tree/master/aapcs32) | Ties Stuij | @stuij
-[Procedure Call Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/main/aapcs64) | Ties Stuij | @stuij
-[ELF for the Arm Architecture](https://github.com/ARM-software/abi-aa/blob/master/aaelf32) | Matthew Malcomson | @mmalcomson
-[ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aaelf64) | Matthew Malcomson | @mmalcomson
+[Procedure Call Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/main/aapcs64) | Ties Stuij, Yury Khrustalev, Alfie Richards, David Truby | @stuij, @yury-khrustalev, @alfierichardsarm, @DavidTruby
+[ELF for the Arm Architecture](https://github.com/ARM-software/abi-aa/blob/master/aaelf32) | Peter Smith | @smithp35
+[ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aaelf64) | Peter Smith, Daniel Kiss, Yury Khrustalev  | @smithp35, @DanielKristofKiss, @yury-khrustalev
 [DWARF for the Arm Architecture](https://github.com/ARM-software/abi-aa/tree/main/aadwarf32) | Keith Walker | @walkerkd
-[DWARF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/main/aadwarf64) | Keith Walker | @walkerkd
-[PAUTH Extension to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/pauthabielf64) | Peter Smith | @smithp35
+[DWARF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/main/aadwarf64) | Keith Walker, Sivan Shani, Benjamin Maxwell, Ash Dobrescu | @walkerkd, @sivan-shani, @MacDue, @Asher8118
+[PAUTH Extension to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/pauthabielf64) | Peter Smith, Daniel Kiss | @smithp35, @DanielKristofKiss
 [Exception Handling ABI for the Arm Architecture](https://github.com/ARM-software/abi-aa/tree/master/ehabi32) | Victor Campos | @vhscampos
-[Vector Function Application Binary Interface Specification for AArch64](https://github.com/ARM-software/abi-aa/tree/master/vfabia64) | Richard Sandiford | @rsandifo-arm
-[System V ABI for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/sysvabi64) | Peter Smith | @smithp35
-[Morello extensions to Procedure Call Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aapcs64-morello) | Silviu Baranga | @sbaranga-arm
-[Morello extensions to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aaelf64-morello) | Silviu Baranga | @sbaranga-arm
-[Morello Descriptor ABI for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/descabi-morello) | Silviu Baranga | @sbaranga-arm
+[Vector Function Application Binary Interface Specification for AArch64](https://github.com/ARM-software/abi-aa/tree/master/vfabia64) | Looking for owner | Looking for owner
+[System V ABI for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/sysvabi64) | Peter Smith, Yury Khrustalev | @smithp35, @yury-khrustalev
+[Morello extensions to Procedure Call Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aapcs64-morello) | Peter Smith | @smithp35
+[Morello extensions to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/aaelf64-morello) | Peter Smith | @smithp35
+[Morello Descriptor ABI for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/descabi-morello) | Peter Smith | @smithp35
 [Memtag ABI Extension to ELF for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/memtagabielf64) | Florian Mayer | @fmayer
-[C/C++ Atomics Application Binary Interface Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/atomicsabi64) | Luke Geeson | @lukeg101
-[AArch64 ELF Conventions for Binary Analysis](https://github.com/ARM-software/abi-aa/tree/main/baabielf64) | Pavel Iliin | @ilinpv
+[C/C++ Atomics Application Binary Interface Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/master/atomicsabi64) | Wilco Dykstra, Tomas Matheson, Pavel Iliin | @Wilco1, @tmatheson-arm, @ilinpv
+[AArch64 ELF Conventions for Binary Analysis](https://github.com/ARM-software/abi-aa/tree/main/baabielf64) | Pavel Iliin, Paschalis Mpeis | @ilinpv, @paschalis-mpeis
+[Build Attributes for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/tree/main/buildattr64) | Peter Smith | @smithp35
+[C++ Application Binary Interface Standard for the Arm 64-bit Architecture](https://github.com/ARM-software/abi-aa/blob/main/cppabi64/cppabi64.rst) | Daniel Kiss | @DanielKristofKiss
 
 3. Merging the change
 
     Once the change has been reviewed properly it can be merged, which can only
     be done by a member of the abi-aa admin group. If your change hasn't been
     merged for more than a week after it has been accepted, leave a comment on
-    the pull request. Merging of changes should use the rebase and merge
-    strategy. Other merge options should be disabled.
+    the pull request. Merging of changes should use the squash and merge
+    strategy.
 
 # Style guide
 
