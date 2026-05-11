@@ -2231,8 +2231,8 @@ to effect the transition to Thumb state. Conditional function call instructions
 
 A linker may use a veneer (a sequence of instructions) to implement the
 relocated branch if the relocation is one of R_ARM_PC24, R_ARM_CALL,
-R_ARM_JUMP24, (or, in Thumb state, R_ARM_THM_CALL, R_ARM_THM_JUMP24, or
-R_ARM_THM_JUMP19) and:
+R_ARM_JUMP24, R_ARM_PREL31, (or, in Thumb state, R_ARM_THM_CALL,
+R_ARM_THM_JUMP24, or R_ARM_THM_JUMP19) and:
 
 * The target symbol has type STT_FUNC
 
