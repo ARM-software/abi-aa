@@ -251,6 +251,8 @@ changes to the content of the document for that release.
   +------------+-----------------------------+------------------------------------------------------------------+
   | 2026Q2     | 6\ :sup:`th` January 2026   | - Clarify combination of MemtagABI and PAuthABI relocations      |
   +------------+-----------------------------+------------------------------------------------------------------+
+  | 2026Q2     | 14\ :sup:`th` May 2026      | - Add R_AARCH64_AUTH_TLSDESC_CALL relocation                     |
+  +------------+-----------------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -1201,6 +1203,33 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   |                 |                                        |                                        | field to bits [11:0] of  |
   |                 |                                        |                                        | X. No overflow check.    |
   +-----------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x266 (598)     | R\_AARCH64\_AUTH\_TLSDESC\_CALL        | None                                   | For relaxation only. See |
+  |                 |                                        |                                        | notes below.             |
+  +-----------------+----------------------------------------+----------------------------------------+--------------------------+
+
+.. note::
+
+  Relocation code ``R_AARCH64_AUTH_TLSDESC_CALL`` is needed to permit
+  linker optimization of TLS descriptor code sequences involving
+  authenticated pointers, when undefined weak non-preemptible symbols
+  are known to resolve to 0; this can only be done if all relevant uses
+  of TLS descriptors are marked to permit accurate relaxation.
+
+.. code-block:: asm
+
+  // Before (AUTH TLSDESC):
+  adrp x0, :tlsdesc_auth: undefined_weak            // R_AARCH64_AUTH_TLSDESC_ADR_PAGE21
+  ldr  x16, [x0, :tlsdesc_auth_lo12: undefined_weak // R_AARCH64_AUTH_TLSDESC_LD64_LO12
+  add  x0, x0 :tlsdesc_auth_lo12: undefined_weak    // R_AARCH64_AUTH_TLSDESC_ADD_LO12
+  .tlddescauthcall undefined_weak                   // R_AARCH64_AUTH_TLSDESC_CALL
+  autia x0, x8
+
+  // After relaxation, assuming undefined_weak is known to be 0 at static-link time.
+  mov  x0, #0x0
+  nop
+  nop
+  nop
+
 .. raw:: pdf
 
    PageBreak
