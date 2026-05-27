@@ -1221,14 +1221,18 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   adrp x0, :tlsdesc_auth: undefined_weak            // R_AARCH64_AUTH_TLSDESC_ADR_PAGE21
   ldr  x16, [x0, :tlsdesc_auth_lo12: undefined_weak // R_AARCH64_AUTH_TLSDESC_LD64_LO12
   add  x0, x0 :tlsdesc_auth_lo12: undefined_weak    // R_AARCH64_AUTH_TLSDESC_ADD_LO12
-  .tlddescauthcall undefined_weak                   // R_AARCH64_AUTH_TLSDESC_CALL
-  autia x0, x8
+  .tlsdescauthcall undefined_weak                   // R_AARCH64_AUTH_TLSDESC_CALL
+  blraa x0
 
   // After relaxation, assuming undefined_weak is known to be 0 at static-link time.
   mov  x0, #0x0
   nop
   nop
   nop
+
+Note that this relaxation is equivalent to a 0 returned from the
+TLSDESC handler function. If this is added to the thread pointer
+(TP) the result would point to the thread control block (TCB).
 
 .. raw:: pdf
 
