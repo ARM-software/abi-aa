@@ -9,6 +9,8 @@
 
 
 .. _AAELF64: https://github.com/ARM-software/abi-aa/releases
+.. _AAPCS64: https://github.com/ARM-software/abi-aa/releases
+.. _SYSVABI: https://github.com/ARM-software/abi-aa/releases
 .. _RELR: https://groups.google.com/g/generic-abi/c/bX460iggiKg
 .. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
 .. _MTE: https://developer.arm.com/documentation/102433/0100/Detecting-memory-safety-violations
@@ -211,6 +213,9 @@ changes to the content of the document for that release.
   | 2024Q3     | 5\ :sup:`th` September 2024 | In `Dynamic Section`_, switch the d_un of                      |
   |            |                             | DT_AARCH64_MEMTAG_STACK and DT_AARCH64_MEMTAG_GLOBALS          |
   +------------+-----------------------------+----------------------------------------------------------------+
+  | 2026Q2     | 1\ :sup:`st` June 2026      | Clarified the scope if this document with respect to           |
+  |            |                             | GNU/Linux                                                      |
+  +------------+-----------------------------+----------------------------------------------------------------+
 
 References
 ----------
@@ -289,8 +294,11 @@ Platform Standards
 As is the case with the AAELF64_, we expect that each operating system that
 adopts components of this ABI specification will specify additional requirements
 and constraints that must be met by application code in binary form and the
-code-generation tools that generate such code. This document will present
-recommendations for a SysVr4 like operating system such as Linux.
+code-generation tools that generate such code.
+
+This document will present recommendations for a SysVr4 like operating system
+such as Linux. Any specific GNU/Linux implementation details will be documented
+in the SYSVABI_ and AAPCS64_ documents.
 
 .. raw:: pdf
 
