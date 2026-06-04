@@ -471,7 +471,9 @@ General Restrictions
   way to avoid COPY relocations is to access imported signed pointers
   via the GOT.
 
-- PAUTHELF64 only supports the descriptor based TLS (TLSDESC).
+- PAUTHELF64 only supports the descriptor based TLS (TLSDESC) dialect.
+  The "traditional" dialect as selected by -mtls-dialect=traditional is
+  not supported.
 
 The Rationale behind the requirement to avoid copy relocations is that
 the static linker creates the storage that the copy is placed; which
@@ -1115,9 +1117,11 @@ AUTH variant GOT Generating Relocations
 ``ENCD(value)`` is the encoding of the signing schema into the GOT
 slot using the ``IA`` key for symbols of type STT_FUNC and the ``DA``
 key for all other symbol types. The address of the GOT slot ``G`` is
-used as a modifer. For ``ENCD(GTLSDESC(S)`` the encoding applies to
+used as a modifer. For ``ENCD(GTLSDESC(S)`` the encoding must apply to
 the first entry containing the pointer to the variable's TLS
-descriptor resolver function.
+descriptor resolver function. Whether the parameter to the resolver
+function is signed is platform defined as it is a contract between the
+dynamic loader and the resolver function.
 
 The GOT entries must be relocated by AUTH variant dynamic relocations.
 
@@ -1214,25 +1218,6 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   authenticated pointers, when undefined weak non-preemptible symbols
   are known to resolve to 0; this can only be done if all relevant uses
   of TLS descriptors are marked to permit accurate relaxation.
-
-.. code-block:: asm
-
-  // Before (AUTH TLSDESC):
-  adrp x0, :tlsdesc_auth: undefined_weak            // R_AARCH64_AUTH_TLSDESC_ADR_PAGE21
-  ldr  x16, [x0, :tlsdesc_auth_lo12: undefined_weak // R_AARCH64_AUTH_TLSDESC_LD64_LO12
-  add  x0, x0 :tlsdesc_auth_lo12: undefined_weak    // R_AARCH64_AUTH_TLSDESC_ADD_LO12
-  .tlsdescauthcall undefined_weak                   // R_AARCH64_AUTH_TLSDESC_CALL
-  blraa x0
-
-  // After relaxation, assuming undefined_weak is known to be 0 at static-link time.
-  mov  x0, #0x0
-  nop
-  nop
-  nop
-
-Note that this relaxation is equivalent to a 0 returned from the
-TLSDESC handler function. If this is added to the thread pointer
-(TP) the result would point to the thread control block (TCB).
 
 .. raw:: pdf
 
