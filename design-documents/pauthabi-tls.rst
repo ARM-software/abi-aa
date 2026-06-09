@@ -28,15 +28,17 @@ TLS Dialect
 The base ABI in `AAELF64`_ defines relocations for two TLS
 dialects. The "traditional" dialect and the "descriptor" dialect. In
 the traditional dialect global and local dynamic TLS use the
-``R_<CLS>_TLSGD`` and ``R_<CLS>_TLSLD`` prefixed relocations. These
-create a pair of GOT entries relocated by ``R_<CLS>_TLS_DTPMOD``. In
-the "descriptor" dialect, global and local dynamic TLS use the
-``R_<CLS>_TLSDESC`` prefixed relocations. These create a pair of GOT
-entries relocated by ``R_<CLS>_TLSDESC``. Local Exec and Initial Exec
-TLS are handled the same way in both dialects.
+``R_<CLS>_TLSGD``, ``R_<CLS>_TLSLD`` prefixed relocations. These
+create a pair of GOT entries relocated by ``R_<CLS>_TLS_DTPMOD`` and
+``R_<CLS>_TLS_DTPREL``. In the "descriptor" dialect, global and local
+dynamic TLS use the ``R_<CLS>_TLSDESC`` prefixed relocations. These
+create a pair of GOT entries relocated by ``R_<CLS>_TLSDESC``. Local
+Exec and Initial Exec TLS are handled the same way in both dialects.
 
 The `PAUTHABIELF64`_ only supports the descriptor based dialect,
-primarily because clang only supports the "descriptor" based dialect.
+primarily because the traditional dialect is now legacy. GCC defaults
+to the "descriptor" dialect and clang only supports the "descriptor"
+based dialect.
 
 Auth variant TLS relocations
 ----------------------------
@@ -56,20 +58,23 @@ At present there are AUTH variant static and dynamic relocations
 defined for TLSDESC, but not for Initial Exec.
 
 Local dynamic TLS does not use the GOT so it can be handled by the
-``R_<CLS>_TLSLE`` prefixed relocations defined in `AAELF64`_.
+``R_<CLS>_TLSLE`` prefixed relocations from the base ABI defined in
+`AAELF64`_.
 
 The choice of which GOT entries to sign is a property of the
 signing-schema for the platform. For example a signing-schema may only
 sign GOT entries containing code-pointers, which would permit Initial
 Exec TLS using the ``R_<CLS>_TLSIE`` prefixed relocations defined in
-`AAELF64`_. Alternatively a signing-schema may sign all GOT entries.
+`AAELF64`_. Alternatively a signing-schema may sign all GOT entries,
+which would require AUTH variant static and dynamic relocations to be
+defined for Initial Exec.
 
 TLS Relaxation
 --------------
 
 The static linker may relax a more general TLS model to a more
 constrained model when TLS variables meet the requirements for using
-the constrained model, and the relaxed sequence is permitted by the
+the constrained model and the relaxed sequence is permitted by the
 signing-schema of the platform.
 
 The AUTH variant TLSDESC sequence to access TLS variable ``v`` is as
@@ -101,8 +106,8 @@ does not require an immediate trap on failure of an AUTH
 
   .. code
 
-     adrp x0, :gottprel:v           // R_AARCH64_AUTH_TLSIE_ADR_GOTTPREL_PAGE21 v
-     add  x1, x0, #:gottprel_lo12:v // R_AARCH64_AUTH_TLSIE_ADD_LO12 v
+     adrp x0, :gottprel_auth:v           // R_AARCH64_AUTH_TLSIE_ADR_GOTTPREL_PAGE21 v
+     add  x1, x0, #:gottprel_auth_lo12:v // R_AARCH64_AUTH_TLSIE_ADD_LO12 v
      ldr  x0, [x1]
      autia x0, x1
 

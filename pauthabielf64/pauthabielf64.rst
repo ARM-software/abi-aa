@@ -13,6 +13,7 @@
 .. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html
 .. _MEMTAGABI: https://github.com/ARM-software/abi-aa/releases
+.. _PAUTHABITLS: https://github.com/ARM-software/abi-aa/tree/main/design-documents
 .. _SCO-ELF: http://www.sco.com/developers/gabi/
 .. _SYSVABI64: https://github.com/ARM-software/abi-aa/releases
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
@@ -275,6 +276,8 @@ This document refers to, or is referred to by, the following documents.
   | LSB_                                                                                    |                                                             | Linux Standards Base                                                     |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | MEMTAGABI_                                                                              | memtagabi64                                                 | Memtag ABI Extension for the Arm 64-bit Architecture                     |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
+  | PAUTHABITLS_                                                                            |                                                             | Rationale for and possible relaxations for TLS in a PAuthABI environment |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | SCO-ELF_                                                                                | http://www.sco.com/developers/gabi/                         | System V Application Binary Interface – DRAFT                            |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
@@ -1215,9 +1218,8 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
 
   Relocation code ``R_AARCH64_AUTH_TLSDESC_CALL`` is needed to permit
   linker optimization of TLS descriptor code sequences involving
-  authenticated pointers, when undefined weak non-preemptible symbols
-  are known to resolve to 0; this can only be done if all relevant uses
-  of TLS descriptors are marked to permit accurate relaxation.
+  signed GOT entries. Further information, including possible
+  relaxations is available in the `PAUTHABITLS`_ design document.
 
 .. raw:: pdf
 
