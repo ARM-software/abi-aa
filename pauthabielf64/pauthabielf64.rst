@@ -1219,7 +1219,7 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   Relocation code ``R_AARCH64_AUTH_TLSDESC_CALL`` is needed to permit
   linker optimization of TLS descriptor code sequences involving
   signed GOT entries. Further information, including possible
-  relaxations is available in the `PAUTHABITLS`_ design document.
+  relaxations, is available in the `PAUTHABITLS`_ design document.
 
 .. raw:: pdf
 
