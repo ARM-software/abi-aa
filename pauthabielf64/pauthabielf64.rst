@@ -250,6 +250,9 @@ changes to the content of the document for that release.
   |            |                             |   Range.                                                         |
   +------------+-----------------------------+------------------------------------------------------------------+
   | 2026Q2     | 6\ :sup:`th` January 2026   | - Clarify combination of MemtagABI and PAuthABI relocations      |
+  |            |                             | - Add alternative format of dynamic relocations for platforms    |
+  |            |                             |   that require idempotency and cannot store the signing-schema   |
+  |            |                             |   in the place.                                                  |
   +------------+-----------------------------+------------------------------------------------------------------+
 
 References
@@ -1334,7 +1337,7 @@ The tables below introduce an ADDEND operation and change the meaning of SCHEMA:
   +--------------------+------------------------------+------------------------------------+
   | Relocation code    | Name                         | Operation                          |
   +====================+==============================+====================================+
-  | 0x244 (580)        | R\_AARCH64\_AUTH\_ABS64      | SIGN(S + ADDEND(A), SCHEMA(A)      |
+  | 0x244 (580)        | R\_AARCH64\_AUTH\_ABS64      | SIGN(S + ADDEND(A), SCHEMA(A))     |
   +--------------------+------------------------------+------------------------------------+
   | 0x411 (1041)       | R\_AARCH64\_AUTH\_RELATIVE   | SIGN(Delta + ADDEND(A), SCHEMA(A)) |
   +--------------------+------------------------------+------------------------------------+
