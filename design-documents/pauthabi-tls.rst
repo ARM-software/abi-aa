@@ -80,7 +80,7 @@ signing-schema of the platform.
 The AUTH variant TLSDESC sequence to access TLS variable ``v`` is as
 described below:
 
-  .. code
+.. code-block:: asm
 
      adrp x0, :tlsdesc_auth:v // R_AARCH64_AUTH_TLS_ADR_PAGE21
      ldr  x16, [x0, #:tlsdesc_auth_lo12:v] // R_AARCH64_AUTH_TLSDESC_LD64_LO12
@@ -92,7 +92,7 @@ There are no AUTH variant TLSIE relocations defined so a relaxation is
 only possible to an unsigned GOT entry if permitted by the
 signing-schema:
 
-  .. code
+.. code-block:: asm
 
      adrp x0, :gottprel:v            // R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21 v
      ldr  x0, [x0, #:gottprel_lo12:v] // R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC v
@@ -102,9 +102,9 @@ signing-schema:
 A theoretical relaxation for a signed GOT is possible when the
 architectural feature ``FEAT_FPAC`` is available or a signing-schema
 does not require an immediate trap on failure of an AUTH
-(``-fno-ptrauth-traps`` in clang).
+(``-fno-ptrauth-auth-traps`` in clang).
 
-  .. code
+.. code-block:: asm
 
      adrp x0, :gottprel_auth:v           // R_AARCH64_AUTH_TLSIE_ADR_GOTTPREL_PAGE21 v
      add  x1, x0, #:gottprel_auth_lo12:v // R_AARCH64_AUTH_TLSIE_ADD_LO12 v
@@ -116,7 +116,7 @@ There are no spare instructions to test whether the TLS offset in
 
 A relaxation to local-exec is always possible as no GOT entry is used.
 
-  .. code
+.. code-block:: asm
 
     movz    x0, :tprel_g1:v // R_AARCH64_TLSLE_MOVW_TPREL_G1 v
     movk    x0, :tprel_g0:v // R_AARCH64_TLSLE_MOVW_TPREL_G0_NC v
@@ -127,7 +127,7 @@ A weak reference that is known at static link time to be undefined can
 be relaxed by setting the offset so that it cancels to 0 when added to
 the thread pointer.
 
-  .. code
+.. code-block:: asm
 
    mrs x0, tpidr_el0
    neg x0, x0
