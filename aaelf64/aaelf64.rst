@@ -1131,11 +1131,11 @@ See also table `GOT-relative data relocations`_.
   |         |         |                      |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`16`.                    |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
   | 314     | 29      | R\_<CLS>\_PLT32      | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31` see call and jump   |
-  |         |         |                      |           | relocations.                                                     |
+  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                    |
+  |         |         |                      |           | See `Call and Jump relocations`_.                                |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
 
-These overflow ranges permit either signed or unsigned narrow values to be created from the intermediate result viewed as a 64-bit signed integer. If the place is intended to hold a narrow signed value and ``INTn_MAX < X <= UINTn_MAX``, no overflow will be detected but the positive result will be interpreted as a negative value.
+With the exception of ``R_<CLS>_PLT32``, these overflow ranges permit either signed or unsigned narrow values to be created from the intermediate result viewed as a 64-bit signed integer. If the place is intended to hold a narrow signed value and ``INTn_MAX < X <= UINTn_MAX``, no overflow will be detected but the positive result will be interpreted as a negative value.
 
 
 Static AArch64 relocations
