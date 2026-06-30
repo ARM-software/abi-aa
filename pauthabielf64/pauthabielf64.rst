@@ -250,6 +250,9 @@ changes to the content of the document for that release.
   |            |                             |   Range.                                                         |
   +------------+-----------------------------+------------------------------------------------------------------+
   | 2026Q2     | 6\ :sup:`th` January 2026   | - Clarify combination of MemtagABI and PAuthABI relocations      |
+  |            |                             | - Add alternative format of dynamic relocations for platforms    |
+  |            |                             |   that require idempotency and cannot store the signing-schema   |
+  |            |                             |   in the place.                                                  |
   +------------+-----------------------------+------------------------------------------------------------------+
 
 References
@@ -1286,6 +1289,97 @@ linkers only support a single GOT entry per symbol. An implementation
 may choose to fault an AUTH and a non-AUTH GOT generating relocation
 to the same symbol, this would require all the GOT-generating
 relocations to a symbol to be signed or unsigned.
+
+.. raw:: pdf
+
+   PageBreak
+
+Appendix alternative idempotent relocation encoding
+===================================================
+
+The PAuthABI encodes the signing-schema in the place, permitting the
+full 64-bits of the addend field to be used. This is non-idempotent
+which is not normally a problem. Certain embedded programs may resolve
+the relocations more than once, first to sign and do hardware
+initialization, then relocate to another address post-initialzation
+and re-sign. These programs require idempotent relocations.
+
+As the idempotent property is only required at run-time this
+alternative encoding only applies to dynamic relocations.
+
+Idempotent relocation encoding
+------------------------------
+
+Instead of encoding the signing-schema in the place, the relocation
+addend field is used to store the signing-schema with the bottom
+32-bits reserved for the addend. All the fields are the same as
+described in `Encoding the signing schema`_.
+
+.. table:: Signing schema encoding in relocation addend
+
+  +-------------------+----------+----------+----------+---------------+---------------------+
+  | 63                | 62       | 61:60    | 59:48    |  47:32        | 31:0                |
+  +===================+==========+==========+==========+===============+=====================+
+  | address diversity | reserved | key      | reserved | discriminator | addend              |
+  +-------------------+----------+----------+----------+---------------+---------------------+
+
+Modifications to relocation resolution for the alternative format
+-----------------------------------------------------------------
+
+The tables below introduce an ADDEND operation and change the meaning of SCHEMA:
+
+* ``ADDEND(A)`` is the result of extracting the bottom 32-bits of A.
+
+* ``SCHEMA(A)`` is the result of the dynamic linker reading the signing schema from A.
+
+.. table:: Dynamic relocations
+
+  +--------------------+------------------------------+------------------------------------+
+  | Relocation code    | Name                         | Operation                          |
+  +====================+==============================+====================================+
+  | 0x244 (580)        | R\_AARCH64\_AUTH\_ABS64      | SIGN(S + ADDEND(A), SCHEMA(A))     |
+  +--------------------+------------------------------+------------------------------------+
+  | 0x411 (1041)       | R\_AARCH64\_AUTH\_RELATIVE   | SIGN(Delta + ADDEND(A), SCHEMA(A)) |
+  +--------------------+------------------------------+------------------------------------+
+
+.. table:: Additional AUTH Dynamic relocations
+
+  +--------------------+------------------------------+------------------------------------------+
+  | Relocation code    | Name                         | Operation                                |
+  +====================+==============================+==========================================+
+  | 0x412 (1042)       | R\_AARCH64\_AUTH\_GLOB\_DAT  | SIGN((S + ADDEND(A)), SCHEMA(A))         |
+  +--------------------+------------------------------+------------------------------------------+
+  | 0x413 (1043)       | R\_AARCH64\_AUTH\_TLSDESC    | SIGN(TLSDESC(S + ADDEND(A)), SCHEMA(A))  |
+  +--------------------+------------------------------+------------------------------------------+
+  | 0x414 (1044)       | R\_AARCH64\_AUTH\_IRELATIVE  | SIGN(Indirect(S + ADDEND(A)), SCHEMA(A)) |
+  +--------------------+------------------------------+------------------------------------------+
+
+Use of the alternative format dynamic relocations
+-------------------------------------------------
+
+As there are no new relocation codes, an ELF file must contain only
+non-idempotent dynamic relocations or alternative idempotent
+relocations. Platforms are encouraged to support only one type of
+relocation encoding.
+
+Constructing the alternative format dynamic relocations
+-------------------------------------------------------
+
+A static-linker may output the alternative format dynamic relocations
+directly. It is also possible for a post-link time tool to transform
+non-idempotent dynamic relocations into idempotent ones by copying the
+value of the signing schema in the place to the top 32-bits of the
+addend field of the relocation.
+
+Limitations of alternative format dynamic relocations
+-----------------------------------------------------
+
+The MEMTAGABI_'s use of the addend field when extending
+``R_AARCH64_RELATIVE`` is incompatible with the idempotent
+``R_AARCH64_AUTH_RELATIVE`` encoding. A new relocation type will be needed
+to describe this case, which is currently out of scope of this appendix.
+
+The reduced size of the addend field limits the size of program.
 
 .. raw:: pdf
 
