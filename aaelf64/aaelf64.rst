@@ -300,6 +300,9 @@ changes to the content of the document for that release.
   |               |                    | - R_AARCH64_TLS_DTPREL can be used as a |
   |               |                    |   static relocation as well as dynamic  |
   +---------------+--------------------+-----------------------------------------+
+  | 2026Q2        | 29\ :sup:`th`      | - In `Call and Jump relocations`_ make  |
+  |               |                    |   pc-relative relocaions signed.        |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------
@@ -1125,17 +1128,17 @@ See also table `GOT-relative data relocations`_.
   |         |         |                      |           | No overflow check.                                               |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
   | 261     | 3       | R\_<CLS>\_PREL32     | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`32`.                    |
+  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                    |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
   | 262     | 4       | R\_<CLS>\_PREL16     | S + A - P | Write bits [15:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`16`.                    |
+  |         |         |                      |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`15`.                    |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
   | 314     | 29      | R\_<CLS>\_PLT32      | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
   |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                    |
   |         |         |                      |           | See `Call and Jump relocations`_.                                |
   +---------+---------+----------------------+-----------+------------------------------------------------------------------+
 
-With the exception of ``R_<CLS>_PLT32``, these overflow ranges permit either signed or unsigned narrow values to be created from the intermediate result viewed as a 64-bit signed integer. If the place is intended to hold a narrow signed value and ``INTn_MAX < X <= UINTn_MAX``, no overflow will be detected but the positive result will be interpreted as a negative value.
+For the relocations with a S + A operation, these overflow ranges permit either signed or unsigned narrow values to be created from the intermediate result viewed as a 64-bit signed integer. If the place is intended to hold a narrow signed value and ``INTn_MAX < X <= UINTn_MAX``, no overflow will be detected but the positive result will be interpreted as a negative value.
 
 
 Static AArch64 relocations
