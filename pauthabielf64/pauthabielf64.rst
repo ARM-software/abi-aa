@@ -13,6 +13,7 @@
 .. _CPPABI64: https://github.com/ARM-software/abi-aa/releases
 .. _LSB: https://refspecs.linuxfoundation.org/LSB_1.2.0/gLSB/noteabitag.html
 .. _MEMTAGABI: https://github.com/ARM-software/abi-aa/releases
+.. _PAUTHABITLS: https://github.com/ARM-software/abi-aa/tree/main/design-documents
 .. _SCO-ELF: http://www.sco.com/developers/gabi/
 .. _SYSVABI64: https://github.com/ARM-software/abi-aa/releases
 .. _TLSDESC: http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf
@@ -251,6 +252,8 @@ changes to the content of the document for that release.
   +------------+-----------------------------+------------------------------------------------------------------+
   | 2026Q2     | 6\ :sup:`th` January 2026   | - Clarify combination of MemtagABI and PAuthABI relocations      |
   +------------+-----------------------------+------------------------------------------------------------------+
+  | 2026Q2     | 14\ :sup:`th` May 2026      | - Add R_AARCH64_AUTH_TLSDESC_CALL relocation                     |
+  +------------+-----------------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -273,6 +276,8 @@ This document refers to, or is referred to by, the following documents.
   | LSB_                                                                                    |                                                             | Linux Standards Base                                                     |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | MEMTAGABI_                                                                              | memtagabi64                                                 | Memtag ABI Extension for the Arm 64-bit Architecture                     |
+  +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
+  | PAUTHABITLS_                                                                            |                                                             | Rationale for and possible relaxations for TLS in a PAuthABI environment |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
   | SCO-ELF_                                                                                | http://www.sco.com/developers/gabi/                         | System V Application Binary Interface – DRAFT                            |
   +-----------------------------------------------------------------------------------------+-------------------------------------------------------------+--------------------------------------------------------------------------+
@@ -469,7 +474,9 @@ General Restrictions
   way to avoid COPY relocations is to access imported signed pointers
   via the GOT.
 
-- PAUTHELF64 only supports the descriptor based TLS (TLSDESC).
+- PAUTHELF64 only supports the descriptor based TLS (TLSDESC) dialect.
+  The "traditional" dialect as selected by -mtls-dialect=traditional is
+  not supported.
 
 The Rationale behind the requirement to avoid copy relocations is that
 the static linker creates the storage that the copy is placed; which
@@ -1113,9 +1120,11 @@ AUTH variant GOT Generating Relocations
 ``ENCD(value)`` is the encoding of the signing schema into the GOT
 slot using the ``IA`` key for symbols of type STT_FUNC and the ``DA``
 key for all other symbol types. The address of the GOT slot ``G`` is
-used as a modifer. For ``ENCD(GTLSDESC(S)`` the encoding applies to
+used as a modifer. For ``ENCD(GTLSDESC(S)`` the encoding must apply to
 the first entry containing the pointer to the variable's TLS
-descriptor resolver function.
+descriptor resolver function. Whether the parameter to the resolver
+function is signed is platform defined as it is a contract between the
+dynamic loader and the resolver function.
 
 The GOT entries must be relocated by AUTH variant dynamic relocations.
 
@@ -1201,6 +1210,17 @@ The GOT entries must be relocated by AUTH variant dynamic relocations.
   |                 |                                        |                                        | field to bits [11:0] of  |
   |                 |                                        |                                        | X. No overflow check.    |
   +-----------------+----------------------------------------+----------------------------------------+--------------------------+
+  | 0x266 (598)     | R\_AARCH64\_AUTH\_TLSDESC\_CALL        | None                                   | For relaxation only. See |
+  |                 |                                        |                                        | notes below.             |
+  +-----------------+----------------------------------------+----------------------------------------+--------------------------+
+
+.. note::
+
+  Relocation code ``R_AARCH64_AUTH_TLSDESC_CALL`` is needed to permit
+  linker optimization of TLS descriptor code sequences involving
+  signed GOT entries. Further information, including possible
+  relaxations, is available in the `PAUTHABITLS`_ design document.
+
 .. raw:: pdf
 
    PageBreak
