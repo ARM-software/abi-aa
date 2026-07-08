@@ -80,7 +80,7 @@ This ABI was written as part of Luke Geeson’s PhD on testing the
 compilation of concurrent C/C++ with assistance from Wilco Dijkstra from Arm's
 Compiler Teams.
 
-It is an offshoot from a paper that will be presented at OOPSLA 2024 [OOPSLA_]:
+It is an offshoot from a paper that was presented at OOPSLA 2024 [OOPSLA_]:
 *Mix Testing: Specifying and Testing ABI Compatibility Of C/C++ Atomics Implementations*
 by Luke Geeson, James Brotherston, Wilco Dijkstra, Alastair Donaldson, Lee Smith,
 Tyler Sorensen, and John Wickerson.
@@ -225,7 +225,7 @@ changes to the content of the document for that release.
   +---------+------------------------------+-------------------------------------------------------------------+
   | 2025Q4  | 23\ :sup:`rd` January 2026   | - Add ``_Atomic`` types.                                          |
   |         |                              | - Fix some typos in the 32-bit atomics mapping table.             |
-  |         |                              | - Document release fence using ISHST+ISHLD barriers               |
+  |         |                              | - Document release fence using ISHST+ISHLD barriers.              |
   +---------+------------------------------+-------------------------------------------------------------------+
 
 References
@@ -284,7 +284,7 @@ Thread
    A unit of computation (e.g. a POSIX thread) of a process, managed by the OS.
 
 Atomic Operation
-   An indivisble operation on a memory location. This can be a load, store,
+   An indivisible operation on a memory location. This can be a load, store,
    exchange, compare, or arithmetic operation. Atomics may be used to define
    higher level primitives including locks and concurrent queues. ISO C/C++
    defines a range of supported atomic types and operations.
@@ -1004,7 +1004,7 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
   | ``fetch_and(loc,val,acquire)``      |``FEAT_LSE128``| .. code-block:: none                 |
   |                                     |               |                                      |
   |                                     |               |    MVN     X0, X2                    |
-  |                                     |               |    MNV     X1, X3                    |
+  |                                     |               |    MVN     X1, X3                    |
   |                                     |               |    LDCLRPA X0, X1, [X4]              |
   +-------------------------------------+---------------+--------------------------------------+
   | ``fetch_and(loc,val,release)``      |``FEAT_LSE128``| .. code-block:: none                 |
@@ -1199,6 +1199,6 @@ in read-only memory (such as the ``.rodata`` section).
 
 Before FEAT_LSE2, the only way to implement a single-copy 128-bit atomic load
 is by using a Read-Modify-Write sequence. The write is not visible to
-software if the memory is writeable. Compilers and runtimes should prefer the
+software if the memory is writable. Compilers and runtimes should prefer the
 FEAT_LSE2/FEAT_LRCPC3 sequence when available.
 
