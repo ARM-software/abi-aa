@@ -318,8 +318,10 @@ Arbitrary registers may be used in the mappings. Instructions marked with ``*``
 in the tables cannot use ``WZR`` or ``XZR`` as a destination register. This is
 further detailed in `Special Cases`_.
 
-Only some variants of ``fetch_<op>`` are listed since the mappings are identical
-except for a different ``<op>``.
+Only some variants of ``fetch_<op>`` and ``store_<op>`` are listed since the
+mappings are identical except for a different ``<op>``. ``store_<op>`` is the
+non-returning form of ``fetch_<op>`` and, like ``store``, only admits the
+``relaxed``, ``release`` and ``seq_cst`` memory orders.
 
 Atomic operations and Memory Order are abbreviated as follows:
 
@@ -555,6 +557,30 @@ returned in ``W0``.
   |                                     | ``FEAT_LSE``  | .. code-block:: none                 |
   |                                     |               |                                      |
   |                                     |               |    LDADDAL W2, W0, [X1] *            |
+  +-------------------------------------+---------------+--------------------------------------+
+  | ``store_add(loc,val,relaxed)``      | ``Armv8-A``   | .. code-block:: none                 |
+  |                                     |               |                                      |
+  |                                     |               |    loop:                             |
+  |                                     |               |      LDXR   W0, [X1]                 |
+  |                                     |               |      ADD    W2, W2, W0               |
+  |                                     |               |      STXR   W3, W2, [X1]             |
+  |                                     |               |      CBNZ   W3, loop                 |
+  |                                     +---------------+--------------------------------------+
+  |                                     | ``FEAT_LSE``  | .. code-block:: none                 |
+  |                                     |               |                                      |
+  |                                     |               |    STADD   W2, [X1]                  |
+  +-------------------------------------+---------------+--------------------------------------+
+  | ``store_add(loc,val,release)``      | ``Armv8-A``   | .. code-block:: none                 |
+  | ``store_add(loc,val,seq_cst)``      |               |                                      |
+  |                                     |               |    loop:                             |
+  |                                     |               |      LDXR   W0, [X1]                 |
+  |                                     |               |      ADD    W2, W2, W0               |
+  |                                     |               |      STLXR  W3, W2, [X1]             |
+  |                                     |               |      CBNZ   W3, loop                 |
+  |                                     +---------------+--------------------------------------+
+  |                                     | ``FEAT_LSE``  | .. code-block:: none                 |
+  |                                     |               |                                      |
+  |                                     |               |    STADDL  W2, [X1]                  |
   +-------------------------------------+---------------+--------------------------------------+
   | ``compare_exchange_strong(``        | ``Armv8-A``   | .. code-block:: none                 |
   |   ``loc,exp,val,relaxed,relaxed)``  |               |                                      |
