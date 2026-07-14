@@ -440,19 +440,24 @@ for the architecture.
 Absolute Addressing
 -------------------
 
-Absolute addressing means that the virtual addresses of instructions
-and statically allocated data are known at static link time. To
-execute properly the object must be loaded at the virtual address
-specified by the static linker. Critically this means that the static
-linker can embed these fixed, absolute addresses into the read-only,
-shareable code, rather than requiring run-time relocation via a Global
-Offset Table (GOT). Absolute addressing does not mean that PC-relative
-addressing cannot be used, if that is the most efficient way to
-generate an absolute address within the limits supported by the model.
+Absolute addressing references a symbol by its final virtual address in the
+process's address space.
 
-Absolute addressing is suitable for most bare-metal code, including
-the Linux kernel, as well as for normal GNU/Linux executables which –
-while dynamically linked – are loaded at a fixed address.
+If a symbol's final virtual address can be resolved at static link time, the
+static linker can encode it directly into shareable read-only code or data. In
+this case, the object must be loaded at the virtual addresses for which it was
+linked so that the encoded addresses remain valid.
+Unlike GOT-based addressing, the address is used directly rather than being
+obtained through the Global Offset Table (GOT) at run time.
+
+It is permissible to use relative addressing even when absolute addressing is
+possible, if that is the most efficient way to compute the symbol's final
+virtual address at run time.
+
+Absolute addressing is commonly used when objects are loaded at fixed virtual
+addresses. Typical examples include bare-metal applications, the Linux kernel,
+and non-PIE GNU/Linux executables which, although dynamically linked, are loaded
+at a fixed address.
 
 Position-independent addressing
 -------------------------------
