@@ -942,9 +942,9 @@ Absolute using 4 instructions. Suitable for the large code model.
 .. code-block:: asm
 
     movz    x0, # :abs_g0_nc: var
-    movk    x1, # :abs_g1_nc: var
-    movk    x2, # :abs_g2_nc: var
-    movk    x3, # :abs_g3: var
+    movk    x0, # :abs_g1_nc: var
+    movk    x0, # :abs_g2_nc: var
+    movk    x0, # :abs_g3: var
 
 Get the value of a symbol defined in the same ELF file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
