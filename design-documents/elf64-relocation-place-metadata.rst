@@ -559,7 +559,7 @@ The contents of ``SHT_AARCH64_META_RELR`` is::
 
 A ``relocation-entry`` is defined as::
 
-  uint64 relocation-code-specific-metadata
+  uint64 relocation-code-specific-metadata+
   <uint32> n_relocations_of_metadata
   [ <uint64> address_or_bitmap ]+
 
@@ -567,7 +567,9 @@ A ``relocation-entry`` is defined as::
  normally be stored in the contents of the place ``*P``. For
  ``R_AARCH64_NONE`` this is the tag-offset. For
  ``R_AARCH64_AUTH_RELATIVE`` it is the signing-schema as described in
- `ELF extensions and additional metadata`_.
+ `ELF extensions and additional metadata`_. Future relocations could
+ require more than one *relocation-code-specific-metadata*. The number
+ of entries is defined by the *relocation-code*.
 
 *n_relocations_of_metadata* is the number of relocations before the
  next *relocation-code-specific-metadata*
