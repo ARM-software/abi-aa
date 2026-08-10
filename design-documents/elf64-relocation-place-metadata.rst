@@ -203,12 +203,16 @@ be achieved by:
 * Write initialization code that does not use signed code-pointers,
   such as calling virtual-functions.
 
-* When using `MEMTAGABIELF64`_ avoid using any access that requires
-  an additional offset prior to relocation-resolution.
-
 * Use ``SHT_RELR`` which exclude any R_AARCH64_relocation with
   metadata stored in the contents of the place ``*P``. These
   relocations can be resolved multiple times.
+
+* The `MEMTAGABIELF64`_ requires tagged globals to be accessed via the
+  GOT. Global Variables used prior to relocation-resolution must be
+  untagged.
+
+* Very few high-level diagnostics available for cases that will fail
+  at runtime.
 
 Pros:
 
@@ -306,7 +310,7 @@ Extending ELF with a relocation metadata section
 ================================================
 
 Introduce a new ELF section type, ``SHT_AARCH64_REL_METADATA`` that
-contains an array of ``Elf64_Word`` values. The ``sh_link`` field
+contains an array of values containing metadata. The ``sh_link`` field
 holds the section header index of the relocation section that it
 augments. Each value corresponds one to one with a relocation and
 appears in the same order as the relocation entry in the section
@@ -314,12 +318,15 @@ containing the relocations. Use of ``SHT_AARCH64_REL_METADATA`` is not
 required if a platform can use the contents of the place to store
 metadata.
 
+The size of the metadata value is by default an ``Elf64_Word`` as that
+matches the size of the contents of the place ``*P``.
+
 If a relocation section is augmented with a
 ``SHT_AARCH64_REL_METADATA`` section (type ``0x70000009``) and the
 relocation resolver opts to use it then the relocation Operations are
 altered as follows:
 
-* ``METADATA(idx)`` extracts the ``Elf64_Word`` value from the array
+* ``METADATA(idx)`` extracts the value from the array
   at ``idx``, where ``idx`` is the index of the relocation entry in
   linked relocation section.
 
@@ -332,6 +339,7 @@ from 0. The ``SHT_RELR`` section is not expected to have a
 ``SHT_AARCH64_REL_METADATA`` section as it contains dynamic
 relocations that do not require additional metadata (the
 `MEMTAGABIELF64`_ excludes entries that require additional metadata).
+
 
 ELF files may have up to 4 dynamic relocation sections, 3 of which may
 have a linked ``SHT_AARCH64_REL_METADATA`` section:
@@ -376,6 +384,57 @@ The following dynamic tags can be used to locate the corresponding
   +-----------------------------------+------------+--------+------------+---------------+
   | DT\_AARCH64\_RELA\_PLT\_METAENT   | 0x70000025 | d\_val | optional   | optional      |
   +-----------------------------------+------------+--------+------------+---------------+
+
+Design alternative. Size specific encoding of metadata
+
+The size of the metadata value could be varied to save space, or
+permit larger metadata than offered by the contents of the place. For
+example, the metadata for just `PAuthABIELF64`_ can be described in
+32-bits as the `reserved for addend` field would always be 0. It could
+also be larger to permit more than one piece of metadata. To
+accomodate different sizes ``METADATA(idx)`` is expanded to:
+
+* ``METADATA(code, entsz, idx)`` extacts the metadata for relocation ``code`` from an ``entsz`` field in ``SHT_AARCH64_REL_METADATA``.
+
+.. table:: metadata size encoding for relative relocation codes.
+
+  +-------------------------+-------+---------------------------------------+
+  | code                    | entsz | value in ``SHT_AARCH64_REL_METADATA`` |
+  +=========================+=======+=======================================+
+  | R_AARCH64_RELATIVE      | 4     | 32-bit tag offset                     |
+  +-------------------------+-------+---------------------------------------+
+  | R_AARCH64_AUTH_RELATIVE | 4     | signing-schema >> 32                  |
+  +-------------------------+-------+---------------------------------------+
+  | R_AARCH64_RELATIVE      | 8     | 64-bit tag offset                     |
+  +-------------------------+-------+---------------------------------------+
+  | R_AARCH64_AUTH_RELATIVE | 8     | signing-schema                        |
+  +-------------------------+-------+---------------------------------------+
+  | R_AARCH64_RELATIVE      | 16     | (signing-schema, 64-bit tag offset)   |
+  +-------------------------+-------+---------------------------------------+
+  | R_AARCH64_AUTH_RELATIVE | 16     | (0ull, 64-bit tag offset)             |
+  +-------------------------+-------+---------------------------------------+
+
+This would permit more flexibility at the expense of ABI and tool
+complexity to handle the various sizes. There are some opportunities
+and limitations to simplify based on use case:
+
+* ``SHT_RELR`` Containing no tag offsets likely does not need an
+  additional ``SHT_AARCH64_REL_METADATA`` as no signing-schema or tag
+  offset is there to be overwritten.
+
+* ``SHT_AUTH_RELR`` containing no tag offsets requires entsz of 8 to
+  describe signing-schema and addend.
+
+* ``SHT_RELA`` could use 4 for ``R_AARCH64_AUTH_RELATIVE`` with no tag
+  offsets. It is likely that ``SHT_AUTH_RELR`` with an entsz 8
+  ``R_AARCH64_AUTH_RELATIVE`` is likely to be smaller.
+
+* ``SHT_RELA`` could use 4 for ``R_AARCH64_RELATIVE`` with a 32-bit
+  tag offset. However such a section couldn't also represent a
+  ``R_AARCH64_AUTH_RELATIVE`` with a tagged offset.
+
+It seems like if ``SHT_AUTH_RELR`` is supported then there isn't much
+need for entsz of 4.
 
 Pros:
 
@@ -477,7 +536,7 @@ needs to be a sentinel value that signifies the end of the
 relocations, assuming the size of the overwritten ``SHT_RELA`` section
 is larger than the compressed relocation section.
 
-New section type ``SHT_AARCH64_META_RELR`` (``0x70000009``)
+New section type ``SHT_AARCH64_META_RELR`` (``0x70000010``)
 
 The contents of ``SHT_AARCH64_META_RELR`` is::
 
@@ -536,7 +595,7 @@ Example contents::
 
 New dynamic tags
 
-.. table:: Additional AArch64 specific dynamic array tags for SHT_AARCH64_META_RELR
+.. table:: Additional AArch64 specific dynamic array tags for ``SHT_AARCH64_META_RELR``
 
   +-------------------------------------+------------+--------+------------+---------------+
   | Name                                | Value      | d\_un  | Executable | Shared Object |
@@ -559,8 +618,10 @@ Pros
   resolve any relocations prior to enabling PAC and/or MTE, or
   self-relocating itself.
 
-* in most cases will be significantly smaller than ``SHT_RELA`` as
-  many locations use the same signing-schema.
+* in many cases will be significantly smaller than ``SHT_RELA`` as
+  many locations use the same signing-schema. With a low number of
+  unique signing-schemas the existing ``SHT_AUTH_RELR`` with a
+  ``SHT_AARCH64_REL_METADATA`` may be smaller.
 
 Cons
 
@@ -607,4 +668,3 @@ later.
 The ``SHT_AARCH64_META_RELR`` section can remain in a design-document
 or in a non-normative appendix until there are at least two
 independent components that require a fixed contract.
-
