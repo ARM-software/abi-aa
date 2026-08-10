@@ -257,7 +257,7 @@ cannot handle the `MEMTAGABIELF64`_ extension of
 recover the correct Tag as the additional offset and the relocation
 addend can't both use the ``reserved for addend`` field.
 
-A possible mitigations for the conflict over ``reserved for addend``
+A possible mitigation for the conflict over ``reserved for addend``
 field is to restrict the values that an offset to recover the tag can
 take. In the majority of cases the access will be to the limit of an
 array. Using the example from `MEMTAGABIELF64`_:
