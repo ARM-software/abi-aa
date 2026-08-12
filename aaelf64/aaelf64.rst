@@ -48,14 +48,6 @@ Date of Issue: |date-of-issue|
 Preamble
 ========
 
-ILP32 Beta
-----------
-
-This document includes a beta proposal for ILP32 extensions to ELF for AArch64.
-
-Feedback welcome through your normal channels.
-
-
 Abstract
 --------
 
@@ -197,7 +189,6 @@ The following support level definitions are used by the Arm ABI specifications:
    The content of this specification is a draft, and Arm considers the
    likelihood of future incompatible changes to be significant.
 
-The ELF32 variant is at "Beta" release quality.
 
 All other content in this document is at the **Release** quality level.
 
@@ -227,13 +218,13 @@ changes to the content of the document for that release.
   |               |                    | Update ``MOV[ZK]`` related relocations. |
   +---------------+--------------------+-----------------------------------------+
   | 2019Q2        | 30th June 2019     | Specify ``STO_AARCH64_VARIANT_PCS``.    |
-  |               |                    | Update ``R_<CLS>_TLS_DTPREL`` and       |
-  |               |                    | ``R_<CLS>_TLS_DTPMOD``.  Clarify        |
+  |               |                    | Update ``R_AARCH64_TLS_DTPREL`` and     |
+  |               |                    | ``R_AARCH64_TLS_DTPMOD``. Clarify       |
   |               |                    | ``GNU_PROPERTY_AARCH64_FEATURE_1_AND``. |
   +---------------+--------------------+-----------------------------------------+
   | 2019Q4        | 30th January 2020  | Minor layout changes.                   |
   +---------------+--------------------+-----------------------------------------+
-  | 2020Q2        | 1st July 2020      | Specifiy ``R_<CLS>_PLT32``. Correct     |
+  | 2020Q2        | 1st July 2020      | Specifiy ``R_AARCH64_PLT32``. Correct   |
   |               |                    | minus sign not rendering in section     |
   |               |                    | `Group relocations`_. Adjust            |
   |               |                    | table widths for readability.           |
@@ -302,6 +293,10 @@ changes to the content of the document for that release.
   +---------------+--------------------+-----------------------------------------+
   | 2026Q2        | 29\ :sup:`th`      | - In `Call and Jump relocations`_ make  |
   |               |                    |   pc-relative relocaions signed.        |
+  +---------------+--------------------+-----------------------------------------+
+  | 2026Q3        | 12\ :sup:`th`      | - Remove ILP32 from the ABI. Refer to   |
+  |               |                    |   previous ABI releases for **Beta**    |
+  |               |                    |   ILP32 documentation.                  |
   +---------------+--------------------+-----------------------------------------+
 
 References
@@ -382,14 +377,11 @@ BTI
    a guarded page must land on a BTI instruction or an instruction
    that has implicit BTI behavior.
 
-ELF32
-   An ELF object file with a class of ELFCLASS32
-
 ELF64
    An ELF object file with a class of ELFCLASS64
 
 ILP32
-   SysV-like data model where int, long int and pointer are 32-bit
+   SysV-like data model where int, long int and pointer are 32-bit.
 
 LP64
    SysV-like data model where int is 32-bit, but long int and pointer are 64-bit.
@@ -434,11 +426,7 @@ correspond to chapters 4 and 5 of the ELF specification. Specifically:
 ELF Class variants
 ------------------
 
-Two different pointer sizes are supported by this specification, which result in two very similar but different ELF definitions.
-
-
-64-bit Pointers, ELF64
-^^^^^^^^^^^^^^^^^^^^^^
+The ABI supports 64-bit Pointers, ELF64
 
 - Code and data using 64-bit pointers are contained in an ELF object file with a class of **ELFCLASS64**.
 
@@ -448,22 +436,9 @@ Two different pointer sizes are supported by this specification, which result in
 
 - Suitable for use by the LP64 variant of [`AAPCS64`_]
 
-
-32-bit Pointers, ELF32 **(Beta)**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- Code and data using 32-bit pointers is contained in an ELF object file with a class of **ELFCLASS32**.
-
-- Referred to as **ELF32** in this specification.
-
-- Pointer-size is **32 bits**.
-
-- Suitable for use by the ILP32 variant of [AAPCS64_]
-
-
-.. note::
-
-    Interlinking is not supported between the ELF32 and ELF64 variants.
+**(Beta)** support for 32-bit Pointers, ELF32 using the ILP32 variant
+ of [`AAPCS64`_] has been removed. Refer to a previous binary release
+ of the ABI for **(Beta)** ILP32 documentation.
 
 .. raw:: pdf
 
@@ -609,11 +584,7 @@ ELF Identification
 The 16-byte ELF identification (``e_ident``) provides information on how to interpret the file itself. The following values shall be used on Arm systems
 
 ``EI_CLASS``
-  For object files (executable, shared and relocatable) the **EI\_CLASS** shall be:
-
-  - ``ELFCLASS64`` for an ELF64 object file.
-
-  - ``ELFCLASS32`` for an ELF32 object file **(Beta)**.
+  For object files (executable, shared and relocatable) the **EI\_CLASS** shall be ``ELFCLASS64``.
 
 ``EI_DATA``
   This field may be either ``ELFDATA2LSB`` or ``ELFDATA2MSB``. The choice will be governed by the default data order in the execution environment.
@@ -821,14 +792,9 @@ There are two forms of weak symbol:
 
   - ``st_shndx=SHN_UNDEF, ELF64_ST_BIND()=STB_WEAK``.
 
-  - ``st_shndx=SHN_UNDEF, ELF32_ST_BIND()=STB_WEAK`` **(Beta)**.
-
 - A weak definition — This is denoted by:
 
   - ``st_shndx!=SHN_UNDEF, ELF64_ST_BIND()=STB_WEAK``.
-
-  - ``st_shndx!=SHN_UNDEF, ELF32_ST_BIND()=STB_WEAK`` **(Beta)**.
-
 
 Weak References
 ^^^^^^^^^^^^^^^
@@ -1003,7 +969,7 @@ Relocation types
 
 Tables in the following sections list the relocation codes for AArch64 and record the following.
 
-- The relocation code which is stored in the ``ELF64_R_TYPE`` or ``ELF32_R_TYPE`` component of the ``r_info`` field.
+- The relocation code which is stored in the ``ELF64_R_TYPE`` component of the ``r_info`` field.
 
 - The preferred mnemonic name for the relocation. This has no significance in a binary file.
 
@@ -1011,33 +977,12 @@ Tables in the following sections list the relocation codes for AArch64 and recor
 
 - A comment describing the kind of place that can be relocated, the part of the result value inserted into the place, and whether or not field overflow should be checked.
 
-
-Relocation names and class
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A mnemonic name class is used to distinguish between ELF64 and ELF32 relocation names.
-
-- ELF64 relocations have ``<CLS> = AARCH64``, e.g. ``R_AARCH64_ABS32``
-
-- ELF32 relocations have ``<CLS> = AARCH64_P32``, where P32 denotes the pointer size, e.g. ``R_AARCH64_P32_ABS32`` **(Beta)**
-
-.. note::
-
-    Within this document ``<CLS>`` is not expanded in instances where only a single relocation name exists.
-
-
 Relocation codes disambiguation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 References to relocation codes are disambiguated in the following way:
 
-- ELF64 relocation codes are bounded by parentheses: ``( )``.
-
-- ELF32 relocation codes are bounded by brackets: ``[ ]``.
-
-Static relocation codes for ELF64 object files begin at (257); dynamic ones at (1024). Both (0) and (256) should be accepted as values of ``R_AARCH64_NONE``, the null relocation.
-
-Static relocation codes for ELF32 object files begin at [1]; dynamic ones at [180].
+Static relocation codes for object files begin at (257); dynamic ones at (1024). Both (0) and (256) should be accepted as values of ``R_AARCH64_NONE``, the null relocation.
 
 All unallocated type codes are reserved for future allocation.
 
@@ -1057,9 +1002,9 @@ The following nomenclature is used in the descriptions of relocation operations:
 
 - ``Page(expr)`` is the page address of the expression ``expr``, defined as ``(expr & ~0xFFF)``. (This applies even if the machine page size supported by the platform has a different value.)
 
-- ``GOT`` is the address of the Global Offset Table, the table of code and data addresses to be resolved at dynamic link time. The ``GOT`` and each entry in it must be 64-bit aligned for ELF64 or 32-bit aligned for ELF32.
+- ``GOT`` is the address of the Global Offset Table, the table of code and data addresses to be resolved at dynamic link time. The ``GOT`` and each entry in it must be 64-bit aligned.
 
-- ``GDAT(S+A)`` represents a pointer-sized entry in the ``GOT`` for address ``S+A``. The entry will be relocated at run time with relocation ``R_<CLS>_GLOB_DAT(S+A)``.
+- ``GDAT(S+A)`` represents a pointer-sized entry in the ``GOT`` for address ``S+A``. The entry will be relocated at run time with relocation ``R_AARCH64_GLOB_DAT(S+A)``.
 
 - ``G(expr)`` is the address of the GOT entry for the expression ``expr``.
 
@@ -1071,35 +1016,33 @@ The following nomenclature is used in the descriptions of relocation operations:
 
 The value written into a target field is always reduced to fit the field. It is Q-o-I whether a linker generates a diagnostic when a relocated value overflows its target field.
 
-Relocation types whose names end with "``_NC``" are non-checking relocation types. These must not generate diagnostics in case of field overflow. Usually, a non-checking type relocates an instruction that computes one of the less significant parts of a single value computed by a group of instructions (`Group relocations`_). Only the instruction computing the most significant part of the value can be checked for field overflow because, in general, a relocated value will overflow the fields of instructions computing the less significant parts. Some non-checking relocations may, however, be expected to check for correct alignment of the result; the notes explain when this is permitted. In ELF32 relocations an overflow check of -2\ :sup:`31` <= X < 2\ :sup:`31` or 0 <= X < 2\ :sup:`31` is equivalent to no check (i.e. ‘None’).
-
-In ELF32 **(Beta)** relocations additional care must be taken when relocating an ADRP instruction which effectively uses a signed 33-bit PC-relative offset to generate a 32-bit address. The following relocations apply to ADRP:
+Relocation types whose names end with "``_NC``" are non-checking relocation types. These must not generate diagnostics in case of field overflow. Usually, a non-checking type relocates an instruction that computes one of the less significant parts of a single value computed by a group of instructions (`Group relocations`_). Only the instruction computing the most significant part of the value can be checked for field overflow because, in general, a relocated value will overflow the fields of instructions computing the less significant parts. Some non-checking relocations may, however, be expected to check for correct alignment of the result; the notes explain when this is permitted.
 
 ::
 
-    R_<CLS>_ADR_PREL_PG_HI21,
-    R_<CLS>_ADR_GOT_PAGE,
-    R_<CLS>_TLSGD_ADR_PAGE21,
-    R_<CLS>_TLSLD_ADR_PAGE21,
-    R_<CLS>_TLSIE_ADR_GOTTPREL_PAGE21,
-    R_<CLS>_TLSDESC_ADR_PAGE21
+    R_AARCH64_ADR_PREL_PG_HI21,
+    R_AARCH64_ADR_GOT_PAGE,
+    R_AARCH64_TLSGD_ADR_PAGE21,
+    R_AARCH64_TLSLD_ADR_PAGE21,
+    R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21,
+    R_AARCH64_TLSDESC_ADR_PAGE21
 
 Relocations using the ``GDAT(S)`` operation must have a zero addend. Previous versions of this document included the addend ``A`` in ``GDAT(S + A)`` resulting in a GOT entry for ``S + A``. With a zero addend ``GDAT(S + 0)`` is equivalent to ``GDAT(S)`` and ``GDAT(S) + 0``.
 
 Static miscellaneous relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``R_<CLS>_NONE`` (null relocation code) records that the section containing the place to be relocated depends on the section defining the symbol mentioned in the relocation directive in a way otherwise invisible to a static linker. The effect is to prevent removal of sections that might otherwise appear to be unused.
+``R_AARCH64_NONE`` (null relocation code) records that the section containing the place to be relocated depends on the section defining the symbol mentioned in the relocation directive in a way otherwise invisible to a static linker. The effect is to prevent removal of sections that might otherwise appear to be unused.
 
 .. table:: Null relocation codes
 
-    +------------+------------+-----------------+------------+---------------------------+
-    | ELF64 Code | ELF32 Code | Name            | Operation  | Comment                   |
-    +============+============+=================+============+===========================+
-    | 0          | 0          | R\_<CLS>\_NONE  | None       |                           |
-    +------------+------------+-----------------+------------+---------------------------+
-    | 256        | \-         | withdrawn       | None       | Treat as R\_<CLS>\_NONE.  |
-    +------------+------------+-----------------+------------+---------------------------+
+    +------------+-------------------+------------+---------------------------+
+    | ELF64 Code | Name              | Operation  | Comment                   |
+    +============+===================+============+===========================+
+    | 0          | R\_AARCH64\_NONE  | None       |                           |
+    +------------+-------------------+------------+---------------------------+
+    | 256        | withdrawn         | None       | Treat as R\_ARRCH64\_NONE.|
+    +------------+-------------------+------------+---------------------------+
 
 
 Static Data relocations
@@ -1111,32 +1054,32 @@ See also table `GOT-relative data relocations`_.
 
 .. table:: Data relocations
 
-  +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | ELF64   | ELF32   | Name                 | Operation | Comment                                                          |
-  | Code    | Code    |                      |           |                                                                  |
-  +=========+=========+======================+===========+==================================================================+
-  | 257     | \-      | R\_<CLS>\_ABS64      | S + A     | Write bits [63:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | No overflow check.                                               |
-  +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 258     | 1       | R\_<CLS>\_ABS32      | S + A     | Write bits [31:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`32`.                    |
-  +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 259     | 2       | R\_<CLS>\_ABS16      | S + A     | Write bits [15:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`16`.                    |
-  +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 260     | \-      | R\_<CLS>\_PREL64     | S + A - P | Write bits [63:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | No overflow check.                                               |
-  +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 261     | 3       | R\_<CLS>\_PREL32     | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                    |
-  +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 262     | 4       | R\_<CLS>\_PREL16     | S + A - P | Write bits [15:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`15`.                    |
-  +---------+---------+----------------------+-----------+------------------------------------------------------------------+
-  | 314     | 29      | R\_<CLS>\_PLT32      | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
-  |         |         |                      |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                    |
-  |         |         |                      |           | See `Call and Jump relocations`_.                                |
-  +---------+---------+----------------------+-----------+------------------------------------------------------------------+
+  +---------+------------------------+-----------+------------------------------------------------------------------+
+  | ELF64   | Name                   | Operation | Comment                                                          |
+  | Code    |                        |           |                                                                  |
+  +=========+========================+===========+==================================================================+
+  | 257     | R\_AARCH64\_ABS64      | S + A     | Write bits [63:0] of X at byte-aligned place P.                  |
+  |         |                        |           | No overflow check.                                               |
+  +---------+------------------------+-----------+------------------------------------------------------------------+
+  | 258     | R\_AARCH64\_ABS32      | S + A     | Write bits [31:0] of X at byte-aligned place P.                  |
+  |         |                        |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`32`.                    |
+  +---------+------------------------+-----------+------------------------------------------------------------------+
+  | 259     | R\_AARCH64\_ABS16      | S + A     | Write bits [15:0] of X at byte-aligned place P.                  |
+  |         |                        |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`16`.                    |
+  +---------+------------------------+-----------+------------------------------------------------------------------+
+  | 260     | R\_AARCH64\_PREL64     | S + A - P | Write bits [63:0] of X at byte-aligned place P.                  |
+  |         |                        |           | No overflow check.                                               |
+  +---------+------------------------+-----------+------------------------------------------------------------------+
+  | 261     | R\_AARCH64\_PREL32     | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
+  |         |                        |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                    |
+  +---------+------------------------+-----------+------------------------------------------------------------------+
+  | 262     | R\_AARCH64\_PREL16     | S + A - P | Write bits [15:0] of X at byte-aligned place P.                  |
+  |         |                        |           | Check that -2\ :sup:`15` <= X < 2\ :sup:`15`.                    |
+  +---------+------------------------+-----------+------------------------------------------------------------------+
+  | 314     | R\_AARCH64\_PLT32      | S + A - P | Write bits [31:0] of X at byte-aligned place P.                  |
+  |         |                        |           | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                    |
+  |         |                        |           | See `Call and Jump relocations`_.                                |
+  +---------+------------------------+-----------+------------------------------------------------------------------+
 
 For the relocations with a S + A operation, these overflow ranges permit either signed or unsigned narrow values to be created from the intermediate result viewed as a 64-bit signed integer. If the place is intended to hold a narrow signed value and ``INTn_MAX < X <= UINTn_MAX``, no overflow will be detected but the positive result will be interpreted as a negative value.
 
@@ -1152,23 +1095,23 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: Group relocations to create a 16-, 32-, 48-, or 64-bit unsigned data value or address inline
 
-  +------------+------------+-------------------------------+------------+-------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                          | Operation  | Comment                                                                             |
-  +============+============+===============================+============+=====================================================================================+
-  | 263        | 5          | R\_<CLS>\_MOVW\_UABS\_G0      | S + A      | Set a MOV[KZ] immediate field to bits [15:0] of X; check that 0 <= X < 2\ :sup:`16` |
-  +------------+------------+-------------------------------+------------+-------------------------------------------------------------------------------------+
-  | 264        | 6          | R\_<CLS>\_MOVW\_UABS\_G0\_NC  | S + A      | Set a MOV[KZ] immediate field to bits [15:0] of X. No overflow check                |
-  +------------+------------+-------------------------------+------------+-------------------------------------------------------------------------------------+
-  | 265        | 7          | R\_<CLS>\_MOVW\_UABS\_G1      | S + A      | Set a MOV[KZ] immediate field to bits [31:16] of X; check that 0 <= X < 2\ :sup:`32`|
-  +------------+------------+-------------------------------+------------+-------------------------------------------------------------------------------------+
-  | 266        | \-         | R\_<CLS>\_MOVW\_UABS\_G1\_NC  | S + A      | Set a MOV[KZ] immediate field to bits [31:16] of X. No overflow check               |
-  +------------+------------+-------------------------------+------------+-------------------------------------------------------------------------------------+
-  | 267        | \-         | R\_<CLS>\_MOVW\_UABS\_G2      | S + A      | Set a MOV[KZ] immediate field to bits [47:32] of X; check that 0 <= X < 2\ :sup:`48`|
-  +------------+------------+-------------------------------+------------+-------------------------------------------------------------------------------------+
-  | 268        | \-         | R\_<CLS>\_MOVW\_UABS\_G2\_NC  | S + A      | Set a MOV[KZ] immediate field to bits [47:32] of X. No overflow check               |
-  +------------+------------+-------------------------------+------------+-------------------------------------------------------------------------------------+
-  | 269        | \-         | R\_<CLS>\_MOVW\_UABS\_G3      | S + A      | Set a MOV[KZ] immediate field to bits [63:48] of X (no overflow check needed)       |
-  +------------+------------+-------------------------------+------------+-------------------------------------------------------------------------------------+
+  +------------+---------------------------------+------------+-------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                            | Operation  | Comment                                                                             |
+  +============+=================================+============+=====================================================================================+
+  | 263        | R\_AARCH64\_MOVW\_UABS\_G0      | S + A      | Set a MOV[KZ] immediate field to bits [15:0] of X; check that 0 <= X < 2\ :sup:`16` |
+  +------------+---------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 264        | R\_AARCH64\_MOVW\_UABS\_G0\_NC  | S + A      | Set a MOV[KZ] immediate field to bits [15:0] of X. No overflow check                |
+  +------------+---------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 265        | R\_AARCH64\_MOVW\_UABS\_G1      | S + A      | Set a MOV[KZ] immediate field to bits [31:16] of X; check that 0 <= X < 2\ :sup:`32`|
+  +------------+---------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 266        | R\_AARCH64\_MOVW\_UABS\_G1\_NC  | S + A      | Set a MOV[KZ] immediate field to bits [31:16] of X. No overflow check               |
+  +------------+---------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 267        | R\_AARCH64\_MOVW\_UABS\_G2      | S + A      | Set a MOV[KZ] immediate field to bits [47:32] of X; check that 0 <= X < 2\ :sup:`48`|
+  +------------+---------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 268        | R\_AARCH64\_MOVW\_UABS\_G2\_NC  | S + A      | Set a MOV[KZ] immediate field to bits [47:32] of X. No overflow check               |
+  +------------+---------------------------------+------------+-------------------------------------------------------------------------------------+
+  | 269        | R\_AARCH64\_MOVW\_UABS\_G3      | S + A      | Set a MOV[KZ] immediate field to bits [63:48] of X (no overflow check needed)       |
+  +------------+---------------------------------+------------+-------------------------------------------------------------------------------------+
 
 .. _signed inline group relocations:
 
@@ -1176,15 +1119,15 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: Group relocations to create a 16, 32, 48, or 64 bit signed data or offset value inline
 
-  +------------+------------+---------------------------+------------+-----------------------------------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                      | Operation  | Comment                                                                                                         |
-  +============+============+===========================+============+=================================================================================================================+
-  | 270        | 8          | R\_<CLS>\_MOVW\_SABS\_G0  | S + A      | Set a MOV[NZ] immediate field using bits [15:0] of X (see notes below); check -2\ :sup:`16` <= X < 2\ :sup:`16` |
-  +------------+------------+---------------------------+------------+-----------------------------------------------------------------------------------------------------------------+
-  | 271        | \-         | R\_<CLS>\_MOVW\_SABS\_G1  | S + A      | Set a MOV[NZ] immediate field using bits [31:16] of X (see notes below); check -2\ :sup:`32` <= X < 2\ :sup:`32`|
-  +------------+------------+---------------------------+------------+-----------------------------------------------------------------------------------------------------------------+
-  | 272        | \-         | R\_<CLS>\_MOVW\_SABS\_G2  | S + A      | Set a MOV[NZ] immediate field using bits [47:32] of X (see notes below); check -2\ :sup:`48` <= X < 2\ :sup:`48`|
-  +------------+------------+---------------------------+------------+-----------------------------------------------------------------------------------------------------------------+
+  +------------+-----------------------------+------------+-----------------------------------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                        | Operation  | Comment                                                                                                         |
+  +============+=============================+============+=================================================================================================================+
+  | 270        | R\_AARCH64\_MOVW\_SABS\_G0  | S + A      | Set a MOV[NZ] immediate field using bits [15:0] of X (see notes below); check -2\ :sup:`16` <= X < 2\ :sup:`16` |
+  +------------+-----------------------------+------------+-----------------------------------------------------------------------------------------------------------------+
+  | 271        | R\_AARCH64\_MOVW\_SABS\_G1  | S + A      | Set a MOV[NZ] immediate field using bits [31:16] of X (see notes below); check -2\ :sup:`32` <= X < 2\ :sup:`32`|
+  +------------+-----------------------------+------------+-----------------------------------------------------------------------------------------------------------------+
+  | 272        | R\_AARCH64\_MOVW\_SABS\_G2  | S + A      | Set a MOV[NZ] immediate field using bits [47:32] of X (see notes below); check -2\ :sup:`48` <= X < 2\ :sup:`48`|
+  +------------+-----------------------------+------------+-----------------------------------------------------------------------------------------------------------------+
 
 .. note::
 
@@ -1199,36 +1142,36 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: Relocations to generate 19, 21 and 33 bit PC-relative addresses
 
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                                | Operation         | Comment                                                                                             |
-  +============+============+=====================================+===================+=====================================================================================================+
-  | 273        | 9          | R\_<CLS>\_LD\_PREL\_LO19            | S + A - P         | Set a load-literal immediate value to bits [20:2] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`|
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 274        | 10         | R\_<CLS>\_ADR\_PREL\_LO21           | S + A - P         | Set an ADR immediate value to bits [20:0] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`        |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 275        | 11         | R\_<CLS>\_ADR\_PREL\_PG\_HI21       | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X; check that -2\ :sup:`32` <= X < 2\ :sup:`32`  |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 276        | \-         | R\_<CLS>\_ADR\_PREL\_PG\_HI21\_NC   | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X. No overflow check                             |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 277        | 12         | R\_<CLS>\_ADD\_ABS\_LO12\_NC        | S + A             | Set an ADD immediate value to bits [11:0] of X. No overflow check. Used with relocations            |
-  |            |            |                                     |                   | ADR\_PREL\_PG\_HI21 and  ADR\_PREL\_PG\_HI21\_NC                                                    |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 278        | 13         | R\_<CLS>\_LDST8\_ABS\_LO12\_NC      | S + A             | Set an LD/ST immediate value to bits [11:0] of X. No overflow check. Used with relocations          |
-  |            |            |                                     |                   | ADR\_PREL\_PG\_HI21 and  ADR\_PREL\_PG\_HI21\_NC                                                    |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 284        | 14         | R\_<CLS>\_LDST16\_ABS\_LO12\_NC     | S + A             | Set an LD/ST immediate value to bits [11:1] of X. No overflow check                                 |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 285        | 15         | R\_<CLS>\_LDST32\_ABS\_LO12\_NC     | S + A             | Set the LD/ST immediate value to bits [11:2] of X. No overflow check                                |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 286        | 16         | R\_<CLS>\_LDST64\_ABS\_LO12\_NC     | S + A             | Set the LD/ST immediate value to bits [11:3] of X. No overflow check                                |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 299        | 17         | R\_<CLS>\_LDST128\_ABS\_LO12\_NC    | S + A             | Set the LD/ST immediate value to bits [11:4] of X. No overflow check                                |
-  +------------+------------+-------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                                  | Operation         | Comment                                                                                             |
+  +============+=======================================+===================+=====================================================================================================+
+  | 273        | R\_AARCH64\_LD\_PREL\_LO19            | S + A - P         | Set a load-literal immediate value to bits [20:2] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`|
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 274        | R\_AARCH64\_ADR\_PREL\_LO21           | S + A - P         | Set an ADR immediate value to bits [20:0] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`        |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 275        | R\_AARCH64\_ADR\_PREL\_PG\_HI21       | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X; check that -2\ :sup:`32` <= X < 2\ :sup:`32`  |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 276        | R\_AARCH64\_ADR\_PREL\_PG\_HI21\_NC   | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X. No overflow check                             |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 277        | R\_AARCH64\_ADD\_ABS\_LO12\_NC        | S + A             | Set an ADD immediate value to bits [11:0] of X. No overflow check. Used with relocations            |
+  |            |                                       |                   | ADR\_PREL\_PG\_HI21 and  ADR\_PREL\_PG\_HI21\_NC                                                    |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 278        | R\_AARCH64\_LDST8\_ABS\_LO12\_NC      | S + A             | Set an LD/ST immediate value to bits [11:0] of X. No overflow check. Used with relocations          |
+  |            |                                       |                   | ADR\_PREL\_PG\_HI21 and  ADR\_PREL\_PG\_HI21\_NC                                                    |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 284        | R\_AARCH64\_LDST16\_ABS\_LO12\_NC     | S + A             | Set an LD/ST immediate value to bits [11:1] of X. No overflow check                                 |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 285        | R\_AARCH64\_LDST32\_ABS\_LO12\_NC     | S + A             | Set the LD/ST immediate value to bits [11:2] of X. No overflow check                                |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 286        | R\_AARCH64\_LDST64\_ABS\_LO12\_NC     | S + A             | Set the LD/ST immediate value to bits [11:3] of X. No overflow check                                |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
+  | 299        | R\_AARCH64\_LDST128\_ABS\_LO12\_NC    | S + A             | Set the LD/ST immediate value to bits [11:4] of X. No overflow check                                |
+  +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
 
 
 .. note::
 
-    Relocations (284, 285, 286 and 299) or [14, 15, 16, 17] are intended to be used with ``R_<CLS>_ADR_PREL_PG_HI21`` (275) or [11] so they pick out the low 12 bits of the address and, in effect, scale that by the access size. The increased address range provided by scaled addressing is not supported by these relocations because the extra range is unusable in conjunction with ``R_<CLS>_ADR_PREL_PG_HI21``.
+    Relocations 284, 285, 286 and 299 are intended to be used with ``R_AARCH64_ADR_PREL_PG_HI21`` (275) so they pick out the low 12 bits of the address and, in effect, scale that by the access size. The increased address range provided by scaled addressing is not supported by these relocations because the extra range is unusable in conjunction with ``R_AARCH64_ADR_PREL_PG_HI21``.
 
     Although overflow must not be checked, a linker should check that the value of X is aligned to a multiple of the datum size.
 
@@ -1236,17 +1179,17 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: Relocations for control-flow instructions - all offsets are a multiple of 4
 
-  +------------+------------+--------------------+------------+------------------------------------------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name               | Operation  | Comment                                                                                                                |
-  +============+============+====================+============+========================================================================================================================+
-  | 279        | 18         | R\_<CLS>\_TSTBR14  | S+A-P      | Set the immediate field of a TBZ/TBNZ instruction to bits [15:2] of X; check -2\ :sup:`15` <= X < 2\ :sup:`15`         |
-  +------------+------------+--------------------+------------+------------------------------------------------------------------------------------------------------------------------+
-  | 280        | 19         | R\_<CLS>\_CONDBR19 | S+A-P      | Set the immediate field of a conditional branch instruction to bits [20:2] of X; check -2\ :sup:`20` <= X< 2\ :sup:`20`|
-  +------------+------------+--------------------+------------+------------------------------------------------------------------------------------------------------------------------+
-  | 282        | 20         | R\_<CLS>\_JUMP26   | S+A-P      | Set a B immediate field to bits [27:2] of X; check that -2\ :sup:`27` <= X < 2\ :sup:`27`                              |
-  +------------+------------+--------------------+------------+------------------------------------------------------------------------------------------------------------------------+
-  | 283        | 21         | R\_<CLS>\_CALL26   | S+A-P      | Set a CALL immediate field to bits [27:2] of X; check that -2\ :sup:`27` <= X < 2\ :sup:`27`                           |
-  +------------+------------+--------------------+------------+------------------------------------------------------------------------------------------------------------------------+
+  +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                 | Operation  | Comment                                                                                                                |
+  +============+======================+============+========================================================================================================================+
+  | 279        | R\_AARCH64\_TSTBR14  | S+A-P      | Set the immediate field of a TBZ/TBNZ instruction to bits [15:2] of X; check -2\ :sup:`15` <= X < 2\ :sup:`15`         |
+  +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
+  | 280        | R\_AARCH64\_CONDBR19 | S+A-P      | Set the immediate field of a conditional branch instruction to bits [20:2] of X; check -2\ :sup:`20` <= X< 2\ :sup:`20`|
+  +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
+  | 282        | R\_AARCH64\_JUMP26   | S+A-P      | Set a B immediate field to bits [27:2] of X; check that -2\ :sup:`27` <= X < 2\ :sup:`27`                              |
+  +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
+  | 283        | R\_AARCH64\_CALL26   | S+A-P      | Set a CALL immediate field to bits [27:2] of X; check that -2\ :sup:`27` <= X < 2\ :sup:`27`                           |
+  +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
 
 .. _PC-relative inline relocations:
 
@@ -1254,31 +1197,31 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: Group relocations to create a 16, 32, 48, or 64 bit PC-relative offset inline
 
-  +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                         | Operation  | Comment                                                             |
-  +============+============+==============================+============+=====================================================================+
-  | 287        | 22         | R\_<CLS>\_MOVW\_PREL\_G0     | S+A-P      | Set a MOV[NZ]immediate field to bits [15:0] of X (see notes below)  |
-  +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 288        | 23         | R\_<CLS>\_MOVW\_PREL\_G0\_NC | S+A-P      | Set a MOVK immediate field to bits [15:0] of X. No overflow check   |
-  +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 289        | 24         | R\_<CLS>\_MOVW\_PREL\_G1     | S+A-P      | Set a MOV[NZ]immediate field to bits [31:16] of X (see notes below) |
-  +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 290        | \-         | R\_<CLS>\_MOVW\_PREL\_G1\_NC | S+A-P      | Set a MOVK immediate field to bits [31:16] of X. No overflow check  |
-  +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 291        | \-         | R\_<CLS>\_MOVW\_PREL\_G2     | S+A-P      | Set a MOV[NZ]immediate value to bits [47:32] of X (see notes below) |
-  +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 292        | \-         | R\_<CLS>\_MOVW\_PREL\_G2\_NC | S+A-P      | Set a MOVK immediate field to bits [47:32] of X. No overflow check  |
-  +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 293        | \-         | R\_<CLS>\_MOVW\_PREL\_G3     | S+A-P      | Set a MOV[NZ]immediate value to bits [63:48] of X (see notes below) |
-  +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
+  +------------+--------------------------------+------------+---------------------------------------------------------------------+
+  | ELF64 Code | Name                           | Operation  | Comment                                                             |
+  +============+================================+============+=====================================================================+
+  | 287        | R\_AARCH64\_MOVW\_PREL\_G0     | S+A-P      | Set a MOV[NZ]immediate field to bits [15:0] of X (see notes below)  |
+  +------------+--------------------------------+------------+---------------------------------------------------------------------+
+  | 288        | R\_AARCH64\_MOVW\_PREL\_G0\_NC | S+A-P      | Set a MOVK immediate field to bits [15:0] of X. No overflow check   |
+  +------------+--------------------------------+------------+---------------------------------------------------------------------+
+  | 289        | R\_AARCH64\_MOVW\_PREL\_G1     | S+A-P      | Set a MOV[NZ]immediate field to bits [31:16] of X (see notes below) |
+  +------------+--------------------------------+------------+---------------------------------------------------------------------+
+  | 290        | R\_AARCH64\_MOVW\_PREL\_G1\_NC | S+A-P      | Set a MOVK immediate field to bits [31:16] of X. No overflow check  |
+  +------------+--------------------------------+------------+---------------------------------------------------------------------+
+  | 291        | R\_AARCH64\_MOVW\_PREL\_G2     | S+A-P      | Set a MOV[NZ]immediate value to bits [47:32] of X (see notes below) |
+  +------------+--------------------------------+------------+---------------------------------------------------------------------+
+  | 292        | R\_AARCH64\_MOVW\_PREL\_G2\_NC | S+A-P      | Set a MOVK immediate field to bits [47:32] of X. No overflow check  |
+  +------------+--------------------------------+------------+---------------------------------------------------------------------+
+  | 293        | R\_AARCH64\_MOVW\_PREL\_G3     | S+A-P      | Set a MOV[NZ]immediate value to bits [63:48] of X (see notes below) |
+  +------------+--------------------------------+------------+---------------------------------------------------------------------+
 
 .. note::
 
     Non-checking (``_NC``) forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
-    ``X >= 0``: Set the instruction to ``MOVZ`` and its immediate value to the selected bits of X; for relocation ``R_..._Gn``, check in ELF64 that X < {``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} (no check for ``R_..._G3``); in ELF32 only check X < 2\ :sup:`16` for ``R_..._G0``.
+    ``X >= 0``: Set the instruction to ``MOVZ`` and its immediate value to the selected bits of X; for relocation ``R_..._Gn``, check that X < {``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} (no check for ``R_..._G3``).
 
-    ``X < 0``: Set the instruction to ``MOVN`` and its immediate value to NOT (selected bits of X); for relocation ``R_..._Gn``, check in ELF64 that -{``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} <= X (no check for ``R_..._G3``); in ELF32 only check that –2\ :sup:`16` <= X for R\_...\_G0.
+    ``X < 0``: Set the instruction to ``MOVN`` and its immediate value to NOT (selected bits of X); for relocation ``R_..._Gn``, check that -{``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} <= X (no check for ``R_..._G3``).
 
 .. _GOT-relative inline relocations:
 
@@ -1286,23 +1229,23 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: Group relocations to create a 16, 32, 48, or 64 bit GOT-relative offsets inline
 
-  +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                           | Operation         | Comment                                                              |
-  +============+============+================================+===================+======================================================================+
-  | 300        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G0     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)  |
-  +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 301        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G0\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate field to bits [15:0] of X. No overflow check    |
-  +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 302        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G1     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [31:16] of X (see notes below) |
-  +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 303        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G1\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate value to bits [31:16] of X. No overflow check   |
-  +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 304        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G2     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [47:32] of X (see notes below) |
-  +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 305        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G2\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate value to bits [47:32] of X. No overflow check   |
-  +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
-  | 306        | \-         | R\_<CLS>\_MOVW\_GOTOFF\_G3     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [63:48] of X (see notes below) |
-  +------------+------------+--------------------------------+-------------------+----------------------------------------------------------------------+
+  +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
+  | ELF64 Code | Name                             | Operation         | Comment                                                              |
+  +============+==================================+===================+======================================================================+
+  | 300        | R\_AARCH64\_MOVW\_GOTOFF\_G0     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)  |
+  +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
+  | 301        | R\_AARCH64\_MOVW\_GOTOFF\_G0\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate field to bits [15:0] of X. No overflow check    |
+  +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
+  | 302        | R\_AARCH64\_MOVW\_GOTOFF\_G1     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [31:16] of X (see notes below) |
+  +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
+  | 303        | R\_AARCH64\_MOVW\_GOTOFF\_G1\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate value to bits [31:16] of X. No overflow check   |
+  +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
+  | 304        | R\_AARCH64\_MOVW\_GOTOFF\_G2     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [47:32] of X (see notes below) |
+  +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
+  | 305        | R\_AARCH64\_MOVW\_GOTOFF\_G2\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate value to bits [47:32] of X. No overflow check   |
+  +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
+  | 306        | R\_AARCH64\_MOVW\_GOTOFF\_G3     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [63:48] of X (see notes below) |
+  +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
 
 .. note::
 
@@ -1315,17 +1258,17 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: GOT-relative data relocations
 
-  +------------+------------+----------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                 | Operation        | Comment                                                                                                                 |
-  +============+============+======================+==================+=========================================================================================================================+
-  | 307        | \-         | R\_<CLS>\_GOTREL64   | S+A-GOT          | Write bits [63:0] of X at byte-aligned place P.  This represents a 64-bit offset relative to the GOT.                   |
-  +------------+------------+----------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
-  | 308        | \-         | R\_<CLS>\_GOTREL32   | S+A-GOT          | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT, treated as signed;    |
-  |            |            |                      |                  | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                                           |
-  +------------+------------+----------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
-  | 315        | \-         | R\_<CLS>\_GOTPCREL32 | G(GDAT(S))-P+A   | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT entry for an address,  |
-  |            |            |                      |                  | treated as signed; Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                        |
-  +------------+------------+----------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
+  +------------+------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                   | Operation        | Comment                                                                                                                 |
+  +============+========================+==================+=========================================================================================================================+
+  | 307        | R\_AARCH64\_GOTREL64   | S+A-GOT          | Write bits [63:0] of X at byte-aligned place P.  This represents a 64-bit offset relative to the GOT.                   |
+  +------------+------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
+  | 308        | R\_AARCH64\_GOTREL32   | S+A-GOT          | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT, treated as signed;    |
+  |            |                        |                  | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                                           |
+  +------------+------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
+  | 315        | R\_AARCH64\_GOTPCREL32 | G(GDAT(S))-P+A   | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT entry for an address,  |
+  |            |                        |                  | treated as signed; Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                        |
+  +------------+------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
 
 .. _GOT-relative instruction relocations:
 
@@ -1333,33 +1276,28 @@ The following tables record single instruction relocations and relocations that 
 
 .. table:: GOT-relative instruction relocations
 
-  +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | ELF64 Code  | ELF32 Code | Name                          | Operation                  | Comment                                                                                              |
-  +=============+============+===============================+============================+======================================================================================================+
-  | 309         | 25         | R\_<CLS>\_GOT\_LD\_PREL19     | G(GDAT(S))- P              | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`      |
-  +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 310         | \-         | R\_<CLS>\_LD64\_GOTOFF\_LO15  | G(GDAT(S))- GOT            | Set a LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0           |
-  +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 311         | 26         | R\_<CLS>\_ADR\_GOT\_PAGE      | Page(G(GDAT(S)))-Page(P)   | Set the immediate value of an ADRP to bits [32:12] of X; check that –2\ :sup:`32` <= X < 2\ :sup:`32`|
-  +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 312         | \-         | R\_<CLS>\_LD64\_GOT\_LO12\_NC | G(GDAT(S))                 | Set the LD/ST immediate field to bits [11:3] of X. No overflow check; check that X&7 = 0             |
-  +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | \-          | 27         | R\_<CLS>\_LD32\_GOT\_LO12\_NC | G(GDAT(S))                 | Set the LD/ST immediate field to bits [11:2] of X. No overflow check; check that X&3 = 0             |
-  +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 313         | \-         | R\_<CLS>\_LD64\_GOTPAGE\_LO15 | G(GDAT(S))-Page(GOT)       | Set the LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0         |
-  +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | \-          | 28         | R\_<CLS>\_LD32\_GOTPAGE\_LO14 | G(GDAT(S))-Page(GOT)       | Set the LD/ST immediate field to bits [13:2] of X; check that 0 <= X < 2\ :sup:`14`, X&3 = 0         |
-  +-------------+------------+-------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-
+  +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
+  | ELF64 Code  | Name                            | Operation                  | Comment                                                                                              |
+  +=============+=================================+============================+======================================================================================================+
+  | 309         | R\_AARCH64\_GOT\_LD\_PREL19     | G(GDAT(S))- P              | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`      |
+  +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
+  | 310         | R\_AARCH64\_LD64\_GOTOFF\_LO15  | G(GDAT(S))- GOT            | Set a LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0           |
+  +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
+  | 311         | R\_AARCH64\_ADR\_GOT\_PAGE      | Page(G(GDAT(S)))-Page(P)   | Set the immediate value of an ADRP to bits [32:12] of X; check that –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
+  | 312         | R\_AARCH64\_LD64\_GOT\_LO12\_NC | G(GDAT(S))                 | Set the LD/ST immediate field to bits [11:3] of X. No overflow check; check that X&7 = 0             |
+  +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
+  | 313         | R\_AARCH64\_LD64\_GOTPAGE\_LO15 | G(GDAT(S))-Page(GOT)       | Set the LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0         |
+  +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
 
 Call and Jump relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There is one relocation code (``R_<CLS>_CALL26``) for function call (``BL``) instructions and one (``R_<CLS>_JUMP26``) for jump (``B``) instructions. The (``R_<CLS>_PLT32``) relocation is a data relocation for calculating the offset to a function. This can be used as the target of an indirect jump.
+There is one relocation code (``R_AARCH64_CALL26``) for function call (``BL``) instructions and one (``R_AARCH64_JUMP26``) for jump (``B``) instructions. The (``R_AARCH64_PLT32``) relocation is a data relocation for calculating the offset to a function. This can be used as the target of an indirect jump.
 
 A linker may use a veneer (a sequence of instructions) to implement a relocated branch if the relocation is either
 
-``R_<CLS>_CALL26``, ``R_<CLS>_JUMP26`` or ``R_<CLS>_PLT32`` and:
+``R_AARCH64_CALL26``, ``R_AARCH64_JUMP26`` or ``R_AARCH64_PLT32`` and:
 
 - The target symbol has type ``STT_FUNC``.
 
@@ -1375,7 +1313,7 @@ In all other cases a linker shall diagnose an error if relocation cannot be effe
 
 In some systems indirect calls may also use veneers in order to support dynamic linkage that preserves pointer comparability (all reference to the function resolve to the same address).
 
-On platforms that do not support dynamic pre-emption of symbols, an unresolved weak reference to a symbol relocated by ``R_<CLS>_CALL26`` shall be treated as a jump to the next instruction (the call becomes a no-op). The behaviour of ``R_<CLS>_JUMP26`` and ``R_<CLS>_PLT32`` in these conditions is not specified by this standard.
+On platforms that do not support dynamic pre-emption of symbols, an unresolved weak reference to a symbol relocated by ``R_AARCH64_CALL26`` shall be treated as a jump to the next instruction (the call becomes a no-op). The behaviour of ``R_AARCH64_JUMP26`` and ``R_AARCH64_PLT32`` in these conditions is not specified by this standard.
 
 In a link-unit that is intended to be used when BTI guarded pages are enabled, veneers created by the static linker that use an indirect branch must target a BTI instruction or a BTI compatible instruction. If the destination of the veneer is in the same link unit and does not have a BTI or BTI compatible instruction, the static linker must generate an additional veneer that has a BTI instruction followed by a transfer of control to the destination that does not use an indirect branch. See `SYSVABI64`_ for additional requirements on code-generators and PLT sequences.
 
@@ -1403,31 +1341,31 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
     ::
 
-      ADD   x0, x1, 0   // eg. R_<CLS>_TLSLE_ADD_TPREL_HI12
-      ADD   x2, x2, 0   // or R_<CLS>_ADD_ABS_LO12_NC
+      ADD   x0, x1, 0   // eg. R_AARCH64_TLSLE_ADD_TPREL_HI12
+      ADD   x2, x2, 0   // or R_AARCH64_ADD_ABS_LO12_NC
 
       // after optimization:
 
       MOV   x0, x1
       NOP
 
-  - The relocation ``R_<CLS>_ADR_PREL_PG_HI21`` may emit a MOV with zero immediate for undefined weak symbols.
+  - The relocation ``R_AARCH64_ADR_PREL_PG_HI21`` may emit a MOV with zero immediate for undefined weak symbols.
 
   - The following TLS relocations may be optimized if the symbol is not a pre-emptable definition and the TLS offset fits in 16 bits:
 
     ::
 
-      ADRP  x0, :gottprel: symbol            // R_<CLS>_TLSIE_ADR_GOTTPREL_PAGE21
-      LDR   x1, [x0, :gottprel_lo12: symbol] // R_<CLS>_TLSIE_LD64_GOTTPREL_LO12_NC
-      LDR   x2, :gottprel: symbol            // R_<CLS>_TLSIE_LD_GOTTPREL_PREL19
+      ADRP  x0, :gottprel: symbol            // R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21
+      LDR   x1, [x0, :gottprel_lo12: symbol] // R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC
+      LDR   x2, :gottprel: symbol            // R_AARCH64_TLSIE_LD_GOTTPREL_PREL19
 
       // after optimization:
 
       NOP
-      MOV   x1, :tprel_g0: symbol            // R_<CLS>_TLSLE_MOVW_TPREL_G0
-      MOV   x2, :tprel_g0: symbol            // R_<CLS>_TLSLE_MOVW_TPREL_G0
+      MOV   x1, :tprel_g0: symbol            // R_AARCH64_TLSLE_MOVW_TPREL_G0
+      MOV   x2, :tprel_g0: symbol            // R_AARCH64_TLSLE_MOVW_TPREL_G0
 
-    If a linker supports optimizing ``R_<CLS>_TLSIE_ADR_GOTTPREL_PAGE21``, it must also support optimizing ``R_<CLS>_TLSIE_LD64_GOTTPREL_LO12_NC``.
+    If a linker supports optimizing ``R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21``, it must also support optimizing ``R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC``.
 
 - A sequence of relocated instructions may be optimized. The following
   sequences are defined:
@@ -1436,13 +1374,13 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
     ::
 
-      ADRP  x0, :got: symbol            // R_<CLS>_ADR_GOT_PAGE
-      LDR   x0, [x0 :got_lo12: symbol]  // R_<CLS>_LD64_GOT_LO12_NC
+      ADRP  x0, :got: symbol            // R_AARCH64_ADR_GOT_PAGE
+      LDR   x0, [x0 :got_lo12: symbol]  // R_AARCH64_LD64_GOT_LO12_NC
 
       // after optimization:
 
-      ADRP  x0, symbol                  // R_<CLS>_ADR_PREL_PG_HI21
-      ADD   x0, x0, :lo12: symbol       // R_<CLS>_ADD_ABS_LO12_NC
+      ADRP  x0, symbol                  // R_AARCH64_ADR_PREL_PG_HI21
+      ADD   x0, x0, :lo12: symbol       // R_AARCH64_ADD_ABS_LO12_NC
 
     The following conditions apply:
 
@@ -1453,9 +1391,9 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
     - ``symbol`` does not have a ``st_shndx`` of ``SHN_ABS``.
 
     The Large GOT indirection optimization is valid for ``symbol`` if all
-    ``R_<CLS>_ADR_GOT_PAGE`` and ``R_<CLS>_LD64_GOT_LO12_NC`` relocations are
+    ``R_AARCH64_ADR_GOT_PAGE`` and ``R_AARCH64_LD64_GOT_LO12_NC`` relocations are
     part of a sequence which satisfies all conditions above. If so, any
-    sequences where ``symbol`` is within the range of the ``R_<CLS>_ADR_PREL_PG_HI21``
+    sequences where ``symbol`` is within the range of the ``R_AARCH64_ADR_PREL_PG_HI21``
     relocation applied to the location of the ``ADRP`` may now be optimized.
     A linker may avoid creating a GOT entry if no other GOT relocations exist
     for the symbol.
@@ -1465,27 +1403,27 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
     ::
 
-        ADRP  x0, :got: symbol            // R_<CLS>_ADR_GOT_PAGE
+        ADRP  x0, :got: symbol            // R_AARCH64_ADR_GOT_PAGE
         B.EQ  forward
 
-        ADRP  x0, :got: symbol            // R_<CLS>_ADR_GOT_PAGE
+        ADRP  x0, :got: symbol            // R_AARCH64_ADR_GOT_PAGE
       forward:
-        LDR   x0, [x0 :got_lo12: symbol]  // R_<CLS>_LD64_GOT_LO12_NC
+        LDR   x0, [x0 :got_lo12: symbol]  // R_AARCH64_LD64_GOT_LO12_NC
 
   - Short range PC-relative addressing
 
     ::
 
-      ADRP  x0, symbol                  // R_<CLS>_ADR_PREL_PG_HI21
-      ADD   x0, x0, :lo12: symbol       // R_<CLS>_ADD_ABS_LO12_NC
+      ADRP  x0, symbol                  // R_AARCH64_ADR_PREL_PG_HI21
+      ADD   x0, x0, :lo12: symbol       // R_AARCH64_ADD_ABS_LO12_NC
 
       // after optimization:
 
       NOP
-      ADR   x0, symbol                  // R_<CLS>_ADR_PREL_LO21
+      ADR   x0, symbol                  // R_AARCH64_ADR_PREL_LO21
 
     The optimization is valid if ``symbol`` is within the range of the
-    ``R_<CLS>_ADR_PREL_LO21`` relocation applied to the location of the ``ADD``
+    ``R_AARCH64_ADR_PREL_LO21`` relocation applied to the location of the ``ADD``
     instruction, the instructions are consecutive, relocate the same symbol
     and use the same source and destination registers.
 
@@ -1504,13 +1442,13 @@ The static relocations needed to support thread-local storage in a SysV-type env
 
 In addition to the terms defined in `Relocation types`_, the tables listing the static relocations relating to thread-local storage use the following terms in the column named Operation.
 
-- ``GLDM(S)`` represents a consecutive pair of pointer-sized entries in the GOT for the load module index of the symbol ``S``. The first pointer-sized entry will be relocated with ``R_<CLS>_TLS_DTPMOD(S);`` the second pointer-sized entry will contain the constant 0.
+- ``GLDM(S)`` represents a consecutive pair of pointer-sized entries in the GOT for the load module index of the symbol ``S``. The first pointer-sized entry will be relocated with ``R_AARCH64_TLS_DTPMOD(S);`` the second pointer-sized entry will contain the constant 0.
 
-- ``GTLSIDX(S,A)`` represents a consecutive pair of pointer-sized entries in the GOT. The entry contains a ``tls_index`` structure describing the thread-local variable located at offset ``A`` from thread-local symbol ``S``. The first pointer-sized entry will be relocated with ``R_<CLS>_TLS_DTPMOD(S)``, the second pointer-sized entry will be relocated with ``R_<CLS>_TLS_DTPREL(S+A)``.
+- ``GTLSIDX(S,A)`` represents a consecutive pair of pointer-sized entries in the GOT. The entry contains a ``tls_index`` structure describing the thread-local variable located at offset ``A`` from thread-local symbol ``S``. The first pointer-sized entry will be relocated with ``R_AARCH64_TLS_DTPMOD(S)``, the second pointer-sized entry will be relocated with ``R_AARCH64_TLS_DTPREL(S+A)``.
 
-- ``GTPREL(S+A)`` represents a pointer-sized entry in the GOT for the offset from the current thread pointer (TP) of the thread-local variable located at offset ``A`` from the symbol ``S``. The entry will be relocated with ``R_<CLS>_TLS_TPREL(S+A)``.
+- ``GTPREL(S+A)`` represents a pointer-sized entry in the GOT for the offset from the current thread pointer (TP) of the thread-local variable located at offset ``A`` from the symbol ``S``. The entry will be relocated with ``R_AARCH64_TLS_TPREL(S+A)``.
 
-- ``GTLSDESC(S+A)`` represents a consecutive pair of pointer-sized entries in the GOT which contain a tlsdesc structure describing the thread-local variable located at offset ``A`` from thread-local symbol ``S``. The first entry holds a pointer to the variable's TLS descriptor resolver function and the second entry holds a platform-specific offset or pointer. The pair of pointer-sized entries will be relocated with ``R_<CLS>_TLSDESC(S+A)``.
+- ``GTLSDESC(S+A)`` represents a consecutive pair of pointer-sized entries in the GOT which contain a tlsdesc structure describing the thread-local variable located at offset ``A`` from thread-local symbol ``S``. The first entry holds a pointer to the variable's TLS descriptor resolver function and the second entry holds a platform-specific offset or pointer. The pair of pointer-sized entries will be relocated with ``R_AARCH64_TLSDESC(S+A)``.
 
 - ``LDM(S)`` resolves to the load module index of the symbol ``S``.
 
@@ -1529,19 +1467,19 @@ General Dynamic thread-local storage model
 
 .. table:: General Dynamic TLS relocations
 
-  +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                            | Operation                       | Comment                                                                                  |
-  +============+============+=================================+=================================+==========================================================================================+
-  | 512        | 80         | R\_<CLS>\_TLSGD\_ADR\_PREL21    | G(GTLSIDX(S)) - P               | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`  |
-  +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 513        | 81         | R\_<CLS>\_TLSGD\_ADR\_PAGE21    | Page(G(GTLSIDX(S)) - Page(P)    | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
-  +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 514        | 82         | R\_<CLS>\_TLSGD\_ADD\_LO12\_NC  | G(GTLSIDX(S))                   | Set an ADD immediate field to bits [11:0] of X. No overflow check                        |
-  +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 515        | \-         | R\_<CLS>\_TLSGD\_MOVW\_G1       | G(GTLSIDX(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
-  +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
-  | 516        | \-         | R\_<CLS>\_TLSGD\_MOVW\_G0\_NC   | G(GTLSIDX(S)) - GOT             | Set a MOVK immediate field to bits [15:0] of X. No overflow check                        |
-  +------------+------------+---------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
+  +------------+-----------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                              | Operation                       | Comment                                                                                  |
+  +============+===================================+=================================+==========================================================================================+
+  | 512        | R\_AARCH64\_TLSGD\_ADR\_PREL21    | G(GTLSIDX(S)) - P               | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`  |
+  +------------+-----------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
+  | 513        | R\_AARCH64\_TLSGD\_ADR\_PAGE21    | Page(G(GTLSIDX(S)) - Page(P)    | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  +------------+-----------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
+  | 514        | R\_AARCH64\_TLSGD\_ADD\_LO12\_NC  | G(GTLSIDX(S))                   | Set an ADD immediate field to bits [11:0] of X. No overflow check                        |
+  +------------+-----------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
+  | 515        | R\_AARCH64\_TLSGD\_MOVW\_G1       | G(GTLSIDX(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
+  +------------+-----------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
+  | 516        | R\_AARCH64\_TLSGD\_MOVW\_G0\_NC   | G(GTLSIDX(S)) - GOT             | Set a MOVK immediate field to bits [15:0] of X. No overflow check                        |
+  +------------+-----------------------------------+---------------------------------+------------------------------------------------------------------------------------------+
 
 .. note::
 
@@ -1559,67 +1497,67 @@ Local Dynamic thread-local storage model
 
 .. table:: Local Dynamic TLS relocations
 
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | ELF64 Code  | ELF32 Code | Name                                         | Operation                 | Comment                                                                                        |
-  +=============+============+==============================================+===========================+================================================================================================+
-  | 517         | 83         | R\_<CLS>\_TLSLD\_ADR\_PREL21                 | G(GLDM(S))) - P           | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`        |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 518         | 84         | R\_<CLS>\_TLSLD\_ADR\_PAGE21                 | Page(G(GLDM(S)))-Page(P)  | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`      |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 519         | 85         | R\_<CLS>\_TLSLD\_ADD\_LO12\_NC               | G(GLDM(S))                | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 520         | \-         | R\_<CLS>\_TLSLD\_MOVW\_G1                    | G(GLDM(S)) - GOT          | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 521         | \-         | R\_<CLS>\_TLSLD\_MOVW\_G0\_NC                | G(GLDM(S)) - GOT          | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 522         | 86         | R\_<CLS>\_TLSLD\_LD\_PREL19                  | G(GLDM(S)) - P            | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 523         | \-         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G2            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)                           |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 524         | 87         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G1            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 525         | \-         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G1\_NC        | DTPREL(S+A)               | Set a MOVK immediate field to bits [31:16] of X. No overflow check                             |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 526         | 88         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G0            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)                            |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 527         | 89         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G0\_NC        | DTPREL(S+A)               | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 528         | 90         | R\_<CLS>\_TLSLD\_ADD\_DTPREL\_HI12           | DTPREL(S+A)               | Set an ADD immediate field to bits [23:12] of X; check 0 <= X < 2\ :sup:`24`                   |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 529         | 91         | R\_<CLS>\_TLSLD\_ADD\_DTPREL\_LO12           | DTPREL(S+A)               | Set an ADD immediate field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`                    |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 530         | 92         | R\_<CLS>\_TLSLD\_ADD\_DTPREL\_LO12\_NC       | DTPREL(S+A)               | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 531         | 93         | R\_<CLS>\_TLSLD\_LDST8\_DTPREL\_LO12         | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`                      |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 532         | 94         | R\_<CLS>\_TLSLD\_LDST8\_DTPREL\_LO12\_NC     | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:0] of X. No overflow check                                |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 533         | 95         | R\_<CLS>\_TLSLD\_LDST16\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:1] of X; check 0 <= X < 2\ :sup:`12`                      |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 534         | 96         | R\_<CLS>\_TLSLD\_LDST16\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:1] of X. No overflow check                                |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 535         | 97         | R\_<CLS>\_TLSLD\_LDST32\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:2] of X; check 0 <= X < 2\ :sup:`12`                      |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 536         | 98         | R\_<CLS>\_TLSLD\_LDST32\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:2] of X. No overflow check                                |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 537         | 99         | R\_<CLS>\_TLSLD\_LDST64\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:3] of X; check 0 <= X < 2\ :sup:`12`                      |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 538         | 100        | R\_<CLS>\_TLSLD\_LDST64\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:3] of X. No overflow check                                |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 572         | 101        | R\_<CLS>\_TLSLD\_LDST128\_DTPREL\_LO12       | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X; check 0 <= X < 2\ :sup:`12`                      |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 573         | 102        | R\_<CLS>\_TLSLD\_LDST128\_DTPREL\_LO12\_NC   | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X. No overflow check                                |
-  +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | ELF64 Code  | Name                                           | Operation                 | Comment                                                                                        |
+  +=============+================================================+===========================+================================================================================================+
+  | 517         | R\_AARCH64\_TLSLD\_ADR\_PREL21                 | G(GLDM(S))) - P           | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`        |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 518         | R\_AARCH64\_TLSLD\_ADR\_PAGE21                 | Page(G(GLDM(S)))-Page(P)  | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`      |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 519         | R\_AARCH64\_TLSLD\_ADD\_LO12\_NC               | G(GLDM(S))                | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 520         | R\_AARCH64\_TLSLD\_MOVW\_G1                    | G(GLDM(S)) - GOT          | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 521         | R\_AARCH64\_TLSLD\_MOVW\_G0\_NC                | G(GLDM(S)) - GOT          | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 522         | R\_AARCH64\_TLSLD\_LD\_PREL19                  | G(GLDM(S)) - P            | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 523         | R\_AARCH64\_TLSLD\_MOVW\_DTPREL\_G2            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)                           |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 524         | R\_AARCH64\_TLSLD\_MOVW\_DTPREL\_G1            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 525         | R\_AARCH64\_TLSLD\_MOVW\_DTPREL\_G1\_NC        | DTPREL(S+A)               | Set a MOVK immediate field to bits [31:16] of X. No overflow check                             |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 526         | R\_AARCH64\_TLSLD\_MOVW\_DTPREL\_G0            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)                            |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 527         | R\_AARCH64\_TLSLD\_MOVW\_DTPREL\_G0\_NC        | DTPREL(S+A)               | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 528         | R\_AARCH64\_TLSLD\_ADD\_DTPREL\_HI12           | DTPREL(S+A)               | Set an ADD immediate field to bits [23:12] of X; check 0 <= X < 2\ :sup:`24`                   |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 529         | R\_AARCH64\_TLSLD\_ADD\_DTPREL\_LO12           | DTPREL(S+A)               | Set an ADD immediate field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`                    |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 530         | R\_AARCH64\_TLSLD\_ADD\_DTPREL\_LO12\_NC       | DTPREL(S+A)               | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 531         | R\_AARCH64\_TLSLD\_LDST8\_DTPREL\_LO12         | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`                      |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 532         | R\_AARCH64\_TLSLD\_LDST8\_DTPREL\_LO12\_NC     | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:0] of X. No overflow check                                |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 533         | R\_AARCH64\_TLSLD\_LDST16\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:1] of X; check 0 <= X < 2\ :sup:`12`                      |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 534         | R\_AARCH64\_TLSLD\_LDST16\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:1] of X. No overflow check                                |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 535         | R\_AARCH64\_TLSLD\_LDST32\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:2] of X; check 0 <= X < 2\ :sup:`12`                      |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 536         | R\_AARCH64\_TLSLD\_LDST32\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:2] of X. No overflow check                                |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 537         | R\_AARCH64\_TLSLD\_LDST64\_DTPREL\_LO12        | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:3] of X; check 0 <= X < 2\ :sup:`12`                      |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 538         | R\_AARCH64\_TLSLD\_LDST64\_DTPREL\_LO12\_NC    | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:3] of X. No overflow check                                |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 572         | R\_AARCH64\_TLSLD\_LDST128\_DTPREL\_LO12       | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X; check 0 <= X < 2\ :sup:`12`                      |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
+  | 573         | R\_AARCH64\_TLSLD\_LDST128\_DTPREL\_LO12\_NC   | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X. No overflow check                                |
+  +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
 
 .. note::
 
     Non-checking (``_NC``) MOVW forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
-    ``X >= 0``: Set the instruction to ``MOVZ`` and its immediate value to the selected bits S; for relocation ``R_..._Gn``, check in ELF64 that X < {``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} (no check for ``R_..._G3``); in ELF32 only check that X < 2\ :sup:`16` for ``R_..._G0``.
+    ``X >= 0``: Set the instruction to ``MOVZ`` and its immediate value to the selected bits S; for relocation ``R_..._Gn``, check that X < {``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} (no check for ``R_..._G3``).
 
-    ``X < 0``: Set the instruction to ``MOVN`` and its immediate value to NOT (selected bits of); for relocation ``R_..._Gn``, check in ELF64 that -{``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} <= X (no check for ``R_..._G3``); in ELF32 only check that -2\ :sup:`16` <= X for ``R_..._G0``.
+    ``X < 0``: Set the instruction to ``MOVN`` and its immediate value to NOT (selected bits of); for relocation ``R_..._Gn``, check that -{``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} <= X (no check for ``R_..._G3``).
 
-    For scaled-addressing relocations (533-538, 572 and 573) or [95-102] a linker should check that X is a multiple of the datum size.
+    For scaled-addressing relocations 533-538, 572 and 573 a linker should check that X is a multiple of the datum size.
 
 
 Initial Exec thread-local storage model
@@ -1629,24 +1567,22 @@ Initial Exec thread-local storage model
 
 .. table:: Initial Exec TLS relocations
 
-  +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                                       | Operation                      | Comment                                                                                  |
-  +============+============+============================================+================================+==========================================================================================+
-  | 539        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G1        | G(GTPREL(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
-  +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 540        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G0\_NC    | G(GTPREL(S)) - GOT             | Set MOVK immediate to bits [15:0] of X. No overflow check                                |
-  +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 541        | 103        | R\_<CLS>\_TLSIE\_ADR\_GOTTPREL\_PAGE21     | Page(G(GTPREL(S))) - Page(P)   | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
-  +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 542        | \-         | R\_<CLS>\_TLSIE\_LD64\_GOTTPREL\_LO12\_NC  | G(GTPREL(S))                   | Set an LD offset field to bits [11:3] of X. No overflow check; check that X&7=0          |
-  +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | \-         | 104        | R\_<CLS>\_TLSIE\_LD32\_GOTTPREL\_LO12\_NC  | G(GTPREL(S))                   | Set an LD offset field to bits [11:2] of X. No overflow check; check that X&3=0          |
-  +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 543        | 105        | R\_<CLS>\_TLSIE\_LD\_GOTTPREL\_PREL19      | G(GTPREL(S)) – P               | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
-  +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
+  +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                                         | Operation                      | Comment                                                                                  |
+  +============+==============================================+================================+==========================================================================================+
+  | 539        | R\_AARCH64\_TLSIE\_MOVW\_GOTTPREL\_G1        | G(GTPREL(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
+  +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
+  | 540        | R\_AARCH64\_TLSIE\_MOVW\_GOTTPREL\_G0\_NC    | G(GTPREL(S)) - GOT             | Set MOVK immediate to bits [15:0] of X. No overflow check                                |
+  +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
+  | 541        | R\_AARCH64\_TLSIE\_ADR\_GOTTPREL\_PAGE21     | Page(G(GTPREL(S))) - Page(P)   | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
+  | 542        | R\_AARCH64\_TLSIE\_LD64\_GOTTPREL\_LO12\_NC  | G(GTPREL(S))                   | Set an LD offset field to bits [11:3] of X. No overflow check; check that X&7=0          |
+  +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
+  | 543        | R\_AARCH64\_TLSIE\_LD\_GOTTPREL\_PREL19      | G(GTPREL(S)) – P               | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
+  +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
 
 .. note::
-    Non-checking (``_NC``) ``MOVW`` forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
+  Non-checking (``_NC``) ``MOVW`` forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
 
 Local Exec thread-local storage model
@@ -1656,51 +1592,51 @@ Local Exec thread-local storage model
 
 .. table:: Local Exec TLS relocations
 
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                                       | Operation   | Comment                                                                      |
-  +============+============+============================================+=============+==============================================================================+
-  | 544        | \-         | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G2           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)         |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 545        | 106        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G1           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)         |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 546        | \-         | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G1\_NC       | TPREL(S+A)  | Set a MOVK immediate field to bits [31:16] of X. No overflow check           |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 547        | 107        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G0           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)          |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 548        | 108        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G0\_NC       | TPREL(S+A)  | Set a MOVK immediate field to bits [15:0] of X. No overflow check            |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 549        | 109        | R\_<CLS>\_TLSLE\_ADD\_TPREL\_HI12          | TPREL(S+A)  | Set an ADD immediate field to bits [23:12] of X; check 0 <= X < 2\ :sup:`24`.|
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 550        | 110        | R\_<CLS>\_TLSLE\_ADD\_TPREL\_LO12          | TPREL(S+A)  | Set an ADD immediate field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`. |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 551        | 111        | R\_<CLS>\_TLSLE\_ADD\_TPREL\_LO12\_NC      | TPREL(S+A)  | Set an ADD immediate field to bits [11:0] of X. No overflow check            |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 552        | 112        | R\_<CLS>\_TLSLE\_LDST8\_TPREL\_LO12        | TPREL(S+A)  | Set a LD/ST offset field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`.   |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 553        | 113        | R\_<CLS>\_TLSLE\_LDST8\_TPREL\_LO12\_NC    | TPREL(S+A)  | Set a LD/ST offset field to bits [11:0] of X. No overflow check              |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 554        | 114        | R\_<CLS>\_TLSLE\_LDST16\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:1] of X; check 0 <= X < 2\ :sup:`12`    |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 555        | 115        | R\_<CLS>\_TLSLE\_LDST16\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:1] of X. No overflow check              |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 556        | 116        | R\_<CLS>\_TLSLE\_LDST32\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:2] of X; check 0 <= X < 2\ :sup:`12`    |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 557        | 117        | R\_<CLS>\_TLSLE\_LDST32\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:2] of X. No overflow check              |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 558        | 118        | R\_<CLS>\_TLSLE\_LDST64\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:3] of X; check 0 <= X < 2\ :sup:`12`    |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 559        | 119        | R\_<CLS>\_TLSLE\_LDST64\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:3] of X. No overflow check              |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 570        | 120        | R\_<CLS>\_TLSLE\_LDST128\_TPREL\_LO12      | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X; check 0 <= X < 2\ :sup:`12`    |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 571        | 121        | R\_<CLS>\_TLSLE\_LDST128\_TPREL\_LO12\_NC  | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X. No overflow check              |
-  +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | ELF64 Code | Name                                         | Operation   | Comment                                                                      |
+  +============+==============================================+=============+==============================================================================+
+  | 544        | R\_AARCH64\_TLSLE\_MOVW\_TPREL\_G2           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)         |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 545        | R\_AARCH64\_TLSLE\_MOVW\_TPREL\_G1           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)         |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 546        | R\_AARCH64\_TLSLE\_MOVW\_TPREL\_G1\_NC       | TPREL(S+A)  | Set a MOVK immediate field to bits [31:16] of X. No overflow check           |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 547        | R\_AARCH64\_TLSLE\_MOVW\_TPREL\_G0           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)          |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 548        | R\_AARCH64\_TLSLE\_MOVW\_TPREL\_G0\_NC       | TPREL(S+A)  | Set a MOVK immediate field to bits [15:0] of X. No overflow check            |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 549        | R\_AARCH64\_TLSLE\_ADD\_TPREL\_HI12          | TPREL(S+A)  | Set an ADD immediate field to bits [23:12] of X; check 0 <= X < 2\ :sup:`24`.|
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 550        | R\_AARCH64\_TLSLE\_ADD\_TPREL\_LO12          | TPREL(S+A)  | Set an ADD immediate field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`. |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 551        | R\_AARCH64\_TLSLE\_ADD\_TPREL\_LO12\_NC      | TPREL(S+A)  | Set an ADD immediate field to bits [11:0] of X. No overflow check            |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 552        | R\_AARCH64\_TLSLE\_LDST8\_TPREL\_LO12        | TPREL(S+A)  | Set a LD/ST offset field to bits [11:0] of X; check 0 <= X < 2\ :sup:`12`.   |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 553        | R\_AARCH64\_TLSLE\_LDST8\_TPREL\_LO12\_NC    | TPREL(S+A)  | Set a LD/ST offset field to bits [11:0] of X. No overflow check              |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 554        | R\_AARCH64\_TLSLE\_LDST16\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:1] of X; check 0 <= X < 2\ :sup:`12`    |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 555        | R\_AARCH64\_TLSLE\_LDST16\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:1] of X. No overflow check              |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 556        | R\_AARCH64\_TLSLE\_LDST32\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:2] of X; check 0 <= X < 2\ :sup:`12`    |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 557        | R\_AARCH64\_TLSLE\_LDST32\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:2] of X. No overflow check              |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 558        | R\_AARCH64\_TLSLE\_LDST64\_TPREL\_LO12       | TPREL(S+A)  | Set a LD/ST offset field to bits [11:3] of X; check 0 <= X < 2\ :sup:`12`    |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 559        | R\_AARCH64\_TLSLE\_LDST64\_TPREL\_LO12\_NC   | TPREL(S+A)  | Set a LD/ST offset field to bits [11:3] of X. No overflow check              |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 570        | R\_AARCH64\_TLSLE\_LDST128\_TPREL\_LO12      | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X; check 0 <= X < 2\ :sup:`12`    |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
+  | 571        | R\_AARCH64\_TLSLE\_LDST128\_TPREL\_LO12\_NC  | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X. No overflow check              |
+  +------------+----------------------------------------------+-------------+------------------------------------------------------------------------------+
 
 .. note::
 
     Non-checking (``_NC``) ``MOVW`` forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
-    For scaled-addressing relocations (554-559, 570 and 571) or [112-121] a linker should check that X is a multiple of the datum size.
+    For scaled-addressing relocations 554-559, 570 and 571 a linker should check that X is a multiple of the datum size.
 
 
 Thread-local storage descriptors
@@ -1710,36 +1646,34 @@ Thread-local storage descriptors
 
 .. table:: TLS descriptor relocations
 
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                            | Operation                        | Comment                                                                                      |
-  +============+============+=================================+==================================+==============================================================================================+
-  | 560        | 122        | R\_<CLS>\_TLSDESC\_LD\_PREL19   | G(GTLSDESC(S)) - P               | Set a load-literal immediate to bits [20:2]; check -2\ :sup:`20` <= X < 2\ :sup:`20`; check  |
-  |            |            |                                 |                                  | X & 3 = 0.                                                                                   |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 561        | 123        | R\_<CLS>\_TLSDESC\_ADR\_PREL21  | G(GTLSDESC(S)) - P               | Set an ADR immediate field to bits [20:0]; check -2\ :sup:`20` <= X < 2\ :sup:`20`.          |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 562        | 124        | R\_<CLS>\_TLSDESC\_ADR\_PAGE21  | Page(G(GTLSDESC(S))) - Page(P)   | Set an ADRP immediate field to bits [32:12] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`.   |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 563        | \-         | R\_<CLS>\_TLSDESC\_LD64\_LO12   | G(GTLSDESC(S))                   | Set an LD offset field to bits [11:3] of X. No overflow check; check X & 7 = 0.              |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | \-         | 125        | R\_<CLS>\_TLSDESC\_LD32\_LO12   | G(GTLSDESC(S))                   | Set an LD offset field to bits [11:2] of X. No overflow check; check X & 3  = 0.             |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 564        | 126        | R\_<CLS>\_TLSDESC\_ADD\_LO12    | G(GTLSDESC(S))                   | Set an ADD immediate field to bits [11:0] of X. No overflow check.                           |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 565        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G1      | G(GTLSDESC(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`. |
-  |            |            |                                 |                                  | See notes below.                                                                             |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 566        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G0\_NC  | G(GTLSDESC(S)) - GOT             | Set a MOVK immediate field to bits [15:0] of X. No overflow check.                           |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 567        | \-         | R\_<CLS>\_TLSDESC\_LDR          | None                             | For relaxation only. Must be used to identify an LDR instruction which loads the TLS         |
-  |            |            |                                 |                                  | descriptor function pointer for S + A if it has no other relocation.                         |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 568        | \-         | R\_<CLS>\_TLSDESC\_ADD          | None                             | For relaxation only. Must be used to identify an ADD instruction which computes the          |
-  |            |            |                                 |                                  | address of the TLS Descriptor for S + A if it has no other relocation.                       |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
-  | 569        | 127        | R\_<CLS>\_TLSDESC\_CALL         | None                             | For relaxation only. Must be used to identify a BLR instruction which performs an indirect   |
-  |            |            |                                 |                                  | call to the TLS descriptor function for S + A.                                               |
-  +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | ELF64 Code | Name                              | Operation                        | Comment                                                                                      |
+  +============+===================================+==================================+==============================================================================================+
+  | 560        | R\_AARCH64\_TLSDESC\_LD\_PREL19   | G(GTLSDESC(S)) - P               | Set a load-literal immediate to bits [20:2]; check -2\ :sup:`20` <= X < 2\ :sup:`20`; check  |
+  |            |                                   |                                  | X & 3 = 0.                                                                                   |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 561        | R\_AARCH64\_TLSDESC\_ADR\_PREL21  | G(GTLSDESC(S)) - P               | Set an ADR immediate field to bits [20:0]; check -2\ :sup:`20` <= X < 2\ :sup:`20`.          |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 562        | R\_AARCH64\_TLSDESC\_ADR\_PAGE21  | Page(G(GTLSDESC(S))) - Page(P)   | Set an ADRP immediate field to bits [32:12] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`.   |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 563        | R\_AARCH64\_TLSDESC\_LD64\_LO12   | G(GTLSDESC(S))                   | Set an LD offset field to bits [11:3] of X. No overflow check; check X & 7 = 0.              |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 564        | R\_AARCH64\_TLSDESC\_ADD\_LO12    | G(GTLSDESC(S))                   | Set an ADD immediate field to bits [11:0] of X. No overflow check.                           |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 565        | R\_AARCH64\_TLSDESC\_OFF\_G1      | G(GTLSDESC(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`. |
+  |            |                                   |                                  | See notes below.                                                                             |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 566        | R\_AARCH64\_TLSDESC\_OFF\_G0\_NC  | G(GTLSDESC(S)) - GOT             | Set a MOVK immediate field to bits [15:0] of X. No overflow check.                           |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 567        | R\_AARCH64\_TLSDESC\_LDR          | None                             | For relaxation only. Must be used to identify an LDR instruction which loads the TLS         |
+  |            |                                   |                                  | descriptor function pointer for S + A if it has no other relocation.                         |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 568        | R\_AARCH64\_TLSDESC\_ADD          | None                             | For relaxation only. Must be used to identify an ADD instruction which computes the          |
+  |            |                                   |                                  | address of the TLS Descriptor for S + A if it has no other relocation.                       |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+  | 569        | R\_AARCH64\_TLSDESC\_CALL         | None                             | For relaxation only. Must be used to identify a BLR instruction which performs an indirect   |
+  |            |                                   |                                  | call to the TLS descriptor function for S + A.                                               |
+  +------------+-----------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
 
 
 .. note::
@@ -1748,7 +1682,7 @@ Thread-local storage descriptors
 
     ``X < 0``: Set the instruction to MOVN and its immediate value to NOT (selected bits of X).
 
-Relocation codes ``R_<CLS>_TLSDESC_LDR``, ``R_<CLS>_TLSDESC_ADD`` and ``R_<CLS>_TLSDESC_CALL`` are needed to permit linker optimization of TLS descriptor code sequences to use Initial-exec or Local-exec TLS sequences; this can only be done if all relevant uses of TLS descriptors are marked to permit accurate relaxation. Object producers that are unable to satisfy this requirement must generate traditional General-dynamic TLS
+Relocation codes ``R_AARCH64_TLSDESC_LDR``, ``R_AARCH64_TLSDESC_ADD`` and ``R_AARCH64_TLSDESC_CALL`` are needed to permit linker optimization of TLS descriptor code sequences to use Initial-exec or Local-exec TLS sequences; this can only be done if all relevant uses of TLS descriptors are marked to permit accurate relaxation. Object producers that are unable to satisfy this requirement must generate traditional General-dynamic TLS
 sequences using the relocations described in `General Dynamic thread-local storage model`_. The details of TLS descriptors are beyond the scope of this specification; a general introduction can be found in [TLSDESC_].
 
 Thread Local Storage Data Relocations
@@ -1760,18 +1694,18 @@ A data relocation is required to describe the location of a TLS variable in debu
 
 .. table:: TLS data relocations
 
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1028       | 184        | R\_<CLS>\_TLS\_IMPDEF1      |                                    | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1029       | 185        | R\_<CLS>\_TLS\_IMPDEF2      |                                    | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  |            |            | R\_<CLS>\_TLS\_DTPREL       | DTPREL(S+A)                        | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
+  +------------+-------------------------------+------------------------------------+-------------------------------------------+
+  | 1028       | R\_AARCH64\_TLS\_IMPDEF1      |                                    | See note below                            |
+  +------------+-------------------------------+------------------------------------+-------------------------------------------+
+  | 1029       | R\_AARCH64\_TLS\_IMPDEF2      |                                    | See note below                            |
+  +------------+-------------------------------+------------------------------------+-------------------------------------------+
+  |            | R\_AARCH64\_TLS\_DTPREL       | DTPREL(S+A)                        | See note below                            |
+  +------------+-------------------------------+------------------------------------+-------------------------------------------+
 
-It is implementation defined whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPREL`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPMOD`` or whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPMOD`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
+It is implementation defined whether ``R_AARCH64_TLS_IMPDEF1`` implements ``R_AARCH64_TLS_DTPREL`` and ``R_AARCH64_TLS_IMPDEF2`` implements ``R_AARCH64_TLS_DTPMOD`` or whether ``R_AARCH64_TLS_IMPDEF1`` implements ``R_AARCH64_TLS_DTPMOD`` and ``R_AARCH64_TLS_IMPDEF2`` implements ``R_AARCH64_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
 
 .. note::
-   ``R_<CLS>_TLS_DTPREL`` is both a static and dynamic relocation. When used as
+   ``R_AARCH64_TLS_DTPREL`` is both a static and dynamic relocation. When used as
    a static relocation ``S`` must be fully resolved at static link time to a
    symbol definition in the same module as the relocation.
 
@@ -1789,47 +1723,47 @@ The ``PAUTH`` and ``ENCD`` operators are defined in `PAUTHABIELF64`_.
 
 .. table:: PAuthABI static relocations
 
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | ELF64 Code | ELF32 Code | Name                                   | Operation                            | Comment              |
-  +============+============+========================================+======================================+======================+
-  | 580        | \-         | R\_<CLS>\_AUTH\_ABS64                  | PAUTH(S+A)                           | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 581        | \-         | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0     | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 582        | \-         | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0\_NC | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 583        | \-         | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1     | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 584        | \-         | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1\_NC | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 585        | \-         | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2     | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 586        | \-         | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2\_NC | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 587        | \-         | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G3     | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 588        | \-         | R\_AARCH64\_AUTH\_GOT\_LD\_PREL19      | G(ENCD(GDAT(S))) - P                 | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 589        | \-         | R\_AARCH64\_AUTH\_LD64\_GOTOFF\_LO15   | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 590        | \-         | R\_AARCH64\_AUTH\_ADR\_GOT\_PAGE       | G(ENCD(GDAT(S))) - Page(P)           | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 591        | \-         | R\_AARCH64\_AUTH\_LD64\_GOT\_LO12_NC   | G(ENCD(GDAT(S)))                     | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 592        | \-         | R\_AARCH64\_AUTH\_LD64\_GOTPAGE\_LO15  | G(ENCD(GDAT(S))) - Page(GOT)         | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 593        | \-         | R\_AARCH64\_AUTH\_GOT\_ADD_LO12_NC     | G(ENCD(GDAT(S)))                     | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 594        | \-         | R\_AARCH64\_AUTH\_GOT\_ADR\_PREL\_LO21 | G(ENCD(GDAT(S))) - P                 | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 595        | \-         | R\_AARCH64\_AUTH\_TLSDESC\_ADR\_PAGE21 | Page(G(ENCD(GTLSDESC(S)))) - Page(P) | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 596        | \-         | R\_AARCH64\_AUTH\_TLSDESC\_LD64\_LO12  | G(ENCD(GTLSDESC(S)))                 | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 597        | \-         | R\_AARCH64\_AUTH\_TLSDESC\_ADD\_LO12   | G(ENCD(GTLSDESC(S)))                 | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | 598        | \-         | R\_AARCH64\_AUTH\_TLSDESC\_CALL        | None                                 | See `PAUTHABIELF64`_ |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | ELF64 Code | Name                                   | Operation                            | Comment              |
+  +============+========================================+======================================+======================+
+  | 580        | R\_AARCH64\_AUTH\_ABS64                | PAUTH(S+A)                           | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 581        | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0     | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 582        | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G0\_NC | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 583        | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1     | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 584        | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G1\_NC | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 585        | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2     | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 586        | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G2\_NC | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 587        | R\_AARCH64\_AUTH\_MOVW\_GOTOFF\_G3     | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 588        | R\_AARCH64\_AUTH\_GOT\_LD\_PREL19      | G(ENCD(GDAT(S))) - P                 | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 589        | R\_AARCH64\_AUTH\_LD64\_GOTOFF\_LO15   | G(ENCD(GDAT(S))) - GOT               | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 590        | R\_AARCH64\_AUTH\_ADR\_GOT\_PAGE       | G(ENCD(GDAT(S))) - Page(P)           | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 591        | R\_AARCH64\_AUTH\_LD64\_GOT\_LO12_NC   | G(ENCD(GDAT(S)))                     | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 592        | R\_AARCH64\_AUTH\_LD64\_GOTPAGE\_LO15  | G(ENCD(GDAT(S))) - Page(GOT)         | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 593        | R\_AARCH64\_AUTH\_GOT\_ADD_LO12_NC     | G(ENCD(GDAT(S)))                     | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 594        | R\_AARCH64\_AUTH\_GOT\_ADR\_PREL\_LO21 | G(ENCD(GDAT(S))) - P                 | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 595        | R\_AARCH64\_AUTH\_TLSDESC\_ADR\_PAGE21 | Page(G(ENCD(GTLSDESC(S)))) - Page(P) | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 596        | R\_AARCH64\_AUTH\_TLSDESC\_LD64\_LO12  | G(ENCD(GTLSDESC(S)))                 | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 597        | R\_AARCH64\_AUTH\_TLSDESC\_ADD\_LO12   | G(ENCD(GTLSDESC(S)))                 | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | 598        | R\_AARCH64\_AUTH\_TLSDESC\_CALL        | None                                 | See `PAUTHABIELF64`_ |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
 
 Relocations for Structure Protection Extension
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1846,11 +1780,11 @@ The structure protection relocations use the following additional operator:
 
 .. table:: Structure Protection Instruction Relocations
 
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | ELF64 Code | ELF32 Code | Name                                   | Operation                            | Comment              |
-  +============+============+========================================+======================================+======================+
-  |    316     | \-         | R\_AARCH64\_PATCHINST                  | S + A                                | See below            |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | ELF64 Code | Name                                   | Operation                            | Comment              |
+  +============+========================================+======================================+======================+
+  |    316     | R\_AARCH64\_PATCHINST                  | S + A                                | See below            |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
 
 The referenced symbol for ``R_AARCH64_PATCHINST`` must either be
 undefined, or have section index ``SHN_ABS``. If the referenced symbol
@@ -1882,11 +1816,11 @@ Structure Protection Extension is out of scope of the ABI.
 
 .. table:: Structure Protection Data Relocations
 
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
-  | ELF64 Code | ELF32 Code | Name                                   | Operation                            | Comment              |
-  +============+============+========================================+======================================+======================+
-  |    317     | \-         | R\_AARCH64\_FUNCINIT64                 | FUNCINIT(S + A)                      | See below            |
-  +------------+------------+----------------------------------------+--------------------------------------+----------------------+
+  +------------+----------------------------------------+--------------------------------------+----------------------+
+  | ELF64 Code | Name                                   | Operation                            | Comment              |
+  +============+========================================+======================================+======================+
+  |    317     | R\_AARCH64\_FUNCINIT64                 | FUNCINIT(S + A)                      | See below            |
+  +------------+----------------------------------------+--------------------------------------+----------------------+
 
 The ``R_AARCH64_FUNCINIT64`` referenced symbol must be a function that
 does not have a type of ``STT_GNU_IFUNC``. The referenced symbol must
@@ -1896,65 +1830,63 @@ time.
 Dynamic relocations
 ^^^^^^^^^^^^^^^^^^^
 
-The dynamic relocations for those execution environments that support only a limited number of run-time relocation types are listed in the below table. The enumeration of dynamic relocations commences at (1024) or [180] and the range is compact.
+The dynamic relocations for those execution environments that support only a limited number of run-time relocation types are listed in the below table. The enumeration of dynamic relocations commences at 1024 and the range is compact.
 
 .. class:: aaelf64-dynamic-relocations
 
 .. table:: Dynamic relocations
 
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | ELF64 Code | ELF32 Code | Name                        | Operation                          | Comment                                   |
-  +============+============+=============================+====================================+===========================================+
-  | 257        | \-         | R\_<CLS>\_ABS64             | S + A                              | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | \-         | 1          | R\_<CLS>\_ABS32             | S + A                              | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 580        | \-         | R\_<CLS>\_AUTH\_ABS64       | SIGN(S + A, SCHEMA(\*P))           | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1024       | 180        | R\_<CLS>\_COPY              |                                    | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1025       | 181        | R\_<CLS>\_GLOB\_DAT         | S + A                              | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1026       | 182        | R\_<CLS>\_JUMP\_SLOT        | S + A                              | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1027       | 183        | R\_<CLS>\_RELATIVE          | Delta + A                          | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1028       | 184        | R\_<CLS>\_TLS\_IMPDEF1      |                                    | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1029       | 185        | R\_<CLS>\_TLS\_IMPDEF2      |                                    | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  |            |            | R\_<CLS>\_TLS\_DTPREL       | DTPREL(S+A)                        | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  |            |            | R\_<CLS>\_TLS\_DTPMOD       | LDM(S)                             | See note below                            |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1030       | 186        | R\_<CLS>\_TLS\_TPREL        | TPREL(S+A)                         |                                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1031       | 187        | R\_<CLS>\_TLSDESC           | TLSDESC(S+A)                       | Identifies a TLS descriptor to be filled  |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1032       | 188        | R\_<CLS>\_IRELATIVE         | Indirect(Delta + A)                | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1041       | \-         | R\_<CLS>\_AUTH\_RELATIVE    | SIGN(Delta + A, SCHEMA(\*P))       | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1042       | \-         | R\_AARCH64\_AUTH\_GLOB\_DAT | SIGN((S + A), SCHEMA(\*P))         | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1043       | \-         | R\_AARCH64\_AUTH\_TLSDESC   | SIGN(TLSDESC(S + A), SCHEMA(\*P))  | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1044       | \-         | R\_AARCH64\_AUTH\_IRELATIVE | SIGN(Indirect(S + A), SCHEMA(\*P)) | See note below.                           |
-  +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | ELF64 Code | Name                        | Operation                          | Comment                                   |
+  +============+=============================+====================================+===========================================+
+  | 257        | R\_AARCH64\_ABS64           | S + A                              | See note below.                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 580        | R\_AARCH64\_AUTH\_ABS64     | SIGN(S + A, SCHEMA(\*P))           | See note below.                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1024       | R\_AARCH64\_COPY            |                                    | See note below.                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1025       | R\_AARCH64\_GLOB\_DAT       | S + A                              | See note below                            |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1026       | R\_AARCH64\_JUMP\_SLOT      | S + A                              | See note below                            |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1027       | R\_AARCH64\_RELATIVE        | Delta + A                          | See note below                            |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1028       | R\_AARCH64\_TLS\_IMPDEF1    |                                    | See note below                            |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1029       | R\_AARCH64\_TLS\_IMPDEF2    |                                    | See note below                            |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  |            | R\_AARCH64\_TLS\_DTPREL     | DTPREL(S+A)                        | See note below                            |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  |            | R\_AARCH64\_TLS\_DTPMOD     | LDM(S)                             | See note below                            |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1030       | R\_AARCH64\_TLS\_TPREL      | TPREL(S+A)                         |                                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1031       | R\_AARCH64\_TLSDESC         | TLSDESC(S+A)                       | Identifies a TLS descriptor to be filled  |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1032       | R\_AARCH64\_IRELATIVE       | Indirect(Delta + A)                | See note below.                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1041       | R\_AARCH64\_AUTH\_RELATIVE  | SIGN(Delta + A, SCHEMA(\*P))       | See note below.                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1042       | R\_AARCH64\_AUTH\_GLOB\_DAT | SIGN((S + A), SCHEMA(\*P))         | See note below.                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1043       | R\_AARCH64\_AUTH\_TLSDESC   | SIGN(TLSDESC(S + A), SCHEMA(\*P))  | See note below.                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
+  | 1044       | R\_AARCH64\_AUTH\_IRELATIVE | SIGN(Indirect(S + A), SCHEMA(\*P)) | See note below.                           |
+  +------------+-----------------------------+------------------------------------+-------------------------------------------+
 
-With the exception of ``R_<CLS>_COPY`` all dynamic relocations require that the place being relocated is an 8-byte aligned 64-bit data location in ELF64 or a 4-byte aligned 32-bit data location in ELF32.
+With the exception of ``R_AARCH64_COPY`` all dynamic relocations require that the place being relocated is an 8-byte aligned 64-bit data location.
 
-``R_<CLS>_ABS64`` and ``R_<CLS>_ABS32`` may only appear in a well-formed executable or dynamic shared object in ELF64 or ELF32 respectively. Note that for their respective file format these relocations are both static and dynamic relocations.
+``R_AARCH64_ABS64`` may only appear in a well-formed executable or dynamic shared object. Note that for their respective file format these relocations are both static and dynamic relocations.
 
-``R_<CLS>_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to   cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of  bytes specified by its ``st_size`` field to the place. The address of the place is then used to pre-empt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
+``R_AARCH64_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to   cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of  bytes specified by its ``st_size`` field to the place. The address of the place is then used to pre-empt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
 
-``R_<CLS>_COPY`` is normally only used in SysV type environments where the executable is not position- independent and references by the code and read-only data sections cannot be relocated dynamically to refer to an object that is defined in a shared library.
+``R_AARCH64_COPY`` is normally only used in SysV type environments where the executable is not position- independent and references by the code and read-only data sections cannot be relocated dynamically to refer to an object that is defined in a shared library.
 
 The need for copy relocations can be avoided if a compiler generates all code references to such objects indirectly through a dynamically relocatable location and if all static data references are placed in relocatable regions of the image. In practice, this is difficult to achieve without source-code annotation. A better approach is to avoid defining static global data in shared libraries.
 
-``R_<CLS>_GLOB_DAT`` relocates a GOT entry used to hold the address of a (data) symbol which must be resolved at load time.
+``R_AARCH64_GLOB_DAT`` relocates a GOT entry used to hold the address of a (data) symbol which must be resolved at load time.
 
-``R_<CLS>_JUMP_SLOT`` is used to mark code targets that will be executed.
+``R_AARCH64_JUMP_SLOT`` is used to mark code targets that will be executed.
 
 - On platforms that support dynamic binding the relocations may be performed lazily on demand.
 
@@ -1962,32 +1894,28 @@ The need for copy relocations can be avoided if a compiler generates all code re
 
 - Addresses stored in the place of these relocations may not be used for pointer comparison until after the relocation has been resolved.
 
-- Because the initial value of the place is not related to the ultimate target of a ``R_<CLS>_JUMP_SLOT`` relocation the addend ``A`` of such a REL-type relocation shall be zero rather than the initial content of the place. A platform ABI shall prescribe whether or not the ``r_addend`` field of such a RELA-type relocation is honored. (There may be security-related reasons not to do so).
+- Because the initial value of the place is not related to the ultimate target of a ``R_AARCH64_JUMP_SLOT`` relocation the addend ``A`` of such a REL-type relocation shall be zero rather than the initial content of the place. A platform ABI shall prescribe whether or not the ``r_addend`` field of such a RELA-type relocation is honored. (There may be security-related reasons not to do so).
 
-``R_<CLS>_RELATIVE`` represents a relative adjustment to the place based on the load address of the object relative to its original link address. All symbols defined in the same binary will have the same relative adjustment. This relocation represents an optimization; a static linker can use it to replace ``R_<CLS>_GLOB_DAT`` when the symbol is known at static link time to always resolve to the current link unit.
+``R_AARCH64_RELATIVE`` represents a relative adjustment to the place based on the load address of the object relative to its original link address. All symbols defined in the same binary will have the same relative adjustment. This relocation represents an optimization; a static linker can use it to replace ``R_AARCH64_GLOB_DAT`` when the symbol is known at static link time to always resolve to the current link unit.
 
-``R_<CLS>_IRELATIVE`` represents a dynamic selection of the place’s resolved value. The means by which this relocation is generated is platform specific, as are the conditions that must hold when resolving takes place.
+``R_AARCH64_IRELATIVE`` represents a dynamic selection of the place’s resolved value. The means by which this relocation is generated is platform specific, as are the conditions that must hold when resolving takes place.
 
 Relocations ``R_AARCH64_TLS_DTPREL``, ``R_AARCH64_TLS_DTPMOD`` and ``R_AARCH64_TLS_TPREL`` were previously documented as ``R_AARCH64_TLS_DTPREL64``, ``R_AARCH64_TLS_DTPMOD64`` and ``R_AARCH64_TLS_TPREL64`` respectively.  The old names can be supported if needed for backwards compatibility.
 
-It is implementation defined whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPREL`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPMOD`` or whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPMOD`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
+It is implementation defined whether ``R_AARCH64_TLS_IMPDEF1`` implements ``R_AARCH64_TLS_DTPREL`` and ``R_AARCH64_TLS_IMPDEF2`` implements ``R_AARCH64_TLS_DTPMOD`` or whether ``R_AARCH64_TLS_IMPDEF1`` implements ``R_AARCH64_TLS_DTPMOD`` and ``R_AARCH64_TLS_IMPDEF2`` implements ``R_AARCH64_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
 
-``R\_<CLS>\_AUTH\_ABS64``, ``R\_<CLS>\_AUTH\_RELATIVE``, ``R\_AARCH64\_AUTH\_GLOB\_DAT``, ``R\_AARCH64\_AUTH\_TLSDESC`` and ``R\_AARCH64\_AUTH\_IRELATIVE`` are part of the PAuth ABI Extension. For details on the relocations and operations see `PAUTHABIELF64`_. Note that ``R\_<CLS>\_AUTH\_ABS64`` is both a static and a dynamic relocation.
+``R\_AARCH64\_AUTH\_ABS64``, ``R\_AARCH64\_AUTH\_RELATIVE``, ``R\_AARCH64\_AUTH\_GLOB\_DAT``, ``R\_AARCH64\_AUTH\_TLSDESC`` and ``R\_AARCH64\_AUTH\_IRELATIVE`` are part of the PAuth ABI Extension. For details on the relocations and operations see `PAUTHABIELF64`_. Note that ``R\_AARCH64\_AUTH\_ABS64`` is both a static and a dynamic relocation.
 
 Private and platform-specific relocations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Private relocations for vendor experiments:
 
-- 0xE000 to 0xEFFF for ELF64
-
-- 0xE0 to 0xEF for ELF32
+- 0xE000 to 0xEFFF
 
 Platform ABI defined relocations:
 
-- 0xF000 to 0xFFFF for ELF64
-
-- 0xF0 to 0xFF for ELF32
+- 0xF000 to 0xFFFF
 
 Platform ABI relocations can only be interpreted when the EI\_OSABI field is set to indicate the Platform ABI governing the definition.
 
@@ -2093,4 +2021,4 @@ Footnotes
 =========
 
 .. [#aaelf64-f1]
-   Earlier versions of this specification required that ``R_<CLS>_TLS_IMPDEF1`` implement ``R_<CLS>_TLS_DTPREL`` and ``R_<CLS>_TLS_IMPDEF2`` implement ``R_<CLS>_TLS_DTPMOD``; however the Linux platform ABI has always implemented the alternative specification.  It is recommended that new platforms follow the Linux platform specification as this is the most widely adopted.
+   Earlier versions of this specification required that ``R_AARCH64_TLS_IMPDEF1`` implement ``R_AARCH64_TLS_DTPREL`` and ``R_AARCH64_TLS_IMPDEF2`` implement ``R_AARCH64_TLS_DTPMOD``; however the Linux platform ABI has always implemented the alternative specification.  It is recommended that new platforms follow the Linux platform specification as this is the most widely adopted.
