@@ -180,8 +180,6 @@ The following support level definitions are used by the Arm ABI specifications:
 
 Parts related to SME are at **Beta** release quality.
 
-The ILP32 variant is at **Beta** release quality.
-
 All other content in this document is at the **Release** quality level.
 
 Change history
@@ -274,6 +272,9 @@ changes to the content of the document for that release.
 +------------+--------------------+------------------------------------------------------------------+
 | 2025Q4     | 3\ :sup:`rd`       | - Standardize on "caller-saved" and "callee-saved".              |
 |            | March 2026         |                                                                  |
++------------+--------------------+------------------------------------------------------------------+
+| 2026Q3     | 13\ :sup:`th`      | - Remove ILP32 from the ABI. Refer to previous ABI releases for  |
+|            | August 2026        |   **Beta** ILP32 documentation.                                  |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -464,9 +465,7 @@ This standard specifies the base for a family of *Procedure Call Standard* (PCS)
 
 - Byte order.
 
-- Size and format of data types: pointer, long int and wchar\_t and the format of half-precision floating-point values. Here we define three data models (see `The standard variants`_ and `Arm C and C++ language mappings`_ for details):
-
-    - ILP32: **(Beta)** SysV-like variant where int, long int and pointer are 32-bit.
+- Size and format of data types: pointer, long int and wchar\_t and the format of half-precision floating-point values. Here we define two data models (see `The standard variants`_ and `Arm C and C++ language mappings`_ for details):
 
     - LP64: SysV-like variant where int is 32-bit, but long int and pointer are 64-bit.
 
@@ -485,6 +484,8 @@ This standard is presented in four sections that, after an introduction, specify
 - The C and C++ language bindings for plain data types.
 
 This specification does not standardize the representation of publicly visible C++-language entities that are not also C language entities (these are described in `CPPABI64`_) and it places no requirements on the representation of language entities that are not visible across public interfaces.
+
+**(Beta)** suppport for ILP32 SysV-like variant where int, long int and pointer are 32-bit, has been removed. Refer to a previous binary release of the ABI for **(Beta)** ILP32 documentation.
 
 .. raw:: pdf
 
@@ -590,11 +591,7 @@ Fundamental Data Types
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
   | Scalable Predicate     | VG×8-bit predicate                    | VG         | 2                         | See `Scalable Predicates`_                    |
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
-  | Pointer                | 32-bit data pointer **(Beta)**        | 4          | 4                         | See `Pointers`_                               |
-  |                        +---------------------------------------+------------+---------------------------+                                               |
-  |                        | 32-bit code pointer **(Beta)**        | 4          | 4                         |                                               |
-  |                        +---------------------------------------+------------+---------------------------+                                               |
-  |                        | 64-bit data pointer                   | 8          | 8                         |                                               |
+  | Pointer                | 64-bit data pointer                   | 8          | 8                         | See `Pointers`_                               |
   |                        +---------------------------------------+------------+---------------------------+                                               |
   |                        | 64-bit code pointer                   | 8          | 8                         |                                               |
   +------------------------+---------------------------------------+------------+---------------------------+-----------------------------------------------+
@@ -684,16 +681,9 @@ index 1 is stored in the next significant bit, and so on.
 Pointers
 --------
 
-Code and data pointers are either 64-bit or 32-bit unsigned types [#aapcs64-f4]_. A NULL pointer is always represented by all-bits-zero.
+Code and data pointers are 64-bit unsigned types [#aapcs64-f4]_. A NULL pointer is always represented by all-bits-zero.
 
-All 64 bits in a 64-bit pointer are always significant. When tagged addressing is enabled, a tag is part of a pointer’s value for the purposes of pointer arithmetic. The result of subtracting or comparing two pointers with different tags is unspecified. See also `Memory addresses`_, below. A 32-bit pointer does not support tagged addressing.
-
-.. note::
-
-    **(Beta)**
-
-    The A64 load and store instructions always use the full 64-bit base register and perform a 64-bit address calculation. Care must be taken within ILP32 to ensure that the upper 32 bits of a base register are zero and 32-bit register offsets are sign-extended to 64 bits (immediate offsets are implicitly extended).
-
+All 64 bits in a 64-bit pointer are always significant. When tagged addressing is enabled, a tag is part of a pointer’s value for the purposes of pointer arithmetic. The result of subtracting or comparing two pointers with different tags is unspecified. See also `Memory addresses`_, below.
 
 Byte order ("Endianness")
 -------------------------
@@ -833,7 +823,7 @@ Homogeneous Aggregates:
 The Base Procedure Call Standard
 ================================
 
-The base standard defines a machine-level calling standard for the A64 instruction set. It assumes the availability of the vector registers for passing floating-point and SIMD arguments. Application code is expected to conform to one of three data models defined in this standard; ILP32, LP64 or LLP64.
+The base standard defines a machine-level calling standard for the A64 instruction set. It assumes the availability of the vector registers for passing floating-point and SIMD arguments. Application code is expected to conform to one of three data models defined in this standard; LP64 or LLP64.
 
 Machine Registers
 -----------------
@@ -886,7 +876,7 @@ The role of register r18 is platform specific. If a platform ABI has need of a d
 
     Software developers creating platform-independent code are advised to avoid using r18 if at all possible. Most compilers provide a mechanism to prevent specific registers from being used for general allocation; portable hand-coded assembler should avoid it entirely. It should not be assumed that treating the register as `Callee-saved`_ will be sufficient to satisfy the requirements of the platform. Virtualization code must, of course, treat the register as they would any other resource provided to the virtual machine.
 
-Registers r19-r29 and SP are `Callee-saved`_. All 64 bits of each value stored in r19-r29 are `Callee-saved`_, even when using the ILP32 data model **(Beta)**.
+Registers r19-r29 and SP are `Callee-saved`_. All 64 bits of each value stored in r19-r29 are `Callee-saved`_.
 
 In all variants of the procedure call standard, registers r16, r17, r29 and r30 have special roles. In these roles they are labeled IP0, IP1, FP and LR when being used for holding addresses (that is, the special name implies accessing the register as a 64-bit entity).
 
@@ -1038,11 +1028,11 @@ Memory addresses
 The address space consists of one or more disjoint regions. Regions
 must not span address zero (although one region may start at zero).
 
-The use of tagged addressing is platform specific and does not apply to
-32-bit pointers. When tagged addressing is disabled, all 64 bits of an
-address are passed to the translation system. When tagged addressing is
-enabled, the top eight bits of an address are ignored for the purposes
-of address translation. See also `Pointers`_, above.
+The use of tagged addressing is platform specific. When tagged
+addressing is disabled, all 64 bits of an address are passed to the
+translation system. When tagged addressing is enabled, the top eight
+bits of an address are ignored for the purposes of address
+translation. See also `Pointers`_, above.
 
 Properties of a thread
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -2915,25 +2905,25 @@ A C++ reference type is implemented as a data pointer to the type.
 
 .. table:: Table 4, C/C++ type variants by data model
 
-  +---------------------+----------------------------------------------------------------------------------------------------+------------------------------+
-  | C/C++ Type          | Machine Type                                                                                       | Notes                        |
-  +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
-  |                     | ILP32 **(Beta)**                    | LP64                                | LLP64                  |                              |
-  +=====================+=====================================+=====================================+========================+==============================+
-  | ``[signed] long``   | signed word                         | signed double-word                  | signed word            |                              |
-  +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
-  | ``unsigned long``   | unsigned word                       | unsigned double-word                | unsigned word          |                              |
-  +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
-  | ``__fp16``          | IEEE754-2008 half-precision format  | IEEE754-2008 half-precision format  | Arm Alternative Format | TBC: LLP64 Alternate format? |
-  +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
-  | ``wchar_t``         | unsigned word                       | unsigned word                       | unsigned halfword      |                              |
-  +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
-  | ``T *``             | 32-bit data pointer                 | 64-bit data pointer                 | 64-bit data pointer    | Any data type ``T``          |
-  +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
-  | ``T (*F)()``        | 32-bit code pointer                 | 64-bit code pointer                 | 64-bit code pointer    | Any function type ``F``      |
-  +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
-  | ``T&``              | 32-bit data pointer                 | 64-bit data pointer                 | 64-bit data pointer    | C++ reference                |
-  +---------------------+-------------------------------------+-------------------------------------+------------------------+------------------------------+
+  +---------------------+--------------------------------------------------------------+------------------------------+
+  | C/C++ Type          | Machine Type                                                 | Notes                        |
+  +---------------------+-------------------------------------+------------------------+------------------------------+
+  |                     | LP64                                | LLP64                  |                              |
+  +=====================+=====================================+========================+==============================+
+  | ``[signed] long``   | signed double-word                  | signed word            |                              |
+  +---------------------+-------------------------------------+------------------------+------------------------------+
+  | ``unsigned long``   | unsigned double-word                | unsigned word          |                              |
+  +---------------------+-------------------------------------+------------------------+------------------------------+
+  | ``__fp16``          | IEEE754-2008 half-precision format  | Arm Alternative Format | TBC: LLP64 Alternate format? |
+  +---------------------+-------------------------------------+------------------------+------------------------------+
+  | ``wchar_t``         | unsigned word                       | unsigned halfword      |                              |
+  +---------------------+-------------------------------------+------------------------+------------------------------+
+  | ``T *``             | 64-bit data pointer                 | 64-bit data pointer    | Any data type ``T``          |
+  +---------------------+-------------------------------------+------------------------+------------------------------+
+  | ``T (*F)()``        | 64-bit code pointer                 | 64-bit code pointer    | Any function type ``F``      |
+  +---------------------+-------------------------------------+------------------------+------------------------------+
+  | ``T&``              | 64-bit data pointer                 | 64-bit data pointer    | C++ reference                |
+  +---------------------+-------------------------------------+------------------------+------------------------------+
 
 Enumerated types
 ^^^^^^^^^^^^^^^^
@@ -2954,13 +2944,13 @@ Both C and C++ require that a system provide additional type definitions that ar
 
 .. table:: Table 5, Additional data types
 
-  +-----------------+------------------+----------------+---------------------+
-  | Typedef         | ILP32 **(Beta)** | LP64           | LLP64               |
-  +=================+==================+================+=====================+
-  | ``size_t``      | unsigned long    | unsigned long  | unsigned long long  |
-  +-----------------+------------------+----------------+---------------------+
-  | ``ptrdiff_t``   | signed long      | signed long    | signed long long    |
-  +-----------------+------------------+----------------+---------------------+
+  +-----------------+----------------+---------------------+
+  | Typedef         | LP64           | LLP64               |
+  +=================+================+=====================+
+  | ``size_t``      | unsigned long  | unsigned long long  |
+  +-----------------+----------------+---------------------+
+  | ``ptrdiff_t``   | signed long    | signed long long    |
+  +-----------------+----------------+---------------------+
 
 Definition of va\_list
 ^^^^^^^^^^^^^^^^^^^^^^
