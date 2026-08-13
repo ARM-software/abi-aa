@@ -415,6 +415,10 @@ changes to the content of the document for that release.
    |           |               |                                                  |
    |           |               | Clarify the definition of complex type.          |
    +-----------+---------------+--------------------------------------------------+
+   |2026Q3     |13th August    | Remove ILP32 support from the ABI. Refer to      |
+   |           |2026           | previous ABI releases for **Beta** ILP32         |
+   |           |               | documentation.                                   |
+   +-----------+---------------+--------------------------------------------------+
 
 .. raw:: pdf
 
@@ -1818,14 +1822,9 @@ specific case, the rules give the following:
 
    // Advanced SIMD - NDS(DoRGB) = 8 (LP64 data model)
    void _ZGVnN2vv_DoRGB(uint64x2_t out, uint64x2_t vx); // 2-lane
-   // Advanced SIMD - NDS(DoRGB) = 4 (ILP32 data model)
-   void _ZGVnN2vv_DoRGB(uint32x2_t out, uint32x2_t vx); // 2-lane
-   void _ZGVnN4vv_DoRGB(uint32x4_t out, uint32x4_t vx); // 4-lane
 
    // VLA SVE - WDS(DoRGB) = 8 (LP64 data model)
    void _ZGVsMxvv_DoRGB(svuint64_t out, svint64_t vx, svbool_t vmask);
-   // VLA SVE - WDS(DoRGB) = 4 (ILP32 data model)
-   void _ZGVsMxvv_DoRGB(svuint32_t out, svint32_t vx, svbool_t vmask);
 
 .. code:: c
 
