@@ -216,6 +216,8 @@ changes to the content of the document for that release.
   | 2026Q2     | 1\ :sup:`st` June 2026      | Clarified the scope if this document with respect to           |
   |            |                             | GNU/Linux                                                      |
   +------------+-----------------------------+----------------------------------------------------------------+
+  | 2026Q3     | 17\ :sup:`th` August 2026   | - Add support for relocation metadata sections.                |
+  +------------+-----------------------------+----------------------------------------------------------------+
 
 References
 ----------
@@ -714,6 +716,19 @@ instead, to avoid having to materialize the tag-derivation offset. Using these
 relocations would however require additional dynamic symbol table entries for
 each symbol used, polluting the dynsym table unnecessarily for each tagged
 internal symbol.
+
+Definition of ``R_AARCH64_RELATIVE`` when a
+``SHT_AARCH64_REL_METADATA`` section is used to augment a ``SHT_RELA``
+relocation section. See AAELF64_ for definition of ``METADATA(IDX)``.
+
+.. table:: Relative relocation when augmented metadata available.
+
+  +------------+--------------------+----------------+-----------------------------------------------+
+  | ELF64 Code | Name               | Base Operation | MemtagABI Extended Operation                  |
+  +============+====================+================+===============================================+
+  | 1027       | R_AARCH64_RELATIVE | Delta + A      | LDG(Delta + A + METADATA(IDX) - METADATA(IDX) |
+  +------------+--------------------+----------------+-----------------------------------------------+
+
 
 .. raw:: pdf
 

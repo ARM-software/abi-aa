@@ -308,6 +308,9 @@ changes to the content of the document for that release.
   | 2026Q3        | 13\ :sup:`th`      | - Add new section types defined in ELF  |
   |               |                    |   extension documents                   |
   +---------------+--------------------+-----------------------------------------+
+  | 2026Q3        | 17\ :sup:`th`      | - Add support for relocation metadata   |
+  |               |                    |   sections.                             |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------
@@ -658,7 +661,9 @@ The defined processor-specific section types are listed in the below table. All 
     +----------------------------------------+-----------------+----------------------------------------------------------+
     | ``SHT_AARCH64_MEMTAG_GLOBALS_DYNAMIC`` | ``0x70000008``  | Defined in ABI extension `MemtagABIELF64`_               |
     +----------------------------------------+-----------------+----------------------------------------------------------+
-
+    | ``SHT_AARCH64_REL_METADATA``           | ``0x70000009``  | Alternative location for metadata stored in the place of |
+    |                                        |                 | a relocation. Defined in `Idempotency`_ section.         |
+    +----------------------------------------+-----------------+----------------------------------------------------------+
 
 Section Attribute Flags
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -2027,6 +2032,63 @@ All ``RELA`` type relocations are idempotent. They may be reapplied to the place
 .. note::
 
     A ``REL`` type relocation can only be idempotent if the original addend was zero and if subsequent re-linking assumes that ``REL`` relocations have zero for all addends.
+
+    Some ``RELA`` type relocations can have side-effects that are not idempotent, such as creating a GOT entry.
+
+The `PAuthABIELF64`_ and `MemtagABIELF64`_ ELF extensions define
+relocations that require additional metadata to resolve. The default
+location for the additional metadata is the contents of the place,
+where a ``REL`` type relocation would store the relocation addend. The
+additional metadata is overwritten when the relocation is
+resolved. ``RELA`` relocations that require additional metadata are
+not idempotent.
+
+For platforms that require relocation idempotence an additional
+relocation metadata section can be used to store the metadata. The
+relocation metadata section is encoded in a section of type
+``SHT_AARCH64_REL_METADATA``, and name starting with a prefix of
+``.AARCH64.rel.metadata``. The ``sh_link`` field of the relocation
+metadata section holds the section header index of the relocation
+section that it augments. The section contents is an array of values
+containing metadata. The size of the value is recorded in the
+``sh_entsize`` of the relocation metadata section. Each value
+corresponds one to one with a relocation entry in the relocation
+section containing the relocations. The meaning of each value is
+dependent on the corresponding relocation code and the size of each
+value, see `PAuthABIELF64`_ and `MemtagABIELF64`_ for the affected
+relocations.
+
+The relocation metadata section uses the following additional
+operator:
+
+- ``IDX`` is the index of the relocation entry in the relocation
+  table, starting at 0.
+
+- ``METADATA(IDX)`` from the linked ``SHT_AARCH64_REL_METADATA``
+  section, extract ``sh_entsize`` bytes of metadata starting at
+  ``IDX`` * ``sh_entsize`` bytes from the start of
+  ``SHT_AARCH64_REL_METADATA``.
+
+.. note::
+
+   Relocation metadata sections are an optional extension.
+
+   The contents of the place when relocation metadata sections is
+   implementation defined. For example, the place may contain the same
+   metadata as the equivalent entry in the relocation metadata
+   section. Alternatively, for ``R_AARCH64_RELATIVE`` or
+   ``R_AARCH64_AUTH_RELATIVE`` relocations the place may contain the
+   result of ``R_AARCH64_RELATIVE`` evaluated at static-link time with
+   no metadata.
+
+   The ELF relative relocation table that encodes
+   ``SHT_AARCH64_RELATIVE`` dynamic relocations in a compressed form,
+   has the relocation addends encoded in the place of the
+   relocation. However as the addend stored in the place is the
+   current destination address and resolution of
+   ``SHT_AARCH64_RELATIVE`` updates that address after a displacement,
+   the relocations in an ELF relative relocation table may be applied
+   multiple times.
 
 .. raw:: pdf
 

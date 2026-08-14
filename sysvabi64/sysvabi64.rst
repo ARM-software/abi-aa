@@ -2038,27 +2038,45 @@ AArch64 specifies the following processor-specific dynamic array tags.
     +--------------------------------+------------+--------+-------------------+-------------------+
     | Name                           | Value      | d\_un  | Executable        | Shared Object     |
     +================================+============+========+===================+===================+
-    | DT\_AARCH64\_BTI\_PLT          | 0x70000001 | d\_val | Platform specific | Platform Specific |
+    | DT\_AARCH64\_BTI\_PLT          | 0x70000001 | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | DT\_AARCH64\_PAC\_PLT          | 0x70000003 | d\_val | Platform specific | Platform Specific |
+    | DT\_AARCH64\_PAC\_PLT          | 0x70000003 | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | DT\_AARCH64\_VARIANT\_PCS      | 0x70000005 | d\_val | Platform specific | Platform Specific |
+    | DT\_AARCH64\_VARIANT\_PCS      | 0x70000005 | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | RESERVED for `MemTagABIELF64`_ | 0x70000009 | d\_val | Platform specific | Platform Specific |
+    | RESERVED for `MemTagABIELF64`_ | 0x70000009 | d\_val | Platform Specific | Platform Specific |
+    +----------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `MemTagABIELF64`_ | 0x7000000b | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | RESERVED for `MemTagABIELF64`_ | 0x7000000b | d\_val | Platform specific | Platform Specific |
+    | RESERVED for `MemTagABIELF64`_ | 0x7000000c | d\_ptr | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | RESERVED for `MemTagABIELF64`_ | 0x7000000c | d\_ptr | Platform specific | Platform Specific |
+    | RESERVED for `MemTagABIELF64`_ | 0x7000000d | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | RESERVED for `MemTagABIELF64`_ | 0x7000000d | d\_val | Platform specific | Platform Specific |
+    | RESERVED for `MemTagABIELF64`_ | 0x7000000f | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | RESERVED for `MemTagABIELF64`_ | 0x7000000f | d\_val | Platform specific | Platform Specific |
+    | RESERVED for `PAuthABIELF64`_  | 0x70000011 | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | RESERVED for `PAuthABIELF64`_  | 0x70000011 | d\_val | Platform specific | Platform Specific |
+    | RESERVED for `PAuthABIELF64`_  | 0x70000012 | d\_ptr | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | RESERVED for `PAuthABIELF64`_  | 0x70000012 | d\_ptr | Platform specific | Platform Specific |
+    | RESERVED for `PAuthABIELF64`_  | 0x70000013 | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
-    | RESERVED for `PAuthABIELF64`_  | 0x70000013 | d\_val | Platform specific | Platform Specific |
+    | RESERVED for `PAuthABIELF64`_  | 0x70000015 | d\_val | Platform Specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `PAuthABIELF64`_  | 0x70000016 | d\_ptr | Platform Specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | RESERVED for `PAuthABIELF64`_  | 0x70000017 | d\_val | Platform Specific | Platform Specific |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_RELA\_META_SZ     | 0x70000019 | d\_val | optional          | optional          |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_RELA\_META        | 0x70000020 | d\_ptr | optional          | optional          |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_RELA\_METAENT     | 0x70000021 | d\_val | optional          | optional          |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_PLTREL\_META_SZ   | 0x70000023 | d\_val | optional          | optional          |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_PLTREL\_META      | 0x70000024 | d\_ptr | optional          | optional          |
+    +--------------------------------+------------+--------+-------------------+-------------------+
+    | DT\_AARCH64\_PLTREL\_METAENT   | 0x70000025 | d\_val | optional          | optional          |
     +--------------------------------+------------+--------+-------------------+-------------------+
 
 ``DT_AARCH64_BTI_PLT`` indicates PLTs enabled with Branch Target Identification
@@ -2075,6 +2093,18 @@ relocations that reference symbols marked with the ``STO_AARCH64_VARIANT_PCS``
 flag set in their ``st_other`` field.
 
 See `MemTagABIELF64`_ and `PAuthABIELF64`_ for details of reserved tags.
+
+``DT_AARCH64_RELA_META_SZ`` holds the total size, in bytes, of the relocation metadata associated with the DT_RELA relocation table.
+
+``DT_AARCH64_RELA_META`` holds the address of the relocation metadata associated with the DT_RELA relocation table.
+
+``DT_AARCH64_RELA_METAENT`` holds the size, in bytes of the relocation metadata entry associated with the DT_RELA relocation table.
+
+``DT_AARCH64_PLTREL_META_SZ`` holds the total size, in bytes, of the relocation metadata associated with the DT_PLTREL relocation table.
+
+``DT_AARCH64_PLTREL_META`` holds the address of the relocation metadata associated with the DT_PLTREL relocation table.
+
+``DT_AARCH64_PLTREL_METAENT`` holds the size, in bytes of the relocation metadata entry associated with the DT_PLTREL relocation table.
 
 .. raw:: pdf
 
