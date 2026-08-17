@@ -254,6 +254,8 @@ changes to the content of the document for that release.
   +------------+-----------------------------+------------------------------------------------------------------+
   | 2026Q2     | 14\ :sup:`th` May 2026      | - Add R_AARCH64_AUTH_TLSDESC_CALL relocation                     |
   +------------+-----------------------------+------------------------------------------------------------------+
+  | 2026Q3     | 17\ :sup:`th` August 2026   | - Add support for relocation metadata sections.                  |
+  +------------+-----------------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -628,12 +630,18 @@ This ABI requires the creation of signed pointers at program start-up
 by the run-time environment. The signing schema to be used by the
 run-time environment is encoded in the place to be relocated.
 
+For platforms that require idempotence of relocations the signing
+schema can be encoded in an additional relocation metadata section
+``SHT_AARCH64_REL_METADATA`` with each entry in the metadata section
+matching the place of the relocation.
+
 Encoding the signing schema
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the descriptions below, the ``place`` is the operation ``P`` in
 AAELF64_ relocation descriptions. It is derived from the r_offset
-field of the relocation.
+field of the relocation. When a relocation metadata section is used
+the ``place`` is the operation ``METADATA(IDX)``.
 
 The top 32-bits of the contents of the place is used to encode the
 signing schema for both static and dynamic relocations. This permits
@@ -715,6 +723,10 @@ Relocation Operations
 * ``SCHEMA(\*P)`` represents the dynamic linker reading the signing schema
   from the contents of the place ``P``.
 
+* ``SCHEMA(METADATA(IDX))`` represents the dynamic linker reading the
+  signing schema from the relocation metadata section that
+  augments the relocation section.
+
 * ``SIGN(value, schema)`` represents the dynamic linker signing value with schema.
 
 Static Data relocations
@@ -751,13 +763,13 @@ relocation.
 
 .. table:: Dynamic relocations
 
-  +--------------------+------------------------------+------------------------------------+
-  | Relocation code    | Name                         | Operation                          |
-  +====================+==============================+====================================+
-  | 0x244 (580)        | R\_AARCH64\_AUTH\_ABS64      | SIGN(S + A, SCHEMA(\*P))           |
-  +--------------------+------------------------------+------------------------------------+
-  | 0x411 (1041)       | R\_AARCH64\_AUTH\_RELATIVE   | SIGN(Delta + A, SCHEMA(\*P))       |
-  +--------------------+------------------------------+------------------------------------+
+  +--------------------+------------------------------+------------------------------+----------------------------------------+
+  | Relocation code    | Name                         | Operation (schema in place)  | Operation (schema in metadata section) |
+  +====================+==============================+=======================================================================+
+  | 0x244 (580)        | R\_AARCH64\_AUTH\_ABS64      | SIGN(S + A, SCHEMA(\*P))     | SIGN(S + A, SCHEMA(METADATA(IDX)))     |
+  +--------------------+------------------------------+------------------------------+----------------------------------------+
+  | 0x411 (1041)       | R\_AARCH64\_AUTH\_RELATIVE   | SIGN(Delta + A, SCHEMA(\*P)) | SIGN(Delta + A, SCHEMA(METADATA(IDX))) |
+  +--------------------+------------------------------+------------------------------+----------------------------------------+
 
 .. raw:: pdf
 
@@ -770,15 +782,21 @@ The PAuth ABI adds the following processor-specific dynamic array tags.
 
 .. table:: Additional AArch64 specific dynamic array tags
 
-  +----------------------------+------------+--------+------------+---------------+
-  | Name                       | Value      | d\_un  | Executable | Shared Object |
-  +============================+============+========+============+===============+
-  | DT\_AARCH64\_AUTH\_RELRSZ  | 0x70000011 | d\_val | optional   | optional      |
-  +----------------------------+------------+--------+------------+---------------+
-  | DT\_AARCH64\_AUTH\_RELR    | 0x70000012 | d\_ptr | optional   | optional      |
-  +----------------------------+------------+--------+------------+---------------+
-  | DT\_AARCH64\_AUTH\_RELRENT | 0x70000013 | d\_val | optional   | optional      |
-  +----------------------------+------------+--------+------------+---------------+
+  +-----------------------------------+------------+--------+------------+---------------+
+  | Name                              | Value      | d\_un  | Executable | Shared Object |
+  +===================================+============+========+============+===============+
+  | DT\_AARCH64\_AUTH\_RELRSZ         | 0x70000011 | d\_val | optional   | optional      |
+  +-----------------------------------+------------+--------+------------+---------------+
+  | DT\_AARCH64\_AUTH\_RELR           | 0x70000012 | d\_ptr | optional   | optional      |
+  +-----------------------------------+------------+--------+------------+---------------+
+  | DT\_AARCH64\_AUTH\_RELRENT        | 0x70000013 | d\_val | optional   | optional      |
+  +-----------------------------------+------------+--------+------------+---------------+
+  | DT\_AARCH64\_AUTH\_RELR\_META\_SZ | 0x70000015 | d\_val | optional   | optional      |
+  +-----------------------------------+------------+--------+------------+---------------+
+  | DT\_AARCH64\_AUTH\_RELR\_META     | 0x70000016 | d\_ptr | optional   | optional      |
+  +-----------------------------------+------------+--------+------------+---------------+
+  | DT\_AARCH64\_AUTH\_RELR\_META_ENT | 0x70000017 | d\_val | optional   | optional      |
+  +-----------------------------------+------------+--------+------------+---------------+
 
 Description:
 
@@ -794,6 +812,18 @@ Description:
 
 * ``DT_AARCH64_AUTH_RELRENT`` This element holds the size in bytes of
   a ``DT_AARCH64_RELR`` relocation entry.
+
+* ``DT_AARCH64_AUTH_RELR_META_SZ`` holds the total size, in bytes, of
+  the relocation metadata associated with the ``DT_AARCH64_AUTH_RELR``
+  relocation table.
+
+* ``DT_AARCH64_AUTH_RELR_META`` holds the address of the relocation
+  metadata associated with the ``DT_AARCH64_AUTH_RELR`` relocation
+  table.
+
+* ``DT_AARCH64_AUTH_RELR_METAENT`` holds the size, in bytes of the
+  relocation metadata entry associated with the
+  ``DT_AARCH64_AUTH_RELR`` relocation table.
 
 .. raw:: pdf
 
@@ -1244,15 +1274,15 @@ The ``R_AARCH64_AUTH_GOT_ADR_PREL_LO21`` relocation is used with the
 
 .. table:: Additional AUTH Dynamic relocations
 
-  +--------------------+------------------------------+------------------------------------+
-  | Relocation code    | Name                         | Operation                          |
-  +====================+==============================+====================================+
-  | 0x412 (1042)       | R\_AARCH64\_AUTH\_GLOB\_DAT  | SIGN((S + A), SCHEMA(\*P))         |
-  +--------------------+------------------------------+------------------------------------+
-  | 0x413 (1043)       | R\_AARCH64\_AUTH\_TLSDESC    | SIGN(TLSDESC(S + A), SCHEMA(\*P))  |
-  +--------------------+------------------------------+------------------------------------+
-  | 0x414 (1044)       | R\_AARCH64\_AUTH\_IRELATIVE  | SIGN(Indirect(S + A), SCHEMA(\*P)) |
-  +--------------------+------------------------------+------------------------------------+
+  +--------------------+------------------------------+------------------------------------+----------------------------------------------+
+  | Relocation code    | Name                         | Operation (schema in place)        | Operation (schema in metadata section)       |
+  +====================+==============================+====================================+==============================================+
+  | 0x412 (1042)       | R\_AARCH64\_AUTH\_GLOB\_DAT  | SIGN((S + A), SCHEMA(\*P))         | SIGN((S + A), SCHEMA(METADATA(IDX)))         |
+  +--------------------+------------------------------+------------------------------------+----------------------------------------------+
+  | 0x413 (1043)       | R\_AARCH64\_AUTH\_TLSDESC    | SIGN(TLSDESC(S + A), SCHEMA(\*P))  | SIGN(TLSDESC(S + A), SCHEMA(METADATA(IDX)))  |
+  +--------------------+------------------------------+------------------------------------+----------------------------------------------+
+  | 0x414 (1044)       | R\_AARCH64\_AUTH\_IRELATIVE  | SIGN(Indirect(S + A), SCHEMA(\*P)) | SIGN(Indirect(S + A), SCHEMA(METADATA(IDX))) |
+  +--------------------+------------------------------+------------------------------------+----------------------------------------------+
 
 Combination of PAuthABI with the Memtag ABI Extension
 -----------------------------------------------------
@@ -1283,7 +1313,11 @@ Relocation Operation
 * ``ADDEND(\*P)`` represents the dynamic linker reading the addend
   field from the contents of the place ``P``.
 
-.. table:: Relocations with extended semantics with MemtagABI
+* ``ADDEND(METADATA(IDX))`` represents the dynamic linker reading the
+  addend field from the relocation metadata section that augments the
+  relocation section.
+
+.. table:: Relocations with extended semantics with MemtagABI (Signing schema in place)
 
   +--------------+-----------------------------+---------------------------------+-------------------------------------------------------------------+
   | ELF64 Code   | Name                        | PAuthABI Base Operation         | MemtagABI Extended Operation                                      |
@@ -1294,6 +1328,19 @@ Relocation Operation
   +--------------+-----------------------------+---------------------------------+-------------------------------------------------------------------+
   | 0x412 (1042) | R\_AARCH64\_AUTH\_GLOB\_DAT | SIGN((S + A), SCHEMA(\*P))      | SIGN((LDG(S) + A), SCHEMA(\*P))                                   |
   +--------------+-----------------------------+---------------------------------+-------------------------------------------------------------------+
+
+
+.. table:: Relocations with extended semantics with MemtagABI (Signing schema in metadata section)
+
+  +--------------+-----------------------------+----------------------------------------+-----------------------------------------------------------------------------------------------+
+  | ELF64 Code   | Name                        | PAuthABI Base Operation                | MemtagABI Extended Operation                                                                  |
+  +==============+=============================+========================================+===============================================================================================+
+  | 0x244 (580)  | R\_AARCH64\_AUTH\_ABS64     | SIGN((S + A), SCHEMA(METADATA(IDX)))   | SIGN((LDG(S) + A), SCHEMA(METADATA(IDX)))                                                     |
+  +--------------+-----------------------------+----------------------------------------+-----------------------------------------------------------------------------------------------+
+  | 0x411 (1041) | R\_AARCH64\_AUTH\_RELATIVE  | SIGN(Delta + A, SCHEMA(METADATA(IDX))) | SIGN((LDG(Delta + A + ADDEND(METADATA(IDX))) - ADDEND(METADATA(IDX))), SCHEMA(METADATA(IDX))) |
+  +--------------+-----------------------------+----------------------------------------+-----------------------------------------------------------------------------------------------+
+  | 0x412 (1042) | R\_AARCH64\_AUTH\_GLOB\_DAT | SIGN((S + A), SCHEMA(METADATA(IDX)))   | SIGN((LDG(S) + A), SCHEMA(METADATA(IDX)))                                                     |
+  +--------------+-----------------------------+----------------------------------------+-----------------------------------------------------------------------------------------------+
 
 Compatibility between relocatable object files
 ----------------------------------------------

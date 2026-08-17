@@ -11,6 +11,8 @@
 
 .. _AAPCS64: https://github.com/ARM-software/abi-aa/releases
 .. _Addenda32: https://github.com/ARM-software/abi-aa/releases
+.. _BuildAttr64: https://github.com/ARM-software/abi-aa/releases
+.. _MemtagABIELF64: https://github.com/ARM-software/abi-aa/releases
 .. _PAuthABIELF64: https://github.com/ARM-software/abi-aa/releases
 .. _SCO-ELF: http://www.sco.com/developers/gabi/
 .. _LINUX_ABI: https://github.com/hjl-tools/linux-abi/wiki
@@ -303,6 +305,12 @@ changes to the content of the document for that release.
   | 2026Q2        | 29\ :sup:`th`      | - In `Call and Jump relocations`_ make  |
   |               |                    |   pc-relative relocaions signed.        |
   +---------------+--------------------+-----------------------------------------+
+  | 2026Q3        | 13\ :sup:`th`      | - Add new section types defined in ELF  |
+  |               |                    |   extension documents                   |
+  +---------------+--------------------+-----------------------------------------+
+  | 2026Q3        | 17\ :sup:`th`      | - Add support for relocation metadata   |
+  |               |                    |   sections.                             |
+  +---------------+--------------------+-----------------------------------------+
 
 References
 ----------
@@ -311,33 +319,37 @@ This document refers to, or is referred to by, the following documents.
 
 .. table::
 
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | Ref            | External reference or URL                                                                         | Title                                                                       |
-  +================+===================================================================================================+=============================================================================+
-  | AAELF64        | Source for this document                                                                          | ELF for the Arm 64-bit Architecture (AArch64).                              |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | AAPCS64_       | IHI 0055                                                                                          | Procedure Call Standard for the Arm 64-bit Architecture                     |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | Addenda32_     | IHI 0045                                                                                          | Addenda to, and Errata in, the ABI for the Arm Architecture                 |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | PAuthABIELF64_ | pauthabielf64                                                                                     | PAuth Extension to ELF for the Arm 64-bit Architecture                      |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | LSB_           | http://www.linuxbase.org/                                                                         | Linux Standards Base                                                        |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | SCO-ELF_       | http://www.sco.com/developers/gabi/                                                               | System V Application Binary Interface – DRAFT                               |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | LINUX_ABI_     | https://github.com/hjl-tools/linux-abi/wiki                                                       | Linux Extensions to gABI                                                    |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | STRUCTPROT_    | https://discourse.llvm.org/t/rfc-structure-protection-a-family-of-uaf-mitigation-techniques/85555 | Structure Field Protection                                                  |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | SYM-VER_       | http://people.redhat.com/drepper/symbol-versioning                                                | GNU Symbol Versioning                                                       |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | TLSDESC_       | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf                                       | TLS Descriptors for Arm. Original proposal document                         |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | MTEEXTENSIONS_ | https://www.kernel.org/doc/html/latest/arch/arm64/memory-tagging-extension.html#core-dump-support | Linux Kernel MTE core dump format                                           |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
-  | SYSVABI64_     | sysvabi64                                                                                         | System V Application Binary Interface (ABI) for the Arm 64-bit Architecture |
-  +----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | Ref             | External reference or URL                                                                         | Title                                                                       |
+  +=================+===================================================================================================+=============================================================================+
+  | AAELF64         | Source for this document                                                                          | ELF for the Arm 64-bit Architecture (AArch64).                              |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | AAPCS64_        | IHI 0055                                                                                          | Procedure Call Standard for the Arm 64-bit Architecture                     |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | Addenda32_      | IHI 0045                                                                                          | Addenda to, and Errata in, the ABI for the Arm Architecture                 |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | BuildAttr64_    | buildattr64                                                                                       | Build Attributes for the Arm 64-bit Architecture                            |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | MemtagABIELF64_ | memtagabielf64                                                                                    | Memtag ABI Extension to ELF for the Arm 64-bit Architecture                 |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | PAuthABIELF64_  | pauthabielf64                                                                                     | PAuth Extension to ELF for the Arm 64-bit Architecture                      |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LSB_            | http://www.linuxbase.org/                                                                         | Linux Standards Base                                                        |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SCO-ELF_        | http://www.sco.com/developers/gabi/                                                               | System V Application Binary Interface – DRAFT                               |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | LINUX_ABI_      | https://github.com/hjl-tools/linux-abi/wiki                                                       | Linux Extensions to gABI                                                    |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | STRUCTPROT_     | https://discourse.llvm.org/t/rfc-structure-protection-a-family-of-uaf-mitigation-techniques/85555 | Structure Field Protection                                                  |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SYM-VER_        | http://people.redhat.com/drepper/symbol-versioning                                                | GNU Symbol Versioning                                                       |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | TLSDESC_        | http://www.fsfla.org/~lxoliva/writeups/TLS/paper-lk2006.pdf                                       | TLS Descriptors for Arm. Original proposal document                         |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | MTEEXTENSIONS_  | https://www.kernel.org/doc/html/latest/arch/arm64/memory-tagging-extension.html#core-dump-support | Linux Kernel MTE core dump format                                           |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
+  | SYSVABI64_      | sysvabi64                                                                                         | System V Application Binary Interface (ABI) for the Arm 64-bit Architecture |
+  +-----------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+
 
 Terms and abbreviations
 -----------------------
@@ -638,12 +650,20 @@ The defined processor-specific section types are listed in the below table. All 
 
 .. table:: Processor specific section types
 
-    +----------------------------+-----------------+----------------------------------------------------+
-    | Name                       | Value           | Comment                                            |
-    +============================+=================+====================================================+
-    | ``SHT_AARCH64_ATTRIBUTES`` | ``0x70000003``  | Reserved for Object file compatibility attributes  |
-    +----------------------------+-----------------+----------------------------------------------------+
-
+    +----------------------------------------+-----------------+----------------------------------------------------------+
+    | Name                                   | Value           | Comment                                                  |
+    +========================================+=================+==========================================================+
+    | ``SHT_AARCH64_ATTRIBUTES``             | ``0x70000003``  | Object file compatibility attributes. See `BuildAttr64`_ |
+    +----------------------------------------+-----------------+----------------------------------------------------------+
+    | ``SHT_AARCH64_AUTH_RELR``              | ``0x70000004``  | Defined in ABI extension `PAuthABIELF64`_                |
+    +----------------------------------------+-----------------+----------------------------------------------------------+
+    | ``SHT_AARCH64_MEMTAG_GLOBALS_STATIC``  | ``0x70000007``  | Defined in ABI extension `MemtagABIELF64`_               |
+    +----------------------------------------+-----------------+----------------------------------------------------------+
+    | ``SHT_AARCH64_MEMTAG_GLOBALS_DYNAMIC`` | ``0x70000008``  | Defined in ABI extension `MemtagABIELF64`_               |
+    +----------------------------------------+-----------------+----------------------------------------------------------+
+    | ``SHT_AARCH64_REL_METADATA``           | ``0x70000009``  | Alternative location for metadata stored in the place of |
+    |                                        |                 | a relocation. Defined in `Idempotency`_ section.         |
+    +----------------------------------------+-----------------+----------------------------------------------------------+
 
 Section Attribute Flags
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -2012,6 +2032,63 @@ All ``RELA`` type relocations are idempotent. They may be reapplied to the place
 .. note::
 
     A ``REL`` type relocation can only be idempotent if the original addend was zero and if subsequent re-linking assumes that ``REL`` relocations have zero for all addends.
+
+    Some ``RELA`` type relocations can have side-effects that are not idempotent, such as creating a GOT entry.
+
+The `PAuthABIELF64`_ and `MemtagABIELF64`_ ELF extensions define
+relocations that require additional metadata to resolve. The default
+location for the additional metadata is the contents of the place,
+where a ``REL`` type relocation would store the relocation addend. The
+additional metadata is overwritten when the relocation is
+resolved. ``RELA`` relocations that require additional metadata are
+not idempotent.
+
+For platforms that require relocation idempotence an additional
+relocation metadata section can be used to store the metadata. The
+relocation metadata section is encoded in a section of type
+``SHT_AARCH64_REL_METADATA``, and name starting with a prefix of
+``.AARCH64.rel.metadata``. The ``sh_link`` field of the relocation
+metadata section holds the section header index of the relocation
+section that it augments. The section contents is an array of values
+containing metadata. The size of the value is recorded in the
+``sh_entsize`` of the relocation metadata section. Each value
+corresponds one to one with a relocation entry in the relocation
+section containing the relocations. The meaning of each value is
+dependent on the corresponding relocation code and the size of each
+value, see `PAuthABIELF64`_ and `MemtagABIELF64`_ for the affected
+relocations.
+
+The relocation metadata section uses the following additional
+operator:
+
+- ``IDX`` is the index of the relocation entry in the relocation
+  table, starting at 0.
+
+- ``METADATA(IDX)`` from the linked ``SHT_AARCH64_REL_METADATA``
+  section, extract ``sh_entsize`` bytes of metadata starting at
+  ``IDX`` * ``sh_entsize`` bytes from the start of
+  ``SHT_AARCH64_REL_METADATA``.
+
+.. note::
+
+   Relocation metadata sections are an optional extension.
+
+   The contents of the place when relocation metadata sections is
+   implementation defined. For example, the place may contain the same
+   metadata as the equivalent entry in the relocation metadata
+   section. Alternatively, for ``R_AARCH64_RELATIVE`` or
+   ``R_AARCH64_AUTH_RELATIVE`` relocations the place may contain the
+   result of ``R_AARCH64_RELATIVE`` evaluated at static-link time with
+   no metadata.
+
+   The ELF relative relocation table that encodes
+   ``SHT_AARCH64_RELATIVE`` dynamic relocations in a compressed form,
+   has the relocation addends encoded in the place of the
+   relocation. However as the addend stored in the place is the
+   current destination address and resolution of
+   ``SHT_AARCH64_RELATIVE`` updates that address after a displacement,
+   the relocations in an ELF relative relocation table may be applied
+   multiple times.
 
 .. raw:: pdf
 
