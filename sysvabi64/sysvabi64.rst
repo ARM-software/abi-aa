@@ -2045,7 +2045,7 @@ AArch64 specifies the following processor-specific dynamic array tags.
     | DT\_AARCH64\_VARIANT\_PCS      | 0x70000005 | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
     | RESERVED for `MemTagABIELF64`_ | 0x70000009 | d\_val | Platform Specific | Platform Specific |
-    +----------------------------------+------------+--------+-------------------+-------------------+
+    +--------------------------------+------------+--------+-------------------+-------------------+
     | RESERVED for `MemTagABIELF64`_ | 0x7000000b | d\_val | Platform Specific | Platform Specific |
     +--------------------------------+------------+--------+-------------------+-------------------+
     | RESERVED for `MemTagABIELF64`_ | 0x7000000c | d\_ptr | Platform Specific | Platform Specific |
