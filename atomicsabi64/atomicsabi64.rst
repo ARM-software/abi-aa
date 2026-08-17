@@ -320,7 +320,7 @@ further detailed in `Special Cases`_.
 
 Only some variants of ``fetch_<op>`` and ``store_<op>`` are listed since the
 mappings are identical except for a different ``<op>``. ``store_<op>`` is the
-non-returning form of ``fetch_<op>`` and, like ``store``, only admits the
+non-returning form of ``fetch_<op>`` and, like ``store``, only allows the
 ``relaxed``, ``release`` and ``seq_cst`` memory orders.
 
 Atomic operations and Memory Order are abbreviated as follows:
@@ -347,6 +347,8 @@ Atomic operations and Memory Order are abbreviated as follows:
   | ``atomic_fetch_xor_explicit(...)``                 | ``fetch_xor(...)``                   |
   +----------------------------------------------------+--------------------------------------+
   | ``atomic_fetch_and_explicit(...)``                 | ``fetch_and(...)``                   |
+  +----------------------------------------------------+--------------------------------------+
+  | ``atomic_store_add_explicit(...)``                 | ``store_add(...)``                   |
   +----------------------------------------------------+--------------------------------------+
 
 .. table::
