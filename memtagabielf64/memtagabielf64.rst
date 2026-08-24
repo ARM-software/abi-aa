@@ -631,7 +631,7 @@ The relocations reference the following mnemonics:
 - ``LDG(pointer)`` returns ``pointer`` with the correct logical tag
   for the memory pointed to by ``pointer``. Memory without the
   architectural memory attribute ``MemTag_AllocationTagged`` has a
-  logcal tag of ``0000``. For memory that is readable by the run-time
+  logical tag of ``0000``. For memory that is readable by the run-time
   environment the operation is "as if" the ``ldg`` instruction
   operating on the pointer after it has been aligned down to the
   closest tag granule.
