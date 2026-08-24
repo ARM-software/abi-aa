@@ -294,7 +294,9 @@ changes to the content of the document for that release.
   | 2026Q2        | 29\ :sup:`th`      | - In `Call and Jump relocations`_ make  |
   |               |                    |   pc-relative relocaions signed.        |
   +---------------+--------------------+-----------------------------------------+
-  | 2026Q3        | 12\ :sup:`th`      | - Remove ILP32 from the ABI. Refer to   |
+  | 2026Q3        | 12\ :sup:`th`      | - Remove ILP32 from the ABI. ILP32 is a |
+  |               | August 2026        |   SysV-like data model where int, long  |
+  |               |                    |   int and pointer are 32-bit. Refer to  |
   |               |                    |   previous ABI releases for **Beta**    |
   |               |                    |   ILP32 documentation.                  |
   +---------------+--------------------+-----------------------------------------+
@@ -380,9 +382,6 @@ BTI
 ELF64
    An ELF object file with a class of ELFCLASS64
 
-ILP32
-   SysV-like data model where int, long int and pointer are 32-bit.
-
 LP64
    SysV-like data model where int is 32-bit, but long int and pointer are 64-bit.
 
@@ -435,10 +434,6 @@ The ABI supports 64-bit Pointers, ELF64
 - Pointer-size is **64 bits**.
 
 - Suitable for use by the LP64 variant of [`AAPCS64`_]
-
-**(Beta)** support for 32-bit Pointers, ELF32 using the ILP32 variant
- of [`AAPCS64`_] has been removed. Refer to a previous binary release
- of the ABI for **(Beta)** ILP32 documentation.
 
 .. raw:: pdf
 
