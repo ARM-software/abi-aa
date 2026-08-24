@@ -273,8 +273,9 @@ changes to the content of the document for that release.
 | 2025Q4     | 3\ :sup:`rd`       | - Standardize on "caller-saved" and "callee-saved".              |
 |            | March 2026         |                                                                  |
 +------------+--------------------+------------------------------------------------------------------+
-| 2026Q3     | 13\ :sup:`th`      | - Remove ILP32 from the ABI. Refer to previous ABI releases for  |
-|            | August 2026        |   **Beta** ILP32 documentation.                                  |
+| 2026Q3     | 13\ :sup:`th`      | - Remove ILP32 from the ABI. ILP32 is a SysV-like data model     |
+|            | August 2026        |   where int, long int and pointer are 32-bit. Refer to previous  |
+|            |                    |   ABI releases for **Beta** ILP32 documentation.                 |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
@@ -382,9 +383,6 @@ VG
    The number of 64-bit “vector granules” in an SVE vector; in other words,
    the number of bits in an SVE vector register divided by 64.
 
-ILP32
-   SysV-like data model where int, long int and pointer are 32-bit.
-
 LP64
    SysV-like data model where int is 32-bit, but long int and pointer are 64-bit.
 
@@ -484,8 +482,6 @@ This standard is presented in four sections that, after an introduction, specify
 - The C and C++ language bindings for plain data types.
 
 This specification does not standardize the representation of publicly visible C++-language entities that are not also C language entities (these are described in `CPPABI64`_) and it places no requirements on the representation of language entities that are not visible across public interfaces.
-
-**(Beta)** suppport for ILP32 SysV-like variant where int, long int and pointer are 32-bit, has been removed. Refer to a previous binary release of the ABI for **(Beta)** ILP32 documentation.
 
 .. raw:: pdf
 
@@ -823,7 +819,7 @@ Homogeneous Aggregates:
 The Base Procedure Call Standard
 ================================
 
-The base standard defines a machine-level calling standard for the A64 instruction set. It assumes the availability of the vector registers for passing floating-point and SIMD arguments. Application code is expected to conform to one of three data models defined in this standard; LP64 or LLP64.
+The base standard defines a machine-level calling standard for the A64 instruction set. It assumes the availability of the vector registers for passing floating-point and SIMD arguments. Application code is expected to conform to one of two data models defined in this standard; LP64 or LLP64.
 
 Machine Registers
 -----------------
