@@ -415,9 +415,10 @@ changes to the content of the document for that release.
    |           |               |                                                  |
    |           |               | Clarify the definition of complex type.          |
    +-----------+---------------+--------------------------------------------------+
-   |2026Q3     |13th August    | Remove ILP32 support from the ABI. Refer to      |
-   |           |2026           | previous ABI releases for **Beta** ILP32         |
-   |           |               | documentation.                                   |
+   |2026Q3     | 13th          | - Remove ILP32 from the ABI. ILP32 is a SysV-like|
+   |           | August 2026   |   data model where int, long int and pointer are |
+   |           |               |   32-bit. Refer to previous ABI releases for     |
+   |           |               |   **Beta** ILP32 documentation.                  |
    +-----------+---------------+--------------------------------------------------+
 
 .. raw:: pdf
