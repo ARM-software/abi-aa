@@ -628,13 +628,16 @@ non-MemtagABI binary or non-MTE device is the same as the non-extended variant.
 
 The relocations reference the following mnemonics:
 
-- ``LDG(pointer)`` is an instruction for the run-time environment to use the
-  ``ldg`` instruction on ``pointer`` to materialize the correct logical tag for
-  a symbol. This operation should also align the pointer down to the closest tag
-  granule before executing the ``ldg`` instruction.
+- ``LDG(pointer)`` returns ``pointer`` with the correct logical tag
+  for the memory pointed to by ``pointer``. Memory without the
+  architectural memory attribute ``MemTag_AllocationTagged`` has a
+  logical tag of ``0000``. For memory that is readable by the run-time
+  environment the operation is "as if" the ``ldg`` instruction
+  operating on the pointer after it has been aligned down to the
+  closest tag granule.
 
-- For all the relocation types listed below, the loader should use the ``ldg``
-  instruction on the target address before writing into the target field, as the
+- For all the relocation types listed below, the loader should use the ``LDG``
+  operation on the target address before writing into the target field, as the
   target field may be inside of a tagged region.
 
 .. table:: Relocations with extended semantics
@@ -705,9 +708,10 @@ note the following points:
    section to the constant-initialized ``data`` section.
 
 3. RELR_-style relocation compression can only be applied to
-   ``R_AARCH64_RELATIVE`` relocations that have a zero tag-derivation offset
-   (that is, the tag derivation can be done entirely by ``ldg`` of the
-   tag-granule-aligned result of the relocation operation).
+   ``R_AARCH64_RELATIVE`` relocations that have a zero tag-derivation
+   offset (that is, the tag derivation can be done entirely by the
+   ``LDG`` operation on the virtual addresses encoded by the
+   RELR_-style relocation section).
 
 An alternative considered was to use an ``ABS64`` or ``GLOB_DAT`` relocation
 instead, to avoid having to materialize the tag-derivation offset. Using these
@@ -816,4 +820,4 @@ On many platforms, programs can load shared libraries at run-time via ``dlopen``
 and access symbols in that library via ``dlsym`` or ``dlvsym``. Tagged globals
 must be assigned allocation tags at ``dlopen``-time, and symbol addresses
 returned by ``dlsym`` must have the correct logical tag materialized using the
-``ldg`` instruction.
+``LDG`` operation.
