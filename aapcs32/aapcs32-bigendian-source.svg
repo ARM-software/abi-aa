@@ -14,7 +14,7 @@
    viewBox="0 0 150 80"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="aapcs32-bigendian-source.svg">
   <defs
      id="defs2">
@@ -81,19 +81,20 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.2012083"
-     inkscape:cx="283.46457"
-     inkscape:cy="151.1811"
+     inkscape:zoom="3.5728326"
+     inkscape:cx="211.00667"
+     inkscape:cy="159.5038"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
-     inkscape:window-width="1233"
-     inkscape:window-height="884"
-     inkscape:window-x="416"
-     inkscape:window-y="516"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="3444"
+     inkscape:window-height="1867"
+     inkscape:window-x="391"
+     inkscape:window-y="204"
+     inkscape:window-maximized="0"
+     inkscape:pagecheckerboard="false" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -102,15 +103,28 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="bg">
+    <rect
+       id="rect50"
+       width="150.70035"
+       height="80.200722"
+       x="-0.22216265"
+       y="-0.052612409"
+       style="stroke-width:0.26458332;fill:#ffffff;fill-opacity:1" />
+  </g>
+  <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-217)">
+     transform="translate(0,-217)"
+     style="opacity:0.63">
     <path
        style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4968)"
        d="M 80.837004,237.73334 H 107.59722"
