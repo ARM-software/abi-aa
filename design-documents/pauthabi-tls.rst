@@ -28,11 +28,11 @@ TLS Dialect
 The base ABI in `AAELF64`_ defines relocations for two TLS
 dialects. The "traditional" dialect and the "descriptor" dialect. In
 the traditional dialect global and local dynamic TLS use the
-``R_<CLS>_TLSGD``, ``R_<CLS>_TLSLD`` prefixed relocations. These
-create a pair of GOT entries relocated by ``R_<CLS>_TLS_DTPMOD`` and
-``R_<CLS>_TLS_DTPREL``. In the "descriptor" dialect, global and local
-dynamic TLS use the ``R_<CLS>_TLSDESC`` prefixed relocations. These
-create a pair of GOT entries relocated by ``R_<CLS>_TLSDESC``. Local
+``R_AARCH64_TLSGD``, ``R_AARCH64_TLSLD`` prefixed relocations. These
+create a pair of GOT entries relocated by ``R_AARCH64_TLS_DTPMOD`` and
+``R_AARCH64_TLS_DTPREL``. In the "descriptor" dialect, global and local
+dynamic TLS use the ``R_AARCH64_TLSDESC`` prefixed relocations. These
+create a pair of GOT entries relocated by ``R_AARCH64_TLSDESC``. Local
 Exec and Initial Exec TLS are handled the same way in both dialects.
 
 The `PAUTHABIELF64`_ only supports the descriptor based dialect,
@@ -58,13 +58,13 @@ At present there are AUTH variant static and dynamic relocations
 defined for TLSDESC, but not for Initial Exec.
 
 Local dynamic TLS does not use the GOT so it can be handled by the
-``R_<CLS>_TLSLE`` prefixed relocations from the base ABI defined in
+``R_AARCH64_TLSLE`` prefixed relocations from the base ABI defined in
 `AAELF64`_.
 
 The choice of which GOT entries to sign is a property of the
 signing-schema for the platform. For example a signing-schema may only
 sign GOT entries containing code-pointers, which would permit Initial
-Exec TLS using the ``R_<CLS>_TLSIE`` prefixed relocations defined in
+Exec TLS using the ``R_AARCH64_TLSIE`` prefixed relocations defined in
 `AAELF64`_. Alternatively a signing-schema may sign all GOT entries,
 which would require AUTH variant static and dynamic relocations to be
 defined for Initial Exec.
