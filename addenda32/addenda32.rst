@@ -1339,7 +1339,7 @@ ABI.
 
 Compatibility among shared objects and their clients is affected by whether
 imported data are addressed directly or indirectly. Linux imported data must
-be addressed indirectly (via the Global Object Table, or GOT). Symbian OS
+be addressed indirectly (via the Global Offset Table, or GOT). Symbian OS
 (2004) imported data must be addressed directly.
 
 The following two tags describe the permitted sizes of a wide character and

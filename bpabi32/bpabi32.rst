@@ -1280,7 +1280,7 @@ separately from the symbol table.
 
 A procedure linkage table (PLT) – usually in the RO segment – implements
 inter-file procedure linkage via function addresses stored in a subsection
-of the global object table (GOT) called the PLTGOT. The GOT is in the RW
+of the global Offset table (GOT) called the PLTGOT. The GOT is in the RW
 segment. It contains addresses of global data and functions. It is
 initialized during dynamic linking. In effect, the GOT is the import table,
 although it also contains exported addresses and some addresses internal to

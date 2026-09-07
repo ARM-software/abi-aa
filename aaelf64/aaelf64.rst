@@ -520,7 +520,7 @@ A linker must generate a PLT entry for each candidate symbol cited by a relocati
 Overview of PLT entry code generation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A PLT entry must be able to branch any distance. This is typically achieved by loading the destination address from the corresponding Global Object Table (GOT) entry.
+A PLT entry must be able to branch any distance. This is typically achieved by loading the destination address from the corresponding Global Offset Table (GOT) entry.
 
 On-demand dynamic linking constrains the code sequences that can be generated for a PLT entry. Specifically, there is a requirement from the dynamic linker for certain registers to contain certain values. Typically these are:
 
