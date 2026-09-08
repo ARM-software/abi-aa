@@ -1630,9 +1630,9 @@ Local Dynamic thread-local storage model
 
     Non-checking (``_NC``) MOVW forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
-    ``X >= 0``: Set the instruction to ``MOVZ`` and its immediate value to the selected bits S; for relocation ``R_..._Gn``, check in ELF64 that X < {``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} (no check for ``R_..._G3``); in ELF32 only check that X < 2\ :sup:`16` for ``R_..._G0``.
+    ``X >= 0``: Set the instruction to ``MOVZ`` and its immediate value to the selected bits of X; for relocation ``R_..._Gn``, check in ELF64 that X < {``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} (no check for ``R_..._G3``); in ELF32 only check that X < 2\ :sup:`16` for ``R_..._G0``.
 
-    ``X < 0``: Set the instruction to ``MOVN`` and its immediate value to NOT (selected bits of); for relocation ``R_..._Gn``, check in ELF64 that -{``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} <= X (no check for ``R_..._G3``); in ELF32 only check that -2\ :sup:`16` <= X for ``R_..._G0``.
+    ``X < 0``: Set the instruction to ``MOVN`` and its immediate value to NOT (selected bits of X); for relocation ``R_..._Gn``, check in ELF64 that -{``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} <= X (no check for ``R_..._G3``); in ELF32 only check that -2\ :sup:`16` <= X for ``R_..._G0``.
 
     For scaled-addressing relocations (533-538, 572 and 573) or [95-102] a linker should check that X is a multiple of the datum size.
 
