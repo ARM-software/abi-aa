@@ -430,10 +430,10 @@ correspond to chapters 4 and 5 of the ELF specification. Specifically:
 - `Program Loading and Dynamic Linking`_ covers program loading and dynamic linking.
 
 
-ELF Class variants
-------------------
+ELF Class
+---------
 
-The ABI supports 64-bit Pointers, ELF64
+The ABI supports 64-bit Pointers only.
 
 - Code and data using 64-bit pointers are contained in an ELF object file with a class of **ELFCLASS64**.
 
@@ -1027,15 +1027,6 @@ The value written into a target field is always reduced to fit the field. It is 
 
 Relocation types whose names end with "``_NC``" are non-checking relocation types. These must not generate diagnostics in case of field overflow. Usually, a non-checking type relocates an instruction that computes one of the less significant parts of a single value computed by a group of instructions (`Group relocations`_). Only the instruction computing the most significant part of the value can be checked for field overflow because, in general, a relocated value will overflow the fields of instructions computing the less significant parts. Some non-checking relocations may, however, be expected to check for correct alignment of the result; the notes explain when this is permitted.
 
-::
-
-    R_AARCH64_ADR_PREL_PG_HI21,
-    R_AARCH64_ADR_GOT_PAGE,
-    R_AARCH64_TLSGD_ADR_PAGE21,
-    R_AARCH64_TLSLD_ADR_PAGE21,
-    R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21,
-    R_AARCH64_TLSDESC_ADR_PAGE21
-
 Relocations using the ``GDAT(S)`` operation must have a zero addend. Previous versions of this document included the addend ``A`` in ``GDAT(S + A)`` resulting in a GOT entry for ``S + A``. With a zero addend ``GDAT(S + 0)`` is equivalent to ``GDAT(S)`` and ``GDAT(S) + 0``.
 
 Static miscellaneous relocations
@@ -1050,7 +1041,7 @@ Static miscellaneous relocations
     +============+===================+============+===========================+
     | 0          | R\_AARCH64\_NONE  | None       |                           |
     +------------+-------------------+------------+---------------------------+
-    | 256        | withdrawn         | None       | Treat as R\_ARRCH64\_NONE.|
+    | 256        | withdrawn         | None       | Treat as R\_AARCH64\_NONE.|
     +------------+-------------------+------------+---------------------------+
 
 
@@ -1885,7 +1876,7 @@ The dynamic relocations for those execution environments that support only a lim
 
 With the exception of ``R_AARCH64_COPY`` all dynamic relocations require that the place being relocated is an 8-byte aligned 64-bit data location.
 
-``R_AARCH64_ABS64`` may only appear in a well-formed executable or dynamic shared object. Note that for their respective file format these relocations are both static and dynamic relocations.
+``R_AARCH64_ABS64`` may only appear in a well-formed executable or dynamic shared object. Note that this relocations is both a static and  a dynamic relocation.
 
 ``R_AARCH64_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to   cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of  bytes specified by its ``st_size`` field to the place. The address of the place is then used to pre-empt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
 
