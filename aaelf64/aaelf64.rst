@@ -986,8 +986,8 @@ Tables in the following sections list the relocation codes for AArch64 and recor
 
 - A comment describing the kind of place that can be relocated, the part of the result value inserted into the place, and whether or not field overflow should be checked.
 
-Relocation codes disambiguation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Relocation code ranges
+~~~~~~~~~~~~~~~~~~~~~~
 
 Static relocation codes for object files begin at (257); dynamic ones at (1024). Both (0) and (256) should be accepted as values of ``R_AARCH64_NONE``, the null relocation.
 
