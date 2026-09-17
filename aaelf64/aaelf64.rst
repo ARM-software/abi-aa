@@ -989,8 +989,6 @@ Tables in the following sections list the relocation codes for AArch64 and recor
 Relocation codes disambiguation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-References to relocation codes are disambiguated in the following way:
-
 Static relocation codes for object files begin at (257); dynamic ones at (1024). Both (0) and (256) should be accepted as values of ``R_AARCH64_NONE``, the null relocation.
 
 All unallocated type codes are reserved for future allocation.
@@ -1876,7 +1874,7 @@ The dynamic relocations for those execution environments that support only a lim
 
 With the exception of ``R_AARCH64_COPY`` all dynamic relocations require that the place being relocated is an 8-byte aligned 64-bit data location.
 
-``R_AARCH64_ABS64`` may only appear in a well-formed executable or dynamic shared object. Note that this relocations is both a static and  a dynamic relocation.
+``R_AARCH64_ABS64`` may only appear in a well-formed executable or dynamic shared object. Note that this relocation is both a static and a dynamic relocation.
 
 ``R_AARCH64_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to   cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of  bytes specified by its ``st_size`` field to the place. The address of the place is then used to pre-empt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
 
