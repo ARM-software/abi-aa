@@ -346,9 +346,6 @@ VG
    The number of 64-bit “vector granules” in an SVE vector; in other words,
    the number of bits in an SVE vector register divided by 64.
 
-ILP32
-   SysV-like data model where int, long int and pointer are 32-bit
-
 LP64
    SysV-like data model where int is 32-bit, but long int and pointer are 64-bit.
 
