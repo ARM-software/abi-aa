@@ -747,26 +747,26 @@ Each version needed auxiliary structure contains its index in the virtual table
 of versions in its ``vna_other`` field. The ``vna_name`` field contains the offset in
 the associated string table of the name of the required version.
 
-Symbol Pre-emption in DLLs
+Symbol Preemption in DLLs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Under SVr4, symbol pre-emption occurs at dynamic link time, controlled by the
+Under SVr4, symbol preemption occurs at dynamic link time, controlled by the
 dynamic linker, so there is nothing to encode in a DSO.
 
-In the DLL-creating tool flow, pre-emption happens off line and must be
+In the DLL-creating tool flow, preemption happens off line and must be
 recorded in a BPABI executable file in a form that can be conveniently
-processed by a post linker. If there is to be any pre-emption when a process is
+processed by a post linker. If there is to be any preemption when a process is
 created, what to do must be recorded in the platform executable produced by the
 post linker.
 
-Pre-emption Map Format
+Preemption Map Format
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Static preemption data is recorded in a special section in the object file.
 The map is recorded in the dynamic section with the tag ``DT_ARM_PREEMPTMAP``,
 which contains the virtual address of the map.
 
-In the section view, the pre-emption map special section is called
+In the section view, the preemption map special section is called
 ``.ARM.preemptmap``. It has type ``SHT_ARM_PREEMPTMAP``. In common with other sections
 that refer to a string table, its ``sh_link`` field contains the section index of
 an associated string table.
@@ -775,25 +775,25 @@ The map contains a sequence of entries of the form:
 
 .. code-block::
 
-  Elf32_Word count			// Count of pre-empted definitions following
+  Elf32_Word count			// Count of preempted definitions following
   Elf32_Word symbol-name		// Offset in the associated string table
-  Elf32_Word pre-empting-DLL		// Offset in the associated string table
-  Elf32_Word pre-empted-DLL		// Offset in the associated string table
+  Elf32_Word preempting-DLL		// Offset in the associated string table
+  Elf32_Word preempted-DLL		// Offset in the associated string table
   ...					//
 
 The map is terminated by a count of zero.
 
 If ``count`` is non-zero, the next two words identify the name of the symbol being
-pre-empted and the name (``SONAME``) of the executable file providing the
-pre-empting definition. This structure is followed by ``count`` words each of which
+preempted and the name (``SONAME``) of the executable file providing the
+preempting definition. This structure is followed by ``count`` words each of which
 identifies the ``SONAME`` of an executable file whose definition of ``symbol-name`` is
-pre-empted.
+preempted.
 
 ``Symbol-name`` is the offset in the associated string table section of a
 NUL-terminated byte string (NTBS) that names a symbol defined in a dynamic
 symbol table. This value must not be 0.
 
-Each of ``pre-empting-DLL`` and ``pre-empted-DLL`` is an offset in the associated
+Each of ``preempting-DLL`` and ``preempted-DLL`` is an offset in the associated
 string table section of an NTBS naming a DLL. The name used is the shared
 object name (``SONAME``) cited by ``DT_NEEDED`` dynamic tags. The root executable file
 does not have a ``SONAME``, so its name is encoded as 0.
@@ -812,7 +812,7 @@ location is called an imported location or imported symbol.
 Some targets (specifically SVr4-based DSOs) also require functions exported
 from an executable file to have PLT entries. In effect, exported functions are
 treated as if they were imported, so that their definitions can be overridden
-(pre-empted) at dynamic link time.
+(preempted) at dynamic link time.
 
 A linker must generate a PLT entry for each candidate symbol cited by a
 BL-class relocation directive.
@@ -1134,7 +1134,7 @@ specification.
    +================================+====================+===========================================+
    | :code:`SHT_ARM_EXIDX`          | :code:`0x70000001` | Exception Index table                     |
    +--------------------------------+--------------------+-------------------------------------------+
-   | :code:`SHT_ARM_PREEMPTMAP`     | :code:`0x70000002` | BPABI DLL dynamic linking pre-emption map |
+   | :code:`SHT_ARM_PREEMPTMAP`     | :code:`0x70000002` | BPABI DLL dynamic linking preemption map  |
    +--------------------------------+--------------------+-------------------------------------------+
    | :code:`SHT_ARM_ATTRIBUTES`     | :code:`0x70000003` | Object file compatibility attributes      |
    +--------------------------------+--------------------+-------------------------------------------+
@@ -1153,7 +1153,7 @@ relocation processing.
 unwinding.  See EHABI32_ for details.
 
 ``SHT_ARM_PREEMPTMAP`` marks a section containing a BPABI DLL dynamic linking
-pre-emption map. See `Pre-emption Map Format`_.
+preemption map. See `Preemption Map Format`_.
 
 ``SHT_ARM_ATTRIBUTES`` marks a section containing object compatibility attributes.
 See `Build Attributes`_.
@@ -1224,7 +1224,7 @@ unwinding. Names beginning ``.ARM.extab`` name sections containing exception
 unwinding information. See [EHABI] for details.
 
 ``.ARM.preemptmap`` names a section that contains a BPABI DLL dynamic linking
-pre-emption map. See `Pre-emption Map Format`_.
+preemption map. See `Preemption Map Format`_.
 
 ``.ARM.attributes`` names a section that contains build attributes.
 See `Build Attributes`_.
@@ -2249,11 +2249,11 @@ of reasons, including, but not limited to:
 * Target is outside the addressable span of the branch instruction (± 32Mb)
 
 * Target address and execution state will not be known until run time, or the
-  address might be pre-empted
+  address might be preempted
 
 In some systems indirect calls may also use veneers in order to support dynamic
 linkage while preserving pointer equivalence.  On platforms that do not support
-dynamic pre-emption of symbols an unresolved weak reference to a symbol
+dynamic preemption of symbols an unresolved weak reference to a symbol
 relocated by R_ARM_CALL (or, in Thumb state,  R_ARM_THM_CALL) shall be treated
 as a jump to the next instruction (the call becomes a no-op). The behaviour of
 R_ARM_JUMP24 and static Thumb jump relocations in these conditions is
@@ -2557,7 +2557,7 @@ provided in support of it.
 In addition to the data generating relocations listed above the call and branch
 relocations (R_ARM_CALL, R_ARM_THM_CALL, R_ARM_JUMP24, R_ARM_THM_JUMP24,
 R_ARM_THM_JUMP19) may also require a proxy to be generated if the symbol will
-be defined in an external executable or may be pre-empted at execution time.
+be defined in an external executable or may be preempted at execution time.
 The details of proxy sequences and locations are described in
 `PLT Sequences and Usage Models`_.
 
@@ -2689,7 +2689,7 @@ R_ARM_COPY may only appear in executable objects where e_type is set to
 ET_EXEC.  The effect is to cause the dynamic linker to locate the target symbol
 in a shared library object and then to copy the number of bytes specified by
 the st_size field to the place.  The address of the place is then used to
-pre-empt all other references to the specified symbol.  It is an error if the
+preempt all other references to the specified symbol.  It is an error if the
 storage space allocated in the executable is insufficient to hold the full copy
 of the symbol.  If the object being copied contains dynamic relocations then
 the effect must be as if those relocations were performed before the copy was
@@ -3086,9 +3086,9 @@ The following table lists the processor-specific dynamic array tags.
 DT_ARM_SYMTABSZ gives the number of entries in the dynamic symbol table,
 including the initial dummy symbol.
 
-DT_ARM_PREEMPTMAP holds the address of the pre-emption map for platforms that
-use the DLL static binding model.  See `Symbol Pre-emption in DLLs`_ for details.
-On platforms that permit use of a pre-emption map, the DT_SONAME tag must be
+DT_ARM_PREEMPTMAP holds the address of the preemption map for platforms that
+use the DLL static binding model.  See `Symbol Preemption in DLLs`_ for details.
+On platforms that permit use of a preemption map, the DT_SONAME tag must be
 present in all shared objects.
 
 .. note::

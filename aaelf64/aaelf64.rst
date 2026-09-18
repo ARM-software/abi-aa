@@ -226,7 +226,7 @@ changes to the content of the document for that release.
   +---------------+--------------------+-----------------------------------------+
   | 2019Q4        | 30th January 2020  | Minor layout changes.                   |
   +---------------+--------------------+-----------------------------------------+
-  | 2020Q2        | 1st July 2020      | Specifiy ``R_AARCH64_PLT32``. Correct   |
+  | 2020Q2        | 1st July 2020      | Specify ``R_AARCH64_PLT32``. Correct    |
   |               |                    | minus sign not rendering in section     |
   |               |                    | `Group relocations`_. Adjust            |
   |               |                    | table widths for readability.           |
@@ -294,7 +294,7 @@ changes to the content of the document for that release.
   |               |                    |   static relocation as well as dynamic  |
   +---------------+--------------------+-----------------------------------------+
   | 2026Q2        | 29\ :sup:`th`      | - In `Call and Jump relocations`_ make  |
-  |               |                    |   pc-relative relocaions signed.        |
+  |               |                    |   pc-relative relocations signed.       |
   +---------------+--------------------+-----------------------------------------+
   | 2026Q3        | 13\ :sup:`th`      | - Add new section types defined in ELF  |
   |               | August 2026        |   extension documents                   |
@@ -481,7 +481,7 @@ Symbols for which a PLT entry must be generated
 
 A PLT entry implements a long-branch to a destination outside of this executable file. In general, the static linker knows only the name of the destination. It does not know its address. Such a location is called an imported location or imported symbol.
 
-SysV-based Dynamic Shared Objects (DSOs) (e.g. for Linux) also require functions exported from an executable file to have PLT entries. In effect, exported functions are treated as if they were imported, so that their definitions can be overridden (pre-empted) at dynamic link time.
+SysV-based Dynamic Shared Objects (DSOs) (e.g. for Linux) also require functions exported from an executable file to have PLT entries. In effect, exported functions are treated as if they were imported, so that their definitions can be overridden (preempted) at dynamic link time.
 
 A linker must generate a PLT entry for each candidate symbol cited by a relocation directive that relocates an AArch64 B/BL-class instruction (`Call and Jump relocations`_). For a Linux/SysV DSO, each ``STB_GLOBAL`` symbol with ``STV_DEFAULT`` visibility is a candidate.
 
@@ -1324,11 +1324,11 @@ In all other cases a linker shall diagnose an error if relocation cannot be effe
 
 - Target is outside the addressable span of the branch instruction (+/- 128MB).
 
-- Target address will not be known until run time, or the target address might be pre-empted.
+- Target address will not be known until run time, or the target address might be preempted.
 
 In some systems indirect calls may also use veneers in order to support dynamic linkage that preserves pointer comparability (all reference to the function resolve to the same address).
 
-On platforms that do not support dynamic pre-emption of symbols, an unresolved weak reference to a symbol relocated by ``R_AARCH64_CALL26`` shall be treated as a jump to the next instruction (the call becomes a no-op). The behaviour of ``R_AARCH64_JUMP26`` and ``R_AARCH64_PLT32`` in these conditions is not specified by this standard.
+On platforms that do not support dynamic preemption of symbols, an unresolved weak reference to a symbol relocated by ``R_AARCH64_CALL26`` shall be treated as a jump to the next instruction (the call becomes a no-op). The behaviour of ``R_AARCH64_JUMP26`` and ``R_AARCH64_PLT32`` in these conditions is not specified by this standard.
 
 In a link-unit that is intended to be used when BTI guarded pages are enabled, veneers created by the static linker that use an indirect branch must target a BTI instruction or a BTI compatible instruction. If the destination of the veneer is in the same link unit and does not have a BTI or BTI compatible instruction, the static linker must generate an additional veneer that has a BTI instruction followed by a transfer of control to the destination that does not use an indirect branch. See `SYSVABI64`_ for additional requirements on code-generators and PLT sequences.
 
@@ -1366,7 +1366,7 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
   - The relocation ``R_AARCH64_ADR_PREL_PG_HI21`` may emit a MOV with zero immediate for undefined weak symbols.
 
-  - The following TLS relocations may be optimized if the symbol is not a pre-emptable definition and the TLS offset fits in 16 bits:
+  - The following TLS relocations may be optimized if the symbol is not a preemptible definition and the TLS offset fits in 16 bits:
 
     ::
 
@@ -1401,7 +1401,7 @@ Linkers may optionally optimize instructions affected by relocation. Relocation 
 
     - The instructions are consecutive, relocate the same symbol and use the
       same source and destination registers.
-    - ``symbol`` is not a pre-emptable definition.
+    - ``symbol`` is not a preemptible definition.
     - ``symbol`` is not of type ``STT_GNU_IFUNC``.
     - ``symbol`` does not have a ``st_shndx`` of ``SHN_ABS``.
 
@@ -1863,7 +1863,7 @@ Structure Protection Extension is out of scope of the ABI.
 
 The ``R_AARCH64_FUNCINIT64`` referenced symbol must be a function that
 does not have a type of ``STT_GNU_IFUNC``. The referenced symbol must
-be non-pre-emptible and have an address that is known at static link
+be non-preemptible and have an address that is known at static link
 time.
 
 Dynamic relocations
@@ -1925,7 +1925,7 @@ With the exception of ``R_AARCH64_COPY`` all dynamic relocations require that th
 
 **Note: COPY relocation**
 
-``R_AARCH64_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to   cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of  bytes specified by its ``st_size`` field to the place. The address of the place is then used to pre-empt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
+``R_AARCH64_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to   cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of  bytes specified by its ``st_size`` field to the place. The address of the place is then used to preempt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
 
 ``R_AARCH64_COPY`` is normally only used in SysV type environments where the executable is not position- independent and references by the code and read-only data sections cannot be relocated dynamically to refer to an object that is defined in a shared library.
 
