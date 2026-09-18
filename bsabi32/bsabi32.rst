@@ -709,7 +709,7 @@ describes the following:
 
   * Symbol versioning information.
 
-  * Symbol pre-emption information.
+  * Symbol preemption information.
 
   * Procedure linkage table (PLT) entries, also known to users of the Arm
     architecture as intra-call veneers.

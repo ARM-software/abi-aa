@@ -215,7 +215,7 @@ changes to the content of the document for that release.
   | A     | 25\ :superscript:`th` October 2007  | Document renumbered (formerly GENC-005700 v2.0).                           |
   +-------+-------------------------------------+----------------------------------------------------------------------------+
   | B     | 10\ :superscript:`th` October 2008  | Changed depth-first to the intended breadth-first in                       |
-  |       |                                     | `Obligations on static linkers generating pre-emption maps`_; made a minor |
+  |       |                                     | `Obligations on static linkers generating preemption maps`_; made a minor  |
   |       |                                     | correction to the dllimport example at the end of `The DLL model and       |
   |       |                                     | indirect addressing of imported entities`_.                                |
   +-------+-------------------------------------+----------------------------------------------------------------------------+
@@ -647,7 +647,7 @@ application’s references to extern X to the application’s definition of X.
 It then subjects this definition to a dynamic, copy relocation. At dynamic
 link time, the value of X will be copied from the DSO that defined it into
 the application, and the DSO’s reference to X will be linked to the
-application’s definition (the DSO’s definition will be pre-empted).
+application’s definition (the DSO’s definition will be preempted).
 
 From the perspective of a DSO, an exported datum (X) must be addressed as if
 it were imported, because if a definition is provided by an application,
@@ -765,7 +765,7 @@ The SVr4 ABI calls the set of such locations the Global Offset Table (GOT),
 and we call this addressing style GOT-relative.
 
 As we noted above, every extern datum defined by a DSO is also potentially
-imported  because of potential pre-emption at dynamic link time.
+imported  because of potential preemption at dynamic link time.
 
 ABI supported indirect addressing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1126,7 +1126,7 @@ local to an executable file.
 It is easy to specify the treatment of data and clear that a dynamic linker
 can easily enforce the ODR for data.
 
-* A data definition exported by an application pre-empts an identically
+* A data definition exported by an application preempts an identically
   named definition by a DSO. Consequently:
 
   * Application code can always use an absolute address for an imported or
@@ -1156,7 +1156,7 @@ the PLT entry for F, generating two ugly alternatives.
   system in which applications might be shared between processes there is a
   serious cost to the loss of sharing).
 
-* The dynamic linker can pre-empt the definition of F with the
+* The dynamic linker can preempt the definition of F with the
   application’s PLT entry for F.
 
   This is the standard Linux solution, but there are problems with it.
@@ -1209,7 +1209,7 @@ dynamic linker must choose one to impose program wide.
 
 SVr4-based systems solve the resulting dynamic linking problem
 straightforwardly because the dynamic linker looks up symbol names while
-relocating an executable file. Pre-emption follows naturally from the way
+relocating an executable file. Preemption follows naturally from the way
 the symbol table for a process is constructed.
 
 In general, a DLL-based system must perform the required symbol table
@@ -1224,7 +1224,7 @@ So, dynamic vague linkage must be resolved when an application is created,
 and recorded in the resulting BPABI executable file in a form that
 post-linkers can translate into platform-specific dynamic relocation
 directives. This observation motivates the specification given in
-`Encoding symbol pre-emption in BPABI executable files`_.
+`Encoding symbol preemption in BPABI executable files`_.
 
 Relating executables and shared objects to executable files
 -----------------------------------------------------------
@@ -2381,49 +2381,49 @@ If an ABI-complying executable file is to be post-linked:
 A post linker only generates [PLT]GOT entries from [PLT]GOT-generating
 relocation directives.
 
-Encoding symbol pre-emption in BPABI executable files
+Encoding symbol preemption in BPABI executable files
 -----------------------------------------------------
 
-Under the SVr4 ABI, the dynamic linker implements symbol pre-emption using a
+Under the SVr4 ABI, the dynamic linker implements symbol preemption using a
 form of dynamic binding. The dynamic symbol tables it loads contain all the
 information it needs.
 
 Under the base platform ABI [BPABI32_], symbol binding is strictly static
 (`Dynamic binding`_), and using the tool flow depicted in [`Base platform
 ABI tool flow and its relationship to concrete platforms`_], symbol
-pre-emption happens off line. Consequently, pre-emption must be recorded in
+preemption happens off line. Consequently, preemption must be recorded in
 a BPABI executable file in a format that a post linker can process and
 convert to platform-specific relocation data.
 
-Overview of pre-emption maps
+Overview of preemption maps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If there is to be any pre-emption when a process is created, what to do must
+If there is to be any preemption when a process is created, what to do must
 be recorded in the platform executable file generated by the post linker
 from the corresponding BPABI executable file.
 
-The details of how symbol pre-emption might be implemented on a particular
+The details of how symbol preemption might be implemented on a particular
 platform are beyond the scope of this standard. No platform is required to
-implement pre-emption, but conforming linkers must generate the base
+implement preemption, but conforming linkers must generate the base
 platform ABI-defined structures that allow a platform to implement
-pre-emption.
+preemption.
 
 This base platform ABI specifies a dynamic segment structure – the
-pre-emption map – that conforming static linkers can use to record static
-binding pre-emption in a BPABI executable file. Each entry in such a map
+preemption map – that conforming static linkers can use to record static
+binding preemption in a BPABI executable file. Each entry in such a map
 records that the definition of some symbol X, say, made by some BPABI DLL
-used as an input to the link step was pre-empted by a definition of X made
+used as an input to the link step was preempted by a definition of X made
 by the output executable file or by another input DLL.
 
 The ELF processor supplement [AAELF32_] specifies the content
-and encoding of pre-emption maps.
+and encoding of preemption maps.
 
-Obligations on static linkers generating pre-emption maps
+Obligations on static linkers generating preemption maps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 During a BPABI executable file-generating link step a static linker must
-generate pre-emption map entries recording that one definition of X
-pre-empts all others whenever it notices that a symbol X is:
+generate preemption map entries recording that one definition of X
+preempts all others whenever it notices that a symbol X is:
 
 * Defined with vague linkage (defined in a GRP_COMDAT section) in a
   relocatable file input to the link step and defined by at least one BPABI
@@ -2431,9 +2431,9 @@ pre-empts all others whenever it notices that a symbol X is:
 
 * Or, defined by more than one BPABI DLL input to the link step.
 
-The pre-empting definition of a symbol X is the one closest to the root of
+The preempting definition of a symbol X is the one closest to the root of
 the needs graph rooted in the output executable file. All other definitions
-of X visible in this link step are pre-empted.
+of X visible in this link step are preempted.
 
 We define closest to the root of the needs graph as follows.
 
@@ -2450,11 +2450,11 @@ We define closest to the root of the needs graph as follows.
   breadth-first traversal of the needs graph in which each node is visited
   at most once.
 
-How a post linker might use a pre-emption map
+How a post linker might use a preemption map
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This section hints at the obligations a post linker and its associated
-platform might have to accept in order to implement symbol pre-emption. It
+platform might have to accept in order to implement symbol preemption. It
 places no obligations on platforms using this ABI.
 
 When a leaf BPABI DLL (one that depends on no other DLL) is linked,
@@ -2467,8 +2467,8 @@ At this stage, a post linker might create a platform-specific relocation
 directive that causes a derived platform DLL to use its own definitions.
 
 When any other kind of BPABI executable file is created, there can be
-pre-emption of a symbol with vague linkage. This is not necessarily the
-final pre-emption that will occur when a process is created. For example,
+preemption of a symbol with vague linkage. This is not necessarily the
+final preemption that will occur when a process is created. For example,
 suppose that:
 
 * BPABI DLLs B, C, and application A define X with vague linkage.
@@ -2478,16 +2478,16 @@ suppose that:
 * Application A is created in a link step that refers to DLL B and DLL C is
   not available to this link step.
 
-The BPABI DLL B must record in a pre-emption map entry that B::X pre-empts
+The BPABI DLL B must record in a preemption map entry that B::X preempts
 C::X.
 
-The post linker must translate this pre-emption map entry to, for example, a
+The post linker must translate this preemption map entry to, for example, a
 special kind of dynamic relocation that a loader of the platform DLL B will
 apply to platform DLL C (or, more plausibly, to its dynamic relocations).
 
 Similarly, the BPABI description of application A must record in a
-pre-emption map entry that A::X pre-empts B::X. The post linker must
-translate this pre-emption map entry to, for example, special dynamic
+preemption map entry that A::X preempts B::X. The post linker must
+translate this preemption map entry to, for example, special dynamic
 relocations that:
 
 * A loader of the platform application A will apply to platform DLL B (or,
@@ -2921,7 +2921,7 @@ It is straightforward to construct an export data table.
      [bpabi32-note5_].          
 
   STV_PROTECTED 3
-     Exported; this symbol is visible but cannot be pre-empted
+     Exported; this symbol is visible but cannot be preempted
      [bpabi32-note6_].          
 
   .. note::
@@ -2938,8 +2938,8 @@ It is straightforward to construct an export data table.
      .. _bpabi32-note6:
 
      2. A platform ABI need not support "Exported but cannot be
-        pre-empted". Indeed, a platform ABI need not support symbol
-        pre-emption.
+        preempted". Indeed, a platform ABI need not support symbol
+        preemption.
 
 Values of symbols (target address) may need to be adjusted.
 
