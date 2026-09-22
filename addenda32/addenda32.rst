@@ -2117,7 +2117,7 @@ addressing architecture used by Linux for Arm.
    Linux for Arm TLS addressing architecture
 
 In the most general case, the location of an imported thread local datum –
-or an exported datum that might be pre-empted – is represented by a pair of
+or an exported datum that might be preempted – is represented by a pair of
 GOT entries that give:
 
 *  The index in the dynamic thread vector of the pointer to the TLS block

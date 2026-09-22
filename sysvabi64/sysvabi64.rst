@@ -472,13 +472,13 @@ table (GOT).
 
 A GOT generating relocation is used to inform the static
 linker to create the GOT entry. The address of symbol definitions that
-cannot be pre-empted at dynamic link time can have their address
+cannot be preempted at dynamic link time can have their address
 taken so no GOT generating relocation is required.
 
 PIC can also be used to build position-independent executables. A
 variant of PIC called PIE (position-independent executable) can be
 used to build an executable. PIE assumes that global symbols cannot be
-pre-empted, which means that an indirection via the GOT is not needed.
+preempted, which means that an indirection via the GOT is not needed.
 
 Assembler language addressing mode conventions for instructions
 ---------------------------------------------------------------
@@ -709,7 +709,7 @@ performance and reduce static code size. The relevant constraints are:
 * The LDR and STR instructions accept a 12-bit unsigned immediate
   offset, scaled by the access size.
 
-* The B and BL instructiond have a range of +/-128MiB. This is
+* The B and BL instructions have a range of +/-128MiB. This is
   typically used for function / procedure calls.
 
 * A series of MOVZ and up to 3 MOVK instructions can be used to
@@ -888,7 +888,7 @@ Get the address of a symbol defined in the same ELF file
 Code that is not position-independent may use the absolute address of
 the symbol. Code that is position-independent may use a pc-relative
 offset to the symbol if the definition of the symbol is not
-pre-emptible. If the symbol is pre-emptible the address must be loaded
+preemptible. If the symbol is preemptible the address must be loaded
 from the GOT.
 
 PC-relative offset of +/- 1 MiB. Suitable for tiny code model.
@@ -985,7 +985,7 @@ Get the address of a weak reference
 An undefined weak reference resolves to 0. In the general case it is
 not possible to give an offset that when added to the PC will result
 in 0. To get the address of a weak reference the compiler can use a
-load from literal or acccess the address via a GOT entry, which will
+load from literal or access the address via a GOT entry, which will
 evaluate to 0 if the symbol is undefined.
 
 .. raw:: pdf
@@ -1179,9 +1179,9 @@ In a position-independent executable all non-local function addresses
 are accessed via the GOT so no indirection via the PLT entry is
 necessary.
 
-Shared objects may implement direct function calls to non-pre-emptable
+Shared objects may implement direct function calls to non-preemptible
 symbols using a direct branch instruction. A static linker will
-consider a symbol not pre-emptable if:
+consider a symbol not preemptible if:
 
  * The symbol has ``STB_LOCAL`` binding.
 
@@ -1191,12 +1191,12 @@ consider a symbol not pre-emptable if:
    SYM-VER_.
 
  * The static linker adds the dynamic tag ``DT_FLAGS`` with the
-   ``DF_SYMBOLIC`` flag set. This makes all symbols non-pre-emptable.
+   ``DF_SYMBOLIC`` flag set. This makes all symbols non-preemptible.
 
  * Some other implementation defined linker feature such as
    ``--dynamic-list`` is used.
 
-Shared objects must indirect all function calls to pre-emptable
+Shared objects must indirect all function calls to preemptible
 symbols through the static linker created Procedure Linkage Table.
 
 Procedure Linkage Table
@@ -1565,11 +1565,11 @@ dynamic loader. Other dynamic linkers may have fewer requirements.
 IFUNC requirements for static linkers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Relocations to pre-emptable symbols of type ``STT_GNU_IFUNC`` are
+Relocations to preemptible symbols of type ``STT_GNU_IFUNC`` are
 handled in the same way as symbols of type ``STT_FUNC``. The symbol
 type ``STT_GNU_IFUNC`` is propagated into the dynamic symbol table.
 
-Relocations to non-pre-empatable symbols of type ``STT_GNU_IFUNC`` are
+Relocations to non-preemptible symbols of type ``STT_GNU_IFUNC`` are
 resolved to a PLT entry that loads the value of:
 
  * A ``.got.plt`` entry for a non-branch relocation such as
@@ -1591,7 +1591,7 @@ does not require a symbol and may be given a symbol index of 0. For
 relocation contains the address of the IFUNC resolver function.
 
 To make address equivalence of functions with IFUNC resolvers work, if
-the address of a non-preemptable ``STT_GNU_IFUNC`` symbol is taken in
+the address of a non-preemptible ``STT_GNU_IFUNC`` symbol is taken in
 a non-position-independent executable. The static linker must use the
 address of the corresponding PLT entry for the address of the
 function. If the symbol is exported to the dynamic symbol table the
@@ -2259,7 +2259,7 @@ PT_TLS.p_align)`` where ``≡`` means congruent to.
 The static and dynamic linker must agree on the size of the padding
 (``PADsize``) between the TCB and the executable's TLS Block. Using
 ``TCBsize`` as the size of the TCB (16 bytes), the following
-expression can be used to calcluate ``PADsize`` from the ``PT_TLS``
+expression can be used to calculate ``PADsize`` from the ``PT_TLS``
 program header.
 
 .. code-block:: c

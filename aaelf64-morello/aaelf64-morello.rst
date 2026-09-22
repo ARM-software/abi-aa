@@ -671,7 +671,7 @@ veneers may be needed for a number of reasons, including, but not limited to:
 - Interworking: The branch source and target symbol are in different execution states(A64/C64).
 - Range Extension: The branch source and target symbol are in C64 execution state and the target
   is outside the addressable span of the branch instruction (+/- 128MB).
-- The target address will not be known until run time, or the target address might be pre-empted.
+- The target address will not be known until run time, or the target address might be preempted.
 
 Long branches with 64-bit range are not supported yet for range extensions or for interworking.
 Interworking between ABIs are not supported yet.

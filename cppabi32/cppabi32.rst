@@ -1419,7 +1419,7 @@ DLL.
 
    Under the SVr4 DSO model, all global symbols are addressed indirectly,
    whether imported or not, so no source annotation is needed.  This supports
-   pre-emption of any DSO definition at dynamic link time and allows vague
+   preemption of any DSO definition at dynamic link time and allows vague
    linkage to be implemented dynamically.
 
 The source annotation denoting import is Q-o-I, but we expect
@@ -1470,7 +1470,7 @@ to form an executable file. Duplication is avoided using COMDAT groups
 [GCPPABI_], so there is at most one definition in a DLL, DSO, or
 executable file.
 
-To ensure a single definition program wide requires pre-emption of all
+To ensure a single definition program wide requires preemption of all
 but one definition at dynamic link time. In turn this requires that
 references to a DLL-local definition can be relocated at dynamic link
 time.
@@ -1624,7 +1624,7 @@ time decision. However, we can note that a system that imports
 indirectly – using an extra indirection to access imported data – can in
 principle resolve vague linkage dynamically, while one that does not in
 general cannot. (But note that SVr4 applications do precisely this by
-using copy relocations and a local copy of the data that pre-empts any
+using copy relocations and a local copy of the data that preempts any
 DSO copy). So, in practice, code generation is unlikely to be changed
 unless a system capable of resolving vague linkage dynamically chooses
 not to do so for class impedimenta, or unless code is generated
