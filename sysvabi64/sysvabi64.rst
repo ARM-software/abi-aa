@@ -346,9 +346,6 @@ VG
    The number of 64-bit “vector granules” in an SVE vector; in other words,
    the number of bits in an SVE vector register divided by 64.
 
-ILP32
-   SysV-like data model where int, long int and pointer are 32-bit
-
 LP64
    SysV-like data model where int is 32-bit, but long int and pointer are 64-bit.
 
@@ -1169,7 +1166,7 @@ non-zero ``st_value``. A reference to this symbol will be resolved by
 the dynamic linker to the address PLT for the function in the
 executable.
 
-The ``R_<CLS>_JUMP_SLOT`` relocations defined in AAELF64_ are
+The ``R_AARCH64_JUMP_SLOT`` relocations defined in AAELF64_ are
 associated with PLT entries. These entries are used for direct
 function calls rather than for references to function addresses. These
 relocations do not use the special symbol value described
@@ -2070,7 +2067,7 @@ The presence of both ``DT_AARCH64_BTI_PLT`` and ``DT_AARCH64_PAC_PLT``
 indicates PLTs enabled with both Branch Target Identification mechanism and
 Pointer Authentication.
 
-``DT_AARCH64_VARIANT_PCS`` must be present if there are ``R_<CLS>_JUMP_SLOT``
+``DT_AARCH64_VARIANT_PCS`` must be present if there are ``R_AARCH64_JUMP_SLOT``
 relocations that reference symbols marked with the ``STO_AARCH64_VARIANT_PCS``
 flag set in their ``st_other`` field.
 
