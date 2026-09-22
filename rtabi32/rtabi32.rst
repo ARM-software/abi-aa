@@ -266,6 +266,8 @@ changes to the content of the document for that release.
   |            |                               | - new sections on Contributions_,                       |
   |            |                               |   `Trademark notice`_, and Copyright_                   |
   +------------+-------------------------------+---------------------------------------------------------+
+  | 2026Q3     | 22\ :sup:`nd` September 2026  | - __aeabi_uread4 and __aeabi_uread8 take const void*    |
+  +------------+-------------------------------+---------------------------------------------------------+
 
 References
 ----------
@@ -1418,9 +1420,9 @@ written more efficiently using inline code.
 
 .. code-block:: c
 
-  int __aeabi_uread4(void *address);
+  int __aeabi_uread4(const void *address);
   int __aeabi_uwrite4(int value, void *address);
-  long long __aeabi_uread8(void *address);
+  long long __aeabi_uread8(const void *address);
   long long __aeabi_uwrite8(long long value, void *address);
 
 We expect unaligned floating-point values to be read and written as
