@@ -592,7 +592,7 @@ This generates the following obligations on producers and consumers of CIEs:
    cannot be used by any associated functions and their descendants. Although
    these are not callee-saved, they are not callee-used either.)
 
-This ABI defines two CIE augmentation characters that may appear as part of
+This ABI defines three CIE augmentation characters that may appear as part of
 a CIE augmentation string.
 
 1. The character 'B' indicates that associated frames are using the B key for
@@ -601,11 +601,19 @@ a CIE augmentation string.
 2. The character 'G' indicates that associated frames may modify MTE tags on
    the stack space they use.
 
+3. The character 'N' indicates that associated frames are using non hint-space
+   FEAT_PAuth_LR instructions for return address signing.
 
 .. note::
 
     1. The mark on a frame recording that it may have set MTE tags other than the
        stack background is information which can be used when unwinding.
+
+    2. The mark on a frame recording that it uses non hint-space instructions
+       for return address signing is information which can be used when unwinding.
+       If the mark is absent and the PC value was used as a diversifier for
+       signing, this indicates that the hint-space PACM instruction was used. It is
+       required that a single method is used to sign and authenticate a pointer.
 
 .. raw:: pdf
 
