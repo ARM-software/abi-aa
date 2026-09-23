@@ -602,8 +602,7 @@ a CIE augmentation string.
    the stack space they use.
 
 3. The character 'N' indicates that associated frames are using non hint-space
-   FEAT_PAuth_LR instructions for return address signing. It is required that a
-   single method is used to sign and authenticate a pointer.
+   FEAT_PAuth_LR instructions for return address signing.
 
 .. note::
 
@@ -613,7 +612,8 @@ a CIE augmentation string.
     2. The mark on a frame recording that it uses non hint-space instructions
        for return address signing is information which can be used when unwinding.
        If the mark is absent and the PC value was used as a diversifier for
-       signing, this indicates that the hint-space PACM instruction was used.
+       signing, this indicates that the hint-space PACM instruction was used. It is
+       required that a single method is used to sign and authenticate a pointer.
 
 .. raw:: pdf
 
