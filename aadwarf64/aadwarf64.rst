@@ -611,9 +611,11 @@ a CIE augmentation string.
 
     2. The mark on a frame recording that it uses non hint-space instructions
        for return address signing is information which can be used when unwinding.
-       If the mark is absent and the PC value was used as a diversifier for
-       signing, this indicates that the hint-space PACM instruction was used. It is
-       required that a single method is used to sign and authenticate a pointer.
+       This mark only has meaning when the PC value was used as a diversifier for
+       signing and will be ignored otherwise. If the mark is absent and the PC
+       value was used as a diversifier, this indicates that the hint-space PACM
+       instruction was used. It is required that a single method is used to sign
+       and authenticate a pointer.
 
 .. raw:: pdf
 
