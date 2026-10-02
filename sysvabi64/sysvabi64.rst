@@ -233,9 +233,10 @@ Change History
  |            |                              | - Document Function Multi-Versioning.                 |
  |            |                              | - Added chapter on Thread Local Storage (TLS)         |
  +------------+------------------------------+-------------------------------------------------------+
- | Unreleased |                              | - In `Function Multi-Versioning`_, remove the         |
+ | 2026Q3     | 2\ :sup:`nd` October 2026    | - In `Function Multi-Versioning`_, remove the         |
  |            |                              |   duplicate ``FEAT_FLAGM2`` entry and correct all     |
- |            |                              |   subsequent CPU feature bit positions.               |
+ |            |                              |   subsequent CPU feature bit positions to match       |
+ |            |                              |   the GCC and Clang implementations.                  |
  +------------+------------------------------+-------------------------------------------------------+
 
 References
