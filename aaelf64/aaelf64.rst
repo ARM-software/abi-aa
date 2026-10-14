@@ -1925,7 +1925,7 @@ With the exception of ``R_AARCH64_COPY`` all dynamic relocations require that th
 
 **Note: COPY relocation**
 
-``R_AARCH64_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to   cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of  bytes specified by its ``st_size`` field to the place. The address of the place is then used to preempt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
+``R_AARCH64_COPY`` may only appear in executable ELF files where e\_type is set to ``ET_EXEC``. The effect is to cause the dynamic linker to locate the target symbol in a shared library object and then to copy the number of bytes specified by its ``st_size`` field to the place. The address of the place is then used to preempt all other references to the specified symbol. It is an error if the storage space allocated in the executable is insufficient to hold the full copy of the symbol. If the object being copied contains dynamic relocations then the effect must be as if those relocations were performed before the copy was made.
 
 ``R_AARCH64_COPY`` is normally only used in SysV type environments where the executable is not position- independent and references by the code and read-only data sections cannot be relocated dynamically to refer to an object that is defined in a shared library.
 
