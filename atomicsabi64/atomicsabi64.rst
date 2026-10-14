@@ -318,7 +318,7 @@ Arbitrary registers may be used in the mappings. Instructions marked with ``*``
 in the tables cannot use ``WZR`` or ``XZR`` as a destination register. This is
 further detailed in `Special Cases`_.
 
-Only some variants of ``fetch_<op>`` and ``store_<op>`` are listed since the
+Only some variants of ``fetch_<op>`` and ``store_<op>`` are listed because the
 mappings are identical except for a different ``<op>``. ``store_<op>`` is the
 non-returning form of ``fetch_<op>`` and, like ``store``, only allows the
 ``relaxed``, ``release`` and ``seq_cst`` memory orders.
