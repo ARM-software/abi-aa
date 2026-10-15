@@ -618,6 +618,8 @@ syntax is of the form ``#:<operator>:<symbol name>``
   +-----------------------+-------------+---------------------------------------+
   | ``tlsldm_lo12_nc``    | ``add``     | R_AARCH64_TLSLD_ADD_LO12_NC           |
   +-----------------------+-------------+---------------------------------------+
+  | ``dtprel_hi12``       | ``add``     | R_AARCH64_TLSLD_ADD_DTPREL_HI21       |
+  +-----------------------+-------------+---------------------------------------+
   | ``dtprel_lo12``       | ``add``     | R_AARCH64_TLSLD_ADD_DTPREL_LO12       |
   +-----------------------+-------------+---------------------------------------+
   | ``dtprel_lo12``       | ``ldr``     | R_AARCH64_TLSLD_LDST64_DTPREL_LO12    |
@@ -2208,8 +2210,8 @@ applied to both static and dynamic TLS.
 TLS models
 ----------
 
-There are four defined models of accessing TLS
-of accessing TLS that trade off generality for performance. In descending order of generality:
+There are four defined models of accessing TLS that trade off
+generality for performance. In descending order of generality:
 
    1. General Dynamic, also known as Global Dynamic, can be used anywhere.
 
@@ -2220,7 +2222,7 @@ of accessing TLS that trade off generality for performance. In descending order 
       static TLS block.
 
    4. Local Exec, can be used in the executable for TLS variables
-      defined in the executables static TLS block.
+      defined in the executable's static TLS block.
 
 AArch64 TLS SystemV design choices
 ----------------------------------
@@ -2268,7 +2270,7 @@ program header.
 
 A number of dynamic linkers use a different calculation that requires
 ``PT_TLS.p_vaddr ≡ 0 (modulo PT_TLS.p_align)`` to correctly align the
-executables TLS block. In this case the expression above simplifies to
+executable's TLS block. In this case the expression above simplifies to
 ``PADsize = Max(0, PT_TLS.p_align - TCBsize``). For maximum
 compatibility, static linkers and any linker scripts including TLS,
 are recommended to align the TLS block so that ``PT_TLS.p_vaddr ≡ 0
@@ -2378,7 +2380,7 @@ Small Code Model;
 
     adrp  x0, :tlsdesc:var             // R_AARCH64_TLSDESC_ADR_PAGE21 var
     ldr   x1, [x0, #:tlsdesc_lo12:var] // R_AARCH64_TLSDESC_LD64_LO12 var
-    add   x0, x0, #:tlsdesc_lo12:var]  // R_AARCH64_TLSDESC_ADD_LO12 var
+    add   x0, x0, #:tlsdesc_lo12:var   // R_AARCH64_TLSDESC_ADD_LO12 var
     .tlsdesccall var
     blr   x1                           // R_AARCH64_TLSDESC_CALL var
     // offset of var from tp in x0
@@ -2422,11 +2424,39 @@ general dynamic when more than one TLS variable from the same module
 is accessed from the same function, but less efficient when accessing
 a single TLS variable.
 
-The code sequence for local dynamic is the same as global dynamic and
-like global dynamic must be emitted exactly as specified. There are no
+The code sequence to obtain the offset of the module's TLS block from
+the thread pointer is the same as the code sequence for finding the
+offset of a variable from the thread pointer with global dynamic. Like
+global dynamic must be emitted exactly as specified. There are no
 specific relocations for Local Dynamic using the descriptor dialect. A
-special symbol ``_TLS_MODULE_BASE_`` is used to get a tlsdesccall to
-return the offset of the module's TLS block from the thread pointer.
+special symbol ``_TLS_MODULE_BASE_`` is used as the relocation target.
+The static linker must define ``_TLS_MODULE_BASE_`` to the address of
+the TLS block for the module if it is referenced.
+
+.. code-block:: asm
+
+    adrp  x0, :tlsdesc:_TLS_MODULE_BASE_
+    ldr   x1, [x0, #:tlsdesc_lo12:_TLS_MODULE_BASE_]
+    add   x0, x0, #:tlsdesc_lo12:_TLS_MODULE_BASE_
+    .tlsdesccall _TLS_MODULE_BASE_
+    blr   x1
+    // offset of _TLS_MODULE_BASE_ from tp in x0
+
+To calculation to find the address of a local dynamic tls variable
+called ``var`` is:
+
+``TP`` + (offset of ``_TLS_MODULE_BASE_`` from ``TP``) + (offset of
+``var`` from ``_TLS_MODULE_BASE_``).
+
+The calculation of the offset of ``var`` from ``_TLS_MODULE_BASE_`` is
+not defined by the ABI. The code-sequence below shows one possibility:
+
+.. code-block:: asm
+
+   // offset of _TLS_MODULE_BASE_from tp in x0
+   add x0, x0, :dtprel_hi12:var // R_AARCH64_TLSLD_ADD_DTPREL_HI12
+   add x0, x0, :dtprel_lo12_nc:var // R_AARCH64_TLSLD_ADD_DTPREL_LO12_NC
+   // offset of var from tp in x0
 
 Code-generators are not required to implement local dynamic and can
 emit general dynamic in its place.
@@ -2495,7 +2525,7 @@ executables TLS block is smaller than 16 KiB.
     add  xn, xn, :tprel_lo12_nc:var       // R_AARCH64_TLSLE_ADD_TPREL_LO12_NC var
     // offset of var from tp in xn
 
-Optimization to load a 64-bit var directly into a core register.
+Optimization to load a var directly into a core register.
 
 .. code-block:: asm
 
