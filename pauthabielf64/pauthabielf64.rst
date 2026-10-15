@@ -474,14 +474,14 @@ General Restrictions
   way to avoid COPY relocations is to access imported signed pointers
   via the GOT.
 
-- PAUTHELF64 only supports the descriptor based TLS (TLSDESC) dialect.
+- PAUTHELF64 only supports the "descriptor" based TLS (TLSDESC) dialect.
   The "traditional" dialect as selected by -mtls-dialect=traditional is
   not supported.
 
 The Rationale behind the requirement to avoid copy relocations is that
 the static linker creates the storage that the copy is placed; which
 adds more complication in the form of communicating a signing schema
-than avoiding the copy relocation. The descriptor based TLS has been
+than avoiding the copy relocation. The "descriptor" based TLS has been
 chosen as the most common implementation choice for AArch64.
 
 .. raw:: pdf
