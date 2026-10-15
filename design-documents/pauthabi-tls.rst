@@ -26,19 +26,27 @@ TLS Dialect
 -----------
 
 The base ABI in `AAELF64`_ defines relocations for two TLS
-dialects. The "traditional" dialect and the "descriptor" dialect. In
-the traditional dialect global and local dynamic TLS use the
-``R_AARCH64_TLSGD``, ``R_AARCH64_TLSLD`` prefixed relocations. These
-create a pair of GOT entries relocated by ``R_AARCH64_TLS_DTPMOD`` and
-``R_AARCH64_TLS_DTPREL``. In the "descriptor" dialect, global and local
-dynamic TLS use the ``R_AARCH64_TLSDESC`` prefixed relocations. These
-create a pair of GOT entries relocated by ``R_AARCH64_TLSDESC``. Local
-Exec and Initial Exec TLS are handled the same way in both dialects.
+dialects:
 
-The `PAUTHABIELF64`_ only supports the descriptor based dialect,
-primarily because the traditional dialect is now legacy. GCC defaults
-to the "descriptor" dialect and clang only supports the "descriptor"
-based dialect.
+* The "traditional" dialect.
+
+  In the "traditional" dialect global and local dynamic TLS use the
+  ``R_AARCH64_TLSGD``, ``R_AARCH64_TLSLD`` prefixed relocations. These
+  create a pair of GOT entries relocated by ``R_AARCH64_TLS_DTPMOD``
+  and ``R_AARCH64_TLS_DTPREL``.
+
+* The "descriptor" dialect.
+
+  In the "descriptor" dialect, global and local dynamic TLS use the
+  ``R_AARCH64_TLSDESC`` prefixed relocations. These create a pair of
+  GOT entries relocated by ``R_AARCH64_TLSDESC``.
+
+Local Exec and Initial Exec TLS are handled the same way in both dialects.
+
+The `PAUTHABIELF64`_ only supports the "descriptor" based dialect,
+primarily because the "traditional" dialect is now legacy. GCC
+defaults to the "descriptor" dialect and clang only supports the
+"descriptor" based dialect.
 
 Auth variant TLS relocations
 ----------------------------
