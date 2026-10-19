@@ -27,6 +27,22 @@ CURR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ABI_ROOT="${CURR_DIR}/../.."
 OUTPUT_DIR=$1
 
+# Use matplotlib's bundled font dir as we can't trust the standard host paths
+# to contain the font we want.
+FONT_DIR="$(python3 -c 'from pathlib import Path; import matplotlib; print(Path(matplotlib.get_data_path()) / "fonts" / "ttf")')"
+
+if [ ! -d "${FONT_DIR}" ]; then
+    echo "error: PDF font directory does not exist: ${FONT_DIR}"
+    exit 1
+fi
+
+for font in DejaVuSans.ttf DejaVuSans-Bold.ttf DejaVuSans-Oblique.ttf DejaVuSans-BoldOblique.ttf; do
+    if [ ! -r "${FONT_DIR}/${font}" ]; then
+        echo "error: required PDF font is missing: ${FONT_DIR}/${font}"
+        exit 1
+    fi
+done
+
 mkdir -p "${OUTPUT_DIR}"
 declare -a docs=(
     # 32-bit
@@ -60,6 +76,7 @@ for doc in "${docs[@]}"; do
 
     ( set -x; rst2pdf "${ABI_ROOT}/${doc}/${doc}.rst"    \
                       -s "${CURR_DIR}/rst2pdf-abi.style" \
+                      --font-path "${FONT_DIR}"            \
                       --repeat-table-rows                 \
                       --default-dpi=110                   \
                       -c                                  \

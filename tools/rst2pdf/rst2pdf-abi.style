@@ -13,6 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+embeddedFonts: []
+    [DejaVuSans.ttf, DejaVuSans-Bold.ttf, DejaVuSans-Oblique.ttf, DejaVuSans-BoldOblique.ttf]
+
+fontsAlias:
+    stdFont: DejaVuSans
+    stdBold: DejaVuSans-Bold
+    stdItalic: DejaVuSans-Oblique
+    stdBoldItalic: DejaVuSans-BoldOblique
+    fontSans: DejaVuSans
+    fontSansBold: DejaVuSans-Bold
+    fontSansItalic: DejaVuSans-Oblique
+    fontSansBoldItalic: DejaVuSans-BoldOblique
+
 pageTemplates:
     oneColumn:
         defaultFooter : ".. class:: center\n\n###Page###\n\n.. class:: center\n\n|footer|"
