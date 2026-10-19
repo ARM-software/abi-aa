@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -euo pipefail
 
 if [ $# -ne 1 ]; then
     echo "usage: `basename $0` <output-dir>"
@@ -23,10 +24,10 @@ if [ $# -ne 1 ]; then
 fi
 
 CURR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-ABI_ROOT=${CURR_DIR}/../..
+ABI_ROOT="${CURR_DIR}/../.."
 OUTPUT_DIR=$1
 
-mkdir -p ${OUTPUT_DIR}
+mkdir -p "${OUTPUT_DIR}"
 declare -a docs=(
     # 32-bit
     "aadwarf32" "aaelf32" "aapcs32" "addenda32" "advnote132" "bpabi32" "bsabi32" "clibabi32" "cppabi32" "dbgovl32" "ehabi32" "rtabi32"
@@ -54,10 +55,18 @@ declare -a docs=(
 )
 
 for doc in "${docs[@]}"; do
-    ( set -x ; rst2pdf ${ABI_ROOT}/${doc}/${doc}.rst    \
-                       -s ${CURR_DIR}/rst2pdf-abi.style \
-                       --repeat-table-rows              \
-                       --default-dpi=110                \
-                       -c                               \
-                       -o ${OUTPUT_DIR}/${doc}.pdf )
+    output_file="${OUTPUT_DIR}/${doc}.pdf"
+    rm -f "${output_file}"
+
+    ( set -x; rst2pdf "${ABI_ROOT}/${doc}/${doc}.rst"    \
+                      -s "${CURR_DIR}/rst2pdf-abi.style" \
+                      --repeat-table-rows                 \
+                      --default-dpi=110                   \
+                      -c                                  \
+                      -o "${output_file}" )
+
+    if [ ! -s "${output_file}" ]; then
+        echo "error: rst2pdf did not create ${output_file}" >&2
+        exit 1
+    fi
 done
