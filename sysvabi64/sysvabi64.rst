@@ -732,10 +732,10 @@ file layout similar to the diagram below.
 
 .. _Illustrative ELF file layout:
 
-.. rubric:: Illustrative ELF file layout
-
 .. figure:: sysvabi64-elf-layout.svg
-   :scale: 35%
+   :width: 50%
+
+   Illustrative ELF file layout
 
 The table below identifies the code models that have been defined,
 along with the assumptions that the code model may make.
