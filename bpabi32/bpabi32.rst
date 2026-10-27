@@ -446,10 +446,10 @@ moderate.
 
 .. _Base platform ABI tool flow and its relationship to concrete platforms:
 
-.. rubric:: Base platform ABI tool flow and its relationship to concrete
-            platforms
-
 .. figure:: bpabi32-tool-flow.svg
+   :width: 100%
+
+   Base platform ABI tool flow and its relationship to concrete platforms
 
 Platform-specific elements are shown grayed. Others are generic to all ABIs
 derived from this base platform ABI.
@@ -1001,9 +1001,10 @@ Process 3
 
 Processes 1, 2, and 3 can execute simultaneously as depicted below.
 
-.. rubric:: The dynamic vague linkage problem
-
 .. figure:: bpabi32-dynamic-linkage-problem.svg
+   :width: 100%
+
+   The dynamic vague linkage problem
 
 The One Definition Rule (ODR) for process 3 requires that all users of the
 RTTI-A should use the same copy of it. In the static link step generating
