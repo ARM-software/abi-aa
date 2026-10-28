@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2025Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` January 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2020-2026
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -197,8 +197,6 @@ changes to the content of the document for that release.
     | 2022Q1   | 1\ :sup:`st` April 2022      | Fix up rule C.8 on capability passing.............. |
     +----------+------------------------------+-----------------------------------------------------+
     | 2022Q3   | 20\ :sup:`th` October 2022   | Rework varargs for Morello.                         |
-    +----------+------------------------------+-----------------------------------------------------+
-    | 2025Q4   | 3\ :sup:`rd` March 2026      | - Standardize on "caller-saved" and "callee-saved". |
     +----------+------------------------------+-----------------------------------------------------+
 
 

@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2025Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` January 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2011, 2013, 2018, 2020-2026
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -270,11 +270,8 @@ changes to the content of the document for that release.
 |            |                    | - Explicitly say that the FFR is a caller-saved register.        |
 |            |                    | - Clarify how __bf16 affects HFAs                                |
 +------------+--------------------+------------------------------------------------------------------+
-| 2025Q4     | 3\ :sup:`rd`       | - Standardize on "caller-saved" and "callee-saved".              |
-|            | March 2026         |                                                                  |
-+------------+--------------------+------------------------------------------------------------------+
-| 2026Q3     | 13\ :sup:`th`      | - Remove ILP32 from the ABI. ILP32 is a SysV-like data model     |
-|            | August 2026        |   where int, long int and pointer are 32-bit. Refer to previous  |
+| 2026Q3     | 3\ :sup:`rd`       | - Remove ILP32 from the ABI. ILP32 is a SysV-like data model     |
+|            | November 2026      |   where int, long int and pointer are 32-bit. Refer to previous  |
 |            |                    |   ABI releases for **Beta** ILP32 documentation.                 |
 +------------+--------------------+------------------------------------------------------------------+
 
