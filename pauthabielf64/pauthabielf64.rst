@@ -254,6 +254,8 @@ changes to the content of the document for that release.
   |            |                             | - Clarify combination of MemtagABI and PAuthABI relocations.     |
   |            |                             | - Define R_AARCH64_AUTH_TLSDESC_CALL relocation.                 |
   +------------+-----------------------------+------------------------------------------------------------------+
+  | 2026Q4     | 28\ :sup:`th` October 2026  | - Define signing-schema for PAuthABI profiles                    |
+  +------------+-----------------------------+------------------------------------------------------------------+
 
 References
 ----------
@@ -885,13 +887,23 @@ of two values, both of which must be present.
 
 .. table:: Reserved id
 
-    +-----------+-----------+
-    | Platform  | Hex value |
-    +===========+===========+
-    | Invalid   | 0x0       |
-    +-----------+-----------+
-    | Baremetal | 0x1       |
-    +-----------+-----------+
+    +-------------------+-----------------------+
+    | Platform          | Hex value             |
+    +===================+=======================+
+    | Invalid           | 0x0                   |
+    +-------------------+-----------------------+
+    | Baremetal Profile | 0x1                   |
+    +-------------------+-----------------------+
+    | Linux Profile     | 0x2                   |
+    +-------------------+-----------------------+
+    | LLVM Linux        | 0x10000002            |
+    +-------------------+-----------------------+
+    | Private Mask      | 0xf000000000000000    |
+    +-------------------+-----------------------+
+
+All bits included in the Private Mask are reserved for platforms
+outside of the vendor list. No reserved ``platform identifier`` will
+be allocated by the ABI in this range.
 
 * ``version number`` is a 64-bit value that identifies the signing
   schema used by the ELF file. The meaning of the value is determined
@@ -901,6 +913,54 @@ of two values, both of which must be present.
 The tuple of (``platform identifier``, ``version number``) equal to
 (0,0) is reserved to mean an ELF file incompatible with the PAuth ABI
 Extension to ELF for the Arm® 64-bit Architecture (AArch64).
+
+Profile signing-schema
+----------------------
+
+The signing-schema for the ``Baremetal Profile`` and ``Linux Profile``
+is defined by this specification. The profiles provide a small number
+of high-level signing-schema choices that matter the most.
+
+.. table:: Profile Version Encoding
+
+  +---------+-----------+------+--------+-------------------+-------------------+-------------------+-------------------+
+  | 63:56   | 55:10     | 9    | 8      | 7:6               | 5:4               | 3:2               | 1:0               |
+  +=========+===========+======+========+===================+===================+===================+===================+
+  | Version | reserved0 | RELRO| Strict | Proc Ind Inst Key | Proc Ind Data Key | Proc Dep Inst Key | Proc Dep Data Key |
+  +---------+-----------+------+--------+-------------------+-------------------+-------------------+-------------------+
+
+* ``Version`` is the profile version number. Only version 1 is
+  defined.
+
+* ``reserved0`` are reserved for future versions. For version 1 these
+  must be set to 0.
+
+* ``RELRO`` is a single bit that determines if the platform supports
+  relocation read-only (RELRO). If RELRO is set then the GOT is not
+  signed.
+
+* ``Strict`` is a single bit that determines if the program can
+  support type diversity for C-function pointers. Programs that cast
+  function pointers to a non-function pointer type such as void* or
+  intptr_t cannot use ``Strict``.
+
+* ``Proc Ind Inst Key`` is the process-independent instruction
+  key. Default value of ``APIA``.
+
+* ``Proc Ind Data Key`` is the process-independent data key. Default
+  value of ``APDA``.
+
+* ``Proc Dep Inst Key`` is the process-dependent instruction
+  key. Default value of ``APIB``.
+
+* ``Proc Dep Data Key`` is the process-dependent data key. Default
+  value of ``APDB``.
+
+The encoding for the keys is the same as in `Encoding the signing schema`_.
+
+The terms process-independent and process-dependent are defined in
+`Arm64E`_. In practice the process-dependent key is used for signing
+pointers that are local to the function, such as the return address.
 
 Default Marking Schema
 ----------------------
