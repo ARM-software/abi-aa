@@ -273,6 +273,7 @@ changes to the content of the document for that release.
 | 2026Q3     | 3\ :sup:`rd`       | - Remove ILP32 from the ABI. ILP32 is a SysV-like data model     |
 |            | November 2026      |   where int, long int and pointer are 32-bit. Refer to previous  |
 |            |                    |   ABI releases for **Beta** ILP32 documentation.                 |
+|            |                    | - Standardize on "caller-saved" and "callee-saved".              |
 +------------+--------------------+------------------------------------------------------------------+
 
 References
