@@ -73,6 +73,8 @@ C++ ABI for the Arm 64-bit Architecture                            | [cppabi64](
 Vector Function ABI for the Arm 64-bit Architecture                | [vfabia64](vfabia64/vfabia64.rst)    | [2019Q2](legacy-documents/vfabia64/101129_1920/101129_1920_01_en.pdf)
 C/C++ Atomics ABI for the Arm 64-bit Architecture                  | [atomicsabi64](atomicsabi64/atomicsabi64.rst)    | n/a
 System V ABI for the Arm 64-bit Architecture                       | [sysvabi64](sysvabi64/sysvabi64.rst) | n/a
+Build Attributes for the Arm 64-bit Architecture                   | [buildattr64](buildattr64/buildattr64.rst) | n/a
+AArch64 ELF Conventions for Binary Analysis                        | [baabielf64](baabielf64/baabielf64.rst) | n/a
 
 
 ### ABI for the Arm 64-bit Architecture with SVE support

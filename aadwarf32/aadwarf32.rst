@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2025Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` January 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2003-2007, 2012, 2018, 2020-2026
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -231,6 +231,9 @@ changes to the content of the document for that release.
   | 2021Q1 | 12\ :sup:`th` April 2021            | - Delete duplicated TPIDRURO register  |
   |        |                                     |   entry in regiter number table.       |
   |        |                                     | - Added PACBTI-M unwinding information.|
+  +--------+-------------------------------------+----------------------------------------+
+  | 2026Q3 | 3\ :sup:`rd` November 2026          | - Clarify the ABI uses DWARF 3.0       |
+  |        |                                     |   as a baseline.                       |
   +--------+-------------------------------------+----------------------------------------+
 
 References

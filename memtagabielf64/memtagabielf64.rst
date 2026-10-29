@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2025Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` January 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2022-2026
 
 
@@ -213,8 +213,10 @@ changes to the content of the document for that release.
   | 2024Q3     | 5\ :sup:`th` September 2024 | In `Dynamic Section`_, switch the d_un of                      |
   |            |                             | DT_AARCH64_MEMTAG_STACK and DT_AARCH64_MEMTAG_GLOBALS          |
   +------------+-----------------------------+----------------------------------------------------------------+
-  | 2026Q2     | 1\ :sup:`st` June 2026      | Clarified the scope if this document with respect to           |
-  |            |                             | GNU/Linux                                                      |
+  | 2026Q3     | 3\ :sup:`rd` November 2026  | - Simplify relative relocation expressions.                    |
+  |            |                             | - Rewrite ``LDG`` as a logical operation.                      |
+  |            |                             | - Clarify the scope of this document with respect to           |
+  |            |                             |   GNU/Linux.                                                   |
   +------------+-----------------------------+----------------------------------------------------------------+
 
 References

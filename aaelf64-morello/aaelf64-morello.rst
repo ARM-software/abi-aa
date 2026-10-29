@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2025Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` January 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2020-2026
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -211,9 +211,11 @@ changes to the content of the document for that release.
   |               |                              |   pointers.                                       |
   +---------------+------------------------------+---------------------------------------------------+
   | 2025Q4        | 23\ :sup:`rd` January 2026   | - Drop GD/IE-to-LE relaxation.                    |
-  |               |                              | - Define relocations and code seqeuences for      |
+  |               |                              | - Define relocations and code sequences for       |
   |               |                              |   indirect TLS.                                   |
   |               |                              | - Document program headers and dynamic sections.  |
+  +---------------+------------------------------+---------------------------------------------------+
+  | 2026Q3        | 3\ :sup:`rd` November 2026   | - Simplify relative relocation expressions.       |
   +---------------+------------------------------+---------------------------------------------------+
 
 References

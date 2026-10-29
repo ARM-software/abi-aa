@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2025Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` January 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2021-2026
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -231,12 +231,16 @@ Change History
  |            |                              | - Update ifunc resolver content to include            |
  |            |                              |   information on AT_HWCAP3,4 fields.                  |
  |            |                              | - Document Function Multi-Versioning.                 |
- |            |                              | - Added chapter on Thread Local Storage (TLS)         |
  +------------+------------------------------+-------------------------------------------------------+
- | 2026Q3     | 2\ :sup:`nd` October 2026    | - In `Function Multi-Versioning`_, remove the         |
+ | 2026Q3     | 3\ :sup:`rd` November 2026   | - In `Function Multi-Versioning`_, remove the         |
  |            |                              |   duplicate ``FEAT_FLAGM2`` entry and correct all     |
  |            |                              |   subsequent CPU feature bit positions to match       |
  |            |                              |   the GCC and Clang implementations.                  |
+ |            |                              | - Remove ILP32 from the ABI. ILP32 is a SysV-like     |
+ |            |                              |   data model where int, long int and pointer are      |
+ |            |                              |   32-bit. Refer to previous ABI releases for **Beta** |
+ |            |                              |   ILP32 documentation.                                |
+ |            |                              | - Add a chapter on Thread Local Storage (TLS).        |
  +------------+------------------------------+-------------------------------------------------------+
 
 References

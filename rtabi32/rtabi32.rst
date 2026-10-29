@@ -3,8 +3,8 @@
    reserved. CC-BY-SA-4.0 AND Apache-Patent-License See LICENSE file
    for details
 
-.. |release| replace:: 2025Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` January 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2003, 2007-2009, 2012, 2015, 2018, 2020-2026
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -266,7 +266,7 @@ changes to the content of the document for that release.
   |            |                               | - new sections on Contributions_,                       |
   |            |                               |   `Trademark notice`_, and Copyright_                   |
   +------------+-------------------------------+---------------------------------------------------------+
-  | 2026Q3     | 22\ :sup:`nd` September 2026  | - __aeabi_uread4 and __aeabi_uread8 take const void*    |
+  | 2026Q3     | 3\ :sup:`rd` November 2026    | - __aeabi_uread4 and __aeabi_uread8 take const void*    |
   +------------+-------------------------------+---------------------------------------------------------+
 
 References

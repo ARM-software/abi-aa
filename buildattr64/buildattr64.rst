@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2026Q2
-.. |date-of-issue| replace:: 24\ :sup:`th` February 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2026
 
 .. _ADDENDA32: https://github.com/ARM-software/abi-aa/releases
@@ -242,6 +242,9 @@ changes to the content of the document for that release.
   |            |                     | names are compliant with this pattern.                              |
   +------------+---------------------+---------------------------------------------------------------------+
   | 0.7        | 24th February 2026  | Initial Beta release.                                               |
+  +------------+---------------------+---------------------------------------------------------------------+
+  | 2026Q4     | 3rd November 2026   | Change to general ABI release naming, and include in release        |
+  |            |                     | documents.                                                          |
   +------------+---------------------+---------------------------------------------------------------------+
 
 References

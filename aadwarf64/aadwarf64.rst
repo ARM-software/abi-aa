@@ -3,8 +3,8 @@
    CC-BY-SA-4.0 AND Apache-Patent-License
    See LICENSE file for details
 
-.. |release| replace:: 2025Q4
-.. |date-of-issue| replace:: 23\ :sup:`rd` January 2026
+.. |release| replace:: 2026Q3
+.. |date-of-issue| replace:: 3\ :sup:`rd` November 2026
 .. |copyright-date| replace:: 2010, 2013, 2018, 2020-2026
 .. |footer| replace:: Copyright © |copyright-date|, Arm Limited and its
                       affiliates. All rights reserved.
@@ -253,6 +253,11 @@ changes to the content of the document for that release.
   |        |                             | - Redefined ra_state representation in    |
   |        |                             |   the RA_SIGN_STATE pseudo register at    |
   |        |                             |   **Alpha** quality.                      |
+  +--------+-----------------------------+-------------------------------------------+
+  | 2026Q3 | 3\ :sup:`rd` November 2026  | - Clarify the ABI uses DWARF 3.0 as a     |
+  |        |                             |   baseline.                               |
+  |        |                             | - Add character to augmentation string    |
+  |        |                             |   for return address signing.             |
   +--------+-----------------------------+-------------------------------------------+
 
 
