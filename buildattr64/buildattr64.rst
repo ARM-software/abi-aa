@@ -243,7 +243,7 @@ changes to the content of the document for that release.
   +------------+---------------------+---------------------------------------------------------------------+
   | 0.7        | 24th February 2026  | Initial Beta release.                                               |
   +------------+---------------------+---------------------------------------------------------------------+
-  | 2026Q4     | 3rd November 2026   | Change to general ABI release naming, and include in release        |
+  | 2026Q3     | 3rd November 2026   | Change to general ABI release naming, and include in release        |
   |            |                     | documents.                                                          |
   +------------+---------------------+---------------------------------------------------------------------+
 
