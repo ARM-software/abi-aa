@@ -1157,9 +1157,11 @@ X < 0: Set the instruction to ``MOVN`` and its immediate field to NOT (selected 
   +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
   | 274        | R\_AARCH64\_ADR\_PREL\_LO21           | S + A - P         | Set an ADR immediate value to bits [20:0] of X; check that -2\ :sup:`20` <= X < 2\ :sup:`20`        |
   +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 275        | R\_AARCH64\_ADR\_PREL\_PG\_HI21       | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X; check that -2\ :sup:`32` <= X < 2\ :sup:`32`  |
+  | 275        | R\_AARCH64\_ADR\_PREL\_PG\_HI21       | Page(S+A)         | Set an ADRP immediate value to bits [32:12] of the X; check that -2\ :sup:`32` <= X < 2\ :sup:`32`  |
+  |            |                                       | - Page(P)         |                                                                                                     |
   +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
-  | 276        | R\_AARCH64\_ADR\_PREL\_PG\_HI21\_NC   | Page(S+A)-Page(P) | Set an ADRP immediate value to bits [32:12] of the X. No overflow check                             |
+  | 276        | R\_AARCH64\_ADR\_PREL\_PG\_HI21\_NC   | Page(S+A)         | Set an ADRP immediate value to bits [32:12] of the X. No overflow check                             |
+  |            |                                       | - Page(P)         |                                                                                                     |
   +------------+---------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------+
   | 277        | R\_AARCH64\_ADD\_ABS\_LO12\_NC        | S + A             | Set an ADD immediate value to bits [11:0] of X. No overflow check. Used with relocations            |
   |            |                                       |                   | ADR\_PREL\_PG\_HI21 and  ADR\_PREL\_PG\_HI21\_NC                                                    |
@@ -1190,13 +1192,13 @@ X < 0: Set the instruction to ``MOVN`` and its immediate field to NOT (selected 
   +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
   | ELF64 Code | Name                 | Operation  | Comment                                                                                                                |
   +============+======================+============+========================================================================================================================+
-  | 279        | R\_AARCH64\_TSTBR14  | S+A-P      | Set the immediate field of a TBZ/TBNZ instruction to bits [15:2] of X; check -2\ :sup:`15` <= X < 2\ :sup:`15`         |
+  | 279        | R\_AARCH64\_TSTBR14  | S+A - P    | Set the immediate field of a TBZ/TBNZ instruction to bits [15:2] of X; check -2\ :sup:`15` <= X < 2\ :sup:`15`         |
   +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
-  | 280        | R\_AARCH64\_CONDBR19 | S+A-P      | Set the immediate field of a conditional branch instruction to bits [20:2] of X; check -2\ :sup:`20` <= X< 2\ :sup:`20`|
+  | 280        | R\_AARCH64\_CONDBR19 | S+A - P    | Set the immediate field of a conditional branch instruction to bits [20:2] of X; check -2\ :sup:`20` <= X< 2\ :sup:`20`|
   +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
-  | 282        | R\_AARCH64\_JUMP26   | S+A-P      | Set a B immediate field to bits [27:2] of X; check that -2\ :sup:`27` <= X < 2\ :sup:`27`                              |
+  | 282        | R\_AARCH64\_JUMP26   | S+A - P    | Set a B immediate field to bits [27:2] of X; check that -2\ :sup:`27` <= X < 2\ :sup:`27`                              |
   +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
-  | 283        | R\_AARCH64\_CALL26   | S+A-P      | Set a CALL immediate field to bits [27:2] of X; check that -2\ :sup:`27` <= X < 2\ :sup:`27`                           |
+  | 283        | R\_AARCH64\_CALL26   | S+A - P    | Set a CALL immediate field to bits [27:2] of X; check that -2\ :sup:`27` <= X < 2\ :sup:`27`                           |
   +------------+----------------------+------------+------------------------------------------------------------------------------------------------------------------------+
 
 .. _PC-relative inline relocations:
@@ -1208,22 +1210,22 @@ X < 0: Set the instruction to ``MOVN`` and its immediate field to NOT (selected 
   +------------+--------------------------------+------------+---------------------------------------------------------------------+
   | ELF64 Code | Name                           | Operation  | Comment                                                             |
   +============+================================+============+=====================================================================+
-  | 287        | R\_AARCH64\_MOVW\_PREL\_G0     | S+A-P      | Set a MOV[NZ]immediate field to bits [15:0] of X                    |
+  | 287        | R\_AARCH64\_MOVW\_PREL\_G0     | S+A - P    | Set a MOV[NZ]immediate field to bits [15:0] of X                    |
   |            |                                |            | (see `PC-relative MOVW`_)                                           |
   +------------+--------------------------------+------------+---------------------------------------------------------------------+
-  | 288        | R\_AARCH64\_MOVW\_PREL\_G0\_NC | S+A-P      | Set a MOVK immediate field to bits [15:0] of X. No overflow check   |
+  | 288        | R\_AARCH64\_MOVW\_PREL\_G0\_NC | S+A - P    | Set a MOVK immediate field to bits [15:0] of X. No overflow check   |
   +------------+--------------------------------+------------+---------------------------------------------------------------------+
-  | 289        | R\_AARCH64\_MOVW\_PREL\_G1     | S+A-P      | Set a MOV[NZ]immediate field to bits [31:16] of X                   |
+  | 289        | R\_AARCH64\_MOVW\_PREL\_G1     | S+A - P    | Set a MOV[NZ]immediate field to bits [31:16] of X                   |
   |            |                                |            | (see `PC-relative MOVW`_)                                           |
   +------------+--------------------------------+------------+---------------------------------------------------------------------+
-  | 290        | R\_AARCH64\_MOVW\_PREL\_G1\_NC | S+A-P      | Set a MOVK immediate field to bits [31:16] of X. No overflow check  |
+  | 290        | R\_AARCH64\_MOVW\_PREL\_G1\_NC | S+A - P    | Set a MOVK immediate field to bits [31:16] of X. No overflow check  |
   +------------+--------------------------------+------------+---------------------------------------------------------------------+
-  | 291        | R\_AARCH64\_MOVW\_PREL\_G2     | S+A-P      | Set a MOV[NZ]immediate value to bits [47:32] of X                   |
+  | 291        | R\_AARCH64\_MOVW\_PREL\_G2     | S+A - P    | Set a MOV[NZ]immediate value to bits [47:32] of X                   |
   |            |                                |            | (see `PC-relative MOVW`_)                                           |
   +------------+--------------------------------+------------+---------------------------------------------------------------------+
-  | 292        | R\_AARCH64\_MOVW\_PREL\_G2\_NC | S+A-P      | Set a MOVK immediate field to bits [47:32] of X. No overflow check  |
+  | 292        | R\_AARCH64\_MOVW\_PREL\_G2\_NC | S+A - P    | Set a MOVK immediate field to bits [47:32] of X. No overflow check  |
   +------------+--------------------------------+------------+---------------------------------------------------------------------+
-  | 293        | R\_AARCH64\_MOVW\_PREL\_G3     | S+A-P      | Set a MOV[NZ]immediate value to bits [63:48] of X                   |
+  | 293        | R\_AARCH64\_MOVW\_PREL\_G3     | S+A - P    | Set a MOV[NZ]immediate value to bits [63:48] of X                   |
   |            |                                |            | (see `PC-relative MOVW`_)                                           |
   +------------+--------------------------------+------------+---------------------------------------------------------------------+
 
@@ -1246,22 +1248,22 @@ Non-checking (``_NC``) forms relocate ``MOVK``; checking forms relocate ``MOVN``
   +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
   | ELF64 Code | Name                             | Operation         | Comment                                                              |
   +============+==================================+===================+======================================================================+
-  | 300        | R\_AARCH64\_MOVW\_GOTOFF\_G0     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate field to bits [15:0] of X                    |
+  | 300        | R\_AARCH64\_MOVW\_GOTOFF\_G0     | G(GDAT(S)) - GOT  | Set a MOV[NZ] immediate field to bits [15:0] of X                    |
   |            |                                  |                   | (see `GOT-relative MOVW`_)                                           |
   +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
-  | 301        | R\_AARCH64\_MOVW\_GOTOFF\_G0\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate field to bits [15:0] of X. No overflow check    |
+  | 301        | R\_AARCH64\_MOVW\_GOTOFF\_G0\_NC | G(GDAT(S)) - GOT  | Set a MOVK immediate field to bits [15:0] of X. No overflow check    |
   +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
-  | 302        | R\_AARCH64\_MOVW\_GOTOFF\_G1     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [31:16] of X                   |
+  | 302        | R\_AARCH64\_MOVW\_GOTOFF\_G1     | G(GDAT(S)) - GOT  | Set a MOV[NZ] immediate value to bits [31:16] of X                   |
   |            |                                  |                   | (see `GOT-relative MOVW`_)                                           |
   +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
-  | 303        | R\_AARCH64\_MOVW\_GOTOFF\_G1\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate value to bits [31:16] of X. No overflow check   |
+  | 303        | R\_AARCH64\_MOVW\_GOTOFF\_G1\_NC | G(GDAT(S)) - GOT  | Set a MOVK immediate value to bits [31:16] of X. No overflow check   |
   +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
-  | 304        | R\_AARCH64\_MOVW\_GOTOFF\_G2     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [47:32] of X                   |
+  | 304        | R\_AARCH64\_MOVW\_GOTOFF\_G2     | G(GDAT(S)) - GOT  | Set a MOV[NZ] immediate value to bits [47:32] of X                   |
   |            |                                  |                   | (see `GOT-relative MOVW`_)                                           |
   +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
-  | 305        | R\_AARCH64\_MOVW\_GOTOFF\_G2\_NC | G(GDAT(S)) -GOT   | Set a MOVK immediate value to bits [47:32] of X. No overflow check   |
+  | 305        | R\_AARCH64\_MOVW\_GOTOFF\_G2\_NC | G(GDAT(S)) - GOT  | Set a MOVK immediate value to bits [47:32] of X. No overflow check   |
   +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
-  | 306        | R\_AARCH64\_MOVW\_GOTOFF\_G3     | G(GDAT(S)) -GOT   | Set a MOV[NZ] immediate value to bits [63:48] of X                   |
+  | 306        | R\_AARCH64\_MOVW\_GOTOFF\_G3     | G(GDAT(S)) - GOT  | Set a MOV[NZ] immediate value to bits [63:48] of X                   |
   |            |                                  |                   | (see `GOT-relative MOVW`_)                                           |
   +------------+----------------------------------+-------------------+----------------------------------------------------------------------+
 
@@ -1281,12 +1283,12 @@ Non-checking (``_NC``) forms relocate ``MOVK``; checking forms relocate ``MOVN``
   +------------+------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
   | ELF64 Code | Name                   | Operation        | Comment                                                                                                                 |
   +============+========================+==================+=========================================================================================================================+
-  | 307        | R\_AARCH64\_GOTREL64   | S+A-GOT          | Write bits [63:0] of X at byte-aligned place P.  This represents a 64-bit offset relative to the GOT.                   |
+  | 307        | R\_AARCH64\_GOTREL64   | S+A - GOT        | Write bits [63:0] of X at byte-aligned place P.  This represents a 64-bit offset relative to the GOT.                   |
   +------------+------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
-  | 308        | R\_AARCH64\_GOTREL32   | S+A-GOT          | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT, treated as signed;    |
+  | 308        | R\_AARCH64\_GOTREL32   | S+A - GOT        | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT, treated as signed;    |
   |            |                        |                  | Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                                           |
   +------------+------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
-  | 315        | R\_AARCH64\_GOTPCREL32 | G(GDAT(S))-P+A   | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT entry for an address,  |
+  | 315        | R\_AARCH64\_GOTPCREL32 | G(GDAT(S)) - P+A | Write bits [31:0] of X at byte-aligned place P.  This represents a 32-bit offset relative to GOT entry for an address,  |
   |            |                        |                  | treated as signed; Check that -2\ :sup:`31` <= X < 2\ :sup:`31`.                                                        |
   +------------+------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------+
 
@@ -1299,15 +1301,15 @@ Non-checking (``_NC``) forms relocate ``MOVK``; checking forms relocate ``MOVN``
   +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
   | ELF64 Code  | Name                            | Operation                  | Comment                                                                                              |
   +=============+=================================+============================+======================================================================================================+
-  | 309         | R\_AARCH64\_GOT\_LD\_PREL19     | G(GDAT(S))- P              | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`      |
+  | 309         | R\_AARCH64\_GOT\_LD\_PREL19     | G(GDAT(S)) - P             | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`      |
   +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 310         | R\_AARCH64\_LD64\_GOTOFF\_LO15  | G(GDAT(S))- GOT            | Set a LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0           |
+  | 310         | R\_AARCH64\_LD64\_GOTOFF\_LO15  | G(GDAT(S)) - GOT           | Set a LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0           |
   +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 311         | R\_AARCH64\_ADR\_GOT\_PAGE      | Page(G(GDAT(S)))-Page(P)   | Set the immediate value of an ADRP to bits [32:12] of X; check that –2\ :sup:`32` <= X < 2\ :sup:`32`|
+  | 311         | R\_AARCH64\_ADR\_GOT\_PAGE      | Page(G(GDAT(S))) - Page(P) | Set the immediate value of an ADRP to bits [32:12] of X; check that –2\ :sup:`32` <= X < 2\ :sup:`32`|
   +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
   | 312         | R\_AARCH64\_LD64\_GOT\_LO12\_NC | G(GDAT(S))                 | Set the LD/ST immediate field to bits [11:3] of X. No overflow check; check that X&7 = 0             |
   +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
-  | 313         | R\_AARCH64\_LD64\_GOTPAGE\_LO15 | G(GDAT(S))-Page(GOT)       | Set the LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0         |
+  | 313         | R\_AARCH64\_LD64\_GOTPAGE\_LO15 | G(GDAT(S)) - Page(GOT)     | Set the LD/ST immediate field to bits [14:3] of X; check that 0 <= X < 2\ :sup:`15`, X&7 = 0         |
   +-------------+---------------------------------+----------------------------+------------------------------------------------------------------------------------------------------+
 
 Call and Jump relocations
@@ -1515,7 +1517,7 @@ Non-checking (``_NC``) MOVW forms relocate MOVK; checking forms relocate ``MOVN`
 Local Dynamic thread-local storage model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. class:: aaelf64-dynamic-tls-relocations
+.. class:: aaelf64-local-dynamic-tls-relocations
 
 .. table:: Local Dynamic TLS relocations
 
@@ -1524,7 +1526,8 @@ Local Dynamic thread-local storage model
   +=============+================================================+===========================+================================================================================================+
   | 517         | R\_AARCH64\_TLSLD\_ADR\_PREL21                 | G(GLDM(S)) - P            | Set an ADR immediate field to bits [20:0] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`        |
   +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 518         | R\_AARCH64\_TLSLD\_ADR\_PAGE21                 | Page(G(GLDM(S)))-Page(P)  | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`      |
+  | 518         | R\_AARCH64\_TLSLD\_ADR\_PAGE21                 | Page(G(GLDM(S)))          | Set an ADRP immediate field to bits [32:12] of X; check –2\ :sup:`32` <= X < 2\ :sup:`32`      |
+  |             |                                                | - Page(P)                 |                                                                                                |
   +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
   | 519         | R\_AARCH64\_TLSLD\_ADD\_LO12\_NC               | G(GLDM(S))                | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
   +-------------+------------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
@@ -1602,7 +1605,7 @@ Initial Exec thread-local storage model
   +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
   | 542        | R\_AARCH64\_TLSIE\_LD64\_GOTTPREL\_LO12\_NC  | G(GTPREL(S))                   | Set an LD offset field to bits [11:3] of X. No overflow check; check that X&7=0          |
   +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
-  | 543        | R\_AARCH64\_TLSIE\_LD\_GOTTPREL\_PREL19      | G(GTPREL(S)) – P               | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
+  | 543        | R\_AARCH64\_TLSIE\_LD\_GOTTPREL\_PREL19      | G(GTPREL(S)) - P               | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
   +------------+----------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
 
 .. _TLSIE MOVW:
@@ -2035,6 +2038,8 @@ The Program Header provides a number of fields that assist in interpretation of 
 
 p\_type
   The below table lists the processor-specific segment types.
+
+.. class:: aaelf64-segment-types
 
 .. table:: Processor-specific segment types
 
