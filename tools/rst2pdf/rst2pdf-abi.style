@@ -204,51 +204,67 @@ styles:
 
     aaelf64-data-relocations:
         parent : table
-        colWidths: [ 15%, 15%, 20%, 15%, 35% ]
+        colWidths: [ 9%, 24%, 14%, 53% ]
 
     aaelf64-group-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 34%, 13%, 35% ]
+        colWidths: [ 9%, 35%, 14%, 42% ]
 
     aaelf64-pc-relative-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 36%, 13%, 33% ]
+        colWidths: [ 9%, 38%, 22%, 31% ]
 
     aaelf64-control-flow-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 24%, 13%, 45% ]
+        colWidths: [ 9%, 27%, 14%, 50% ]
 
     aaelf64-pc-relative-inline-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 36%, 13%, 33% ]
+        colWidths: [ 9%, 35%, 14%, 42% ]
 
     aaelf64-got-relative-inline-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 36%, 16%, 30% ]
+        colWidths: [ 9%, 38%, 20%, 33% ]
 
     aaelf64-got-relative-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 34%, 22%, 26% ]
+        colWidths: [ 9%, 36%, 28%, 27% ]
 
     aaelf64-dynamic-tls-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 24%, 28%, 30% ]
+        colWidths: [ 9%, 40%, 23%, 28% ]
+
+    aaelf64-local-dynamic-tls-relocations:
+        parent : table
+        colWidths: [ 9%, 48%, 20%, 23% ]
 
     aaelf64-initial-exec-tls-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 28%, 27%, 27% ]
+        colWidths: [ 9%, 47%, 23%, 21% ]
 
     aaelf64-local-exec-tls-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 45%, 15%, 22% ]
+        colWidths: [ 9%, 46%, 16%, 29% ]
 
     aaelf64-tls-descriptor-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 22%, 28%, 32% ]
+        colWidths: [ 9%, 38%, 25%, 28% ]
+
+    aaelf64-tls-data-relocations:
+        parent : table
+        colWidths: [ 9%, 32%, 16%, 43% ]
+
+    aaelf64-pauth-descriptor-relocations:
+        parent : table
+        colWidths: [ 9%, 43%, 30%, 18% ]
 
     aaelf64-dynamic-relocations:
         parent : table
-        colWidths: [ 9%, 9%, 27%, 23%, 32% ]
+        colWidths: [ 9%, 32%, 32%, 27% ]
+
+    aaelf64-segment-types:
+        parent : table
+        colWidths: [ 30%, 16%, 54% ]
 
     # aaelf64-morello styles
     aaelf64-morello-change:
@@ -332,7 +348,7 @@ styles:
 
     aapcs64-table-4:
         parent : table
-        colWidths: [ 20%, 20%, 20%, 20%, 20% ]
+        colWidths: [ 22%, 28%, 25%, 25% ]
 
     aapcs64-change-history:
         parent : table
@@ -498,7 +514,7 @@ styles:
 
     aaelf32-relocs-widecode:
         parent : table
-        colWidths: [ 10%, 31%, 13%, 15%, 29% ]
+        colWidths: [ 10%, 31%, 13%, 17%, 29% ]
 
     aaelf32-relocs-t16:
         parent : table
