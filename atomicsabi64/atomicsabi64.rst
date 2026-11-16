@@ -229,6 +229,8 @@ changes to the content of the document for that release.
   +---------+------------------------------+-------------------------------------------------------------------+
   | 2026Q3  | 3\ :sup:`rd` November 2026   | - Add ``store_add`` mappings for non-returning reductions.        |
   +---------+------------------------------+-------------------------------------------------------------------+
+  | 2026Q4  | 6\ :sup:`th` November 2026   | - Add ``STLP``, ``LDAP`` and ``LDAPP`` atomic mappings.           |
+  +---------+------------------------------+-------------------------------------------------------------------+
 
 References
 ----------
@@ -731,6 +733,10 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
   |                                     |``FEAT_LRCPC3``| .. code-block:: none                 |
   |                                     |               |                                      |
   |                                     |               |    STILP   X2, X3, [X4]              |
+  |                                     +---------------+--------------------------------------+
+  |                                     | ``FEAT_LSCP`` | .. code-block:: none                 |
+  |                                     |               |                                      |
+  |                                     |               |    STLP    X2, X3, [X4]              |
   +-------------------------------------+---------------+--------------------------------------+
   | ``store(loc,val,seq_cst)``          | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -759,6 +765,10 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
   |                                     |``FEAT_LRCPC3``| .. code-block:: none                 |
   |                                     |               |                                      |
   |                                     |               |    STILP   X2, X3, [X4]              |
+  |                                     +---------------+--------------------------------------+
+  |                                     | ``FEAT_LSCP`` | .. code-block:: none                 |
+  |                                     |               |                                      |
+  |                                     |               |    STLP    X2, X3, [X4]              |
   +-------------------------------------+---------------+--------------------------------------+
   | ``load(loc,relaxed)``               | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -794,6 +804,10 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
   |                                     |``FEAT_LRCPC3``| .. code-block:: none                 |
   |                                     |               |                                      |
   |                                     |               |    LDIAPP X0, X1, [X4]               |
+  |                                     +---------------+--------------------------------------+
+  |                                     | ``FEAT_LSCP`` | .. code-block:: none                 |
+  |                                     |               |                                      |
+  |                                     |               |    LDAPP  X0, X1, [X4]               |
   +-------------------------------------+---------------+--------------------------------------+
   | ``load(loc,seq_cst)``               | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -816,6 +830,10 @@ compare-exchange. The result is returned in ``X0`` and ``X1``.
   |                                     |               |                                      |
   |                                     |               |    LDAR   X5, [X4]                   |
   |                                     |               |    LDIAPP X0, X1, [X4]               |
+  |                                     +---------------+--------------------------------------+
+  |                                     | ``FEAT_LSCP`` | .. code-block:: none                 |
+  |                                     |               |                                      |
+  |                                     |               |    LDAP   X0, X1, [X4]               |
   +-------------------------------------+---------------+--------------------------------------+
   | ``exchange(loc,val,relaxed)``       | ``Armv8-A``   | .. code-block:: none                 |
   |                                     |               |                                      |
@@ -1230,5 +1248,4 @@ in read-only memory (such as the ``.rodata`` section).
 Before FEAT_LSE2, the only way to implement a single-copy 128-bit atomic load
 is by using a Read-Modify-Write sequence. The write is not visible to
 software if the memory is writable. Compilers and runtimes should prefer the
-FEAT_LSE2/FEAT_LRCPC3 sequence when available.
-
+FEAT_LSE2/FEAT_LRCPC3/FEAT_LSCP sequences when available.
