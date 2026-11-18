@@ -1173,6 +1173,11 @@ contains ``val``. The value initially loaded from memory is returned in
   |                                     |               |     LDAR   W2, [X1]                  |
   |                                     |               |     FMOV   S0, W2                    |
   +                                     +---------------+--------------------------------------+
+  |                                     | ``FEAT_LRCPC``| .. code-block:: none                 |
+  |                                     |               |                                      |
+  |                                     |               |     LDAPR  W2, [X1]                  |
+  |                                     |               |     FMOV   S0, W2                    |
+  +                                     +---------------+--------------------------------------+
   |                                     |``FEAT_LRCPC3``| .. code-block:: none                 |
   |                                     |               |                                      |
   |                                     |               |     LDAPUR S0, [X1]                  |
